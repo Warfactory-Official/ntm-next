@@ -1,14 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory;
 
-import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
-import com.hbm.blocks.machine.storage.BlockMassStorage;
+import com.hbm.blockentity.machine.storage.MassStorageBlockEntity;
+import com.hbm.blocks.machine.storage.MassStorageBlock;
 import com.hbm.items.ModDataComponents;
-import com.hbm.items.special.ItemUnstable;
+import com.hbm.items.special.UnstableItem;
 import com.hbm.items.special.UnstableItemData;
-import com.hbm.platform.NeoForgeInventoryPlatform;
+import com.hbm.platform.InventoryPlatform;
+import com.hbm.platform.Platform;
+import com.tiviacz.travelersbackpack.item.TravelersBackpackItem;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +39,6 @@ import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.neoforged.fml.ModList;
 import org.jspecify.annotations.Nullable;
 
 public final class ItemContents {
@@ -99,14 +116,14 @@ public final class ItemContents {
                     @Override
                     protected long quantity(
                             ItemInstance parent, int slot, ItemStackTemplate child) {
-                        return massStorage(parent) && slot == BlockEntityMassStorage.SLOT_TYPE
+                        return massStorage(parent) && slot == MassStorageBlockEntity.SLOT_TYPE
                                 ? parent.getOrDefault(ModDataComponents.MASS_STOCKPILE.get(), 0)
                                 : child.count();
                     }
 
                     @Override
                     protected void removed(ItemStack parent, int slot) {
-                        if (massStorage(parent) && slot == BlockEntityMassStorage.SLOT_TYPE)
+                        if (massStorage(parent) && slot == MassStorageBlockEntity.SLOT_TYPE)
                             parent.remove(ModDataComponents.MASS_STOCKPILE.get());
                     }
                 };
@@ -121,8 +138,8 @@ public final class ItemContents {
                     ContentFields.sealed()
                 };
         VanillaBlockItemLayouts.register();
-        NeoForgeInventoryPlatform.registerContents();
-        if (ModList.get().isLoaded("travelersbackpack")) Traveler.register();
+        InventoryPlatform.registerContents();
+        if (Platform.isModLoaded("travelersbackpack")) Traveler.register();
     }
 
     public static void register(Class<?> type, Adapter adapter) {
@@ -159,7 +176,7 @@ public final class ItemContents {
 
     private static boolean massStorage(ItemInstance item) {
         return item.typeHolder().value() instanceof BlockItem block
-                && block.getBlock() instanceof BlockMassStorage;
+                && block.getBlock() instanceof MassStorageBlock;
     }
 
     public static boolean hasContents(ItemInstance parent, boolean radiation) {
@@ -251,7 +268,7 @@ public final class ItemContents {
         Summary summary = walk.push();
         try {
             Long own =
-                    item.typeHolder().value() instanceof ItemUnstable
+                    item.typeHolder().value() instanceof UnstableItem
                             ? item.get(ModDataComponents.UNSTABLE_AT.get())
                             : null;
             summary.minimum = own == null ? Long.MAX_VALUE : own;
@@ -305,7 +322,7 @@ public final class ItemContents {
     private static final class Traveler {
         static void register() {
             registerFamily(
-                    com.tiviacz.travelersbackpack.item.TravelersBackpackItem.class,
+                    TravelersBackpackItem.class,
                     new Adapter(
                             false,
                             new ContentFields.Slots(

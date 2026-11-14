@@ -1,11 +1,24 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.packet;
 
-import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.packet.toclient.UnitPayload;
-import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import java.util.IdentityHashMap;
@@ -26,68 +39,70 @@ public final class BeSyncTable {
     private BeSyncTable() {}
 
     public static void refresh(
-            ThreadedPayload payload,
+            SyncUnitState.Snapshot publication,
+            BlockEntity owner,
             ServerLevel level,
             BlockPos pos,
+            int blockEntityType,
             int range,
             @Nullable SyncAudience audience) {
         refresh(
-                payload,
+                publication,
                 level,
                 pos.getX() + 0.5,
                 pos.getY() + 0.5,
                 pos.getZ() + 0.5,
+                owner,
+                blockEntityType,
                 range,
                 audience);
     }
 
     private static void refresh(
-            ThreadedPayload payload,
+            SyncUnitState.Snapshot publication,
             ServerLevel level,
             double targetX,
             double targetY,
             double targetZ,
+            BlockEntity owner,
+            int blockEntityType,
             double range,
             @Nullable SyncAudience audience) {
-        try {
-            if (!(payload instanceof UnitPayload unit) || !unit.requiresRecipientBase()) {
-                ByteBuf wire = payload.getCompiledBuffer();
-                if (!payload.compiledIncludesWirePrefix()) return;
-            }
-            int x = (int) Math.floor(targetX),
-                    y = (int) Math.floor(targetY),
-                    z = (int) Math.floor(targetZ);
-            long chunkKey =
-                    ChunkPos.pack(
-                            SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
-            var positions =
-                    TABLE.computeIfAbsent(level, ignored -> new Long2ObjectOpenHashMap<>())
-                            .computeIfAbsent(chunkKey, ignored -> new Long2ObjectOpenHashMap<>());
-            long key = BlockPos.asLong(x, y, z);
-            Entry entry = positions.get(key);
-            if (entry == null) {
-                entry = new Entry();
-                positions.put(key, entry);
-            } else if (entry.payload != null) entry.payload.release();
-            entry.x = targetX;
-            entry.y = targetY;
-            entry.z = targetZ;
-            entry.rangeSq = range * range;
-            entry.audience = audience;
-            entry.position = key;
-            entry.level = level;
-            payload.retain();
-            entry.payload = payload;
-            entry.inScope.clear();
-            var players =
-                    ChunkTrackerIndex.players(
-                            level,
-                            SectionPos.blockToSectionCoord(x),
-                            SectionPos.blockToSectionCoord(z));
-            for (int i = 0; i < players.size(); i++) heal(entry, players.get(i));
-        } finally {
-            payload.release();
+        int x = (int) Math.floor(targetX),
+                y = (int) Math.floor(targetY),
+                z = (int) Math.floor(targetZ);
+        long chunkKey =
+                ChunkPos.pack(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+        var positions =
+                TABLE.computeIfAbsent(level, ignored -> new Long2ObjectOpenHashMap<>())
+                        .computeIfAbsent(chunkKey, ignored -> new Long2ObjectOpenHashMap<>());
+        long key = BlockPos.asLong(x, y, z);
+        Entry entry = positions.get(key);
+        if (entry == null) {
+            entry = new Entry();
+            positions.put(key, entry);
         }
+        if (entry.publication != publication) {
+            publication.retain();
+            if (entry.publication != null) entry.publication.release();
+            entry.publication = publication;
+        }
+        entry.unitOwner = owner;
+        entry.x = targetX;
+        entry.y = targetY;
+        entry.z = targetZ;
+        entry.rangeSq = range * range;
+        entry.audience = audience;
+        entry.position = key;
+        entry.level = level;
+        entry.blockEntityType = blockEntityType;
+        entry.inScope.clear();
+        var players =
+                ChunkTrackerIndex.players(
+                        level,
+                        SectionPos.blockToSectionCoord(x),
+                        SectionPos.blockToSectionCoord(z));
+        for (int i = 0; i < players.size(); i++) heal(entry, players.get(i));
     }
 
     public static void refreshBlob(SyncBlob blob, BlockEntity owner, int range) {
@@ -110,6 +125,7 @@ public final class BeSyncTable {
         }
         entry.audience = owner instanceof SyncAudience audience ? audience : null;
         entry.blob = blob;
+        entry.blobOwner = owner;
         var players = ChunkTrackerIndex.players(level, pos.getX() >> 4, pos.getZ() >> 4);
         for (int i = 0; i < players.size(); i++) heal(entry, players.get(i));
     }
@@ -124,14 +140,26 @@ public final class BeSyncTable {
         if (entry != null) deliver(entry, player);
     }
 
-    public static void evict(ServerLevel level, BlockPos pos) {
+    public static void evict(ServerLevel level, BlockPos pos, BlockEntity owner) {
         var chunks = TABLE.get(level);
         if (chunks == null) return;
         long chunkKey = ChunkPos.pack(pos.getX() >> 4, pos.getZ() >> 4);
         var positions = chunks.get(chunkKey);
         if (positions == null) return;
-        Entry entry = positions.remove(pos.asLong());
-        if (entry != null && entry.payload != null) entry.payload.release();
+        Entry entry = positions.get(pos.asLong());
+        if (entry == null) return;
+        if (entry.unitOwner == owner) {
+            entry.unitOwner = null;
+            if (entry.publication != null) {
+                entry.publication.release();
+                entry.publication = null;
+            }
+        }
+        if (entry.blobOwner == owner) {
+            entry.blobOwner = null;
+            entry.blob = null;
+        }
+        if (entry.unitOwner == null && entry.blobOwner == null) positions.remove(pos.asLong());
         if (positions.isEmpty()) chunks.remove(chunkKey);
         if (chunks.isEmpty()) TABLE.remove(level);
     }
@@ -156,8 +184,9 @@ public final class BeSyncTable {
         var positions = positions(level, chunkKey);
         if (positions == null) return;
         if (empty) {
-            for (Entry entry : positions.values())
-                if (entry.payload != null) entry.payload.release();
+            for (Entry entry : positions.values()) {
+                if (entry.publication != null) entry.publication.release();
+            }
             var chunks = TABLE.get(level);
             chunks.remove(chunkKey);
             if (chunks.isEmpty()) TABLE.remove(level);
@@ -190,8 +219,9 @@ public final class BeSyncTable {
     public static void clear() {
         for (var chunks : TABLE.values()) {
             for (var positions : chunks.values()) {
-                for (Entry entry : positions.values())
-                    if (entry.payload != null) entry.payload.release();
+                for (Entry entry : positions.values()) {
+                    if (entry.publication != null) entry.publication.release();
+                }
             }
         }
         TABLE.clear();
@@ -208,8 +238,9 @@ public final class BeSyncTable {
     }
 
     private static void deliver(Entry entry, ServerPlayer player) {
-        if (entry.payload != null && entry.inScope.add(player.getUUID())) {
-            PacketWire.enqueueSync(player, entry.level, entry.position, entry.payload);
+        if (entry.publication != null && entry.inScope.add(player.getUUID())) {
+            PacketWire.enqueueUnitSync(
+                    player, entry.level, entry.position, entry.blockEntityType, entry.publication);
         }
         if (entry.blob != null) entry.blob.enqueue(entry.level, player);
     }
@@ -220,7 +251,10 @@ public final class BeSyncTable {
         SyncAudience audience;
         long position;
         ServerLevel level;
-        ThreadedPayload payload;
+        int blockEntityType;
+        SyncUnitState.Snapshot publication;
         SyncBlob blob;
+        BlockEntity unitOwner;
+        BlockEntity blobOwner;
     }
 }

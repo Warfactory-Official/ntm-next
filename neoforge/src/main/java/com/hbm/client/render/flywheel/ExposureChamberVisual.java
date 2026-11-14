@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineExposureChamber;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.ExposureChamberBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.util.Facing;
@@ -20,6 +36,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Random;
 import java.util.function.Consumer;
 import net.minecraft.util.LightCoordsUtil;
@@ -30,8 +48,8 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 public final class ExposureChamberVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineExposureChamber>
-        implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<ExposureChamberBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int MAX_BEAMS = 7;
     private static final int FLICKER_PERIOD = 8;
     private static final int FLICKER_CHANCE = 2;
@@ -94,12 +112,12 @@ public final class ExposureChamberVisual
 
     public ExposureChamberVisual(
             VisualizationContext context,
-            BlockEntityMachineExposureChamber blockEntity,
+            ExposureChamberBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
         basePose.translation(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(blockState.getValue(BlockMultiblockCore.FACING), 90)
+                        Facing.yaw(blockState.getValue(MultiblockCoreBlock.FACING), 90)
                                 * Mth.DEG_TO_RAD);
         rawBodyBounds =
                 new AABB(pos)
@@ -125,29 +143,29 @@ public final class ExposureChamberVisual
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 
     private void writeFrame(float partialTick) {
-        float rotation = Mth.lerp(partialTick, blockEntity.prevRotation, blockEntity.rotation);
+        float angle = Mth.lerp(partialTick, blockEntity.previousAngle, blockEntity.angle);
         long gameTime = level.getGameTime();
         float bob = (float) (Math.sin((gameTime % (Math.PI * 16D) + partialTick) * .125D) * .0625D);
-        boolean active = blockEntity.isOn;
+        boolean active = blockEntity.running;
         boolean poseChanged =
                 !initialized
-                        || Float.compare(rotation, lastRotation) != 0
+                        || Float.compare(angle, lastRotation) != 0
                         || Float.compare(bob, lastBob) != 0
                         || active != lastActive;
         if (!poseChanged && !active) return;
         boolean activeChanged = !initialized || active != lastActive;
-        lastRotation = rotation;
+        lastRotation = angle;
         lastBob = bob;
         lastActive = active;
         initialized = true;
         if (poseChanged) {
-            magnetsPose.set(basePose).rotateY(rotation * Mth.DEG_TO_RAD);
-            corePose.set(basePose).rotateY(rotation * .5F * Mth.DEG_TO_RAD).translate(0F, bob, 0F);
+            magnetsPose.set(basePose).rotateY(angle * Mth.DEG_TO_RAD);
+            corePose.set(basePose).rotateY(angle * .5F * Mth.DEG_TO_RAD).translate(0F, bob, 0F);
             instancePose
                     .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
                     .mul(magnetsPose);

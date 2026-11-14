@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.multiblock;
 
@@ -60,73 +76,33 @@ public final class MultiblockMaskTable {
 
         private Builder() {}
 
+        private static void append(IntArrayList rows, int lx, int ly, int lz, int value) {
+            rows.add(lx);
+            rows.add(ly);
+            rows.add(lz);
+            rows.add(value);
+        }
+
         public Builder cell(int lx, int ly, int lz, int mask, int roles) {
-            if (mask < 0 || mask > 0b111111) {
-                throw new IllegalStateException(
-                        "multiblock mask table: mask "
-                                + mask
-                                + " at local "
-                                + lx
-                                + ","
-                                + ly
-                                + ","
-                                + lz
-                                + " is not a 6-bit face set");
-            }
-            if (roles == 0 || (roles & ~BlockMultiblockCore.ROLE_ALL) != 0) {
-                throw new IllegalStateException(
-                        "multiblock mask table: roles 0b"
-                                + Integer.toBinaryString(roles)
-                                + " at local "
-                                + lx
-                                + ","
-                                + ly
-                                + ","
-                                + lz
-                                + " is not a non-empty subset of ROLE_ALL");
-            }
-            active.addElements(active.size(), new int[] {lx, ly, lz, mask, roles});
+            append(active, lx, ly, lz, mask);
+            active.add(roles);
             return this;
         }
 
         public Builder passive(int lx, int ly, int lz, int faces, int domains) {
             if (domains == 0 || faces == 0) return this;
-            if (faces < 0 || faces > 0b111111) {
-                throw new IllegalStateException(
-                        "multiblock mask table: passive faces "
-                                + faces
-                                + " at local "
-                                + lx
-                                + ","
-                                + ly
-                                + ","
-                                + lz
-                                + " is not a 6-bit face set");
-            }
-            passives.addElements(passives.size(), new int[] {lx, ly, lz, faces, domains});
+            append(passives, lx, ly, lz, faces);
+            passives.add(domains);
             return this;
         }
 
         public Builder flag(int lx, int ly, int lz, int bits) {
-            if (bits != 0) flagged.addElements(flagged.size(), new int[] {lx, ly, lz, bits});
+            if (bits != 0) append(flagged, lx, ly, lz, bits);
             return this;
         }
 
         public Builder kind(int lx, int ly, int lz, int kind) {
-            if (kind < 0 || kind > Byte.MAX_VALUE) {
-                throw new IllegalStateException(
-                        "multiblock mask table: cell kind "
-                                + kind
-                                + " at local "
-                                + lx
-                                + ","
-                                + ly
-                                + ","
-                                + lz
-                                + " is not 0.."
-                                + Byte.MAX_VALUE);
-            }
-            if (kind != 0) kinded.addElements(kinded.size(), new int[] {lx, ly, lz, kind});
+            if (kind != 0) append(kinded, lx, ly, lz, kind);
             return this;
         }
 
@@ -143,69 +119,63 @@ public final class MultiblockMaskTable {
             int sizeX = maxX - minX + 1, sizeY = maxY - minY + 1, sizeZ = maxZ - minZ + 1;
             int volume = sizeX * sizeY * sizeZ;
             byte[] masks = filled(volume);
-            byte[][] passive = new byte[BlockMultiblockCore.PASSIVE_DOMAINS][];
+            byte[][] passive = new byte[MultiblockCoreBlock.PASSIVE_DOMAINS][];
             for (int d = 0; d < passive.length; d++) passive[d] = filled(volume);
             byte[][] byRole = new byte[CapRole.COUNT][];
             for (int r = 0; r < byRole.length; r++) byRole[r] = filled(volume);
             byte[] flags = flagged.isEmpty() ? null : new byte[volume];
             byte[] kinds = kinded.isEmpty() ? null : new byte[volume];
-            MultiblockMaskTable table =
-                    new MultiblockMaskTable(
-                            masks, passive, byRole, flags, kinds, minX, minY, minZ, sizeX, sizeY,
-                            sizeZ);
             for (int i = 0; i < active.size(); i += 5) {
-                table.put(
-                        active.getInt(i),
-                        active.getInt(i + 1),
-                        active.getInt(i + 2),
-                        active.getInt(i + 3),
-                        active.getInt(i + 4));
+                int index =
+                        ((active.getInt(i + 1) - minY) * sizeZ + active.getInt(i + 2) - minZ)
+                                        * sizeX
+                                + active.getInt(i)
+                                - minX;
+                put(masks, byRole, index, active.getInt(i + 3), active.getInt(i + 4));
             }
             for (int i = 0; i < volume; i++) {
                 if (masks[i] == (byte) NOT_A_CELL) continue;
                 for (byte[] plane : passive) plane[i] = 0;
             }
             for (int i = 0; i < passives.size(); i += 5) {
-                table.putPassive(
-                        passives.getInt(i),
-                        passives.getInt(i + 1),
-                        passives.getInt(i + 2),
-                        passives.getInt(i + 3),
-                        passives.getInt(i + 4));
+                int lx = passives.getInt(i),
+                        ly = passives.getInt(i + 1),
+                        lz = passives.getInt(i + 2);
+                int index = cellIndex(lx, ly, lz, minX, minY, minZ, sizeX, sizeZ);
+                int faces = passives.getInt(i + 3), domains = passives.getInt(i + 4);
+                for (int d = 0; d < passive.length; d++) {
+                    if ((domains & (1 << d)) != 0) passive[d][index] |= (byte) faces;
+                }
             }
             for (int i = 0; i < flagged.size(); i += 4) {
                 int lx = flagged.getInt(i), ly = flagged.getInt(i + 1), lz = flagged.getInt(i + 2);
-                if (table.maskAtLocal(lx, ly, lz) == NOT_A_CELL) {
-                    throw new IllegalStateException(
-                            "multiblock mask table: flags at local "
-                                    + lx
-                                    + ","
-                                    + ly
-                                    + ","
-                                    + lz
-                                    + " are not a cell of the footprint");
-                }
-                flags[table.index(lx, ly, lz)] |= (byte) flagged.getInt(i + 3);
+                int index = cellIndex(lx, ly, lz, minX, minY, minZ, sizeX, sizeZ);
+                flags[index] |= (byte) flagged.getInt(i + 3);
             }
             for (int i = 0; i < kinded.size(); i += 4) {
                 int lx = kinded.getInt(i), ly = kinded.getInt(i + 1), lz = kinded.getInt(i + 2);
-                if (table.maskAtLocal(lx, ly, lz) == NOT_A_CELL) {
-                    throw new IllegalStateException(
-                            "multiblock mask table: kind at local "
-                                    + lx
-                                    + ","
-                                    + ly
-                                    + ","
-                                    + lz
-                                    + " is not a cell of the footprint");
-                }
-                kinds[table.index(lx, ly, lz)] = (byte) kinded.getInt(i + 3);
+                int index = cellIndex(lx, ly, lz, minX, minY, minZ, sizeX, sizeZ);
+                kinds[index] = (byte) kinded.getInt(i + 3);
             }
+            boolean redundantRoles = true;
             for (byte[] plane : byRole) {
-                if (!Arrays.equals(plane, masks)) return table;
+                if (!Arrays.equals(plane, masks)) {
+                    redundantRoles = false;
+                    break;
+                }
             }
             return new MultiblockMaskTable(
-                    masks, passive, null, flags, kinds, minX, minY, minZ, sizeX, sizeY, sizeZ);
+                    masks,
+                    passive,
+                    redundantRoles ? null : byRole,
+                    flags,
+                    kinds,
+                    minX,
+                    minY,
+                    minZ,
+                    sizeX,
+                    sizeY,
+                    sizeZ);
         }
 
         private static byte[] filled(int volume) {
@@ -232,7 +202,7 @@ public final class MultiblockMaskTable {
     public static MultiblockMaskTable read(CompoundTag tag) {
         int[] min = tag.getIntArray("min").orElseThrow();
         int[] size = tag.getIntArray("size").orElseThrow();
-        byte[][] passive = new byte[BlockMultiblockCore.PASSIVE_DOMAINS][];
+        byte[][] passive = new byte[MultiblockCoreBlock.PASSIVE_DOMAINS][];
         for (int d = 0; d < passive.length; d++)
             passive[d] = tag.getByteArray("passive" + d).orElseThrow();
         byte[][] byRole = null;
@@ -319,33 +289,19 @@ public final class MultiblockMaskTable {
         };
     }
 
-    private void put(int lx, int ly, int lz, int mask, int roles) {
-        int index = index(lx, ly, lz);
-        int union = 0;
+    private static void put(byte[] masks, byte[][] byRole, int index, int mask, int roles) {
+        if (masks[index] == NOT_A_CELL) masks[index] = 0;
+        masks[index] |= (byte) mask;
         for (CapRole role : CapRole.VALUES) {
             byte[] plane = byRole[role.planeIndex];
-            if (plane[index] == (byte) NOT_A_CELL) plane[index] = 0;
+            if (plane[index] == NOT_A_CELL) plane[index] = 0;
             if ((roles & role.bit) != 0) plane[index] |= (byte) mask;
-            union |= plane[index];
         }
-        masks[index] = (byte) union;
     }
 
-    private void putPassive(int lx, int ly, int lz, int faces, int domains) {
-        if (maskAtLocal(lx, ly, lz) == NOT_A_CELL) {
-            throw new IllegalStateException(
-                    "multiblock mask table: passive emission at local "
-                            + lx
-                            + ","
-                            + ly
-                            + ","
-                            + lz
-                            + " is not a cell of the footprint");
-        }
-        int index = index(lx, ly, lz);
-        for (int d = 0; d < passive.length; d++) {
-            if ((domains & (1 << d)) != 0) passive[d][index] |= (byte) faces;
-        }
+    private static int cellIndex(
+            int lx, int ly, int lz, int minX, int minY, int minZ, int sizeX, int sizeZ) {
+        return ((ly - minY) * sizeZ + lz - minZ) * sizeX + lx - minX;
     }
 
     private int index(int lx, int ly, int lz) {
@@ -399,10 +355,12 @@ public final class MultiblockMaskTable {
     }
 
     public void forEachLocalCell(LocalCellConsumer consumer) {
-        for (int ly = minY; ly < minY + sizeY; ly++) {
-            for (int lz = minZ; lz < minZ + sizeZ; lz++) {
-                for (int lx = minX; lx < minX + sizeX; lx++) {
-                    if (masks[index(lx, ly, lz)] != (byte) NOT_A_CELL) consumer.accept(lx, ly, lz);
+        int index = 0;
+        for (int y = 0; y < sizeY; y++) {
+            for (int z = 0; z < sizeZ; z++) {
+                for (int x = 0; x < sizeX; x++) {
+                    if (masks[index] != NOT_A_CELL) consumer.accept(minX + x, minY + y, minZ + z);
+                    index++;
                 }
             }
         }

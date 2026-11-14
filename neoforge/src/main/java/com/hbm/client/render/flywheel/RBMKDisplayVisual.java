@@ -1,17 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKDisplay;
-import com.hbm.blockentity.machine.rbmk.RBMKColumn;
+import com.hbm.blockentity.machine.rbmk.ColumnSnapshot;
 import com.hbm.blockentity.machine.rbmk.RBMKColumnType;
-import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
+import com.hbm.blockentity.machine.rbmk.RBMKDisplayBlockEntity;
+import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBlock;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
@@ -20,8 +38,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class RBMKDisplayVisual extends HbmDynamicBlockEntityVisual<BlockEntityRBMKDisplay> {
-    private static final int STRIDE = BlockEntityRBMKDisplay.SIZE;
+public final class RBMKDisplayVisual
+        extends AbstractBoundedBlockEntityVisual<RBMKDisplayBlockEntity>
+        implements CulledDynamicVisual {
+    private static final int STRIDE = RBMKDisplayBlockEntity.SIDE;
     private static final int COLUMNS = STRIDE * STRIDE;
     private final TransformedInstance[] columns = new TransformedInstance[COLUMNS];
     private final TransformedInstance[] dots = new TransformedInstance[COLUMNS];
@@ -36,9 +56,9 @@ public final class RBMKDisplayVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private boolean initialized;
 
     public RBMKDisplayVisual(
-            VisualizationContext context, BlockEntityRBMKDisplay blockEntity, float partialTick) {
+            VisualizationContext context, RBMKDisplayBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        Direction facing = blockEntity.getBlockState().getValue(RBMKMiniPanelBase.FACING);
+        Direction facing = blockEntity.getBlockState().getValue(RBMKMiniPanelBlock.FACING);
         float yaw = Facing.yaw(facing, 90);
         basePose.identity()
                 .translate(.5F, 0F, .5F)
@@ -67,16 +87,16 @@ public final class RBMKDisplayVisual extends HbmDynamicBlockEntityVisual<BlockEn
 
     public static void initModels() {}
 
-    private static boolean hasDot(RBMKColumn column) {
-        return column.type == RBMKColumnType.FUEL
-                || column.type == RBMKColumnType.FUEL_SIM
-                || column.type == RBMKColumnType.CONTROL
-                || column.type == RBMKColumnType.CONTROL_AUTO;
+    private static boolean hasDot(ColumnSnapshot column) {
+        return column.type() == RBMKColumnType.FUEL
+                || column.type() == RBMKColumnType.FUEL_SIM
+                || column.type() == RBMKColumnType.CONTROL
+                || column.type() == RBMKColumnType.CONTROL_AUTO;
     }
 
-    private static int columnColor(RBMKColumn column, int index) {
+    private static int columnColor(ColumnSnapshot column, int index) {
         float r = 1F, g = 1F, b = 1F;
-        short dye = column instanceof RBMKColumn.ControlColumn control ? control.color : -1;
+        short dye = column instanceof ColumnSnapshot.Control control ? control.dye : -1;
         if (dye >= 0) {
             switch (dye) {
                 case 0 -> {
@@ -100,13 +120,13 @@ public final class RBMKDisplayVisual extends HbmDynamicBlockEntityVisual<BlockEn
                 default -> {}
             }
         } else {
-            double heat = column.heat / column.maxHeat;
+            double heat = column.heat / column.heatCeiling;
             double cv = .65D + (index % 2) * .05D;
             r = (float) (cv + (1D - cv) * heat);
             g = (float) cv;
             b = (float) cv;
         }
-        if (column.indicator > 0) {
+        if (column.craneHighlight > 0) {
             r = 1F;
             g = 1F;
             b = 0F;
@@ -115,22 +135,22 @@ public final class RBMKDisplayVisual extends HbmDynamicBlockEntityVisual<BlockEn
                 1F, Math.clamp(r, 0F, 1F), Math.clamp(g, 0F, 1F), Math.clamp(b, 0F, 1F));
     }
 
-    private static int dotColor(RBMKColumn column) {
+    private static int dotColor(ColumnSnapshot column) {
         float r, g, b;
-        switch (column.type) {
+        switch (column.type()) {
             case FUEL, FUEL_SIM -> {
                 r = 0F;
-                g = .25F + (float) ((RBMKColumn.FuelColumn) column).enrichment * .75F;
+                g = .25F + (float) ((ColumnSnapshot.Fuel) column).enrichment * .75F;
                 b = 0F;
             }
             case CONTROL -> {
-                float level = (float) ((RBMKColumn.ControlColumn) column).level;
+                float level = (float) ((ColumnSnapshot.Control) column).extraction;
                 r = level;
                 g = level;
                 b = 0F;
             }
             case CONTROL_AUTO -> {
-                float level = (float) ((RBMKColumn.ControlColumn) column).level;
+                float level = (float) ((ColumnSnapshot.Control) column).extraction;
                 r = level;
                 g = 0F;
                 b = level;
@@ -146,14 +166,14 @@ public final class RBMKDisplayVisual extends HbmDynamicBlockEntityVisual<BlockEn
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
-        RBMKColumn[] values = blockEntity.columns;
+        ColumnSnapshot[] values = blockEntity.columns;
         for (int i = 0; i < columns.length; i++) {
-            RBMKColumn column = values[i];
+            ColumnSnapshot column = values[i];
             boolean columnVisible = column != null;
             int columnColor = columnVisible ? columnColor(column, i) : 0;
             if (columnVisible) {

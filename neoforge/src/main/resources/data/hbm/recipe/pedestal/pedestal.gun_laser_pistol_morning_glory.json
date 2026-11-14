@@ -9,7 +9,10 @@
       "ingredient": "hbm:item_secret_selenium_steel"
     },
     "C": {
-      "ingredient": "hbm:gun_laser_pistol"
+      "ingredient": "hbm:gun_laser_pistol",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "D": {
       "count": 2,

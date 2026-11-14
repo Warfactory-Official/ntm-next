@@ -15,7 +15,8 @@
             {
               "function": "minecraft:copy_components",
               "include": [
-                "hbm:fluid_content"
+                "hbm:fluid_content",
+                "hbm:transfer_mode"
               ],
               "source": "block_entity"
             }

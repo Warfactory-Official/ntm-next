@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.blockentity.machine.BlockEntityCargoElevator;
-import com.hbm.blocks.machine.BlockCargoElevator;
+import com.hbm.blockentity.machine.CargoElevatorBlockEntity;
+import com.hbm.blocks.machine.CargoElevatorBlock;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
@@ -48,15 +64,15 @@ public final class CargoElevatorOutline {
         var level = Minecraft.getInstance().level;
         if (level == null || state.blockOutlineRenderState == null) return false;
         BlockPos hit = state.blockOutlineRenderState.pos();
-        if (!(level.getBlockState(hit).getBlock() instanceof BlockCargoElevator block))
+        if (!(level.getBlockState(hit).getBlock() instanceof CargoElevatorBlock block))
             return false;
-        BlockEntityCargoElevator elevator = block.elevator(level, hit);
+        CargoElevatorBlockEntity elevator = block.elevator(level, hit);
         if (elevator == null) return true;
         BlockPos core = elevator.getBlockPos();
         Vec3 camera = state.cameraRenderState.pos;
         pose.pushPose();
         pose.translate(core.getX() - camera.x, core.getY() - camera.y, core.getZ() - camera.z);
-        for (AABB box : elevator.boxes()) {
+        for (AABB box : elevator.collisionBoxes()) {
             collector.submitShapeOutline(
                     pose, Shapes.create(box.inflate(0.002F)), TYPE, 0x66000000, 2F, false);
         }

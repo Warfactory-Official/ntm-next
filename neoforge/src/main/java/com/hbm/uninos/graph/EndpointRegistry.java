@@ -1,17 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.uninos.graph;
 
 import com.hbm.blocks.CapabilityDependentShape;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.platform.ServerEvents;
 import com.hbm.util.ChunkPositionIndex;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.lang.ref.WeakReference;
+import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.FullChunkStatus;
@@ -34,22 +51,24 @@ public final class EndpointRegistry {
     private int capabilityShapeCount;
 
     public static EndpointRegistry of(ServerLevel level) {
-        return level.hbm$endpoints();
+        return ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$endpoints();
     }
 
     public static void init() {
-        NeoForgeServerEvents.onChunkUnload(
-                (level, chunk) -> of(level).onChunkUnload(chunk.getPos().pack()));
+        final BiConsumer<ServerLevel, LevelChunk> callback =
+                (level, chunk) -> of(level).onChunkUnload(chunk.getPos().pack());
+        ServerEvents.CHUNK_UNLOAD.add(callback);
     }
 
     public static void declareSelfIfEndpoint(ServerLevel level, BlockEntity be) {
         int domains = selfDeclaredBits(be);
         if ((domains & NET_DOMAINS) != 0) {
-            level.hbm$endpoints()
+            ((com.hbm.interfaces.injected.ServerLevelExtension) (level))
+                    .hbm$endpoints()
                     .declare(
                             be.getBlockPos(),
                             be.getBlockPos(),
-                            BlockMultiblockCore.MASK_ALL,
+                            MultiblockCoreBlock.MASK_ALL,
                             domains,
                             be.getBlockState().getBlock()
                                     instanceof CapabilityDependentShape.Endpoint);
@@ -153,7 +172,7 @@ public final class EndpointRegistry {
         BlockEntity cached = memo == null ? null : memo.get();
         if (cached != null && !cached.isRemoved() && stillFull(ep.resolvedChunk)) return cached;
         BlockPos owner = BlockPos.of(ep.owner());
-        LevelChunk chunk = BlockMultiblockCore.readableChunk(level, owner.getX(), owner.getZ());
+        LevelChunk chunk = MultiblockCoreBlock.readableChunk(level, owner.getX(), owner.getZ());
         if (chunk == null) {
             ep.resolved = null;
             ep.resolvedChunk = null;

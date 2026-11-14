@@ -1,18 +1,48 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.potion;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.bomb.BlockTaint;
+import com.hbm.blocks.bomb.TaintBlock;
 import com.hbm.data.ItemData;
-import com.hbm.entity.mob.EntityCreeperTainted;
-import com.hbm.entity.mob.EntityTaintCrab;
-import com.hbm.explosion.ExplosionLarge;
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.entity.mob.CreeperTaintedEntity;
+import com.hbm.entity.mob.TaintCrabEntity;
+import com.hbm.explosion.BlastSmoke;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
@@ -26,7 +56,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.cow.Cow;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,28 +89,28 @@ public final class HbmPotion {
 
     public static void register() {
         potionsickness =
-                FabricRegistrar.registerMobEffect(
+                Registrar.registerMobEffect(
                         "potionsickness",
                         () -> new HbmMobEffect(MobEffectCategory.NEUTRAL, 0xff8080));
-        radiation = FabricRegistrar.registerMobEffect("radiation", RadiationEffect::new);
-        radaway = FabricRegistrar.registerMobEffect("radaway", RadawayEffect::new);
+        radiation = Registrar.registerMobEffect("radiation", RadiationEffect::new);
+        radaway = Registrar.registerMobEffect("radaway", RadawayEffect::new);
         death =
-                FabricRegistrar.registerMobEffect(
+                Registrar.registerMobEffect(
                         "death", () -> new HbmMobEffect(MobEffectCategory.NEUTRAL, 0x111111));
         radx =
-                FabricRegistrar.registerMobEffect(
+                Registrar.registerMobEffect(
                         "radx", () -> new HbmMobEffect(MobEffectCategory.BENEFICIAL, 0xBB4B00));
         stability =
-                FabricRegistrar.registerMobEffect(
+                Registrar.registerMobEffect(
                         "stability",
                         () -> new HbmMobEffect(MobEffectCategory.BENEFICIAL, 0xD0D0D0));
-        lead = FabricRegistrar.registerMobEffect("lead", LeadEffect::new);
-        taint = FabricRegistrar.registerMobEffect("taint", TaintEffect::new);
+        lead = Registrar.registerMobEffect("lead", LeadEffect::new);
+        taint = Registrar.registerMobEffect("taint", TaintEffect::new);
         mutation =
-                FabricRegistrar.registerMobEffect(
+                Registrar.registerMobEffect(
                         "mutation", () -> new HbmMobEffect(MobEffectCategory.NEUTRAL, 0x800080));
-        phosphorus = FabricRegistrar.registerMobEffect("phosphorus", PhosphorusEffect::new);
-        bang = FabricRegistrar.registerMobEffect("bang", BangEffect::new);
+        phosphorus = Registrar.registerMobEffect("phosphorus", PhosphorusEffect::new);
+        bang = Registrar.registerMobEffect("bang", BangEffect::new);
     }
 
     public static Holder<MobEffect> potionsickness() {
@@ -154,9 +183,8 @@ public final class HbmPotion {
 
         @Override
         public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
+            if (entity.isSpectator()) return true;
             entity.hurtServer(level, level.damageSources().source(ModDamageTypes.BANG), 1000F);
-            entity.setHealth(0.0F);
-            if (!(entity instanceof Player)) entity.discard();
 
             EntitySounds.play(
                     entity,
@@ -167,9 +195,9 @@ public final class HbmPotion {
                     SoundSource.PLAYERS,
                     100.0F,
                     1.0F);
-            ExplosionLarge.spawnParticles(level, entity.getX(), entity.getY(), entity.getZ(), 10);
+            BlastSmoke.cloud(level, entity.getX(), entity.getY(), entity.getZ(), 10);
 
-            if (entity instanceof Cow cow) {
+            if (entity instanceof Cow cow && cow.isDeadOrDying()) {
                 cow.spawnAtLocation(
                         level, new ItemStack(ModItems.CHEESE.get(), cow.isBaby() ? 10 : 3), 1.0F);
             }
@@ -227,7 +255,7 @@ public final class HbmPotion {
 
         @Override
         public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
-            HbmLivingProps.incrementRadiation(entity, -(amplifier + 1));
+            LivingHazards.addRadiation(entity, -(amplifier + 1));
             return true;
         }
 
@@ -262,8 +290,8 @@ public final class HbmPotion {
 
         @Override
         public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
-            if (!(entity instanceof EntityCreeperTainted)
-                    && !(entity instanceof EntityTaintCrab)
+            if (!(entity instanceof CreeperTaintedEntity)
+                    && !(entity instanceof TaintCrabEntity)
                     && level.getRandom().nextInt(40) == 0) {
                 entity.hurtServer(
                         level,
@@ -271,13 +299,13 @@ public final class HbmPotion {
                         amplifier + 1.0F);
             }
 
-            if (ItemData.TAINT_TRAILS.get()) {
+            if (ItemData.TAINT_TRAILS.get() && !entity.isSpectator()) {
                 BlockPos below = entity.blockPosition().below();
                 BlockState state = level.getBlockState(below);
                 if (below.getY() > level.getMinY() && state.isSolidRender() && !state.isAir()) {
                     level.setBlock(
                             below,
-                            ModBlocks.TAINT.get().defaultBlockState().setValue(BlockTaint.AGE, 14),
+                            ModBlocks.TAINT.get().defaultBlockState().setValue(TaintBlock.AGE, 14),
                             Block.UPDATE_CLIENTS);
                 }
             }

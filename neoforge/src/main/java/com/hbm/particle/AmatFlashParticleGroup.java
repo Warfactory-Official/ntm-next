@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
@@ -17,7 +33,7 @@ import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
-public class AmatFlashParticleGroup extends ParticleGroup<ParticleAmatFlash> {
+public class AmatFlashParticleGroup extends ParticleGroup<AmatFlashParticle> {
 
     public AmatFlashParticleGroup(ParticleEngine engine) {
         super(engine);
@@ -33,7 +49,7 @@ public class AmatFlashParticleGroup extends ParticleGroup<ParticleAmatFlash> {
         Vec3 cam = camera.position();
 
         int i = 0;
-        for (ParticleAmatFlash fx : this.particles) {
+        for (AmatFlashParticle fx : this.particles) {
             if (fx.ownsVisual()) continue;
             pos[i * 3] = (float) (fx.interpX(partialTicks) - cam.x);
             pos[i * 3 + 1] = (float) (fx.interpY(partialTicks) - cam.y);
@@ -58,7 +74,7 @@ public class AmatFlashParticleGroup extends ParticleGroup<ParticleAmatFlash> {
                     new PoseStack(),
                     ParticleRenderTypes.AMAT_FLASH,
                     (p, tess) -> {
-                        float[] rim = ParticleAmatFlash.RIM;
+                        float[] rim = AmatFlashParticle.RIM;
 
                         for (int i = 0; i < count; i++) {
                             float px = pos[i * 3], py = pos[i * 3 + 1], pz = pos[i * 3 + 2];
@@ -69,7 +85,7 @@ public class AmatFlashParticleGroup extends ParticleGroup<ParticleAmatFlash> {
                             int edge = 0xFFFFFF;
                             int lit = light[i];
 
-                            for (int s = 0; s < ParticleAmatFlash.SPIKES; s++) {
+                            for (int s = 0; s < AmatFlashParticle.SPIKES; s++) {
                                 int b = s * 9;
                                 float x0 = px + rim[b] * k,
                                         y0 = py + rim[b + 1] * k,

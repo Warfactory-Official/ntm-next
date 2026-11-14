@@ -1,14 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin;
 
 import com.hbm.client.render.ManlyPlayerLayer;
 import com.hbm.client.render.PlayerCapes;
-import com.hbm.client.render.RiderTiltRenderState;
 import com.hbm.interfaces.injected.PlayerAppearance;
 import com.hbm.main.Polaroid;
-import com.hbm.packet.toclient.PlayerAppearancePayload;
+import com.hbm.packet.PlayerAppearanceSync;
 import com.hbm.render.util.RiderTilt;
 import net.minecraft.client.model.player.PlayerModel;
 import net.minecraft.client.player.LocalPlayer;
@@ -49,11 +64,18 @@ public abstract class MixinAvatarRenderer
             at = @At("TAIL"))
     private void hbm$extractAppearance(
             Avatar avatar, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
-        state.hbm$setAppearance(
-                avatar instanceof LocalPlayer local
-                        ? PlayerAppearancePayload.fromPlayer(local)
-                        : avatar instanceof Player player ? player.hbm$appearance() : (byte) 0);
-        if (!state.isFallFlying && (state.hbm$appearance() & PlayerAppearance.ARMOR_FLIGHT) != 0) {
+        ((com.hbm.interfaces.injected.PlayerAppearance) (state))
+                .hbm$setAppearance(
+                        avatar instanceof LocalPlayer local
+                                ? PlayerAppearanceSync.fromPlayer(local)
+                                : avatar instanceof Player player
+                                        ? ((com.hbm.interfaces.injected.PlayerAppearance) (player))
+                                                .hbm$appearance()
+                                        : (byte) 0);
+        if (!state.isFallFlying
+                && (((com.hbm.interfaces.injected.PlayerAppearance) (state)).hbm$appearance()
+                                & PlayerAppearance.ARMOR_FLIGHT)
+                        != 0) {
             state.isFallFlying = true;
             state.pose = Pose.FALL_FLYING;
             state.fallFlyingTimeInTicks = 10F;
@@ -84,7 +106,7 @@ public abstract class MixinAvatarRenderer
     private void hbm$extractRiderTilt(
             Avatar avatar, AvatarRenderState state, float partialTicks, CallbackInfo ci) {
         Entity vehicle = avatar.getVehicle();
-        ((RiderTiltRenderState) state)
+        ((com.hbm.client.render.RiderTiltRenderState) (state))
                 .hbm$setRiderTilt(
                         vehicle == null
                                 ? 0F

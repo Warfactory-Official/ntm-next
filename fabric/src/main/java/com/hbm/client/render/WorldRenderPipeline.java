@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BindGroupLayout;
 import com.mojang.blaze3d.pipeline.BlendFunction;
@@ -60,7 +76,7 @@ public final class WorldRenderPipeline extends RenderPipeline {
     public static final RenderPipeline ONE_SIDED_CUTOUT_PIPELINE =
             of(
                     RenderPipeline.builder(RenderPipelines.ENTITY_SNIPPET)
-                            .withLocation(Library.id("pipeline/one_sided_cutout"))
+                            .withLocation(RegistryUtil.id("pipeline/one_sided_cutout"))
                             .withShaderDefine("ALPHA_CUTOUT", 0.1F)
                             .withBindGroupLayout(BindGroupLayouts.SAMPLER1)
                             .withCull(false));
@@ -83,7 +99,7 @@ public final class WorldRenderPipeline extends RenderPipeline {
     public static final RenderPipeline ONE_SIDED_TRANSLUCENT_PIPELINE =
             of(
                     RenderPipeline.builder(RenderPipelines.ENTITY_SNIPPET)
-                            .withLocation(Library.id("pipeline/one_sided_translucent"))
+                            .withLocation(RegistryUtil.id("pipeline/one_sided_translucent"))
                             .withShaderDefine("ALPHA_CUTOUT", 0.1F)
                             .withBindGroupLayout(BindGroupLayouts.SAMPLER1)
                             .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
@@ -122,6 +138,10 @@ public final class WorldRenderPipeline extends RenderPipeline {
     }
 
     private WorldRenderPipeline(RenderPipeline source, Family family) {
+        this(source, family, false);
+    }
+
+    private WorldRenderPipeline(RenderPipeline source, Family family, boolean orderedDepth) {
         super(
                 source.getLocation(),
                 source.getVertexShader(),
@@ -140,7 +160,6 @@ public final class WorldRenderPipeline extends RenderPipeline {
         if (family != Family.NATIVE_SKY && family(source.getVertexShader().toString()) != family)
             throw new IllegalArgumentException(shader);
         var flags = source.getShaderDefines().flags();
-        var samplers = BindGroupLayout.flattenSamplers(source.getBindGroupLayouts());
         fullbright =
                 flags.contains("EMISSIVE")
                         || family != Family.ENTITY
@@ -170,12 +189,17 @@ public final class WorldRenderPipeline extends RenderPipeline {
                                         family == Family.PARTICLE || family == Family.TEXT
                                                 ? "0.1"
                                                 : "0"));
-        assert !overlay || samplers.contains("Sampler1");
+        assert !overlay
+                || BindGroupLayout.flattenSamplers(source.getBindGroupLayouts())
+                        .contains("Sampler1");
     }
 
     private static Family family(String shader) {
         return switch (shader) {
-            case "minecraft:core/entity", "hbm:core/entity_nofog", "hbm:core/entity_fade" ->
+            case "minecraft:core/entity",
+                    "hbm:core/entity_nofog",
+                    "hbm:core/entity_fade",
+                    "hbm:core/entity_chunk" ->
                     Family.ENTITY;
             case "minecraft:core/particle",
                     "hbm:core/particle_nofog",
@@ -208,8 +232,21 @@ public final class WorldRenderPipeline extends RenderPipeline {
         return ONE_SIDED_TRANSLUCENT.apply(texture, affectsOutline);
     }
 
-    public static WorldRenderPipeline of(RenderPipeline.Builder builder) {
+    public static WorldRenderPipeline entity(Builder builder) {
+        return entity(builder, false);
+    }
+
+    public static WorldRenderPipeline entity(Builder builder, boolean orderedDepth) {
+        return new WorldRenderPipeline(builder.build(), Family.ENTITY, orderedDepth);
+    }
+
+    public static WorldRenderPipeline of(Builder builder) {
         return new WorldRenderPipeline(builder.build());
+    }
+
+    public static WorldRenderPipeline orderedDepth(Builder builder) {
+        RenderPipeline source = builder.build();
+        return new WorldRenderPipeline(source, family(source.getFragmentShader().toString()), true);
     }
 
     public static WorldRenderPipeline nativeSky(RenderPipeline source) {
@@ -219,7 +256,7 @@ public final class WorldRenderPipeline extends RenderPipeline {
     private static WorldRenderPipeline untextured(String location, boolean cull) {
         return of(
                 RenderPipeline.builder(RenderPipelines.MATRICES_FOG_SNIPPET)
-                        .withLocation(Library.id(location))
+                        .withLocation(RegistryUtil.id(location))
                         .withVertexShader("core/entity")
                         .withFragmentShader("core/entity")
                         .withShaderDefine("NO_OVERLAY")

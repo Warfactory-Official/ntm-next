@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.recipes.ingredient;
 
 import com.hbm.inventory.recipes.crafting.CraftingInputState;
-import com.hbm.items.tool.ItemCraftingDegradation;
+import com.hbm.items.tool.CraftingDegradationItem;
 import java.util.Objects;
 import net.minecraft.advancements.predicates.DataComponentMatchers;
 import net.minecraft.advancements.predicates.NbtPredicate;
@@ -112,12 +128,70 @@ public final class RecipeInputState {
         for (var change : stack.getComponentsPatch().entrySet()) {
             DataComponentType<?> type = change.getKey();
             if (type == DataComponents.DAMAGE
-                    && stack.getItem() instanceof ItemCraftingDegradation
+                    && stack.getItem() instanceof CraftingDegradationItem
                     && remaining.is(stack.getItem())
                     && remaining.getDamageValue() == stack.getDamageValue() + 1) continue;
             if (!Objects.equals(stack.get(type), remaining.get(type))) return false;
         }
         return true;
+    }
+
+    public static boolean drainsFluid(Ingredient ingredient) {
+        return switch (ingredient.getCustomIngredient()) {
+            case HbmFluidContentIngredient fluid -> fluid.drain();
+            case HbmRecipeIngredient recipe -> drainsFluid(recipe.base());
+            case HbmMatchersIngredient matchers -> drainsFluid(matchers.base());
+            case HbmNarrowedIngredient narrowed -> drainsFluid(narrowed.within());
+            case HbmAnyIngredient any ->
+                    any.ingredients().stream().anyMatch(RecipeInputState::drainsFluid);
+            case null, default -> false;
+        };
+    }
+
+    public static @Nullable HbmFluidContentIngredient craftingFluid(
+            Ingredient ingredient, ItemStack stack, DataComponentMatchers additional) {
+        return switch (ingredient.getCustomIngredient()) {
+            case HbmFluidContentIngredient fluid -> fluid.drain() ? fluid : null;
+            case HbmRecipeIngredient recipe -> craftingFluid(recipe.base(), stack, additional);
+            case HbmMatchersIngredient matchers ->
+                    craftingFluid(
+                            matchers.base(),
+                            stack,
+                            mergeClaims(matchers.matchers(), additional, stack));
+            case HbmNarrowedIngredient narrowed ->
+                    craftingFluid(narrowed.within(), stack, additional);
+            case HbmAnyIngredient any -> {
+                HbmFluidContentIngredient selected = null;
+                for (Ingredient child : any.ingredients()) {
+                    if (child.test(stack) && accepts(child, stack, additional)) {
+                        selected = craftingFluid(child, stack, additional);
+                        break;
+                    }
+                }
+                yield selected;
+            }
+            case null, default -> null;
+        };
+    }
+
+    private static DataComponentMatchers mergeClaims(
+            DataComponentMatchers first, DataComponentMatchers second, ItemStack stack) {
+        if (first.isEmpty()) return second;
+        if (second.isEmpty()) return first;
+        var combined = DataComponentMatchers.Builder.components();
+        for (var change : stack.getComponentsPatch().entrySet()) {
+            DataComponentType<?> type = change.getKey();
+            if (claims(first, type, stack) || claims(second, type, stack)) combined.any(type);
+        }
+        return combined.build();
+    }
+
+    public static ItemStack craftingRemainder(
+            Ingredient ingredient, ItemStack stack, DataComponentMatchers additional) {
+        HbmFluidContentIngredient fluid = craftingFluid(ingredient, stack, additional);
+        if (fluid != null) return Objects.requireNonNull(fluid.drainedRemainder(stack));
+        ItemStackTemplate remainder = stack.getCraftingRemainder();
+        return remainder == null ? ItemStack.EMPTY : remainder.create();
     }
 
     public static boolean hasChangedInputs(CraftingInput input) {

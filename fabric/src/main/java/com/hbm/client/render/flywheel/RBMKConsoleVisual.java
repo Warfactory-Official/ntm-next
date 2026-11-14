@@ -1,19 +1,37 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKConsole;
-import com.hbm.blockentity.machine.rbmk.RBMKColumn;
+import com.hbm.blockentity.machine.rbmk.ColumnSnapshot;
 import com.hbm.blockentity.machine.rbmk.RBMKColumnType;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.client.render.RenderRBMKConsole;
+import com.hbm.blockentity.machine.rbmk.RBMKConsoleBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.render.RBMKConsoleRenderer;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
@@ -25,14 +43,15 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEntityRBMKConsole>
-        implements ShaderLightVisual {
+public final class RBMKConsoleVisual
+        extends AbstractBoundedBlockEntityVisual<RBMKConsoleBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int STRIDE = 15;
     private static final int COLUMNS = STRIDE * STRIDE;
     private static final int SCREENS = 6;
     private final TransformedInstance[] columns = new TransformedInstance[COLUMNS];
     private final TransformedInstance[] dots = new TransformedInstance[COLUMNS];
-    private final @Nullable RBMKColumn[] shownColumns = new RBMKColumn[COLUMNS];
+    private final @Nullable ColumnSnapshot[] shownColumns = new ColumnSnapshot[COLUMNS];
     private final Matrix4f basePose = new Matrix4f();
     private final Matrix4f instancePose = new Matrix4f();
     private final boolean[] columnVisible = new boolean[COLUMNS], dotVisible = new boolean[COLUMNS];
@@ -42,11 +61,11 @@ public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private final @Nullable String[] shownDisplays = new String[SCREENS];
 
     public RBMKConsoleVisual(
-            VisualizationContext context, BlockEntityRBMKConsole blockEntity, float partialTick) {
+            VisualizationContext context, RBMKConsoleBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         basePose.translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 90) * Mth.DEG_TO_RAD)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 90) * Mth.DEG_TO_RAD)
                 .translate(.5F, 0F, 0F);
         for (int i = 0; i < COLUMNS; i++) {
             columns[i] =
@@ -82,16 +101,16 @@ public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEn
 
     public static void initModels() {}
 
-    private static boolean hasDot(RBMKColumn column) {
-        return column.type == RBMKColumnType.FUEL
-                || column.type == RBMKColumnType.FUEL_SIM
-                || column.type == RBMKColumnType.CONTROL
-                || column.type == RBMKColumnType.CONTROL_AUTO;
+    private static boolean hasDot(ColumnSnapshot column) {
+        return column.type() == RBMKColumnType.FUEL
+                || column.type() == RBMKColumnType.FUEL_SIM
+                || column.type() == RBMKColumnType.CONTROL
+                || column.type() == RBMKColumnType.CONTROL_AUTO;
     }
 
-    private static int columnColor(RBMKColumn column, int index) {
+    private static int columnColor(ColumnSnapshot column, int index) {
         float r = 1F, g = 1F, b = 1F;
-        short dye = column instanceof RBMKColumn.ControlColumn control ? control.color : -1;
+        short dye = column instanceof ColumnSnapshot.Control control ? control.dye : -1;
         if (dye >= 0) {
             switch (dye) {
                 case 0 -> {
@@ -115,13 +134,13 @@ public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEn
                 default -> {}
             }
         } else {
-            double heat = column.heat / column.maxHeat;
+            double heat = column.heat / column.heatCeiling;
             double cv = .65D + (index % 2) * .05D;
             r = (float) (cv + (1D - cv) * heat);
             g = (float) cv;
             b = (float) cv;
         }
-        if (column.indicator > 0) {
+        if (column.craneHighlight > 0) {
             r = 1F;
             g = 1F;
             b = 0F;
@@ -130,22 +149,22 @@ public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEn
                 1F, Math.clamp(r, 0F, 1F), Math.clamp(g, 0F, 1F), Math.clamp(b, 0F, 1F));
     }
 
-    private static int dotColor(RBMKColumn column) {
+    private static int dotColor(ColumnSnapshot column) {
         float r, g, b;
-        switch (column.type) {
+        switch (column.type()) {
             case FUEL, FUEL_SIM -> {
                 r = 0F;
-                g = .25F + (float) ((RBMKColumn.FuelColumn) column).enrichment * .75F;
+                g = .25F + (float) ((ColumnSnapshot.Fuel) column).enrichment * .75F;
                 b = 0F;
             }
             case CONTROL -> {
-                float level = (float) ((RBMKColumn.ControlColumn) column).level;
+                float level = (float) ((ColumnSnapshot.Control) column).extraction;
                 r = level;
                 g = level;
                 b = 0F;
             }
             case CONTROL_AUTO -> {
-                float level = (float) ((RBMKColumn.ControlColumn) column).level;
+                float level = (float) ((ColumnSnapshot.Control) column).extraction;
                 r = level;
                 g = 0F;
                 b = level;
@@ -167,7 +186,7 @@ public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEn
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
         updateScreens();
     }
@@ -175,19 +194,19 @@ public final class RBMKConsoleVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private void updateScreens() {
         float y = -Minecraft.getInstance().font.lineHeight / 2;
         for (int i = 0; i < SCREENS; i++) {
-            String display = blockEntity.screens[i].display;
+            String display = blockEntity.screens[i].text;
             if (!Objects.equals(display, shownDisplays[i])) {
                 shownDisplays[i] = display;
-                screens[i].set(RenderRBMKConsole.screenText(display), 0F, y, CommonColors.GREEN);
+                screens[i].set(RBMKConsoleRenderer.screenText(display), 0F, y, CommonColors.GREEN);
             }
             screens[i].write(screenPosings[i]);
         }
     }
 
     public void updateMovingParts(float partialTick) {
-        RBMKColumn[] values = blockEntity.columns;
+        ColumnSnapshot[] values = blockEntity.columns;
         for (int i = 0; i < columns.length; i++) {
-            RBMKColumn column = values[i];
+            ColumnSnapshot column = values[i];
             if (column == shownColumns[i]) continue;
             shownColumns[i] = column;
             if (column == null) {

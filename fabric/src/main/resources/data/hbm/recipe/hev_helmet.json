@@ -1,19 +1,21 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:titanium_helmet",
-      "components": {
-        "minecraft:damage": 0
-      }
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:titanium_helmet",
     "C": "hbm:circuit_basic",
     "F": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:gas_mask_filter",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     "I": "#hbm:ingots/any_plastic",

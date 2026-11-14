@@ -1,13 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: 2025 MrNorwood
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) 2025 MrNorwood. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.hazard.type;
 
 import com.hbm.data.RadiationData;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.hazard.helper.HazardHelper;
-import com.hbm.hazard.modifier.IHazardModifier;
+import com.hbm.hazard.modifier.HazardModifier;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -18,10 +47,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class HazardTypeToxic implements IHazardType {
+public class HazardTypeToxic implements HazardKind {
 
     @Override
-    public void onUpdate(LivingEntity target, double level, ItemStack stack) {
+    public void onUpdate(LivingEntity target, float base, ItemStack stack) {
+        double level = base;
         if (RadiationData.DISABLE_TOXIC.get()) return;
 
         boolean reacher = HazardHelper.isHoldingReacher(target);
@@ -55,15 +85,16 @@ public class HazardTypeToxic implements IHazardType {
     }
 
     @Override
-    public void updateEntity(ItemEntity item, double level) {}
+    public void onDropped(ItemEntity item, float level) {}
 
     @Override
-    public void addHazardInformation(
+    public void appendTooltip(
             Player player,
             List<Component> list,
-            double level,
+            float base,
             ItemStack stack,
-            List<IHazardModifier> modifiers) {
+            List<HazardModifier> modifiers) {
+        double level = base;
         String adjectiveKey;
         if (level > 16) {
             adjectiveKey = "adjective.extreme";

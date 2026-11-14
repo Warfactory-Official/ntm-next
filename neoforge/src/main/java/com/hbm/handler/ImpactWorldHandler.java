@@ -1,22 +1,55 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.handler;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.interfaces.injected.IClientImpactState;
-import com.hbm.lib.Library;
+import com.hbm.interfaces.injected.ClientImpactStateAccess;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.ImpactSyncPayload;
-import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.packet.layout.ImpactSyncLayout;
+import com.hbm.platform.Platform;
+import com.hbm.platform.PlayerLevelChange;
+import com.hbm.platform.ServerEvents;
 import com.hbm.registration.OverridePoint;
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.util.ChunkUtil;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +62,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.AgeableWaterCreature;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -46,7 +78,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 public final class ImpactWorldHandler {
     public static final OverridePoint<Predicate<ServerLevel>> EXTINCTION_LEVELS =
             OverridePoint.of(
-                    Library.id("impact_extinction_levels"),
+                    RegistryUtil.id("impact_extinction_levels"),
                     level -> level.dimension() == Level.OVERWORLD);
 
     private static final float SETTLE = 1F / 14400000F;
@@ -58,30 +90,42 @@ public final class ImpactWorldHandler {
     private ImpactWorldHandler() {}
 
     public static void init() {
-        NeoForgeServerEvents.onServerTickPre(ImpactWorldHandler::onServerTick);
-        NeoForgeServerEvents.onPlayerJoin(player -> SENT.remove(player.getUUID()));
-        NeoForgeServerEvents.onPlayerRespawn(player -> SENT.remove(player.getUUID()));
-        NeoForgeServerEvents.onPlayerChangeLevel(
-                (player, origin, destination) -> SENT.remove(player.getUUID()));
-        NeoForgeServerEvents.onPlayerDisconnect(player -> SENT.remove(player.getUUID()));
-        NeoForgeServerEvents.onServerStopping(server -> SENT.clear());
+        final Consumer<MinecraftServer> callback = ImpactWorldHandler::onServerTick;
+        ServerEvents.TICK_PRE.add(callback);
+        final Consumer<ServerPlayer> callback2 = player -> SENT.remove(player.getUUID());
+        ServerEvents.JOIN.add(callback2);
+        final Consumer<ServerPlayer> callback3 = player -> SENT.remove(player.getUUID());
+        ServerEvents.RESPAWN.add(callback3);
+        final PlayerLevelChange callback4 =
+                (player, origin, destination) -> SENT.remove(player.getUUID());
+        ServerEvents.LEVEL_CHANGE.add(callback4);
+        final Consumer<ServerPlayer> callback5 = player -> SENT.remove(player.getUUID());
+        ServerEvents.DISCONNECT.add(callback5);
+        final Consumer<MinecraftServer> callback6 = server -> SENT.clear();
+        ServerEvents.STOPPING.add(callback6);
     }
 
     private static void onServerTick(MinecraftServer server) {
-        for (ServerLevel level : server.getAllLevels()) {
-            TomSaveData data = TomSaveData.getExisting(level);
-            if (data == null) continue;
-            impactEffects(level, data);
-            settle(data);
-        }
+        if (simulationTick(server))
+            for (ServerLevel level : server.getAllLevels()) {
+                TomSaveData data = TomSaveData.getExisting(level);
+                if (data == null) continue;
+                impactEffects(level, data);
+                settle(data);
+            }
 
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             TomSaveData data = TomSaveData.getExisting(player.level());
             Snapshot current =
                     data == null ? new Snapshot(0F, 0F) : new Snapshot(data.fire, data.dust);
             if (current.equals(SENT.put(player.getUUID(), current))) continue;
-            PacketWire.sendTo(new ImpactSyncPayload(current.fire, current.dust), player);
+            PacketWire.sendTo(ImpactSyncLayout.encode(current.fire, current.dust), player);
         }
+    }
+
+    public static boolean simulationTick(MinecraftServer server) {
+        var tickRate = server.tickRateManager();
+        return !tickRate.isFrozen() || tickRate.isSteppingForward();
     }
 
     public static void settle(TomSaveData data) {
@@ -168,7 +212,7 @@ public final class ImpactWorldHandler {
         BlockPos above = pos.above();
         boolean exposed = level.getBrightness(LightLayer.SKY, above) >= 7;
 
-        if (state.isFlammable((BlockGetter) level, pos, Direction.UP)
+        if (Platform.isFlammable(level, pos, state, Direction.UP)
                 && level.getBlockState(above).isAir()
                 && exposed) {
             if (block instanceof LeavesBlock || block instanceof VegetationBlock) {
@@ -204,14 +248,14 @@ public final class ImpactWorldHandler {
     private record Snapshot(float fire, float dust) {}
 
     public static void receive(Player player, float fire, float dust) {
-        ((IClientImpactState) player.level()).hbm$setImpactState(fire, dust);
+        ((ClientImpactStateAccess) player.level()).hbm$setImpactState(fire, dust);
     }
 
     public static float getFireForClient(Level level) {
-        return level instanceof IClientImpactState state ? state.hbm$impactFire() : 0F;
+        return level instanceof ClientImpactStateAccess state ? state.hbm$impactFire() : 0F;
     }
 
     public static float getDustForClient(Level level) {
-        return level instanceof IClientImpactState state ? state.hbm$impactDust() : 0F;
+        return level instanceof ClientImpactStateAccess state ? state.hbm$impactDust() : 0F;
     }
 }

@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.structure;
 
@@ -27,6 +43,14 @@ public class NtmBunkerStructure extends Structure implements ColumnBiome.SelfTes
     private static void generatePieces(
             StructurePiecesBuilder builder, Structure.GenerationContext context, BlockPos origin) {
         RandomSource random = context.random();
+        StartingHubPiece starter = assemble(builder, random, origin);
+        builder.moveBelowSeaLevel(context.chunkGenerator().getSeaLevel(), 0, random, 20);
+        int surface = WorldgenHeight.averageGround(context, starter.getBoundingBox());
+        starter.setHatchHeight(surface - starter.getBoundingBox().minY());
+    }
+
+    public static StartingHubPiece assemble(
+            StructurePiecesBuilder builder, RandomSource random, BlockPos origin) {
         int sizeLimit = 7 + random.nextInt(6);
         int distanceLimit = 40;
 
@@ -47,7 +71,7 @@ public class NtmBunkerStructure extends Structure implements ColumnBiome.SelfTes
                         weights, sizeLimit, distanceLimit, origin.getX(), origin.getZ());
         StartingHubPiece starter = new StartingHubPiece(origin, random);
         builder.addPiece(starter);
-        starter.buildComponent(start, builder, random);
+        start.pendingChildren.add(starter);
 
         while (!start.pendingChildren.isEmpty()) {
             int pos = random.nextInt(start.pendingChildren.size());
@@ -57,10 +81,7 @@ public class NtmBunkerStructure extends Structure implements ColumnBiome.SelfTes
             }
         }
 
-        builder.moveBelowSeaLevel(context.chunkGenerator().getSeaLevel(), 0, random, 20);
-
-        int surface = WorldgenHeight.averageGround(context, starter.getBoundingBox());
-        starter.setHatchHeight(surface - starter.getBoundingBox().minY());
+        return starter;
     }
 
     @Override

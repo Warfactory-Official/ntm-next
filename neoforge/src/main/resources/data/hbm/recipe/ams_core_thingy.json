@@ -3,7 +3,13 @@
   "key": {
     "G": "#c:ingots/gold",
     "N": "#c:nuggets/gold",
-    "S": "hbm:battery_pack_battery_quantum"
+    "S": {
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:battery_pack_battery_quantum",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
+    }
   },
   "pattern": [
     "NSN",

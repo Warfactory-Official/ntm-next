@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory;
 
@@ -52,7 +68,10 @@ public final class ItemInteriors {
 
     public static void backendChanged(
             MinecraftServer server, ItemInteriorAdapter adapter, UUID id) {
-        var state = server.hbm$unstableFuses().interiorSubscriptions();
+        var state =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                        .hbm$unstableFuses()
+                        .interiorSubscriptions();
         if (state != null) state.changed(adapter, id);
     }
 
@@ -61,28 +80,46 @@ public final class ItemInteriors {
         var level = access.level(owner);
         if (level == null) return;
         var server = level.getServer();
-        var state = server.hbm$unstableFuses().interiorSubscriptions();
+        var state =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                        .hbm$unstableFuses()
+                        .interiorSubscriptions();
         if (state == null && !hasReferences(item)) return;
-        server.hbm$unstableFuses().interiorSubscriptions(server).publish(owner, source, slot, item);
+        ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                .hbm$unstableFuses()
+                .interiorSubscriptions(server)
+                .publish(owner, source, slot, item);
     }
 
     public static SlotSource canonicalSource(MinecraftServer server, Object source) {
-        var state = server.hbm$unstableFuses().interiorSubscriptions();
+        var state =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                        .hbm$unstableFuses()
+                        .interiorSubscriptions();
         return state == null ? null : state.canonicalSource(source);
     }
 
     public static void suppressSource(MinecraftServer server, Object source) {
-        var state = server.hbm$unstableFuses().interiorSubscriptions();
+        var state =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                        .hbm$unstableFuses()
+                        .interiorSubscriptions();
         if (state != null) state.suppressSource(source);
     }
 
     public static void flush(MinecraftServer server) {
-        var state = server.hbm$unstableFuses().interiorSubscriptions();
+        var state =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                        .hbm$unstableFuses()
+                        .interiorSubscriptions();
         if (state != null) state.flush();
     }
 
     public static void retire(MinecraftServer server, Object owner) {
-        var state = server.hbm$unstableFuses().interiorSubscriptions();
+        var state =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                        .hbm$unstableFuses()
+                        .interiorSubscriptions();
         if (state != null) state.retire(owner);
     }
 
@@ -90,13 +127,19 @@ public final class ItemInteriors {
         var level = InventoryOwnerAccess.of(owner).level(owner);
         if (level == null) return;
         var server = level.getServer();
-        var state = server.hbm$unstableFuses().interiorSubscriptions();
+        var state =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                        .hbm$unstableFuses()
+                        .interiorSubscriptions();
         if (state == null) {
             boolean aliases = sources instanceof InventoryAlias;
             if (sources instanceof Object[] multiple)
                 for (Object source : multiple) aliases |= source instanceof InventoryAlias;
             if (!aliases) return;
-            state = server.hbm$unstableFuses().interiorSubscriptions(server);
+            state =
+                    ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server))
+                            .hbm$unstableFuses()
+                            .interiorSubscriptions(server);
         }
         state.replaceSources(owner, sources);
     }

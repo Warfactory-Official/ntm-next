@@ -4,11 +4,14 @@
     "B": "#c:ingots/bismuth",
     "M": "hbm:ingot_meteorite",
     "P": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:starmetal_axe",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:starmetal_axe"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "T": "#c:bolts/tungsten"
   },

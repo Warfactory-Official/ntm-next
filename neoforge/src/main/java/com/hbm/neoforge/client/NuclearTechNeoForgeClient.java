@@ -1,17 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.neoforge.client;
 
 import com.hbm.NuclearTech;
 import com.hbm.api.fluidmk2.FluidPipeTintData;
 import com.hbm.blocks.fluid.ClassicFluid;
+import com.hbm.client.ArmorBarHudRenderer;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.FarView;
 import com.hbm.client.ItemTooltipEvents;
 import com.hbm.client.Keybinds;
 import com.hbm.client.NukeHud;
 import com.hbm.client.RadiationResistanceTooltip;
+import com.hbm.client.UpdateChecker;
 import com.hbm.client.WikiRenderCommand;
 import com.hbm.client.ctm.CtmEngine;
 import com.hbm.client.ctm.HbmCtmLoader;
@@ -23,6 +41,8 @@ import com.hbm.client.model.SectionGeometry;
 import com.hbm.client.qmaw.QMAWClient;
 import com.hbm.client.render.HbmRenderPipelines;
 import com.hbm.command.ConfigCommand;
+import com.hbm.config.InteractionConfig;
+import com.hbm.config.ModeStatus;
 import com.hbm.data.DataGroups;
 import com.hbm.handler.BobmazonOffers;
 import com.hbm.handler.EquipmentProtections;
@@ -39,14 +59,16 @@ import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.RecipeSource;
 import com.hbm.items.ModItems;
 import com.hbm.items.food.ConsumableTreatments;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
-import com.hbm.lib.Library;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import com.hbm.neoforge.client.ctm.CtmLibModelDefinition;
-import com.hbm.packet.toserver.CrateOpenHeldPayload;
+import com.hbm.packet.BulkTransfers;
+import com.hbm.packet.PacketWire;
+import com.hbm.packet.layout.CrateOpenHeldLayout;
 import com.hbm.particle.HbmParticleGroups;
 import com.hbm.particle.HbmParticles;
 import com.hbm.registration.Reg;
 import com.hbm.render.loader.ObjMeshCache;
+import com.hbm.util.RegistryUtil;
 import com.hbm.wiaj.CanneryClient;
 import com.hbm.wiaj.JarRenderState;
 import com.hbm.wiaj.JarSceneRenderer;
@@ -114,7 +136,7 @@ public final class NuclearTechNeoForgeClient {
             modBus.addListener(
                     (AddPackFindersEvent event) -> {
                         event.addPackFinders(
-                                Library.id(ctm.directory()),
+                                RegistryUtil.id(ctm.directory()),
                                 PackType.CLIENT_RESOURCES,
                                 ctm.title(),
                                 PackSource.BUILT_IN,
@@ -170,8 +192,13 @@ public final class NuclearTechNeoForgeClient {
                         CustomMachineDefinitions.applyDataPack(event.getPlayer().registryAccess());
                         DataGroups.applyAll(event.getPlayer().registryAccess());
                     }
-                    CrateOpenHeldPayload.report();
+                    PacketWire.sendToServer(
+                            CrateOpenHeldLayout.encode(InteractionConfig.crateOpensHeld));
                     FarView.joined();
+                });
+        modBus.addListener(
+                (ModConfigEvent.Loading event) -> {
+                    if (event.getConfig().getType() == ModConfig.Type.CLIENT) UpdateChecker.start();
                 });
         modBus.addListener((FMLClientSetupEvent event) -> NuclearTech.deriveClientConfigFacades());
         modBus.addListener(
@@ -181,13 +208,18 @@ public final class NuclearTechNeoForgeClient {
                     Minecraft minecraft = Minecraft.getInstance();
                     minecraft.execute(
                             () -> {
-                                if (minecraft.getConnection() != null)
-                                    CrateOpenHeldPayload.report();
+                                if (minecraft.getConnection() != null) {
+                                    PacketWire.sendToServer(
+                                            CrateOpenHeldLayout.encode(
+                                                    InteractionConfig.crateOpensHeld));
+                                }
                             });
                 });
         NeoForge.EVENT_BUS.addListener(
-                (ClientPlayerNetworkEvent.LoggingOut event) ->
-                        RadiationResistanceTooltip.disconnected());
+                (ClientPlayerNetworkEvent.LoggingOut event) -> {
+                    if (event.getPlayer() != null) BulkTransfers.disconnected(event.getPlayer());
+                    RadiationResistanceTooltip.disconnected();
+                });
         NeoForge.EVENT_BUS.addListener(
                 (ClientPlayerNetworkEvent.LoggingOut event) -> {
                     if (!Minecraft.getInstance().hasSingleplayerServer()) {
@@ -200,6 +232,8 @@ public final class NuclearTechNeoForgeClient {
         NeoForge.EVENT_BUS.addListener(
                 (ClientPlayerNetworkEvent.LoggingOut event) -> RecipeSource.clearClient());
         NeoForge.EVENT_BUS.addListener(
+                (ClientPlayerNetworkEvent.LoggingOut event) -> ModeStatus.disconnected());
+        NeoForge.EVENT_BUS.addListener(
                 (ClientPlayerNetworkEvent.LoggingOut event) -> QMAWClient.disconnected());
         NeoForge.EVENT_BUS.addListener(
                 (ClientPlayerNetworkEvent.LoggingOut event) -> CanneryClient.disconnected());
@@ -209,7 +243,7 @@ public final class NuclearTechNeoForgeClient {
                 (ClientPlayerNetworkEvent.LoggingOut event) -> BobmazonOffers.invalidate());
         NeoForge.EVENT_BUS.addListener(
                 (FluidTooltipEvent event) -> {
-                    FluidTraitTooltip.addInfo(
+                    FluidTraitTooltip.describe(
                             event.getFluidStack().getFluid(), event.getToolTip()::add);
                     QMAWClient.fluidTooltip(
                             event.getFluidStack().getFluid(), event.getToolTip()::add);
@@ -294,7 +328,7 @@ public final class NuclearTechNeoForgeClient {
                     event.registerItem(
                             GunClientExtensions.INSTANCE,
                             BuiltInRegistries.ITEM.stream()
-                                    .filter(ItemGunBaseNT.class::isInstance)
+                                    .filter(GunBaseNTItem.class::isInstance)
                                     .toArray(Item[]::new));
                     event.registerItem(
                             GunClientExtensions.INSTANCE, ModItems.LASER_DETONATOR.get());
@@ -381,6 +415,9 @@ public final class NuclearTechNeoForgeClient {
                         event.enqueueWork(ClientRegistry::registerFlywheelVisualizers));
         modBus.addListener(
                 (RegisterGuiLayersEvent event) -> {
+                    event.registerBelowAll(
+                            ClientRegistry.MODE_BADGES_ID,
+                            (graphics, deltaTracker) -> ClientRegistry.renderModeBadges(graphics));
                     event.registerBelow(
                             VanillaGuiLayers.ARMOR_LEVEL,
                             ClientRegistry.SHIELD_BAR_ID,
@@ -389,6 +426,15 @@ public final class NuclearTechNeoForgeClient {
                                 if (ClientRegistry.renderShieldBar(
                                         graphics, graphics.guiHeight() - hud.leftHeight))
                                     hud.leftHeight += 10;
+                            });
+                    event.registerAbove(
+                            VanillaGuiLayers.ARMOR_LEVEL,
+                            ClientRegistry.ARMOR_BARS_ID,
+                            (graphics, deltaTracker) -> {
+                                var hud = Minecraft.getInstance().gui.hud;
+                                if (ClientRegistry.armorBarsShown())
+                                    hud.leftHeight =
+                                            ArmorBarHudRenderer.render(graphics, hud.leftHeight);
                             });
                     event.registerAboveAll(
                             ClientRegistry.LOOK_OVERLAY_ID,
@@ -465,13 +511,13 @@ public final class NuclearTechNeoForgeClient {
                 });
         modBus.addListener(
                 (ModelEvent.RegisterLoaders event) -> {
-                    event.register(Library.id("obj"), new HbmModelLoader(HbmModelJson::obj));
+                    event.register(RegistryUtil.id("obj"), new HbmModelLoader(HbmModelJson::obj));
                 });
         modBus.addListener(
                 (RegisterBlockStateModels event) -> {
                     event.registerDefinition(
-                            Library.id("baked"), new BakedBlockModelDefinition().codec());
-                    event.registerDefinition(Library.id("ctm"), CtmLibModelDefinition.CODEC);
+                            RegistryUtil.id("baked"), new BakedBlockModelDefinition().codec());
+                    event.registerDefinition(RegistryUtil.id("ctm"), CtmLibModelDefinition.CODEC);
                 });
     }
 }

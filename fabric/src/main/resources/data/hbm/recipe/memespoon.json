@@ -7,10 +7,13 @@
     "I": "hbm:plate_polymer",
     "P": "hbm:photo_panel",
     "S": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:steel_shovel",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     }
   },

@@ -1,22 +1,52 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.handler;
 
-import com.hbm.entity.mob.EntityCyberCrab;
-import com.hbm.interfaces.injected.ArmorModWearer;
-import com.hbm.inventory.material.Mats;
+import com.hbm.entity.mob.CyberCrabEntity;
+import com.hbm.inventory.material.Materials;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
+import com.hbm.items.armor.ArmorModItem;
 import com.hbm.items.armor.ArmorMods;
-import com.hbm.items.armor.ItemArmorMod;
-import com.hbm.items.armor.ItemModCloud;
-import com.hbm.items.armor.ItemModObsidian;
-import com.hbm.items.armor.ItemModRevive;
-import com.hbm.lib.Library;
+import com.hbm.items.armor.ModCloudItem;
+import com.hbm.items.armor.ModObsidianItem;
+import com.hbm.items.armor.ModReviveItem;
 import com.hbm.util.KeyHints;
+import com.hbm.util.RegistryUtil;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import java.util.List;
+import java.util.Objects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.Holder;
@@ -28,6 +58,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -60,10 +91,10 @@ public final class ArmorModHandler {
     public static final int MOD_SLOTS = 9;
 
     private static final Identifier[] PIECE_MODIFIERS = {
-        Library.id("armor_mod_feet"),
-        Library.id("armor_mod_legs"),
-        Library.id("armor_mod_chest"),
-        Library.id("armor_mod_head")
+        RegistryUtil.id("armor_mod_feet"),
+        RegistryUtil.id("armor_mod_legs"),
+        RegistryUtil.id("armor_mod_chest"),
+        RegistryUtil.id("armor_mod_head")
     };
 
     public static final List<Holder<Attribute>> MODIFIABLE =
@@ -86,7 +117,7 @@ public final class ArmorModHandler {
 
     public static boolean isArmor(ItemStack stack) {
         if (stack.isEmpty()
-                || stack.getItem() instanceof ItemArmorMod
+                || stack.getItem() instanceof ArmorModItem
                 || EquipmentProtections.isCladding(stack)
                 || FOREIGN_MODS.containsKey(stack.getItem())) return false;
         var equippable = stack.get(DataComponents.EQUIPPABLE);
@@ -99,7 +130,7 @@ public final class ArmorModHandler {
 
     public static int modSlot(ItemStack stack) {
         if (EquipmentProtections.isCladding(stack)) return CLADDING;
-        if (stack.getItem() instanceof ItemArmorMod mod && mod.type != CLADDING) return mod.type;
+        if (stack.getItem() instanceof ArmorModItem mod && mod.type != CLADDING) return mod.type;
         return -1;
     }
 
@@ -115,7 +146,7 @@ public final class ArmorModHandler {
         if (EquipmentProtections.isCladding(mod))
             return EquipmentProtections.claddingAllows(
                     mod, armor.get(DataComponents.EQUIPPABLE).slot());
-        if (!(mod.getItem() instanceof ItemArmorMod armorMod) || armorMod.type == CLADDING)
+        if (!(mod.getItem() instanceof ArmorModItem armorMod) || armorMod.type == CLADDING)
             return false;
         return switch (armor.get(DataComponents.EQUIPPABLE).slot()) {
             case HEAD -> armorMod.helmet;
@@ -199,7 +230,7 @@ public final class ArmorModHandler {
                                         mods[i].getHoverName(),
                                         EquipmentProtections.claddingResistance(mods[i]))
                                 .withStyle(ChatFormatting.YELLOW));
-            } else if (mods[i].getItem() instanceof ItemArmorMod mod)
+            } else if (mods[i].getItem() instanceof ArmorModItem mod)
                 mod.addDescription(tooltip, mods[i], armor);
             else if (FOREIGN_MODS.containsKey(mods[i].getItem()))
                 tooltip.add(mods[i].getHoverName());
@@ -212,7 +243,7 @@ public final class ArmorModHandler {
             if (!isArmor(armor)) continue;
             for (int socket = 0; socket < MOD_SLOTS; socket++) {
                 ArmorMods before = mods(armor);
-                if (before.item(socket) instanceof ItemArmorMod armorMod) {
+                if (before.item(socket) instanceof ArmorModItem armorMod) {
                     amount = armorMod.modDamage(entity, source, amount, armor);
                     if (mods(armor) != before) equipmentChanged(entity);
                 }
@@ -225,7 +256,7 @@ public final class ArmorModHandler {
         for (EquipmentSlot armorSlot : ArmorUtil.ARMOR_SLOTS) {
             ItemStack armor = entity.getItemBySlot(armorSlot);
             if (!isArmor(armor)) continue;
-            if (!(modItem(armor, EXTRA) instanceof ItemModRevive)) continue;
+            if (!(modItem(armor, EXTRA) instanceof ModReviveItem)) continue;
             ItemStack mod = pryMod(armor, EXTRA);
 
             mod.setDamageValue(mod.getDamageValue() + 1);
@@ -242,13 +273,13 @@ public final class ArmorModHandler {
     }
 
     public static void clientTick(LivingEntity entity) {
-        ((ArmorModWearer) entity).hbm$tickClientArmorMods();
+        ((com.hbm.interfaces.injected.ArmorModWearer) (entity)).hbm$tickClientArmorMods();
     }
 
     public static void onItemTossed(ItemEntity entity) {
         ItemStack stack = entity.getItem();
-        if (isArmor(stack) && modItem(stack, CLADDING) instanceof ItemModObsidian)
-            entity.setInvulnerable(true);
+        if (isArmor(stack) && modItem(stack, CLADDING) instanceof ModObsidianItem)
+            ((Entity) entity).setInvulnerable(true);
     }
 
     public static void onKilledByPlayer(LivingEntity killed) {
@@ -266,19 +297,19 @@ public final class ArmorModHandler {
             if (random.nextInt(250) == 0) drop(killed, level, ModItems.KEY_RED_CRACKED.get());
             if (random.nextInt(250) == 0) drop(killed, level, ModItems.LAUNCH_CODE_PIECE.get());
         }
-        if (killed instanceof EntityCyberCrab && random.nextInt(500) == 0)
+        if (killed instanceof CyberCrabEntity && random.nextInt(500) == 0)
             drop(killed, level, ModItems.WD40.get());
         if (killed instanceof Zombie) {
             if (random.nextInt(200) == 0) drop(killed, level, Items.COPPER_INGOT);
-            if (random.nextInt(200) == 0) drop(killed, level, ModItems.ingot(Mats.MAT_ALUMINIUM));
-            if (random.nextInt(200) == 0) drop(killed, level, ModItems.ingot(Mats.MAT_TITANIUM));
+            if (random.nextInt(200) == 0) drop(killed, level, ModItems.ingot(Materials.ALUMINUM));
+            if (random.nextInt(200) == 0) drop(killed, level, ModItems.ingot(Materials.TITANIUM));
         }
     }
 
     public static void onItemSmelted(Player player, ItemStack smelted) {
         if (player.level().isClientSide()) return;
         if (smelted.is(Items.IRON_INGOT)) reward(player, ModItems.LODESTONE.get());
-        if (smelted.is(ModItems.ingot(Mats.MAT_URANIUM)))
+        if (smelted.is(ModItems.ingot(Materials.URANIUM)))
             reward(player, ModItems.QUARTZ_PLUTONIUM.get());
     }
 
@@ -289,11 +320,11 @@ public final class ArmorModHandler {
     }
 
     public static void equipmentChanged(LivingEntity entity) {
-        ((ArmorModWearer) entity).hbm$reconcileArmorMods();
+        ((com.hbm.interfaces.injected.ArmorModWearer) (entity)).hbm$reconcileArmorMods();
     }
 
     public static void tick(LivingEntity entity) {
-        ((ArmorModWearer) entity).hbm$tickArmorMods();
+        ((com.hbm.interfaces.injected.ArmorModWearer) (entity)).hbm$tickArmorMods();
     }
 
     public static boolean reconcileAttributes(
@@ -304,14 +335,14 @@ public final class ArmorModHandler {
             int piece) {
         AttributeModifier[] next = new AttributeModifier[MODIFIABLE.size() + 1];
         for (int socket = 0; socket < MOD_SLOTS; socket++) {
-            if (!(mods.item(socket) instanceof ItemArmorMod mod) || !mod.hasAttributes()) continue;
+            if (!(mods.item(socket) instanceof ArmorModItem mod) || !mod.hasAttributes()) continue;
             mod.collectModifiers(
                     declaredSlot,
                     PIECE_MODIFIERS[piece],
                     (attribute, modifier) -> {
                         int index = MODIFIABLE.indexOf(attribute);
                         assert index >= 0;
-                        if (modifier.id().equals(ItemModCloud.SPEED_ID)) {
+                        if (modifier.id().equals(ModCloudItem.SPEED_ID)) {
                             assert attribute.equals(Attributes.MOVEMENT_SPEED);
                             index = MODIFIABLE.size();
                         } else {
@@ -325,13 +356,13 @@ public final class ArmorModHandler {
             boolean cloud = i == MODIFIABLE.size();
             if (cloud
                     && next[i] == null
-                    && !(previousMods.item(PLATE_ONLY) instanceof ItemModCloud)) continue;
+                    && !(previousMods.item(PLATE_ONLY) instanceof ModCloudItem)) continue;
             AttributeInstance instance =
                     entity.getAttribute(cloud ? Attributes.MOVEMENT_SPEED : MODIFIABLE.get(i));
             if (instance == null) continue;
             AttributeModifier previous =
-                    instance.getModifier(cloud ? ItemModCloud.SPEED_ID : PIECE_MODIFIERS[piece]);
-            if (java.util.Objects.equals(previous, next[i])) continue;
+                    instance.getModifier(cloud ? ModCloudItem.SPEED_ID : PIECE_MODIFIERS[piece]);
+            if (Objects.equals(previous, next[i])) continue;
             if (previous != null) instance.removeModifier(previous);
             if (next[i] != null) instance.addTransientModifier(next[i]);
             if (i == 0) healthChanged = true;

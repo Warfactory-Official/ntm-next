@@ -1,13 +1,12 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:bj_helmet"
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:bj_helmet",
     "C": "hbm:circuit_quantum",
     "P": "hbm:plate_armor_dnt",
     "S": "hbm:ingot_chainsteel"

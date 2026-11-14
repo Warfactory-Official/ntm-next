@@ -1,7 +1,13 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "A": "hbm:gun_autoshotgun",
+    "A": {
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:gun_autoshotgun",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
+    },
     "M": "#hbm:gun_mechanisms/saturnite"
   },
   "pattern": [

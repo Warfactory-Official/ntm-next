@@ -6,11 +6,14 @@
     "F": "#c:bolts/dura_steel",
     "P": "hbm:volcanic_axe",
     "S": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:blades_steel",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:blades_steel"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     }
   },
   "pattern": [

@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.entity.item.EntityBoatRubber;
+import com.hbm.entity.item.BoatRubberEntity;
 import com.hbm.main.ResourceManager;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
@@ -28,7 +44,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public final class RubberBoatVisual extends HbmDynamicEntityVisual<EntityBoatRubber> {
+public final class RubberBoatVisual extends HbmDynamicEntityVisual<BoatRubberEntity> {
     private static final float QUARTER_TURN = (float) (Math.PI / 2D);
     private final Vector3f interpolatedPosition = new Vector3f();
     private final TransformedInstance hull;
@@ -43,7 +59,7 @@ public final class RubberBoatVisual extends HbmDynamicEntityVisual<EntityBoatRub
     private int lastLight;
     private boolean lastUnderWater, written;
 
-    public RubberBoatVisual(VisualizationContext ctx, EntityBoatRubber entity, float partialTick) {
+    public RubberBoatVisual(VisualizationContext ctx, BoatRubberEntity entity, float partialTick) {
         super(ctx, entity, partialTick);
         hull =
                 instancerProvider()

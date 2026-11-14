@@ -1,0 +1,55 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
+package com.hbm.blockentity.machine.oil;
+
+import com.hbm.inventory.fluid.FluidStackNTM;
+import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import org.jspecify.annotations.Nullable;
+
+final class FractionSplit {
+
+    private final FluidTankNTM feed;
+    private final FluidTankNTM[] products;
+    private final int draw;
+
+    FractionSplit(FluidTankNTM feed, FluidTankNTM[] products, int draw) {
+        this.feed = feed;
+        this.products = products;
+        this.draw = draw;
+    }
+
+    boolean step(FluidStackNTM @Nullable [] fractions, boolean powered) {
+        if (fractions == null) {
+            for (FluidTankNTM product : products) product.setTankType(null);
+            return false;
+        }
+        boolean room = true;
+        for (int i = 0; i < fractions.length; i++) {
+            FluidTankNTM product = products[i];
+            product.setTankType(fractions[i].type());
+            room &= product.getMaxFill() - product.getFill() >= fractions[i].amount();
+        }
+        if (!room || !powered || feed.getFill() < draw) return false;
+
+        feed.setFill(feed.getFill() - draw);
+        for (int i = 0; i < fractions.length; i++) fractions[i].fillInto(products[i]);
+        return true;
+    }
+}

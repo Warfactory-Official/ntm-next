@@ -1,19 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
 import com.hbm.api.energymk2.CableData;
 import com.hbm.api.energymk2.PowerGraph;
-import com.hbm.lib.Library;
-import com.hbm.platform.FabricChunkData;
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.platform.ChunkData;
+import com.hbm.platform.ServerEvents;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
-import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -31,20 +46,19 @@ public final class GeneratedConductors {
     private static final MapCodec<int[]> CODEC =
             Codec.INT_STREAM.xmap(IntStream::toArray, Arrays::stream).fieldOf("positions");
     public static final AttachmentType<int[]> DATA =
-            AttachmentRegistry.create(
-                    Library.id("generated_conductors"),
-                    builder -> builder.initializer(() -> EMPTY).persistent(CODEC.codec()));
+            ChunkData.register("generated_conductors", () -> EMPTY, CODEC);
 
     private GeneratedConductors() {}
 
     public static void init() {
-        FabricServerEvents.onChunkLoad(GeneratedConductors::onChunkLoad);
+        final BiConsumer<ServerLevel, LevelChunk> callback = GeneratedConductors::onChunkLoad;
+        ServerEvents.CHUNK_LOAD.add(callback);
     }
 
     public static boolean isBare(BlockState state) {
         return !state.hasBlockEntity()
                 && (state.getBlock() instanceof CableBlock
-                        || state.getBlock() instanceof CableConductorBlockBase);
+                        || state.getBlock() instanceof CableConductorBlock);
     }
 
     public static void record(
@@ -103,10 +117,12 @@ public final class GeneratedConductors {
         synchronized (chunk) {
             int[] previous = chunk.getAttached(DATA);
             if (previous == null) {
-                FabricChunkData.set(
-                        chunk,
+                chunk.setAttached(
                         DATA,
-                        count == additions.length ? additions : Arrays.copyOf(additions, count));
+                        (int[])
+                                (count == additions.length
+                                        ? additions
+                                        : Arrays.copyOf(additions, count)));
                 return;
             }
             int missing = 0, cursor = 0;
@@ -144,9 +160,9 @@ public final class GeneratedConductors {
             if (!isBare(state)) continue;
             if (graph == null) graph = PowerGraph.get(level);
             int mask =
-                    state.getBlock() instanceof CableConductorBlockBase conductor
+                    state.getBlock() instanceof CableConductorBlock conductor
                             ? conductor.nodeMask(state)
-                            : CableConductorBlockBase.OPEN_ALL;
+                            : CableConductorBlock.OPEN_ALL;
             graph.addNode(pos.asLong(), CableData.INSTANCE, mask);
         }
     }

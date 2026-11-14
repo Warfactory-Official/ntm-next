@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.neoforge;
 
@@ -8,43 +24,50 @@ import com.hbm.capability.CapabilityInvalidation;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.command.ModCommands;
 import com.hbm.config.ForeignModChange;
-import com.hbm.config.NeoForgeHbmConfig;
-import com.hbm.extprop.HbmPlayerProps;
+import com.hbm.config.HbmConfig;
+import com.hbm.config.ModeStatus;
+import com.hbm.explosion.BlockConversionTable;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.BobmazonSignHandler;
 import com.hbm.handler.CoalGasHandler;
+import com.hbm.handler.ExplosiveEnergisticsHandler;
 import com.hbm.handler.ImpactWorldHandler;
-import com.hbm.handler.pollution.PollutionHandler;
+import com.hbm.handler.pollution.GlyphidSpawning;
+import com.hbm.handler.pollution.PollutionEffects;
 import com.hbm.hazard.HazardSystem;
+import com.hbm.integration.ae2.AE2Capabilities;
 import com.hbm.integration.top.NTMTopPlugin;
 import com.hbm.inventory.WornAccessories;
 import com.hbm.inventory.fluid.FluidPropertyReloadListener;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.recipes.ingredient.*;
-import com.hbm.items.armor.ItemModTwoKick;
-import com.hbm.items.tool.ItemBoltgun;
-import com.hbm.items.tool.ItemDeadManDetonator;
-import com.hbm.lib.Library;
+import com.hbm.items.armor.ArmorDamageHandler;
+import com.hbm.items.armor.ModTwoKickItem;
+import com.hbm.items.tool.BoltgunItem;
+import com.hbm.items.tool.DeadManDetonatorItem;
+import com.hbm.neoforge.energy.AE2Energy;
+import com.hbm.neoforge.energy.MekanismEnergy;
 import com.hbm.neoforge.hazard.CuriosHazards;
 import com.hbm.neoforge.hazard.HazardTransformerSophisticatedBackpacks;
 import com.hbm.neoforge.hazard.HazardTransformerSophisticatedStorage;
 import com.hbm.neoforge.inventory.CuriosAccessories;
+import com.hbm.neoforge.inventory.SophisticatedItemInteriors;
 import com.hbm.packet.PacketDispatcher;
-import com.hbm.platform.NeoForgeCaps;
-import com.hbm.platform.NeoForgeNetwork;
-import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.platform.Caps;
+import com.hbm.platform.Network;
+import com.hbm.platform.ServerEvents;
 import com.hbm.qmaw.QMAWLoader;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.util.ContagionUtil;
-import com.hbm.util.EntityDamageUtil;
+import com.hbm.util.RegistryUtil;
 import com.hbm.world.ore.OreGeneration;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
@@ -73,7 +96,6 @@ import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.CanPlayerSleepEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
@@ -86,8 +108,13 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 @Mod(NuclearTech.MOD_ID)
 public final class NuclearTechNeoForge {
     public NuclearTechNeoForge(IEventBus modBus, ModContainer container) {
-        NeoForgeServerEvents.install();
-        NeoForgeRegistrar.subscribe(modBus);
+        ServerEvents.install();
+        NeoForge.EVENT_BUS.addListener(
+                (OnDatapackSyncEvent event) -> {
+                    if (event.getPlayer() == null)
+                        ModeStatus.broadcast(event.getPlayerList().getServer());
+                });
+        Registrar.subscribe(modBus);
         NuclearTech.init();
         NeoForge.EVENT_BUS.addListener(CapabilityInvalidation::onLevelTick);
         NeoForge.EVENT_BUS.addListener(ArmorModChestLootNeoForge::onLootTableLoad);
@@ -98,7 +125,7 @@ public final class NuclearTechNeoForge {
                                 || !ModList.get().isLoaded(change.modId)
                                 || !change.enabled()) continue;
                         event.addPackFinders(
-                                Library.id("resourcepacks/" + change.pack),
+                                RegistryUtil.id("resourcepacks/" + change.pack),
                                 PackType.SERVER_DATA,
                                 Component.translatable(change.titleKey()),
                                 PackSource.BUILT_IN,
@@ -116,10 +143,17 @@ public final class NuclearTechNeoForge {
         NeoForge.EVENT_BUS.addListener(
                 (TagsUpdatedEvent.ServerDataLoad event) -> {
                     HazardSystem.clearCaches();
+                    BlockConversionTable.forgetTags();
                     NTMFluidProperties.bindEquivalents();
                 });
         NeoForge.EVENT_BUS.addListener(
                 (PlayerInteractEvent.RightClickBlock event) -> {
+                    if (event.getEntity().isSpectator()) return;
+                    if (ExplosiveEnergisticsHandler.detonate(event.getLevel(), event.getPos())) {
+                        event.setCancellationResult(InteractionResult.CONSUME);
+                        event.setCanceled(true);
+                        return;
+                    }
                     if (BobmazonSignHandler.onSignUsed(
                             event.getLevel(), event.getPos(), event.getEntity()))
                         event.setCanceled(true);
@@ -128,17 +162,17 @@ public final class NuclearTechNeoForge {
                 (BreakBlockEvent event) -> {
                     CoalGasHandler.onBlockBroken(
                             (Level) event.getLevel(), event.getPos(), event.getState());
-                    PollutionHandler.onBlockBroken(event.getPlayer(), event.getPos());
+                    PollutionEffects.onBlockBroken(event.getPlayer(), event.getPos());
                 });
         NeoForge.EVENT_BUS.addListener(
                 (AttackEntityEvent event) -> {
-                    ItemModTwoKick.onPunch(event.getEntity());
-                    if (ItemBoltgun.handleAttack(event.getEntity(), event.getTarget()))
+                    ModTwoKickItem.onPunch(event.getEntity());
+                    if (BoltgunItem.handleAttack(event.getEntity(), event.getTarget()))
                         event.setCanceled(true);
                 });
         NeoForge.EVENT_BUS.addListener(
                 (LivingIncomingDamageEvent event) -> {
-                    if (!EntityDamageUtil.allowsAttack(
+                    if (!ArmorDamageHandler.allowsAttack(
                             event.getEntity(), event.getSource(), event.getAmount()))
                         event.setCanceled(true);
                 });
@@ -159,7 +193,7 @@ public final class NuclearTechNeoForge {
                 EventPriority.LOWEST,
                 (LivingDeathEvent event) -> {
                     if (event.getEntity() instanceof ServerPlayer player)
-                        ItemDeadManDetonator.onOwnerDeath(player);
+                        DeadManDetonatorItem.onOwnerDeath(player);
                 });
         NeoForge.EVENT_BUS.addListener(
                 (LivingDropsEvent event) -> {
@@ -171,12 +205,7 @@ public final class NuclearTechNeoForge {
         NeoForge.EVENT_BUS.addListener(
                 (PlayerEvent.ItemSmeltedEvent event) ->
                         ArmorModHandler.onItemSmelted(event.getEntity(), event.getSmelting()));
-        NeoForge.EVENT_BUS.addListener(
-                (PlayerEvent.PlayerChangedDimensionEvent event) -> {
-                    if (event.getEntity() instanceof ServerPlayer player)
-                        HbmPlayerProps.getData(player).grenadeDeployment = 0;
-                });
-        NeoForgeHbmConfig.registerSpecs(container);
+        HbmConfig.registerSpecs(container);
 
         DeferredRegister<MapCodec<? extends ICondition>> conditionCodecs =
                 DeferredRegister.create(
@@ -191,38 +220,42 @@ public final class NuclearTechNeoForge {
         HbmAnyIngredient.subscribe(modBus);
 
         PacketDispatcher.register();
-        modBus.addListener((RegisterPayloadHandlersEvent event) -> NeoForgeNetwork.flush(event));
+        modBus.addListener((RegisterPayloadHandlersEvent event) -> Network.flush(event));
         modBus.addListener(
                 (RegisterConfigurationTasksEvent event) ->
-                        NeoForgeNetwork.registerConfigurationTasks(event));
+                        Network.registerConfigurationTasks(event));
         modBus.addListener(
                 (RegisterCapabilitiesEvent event) -> {
                     NtmCapabilities.declareAll(!DatagenModLoader.isRunningDataGen());
-                    NeoForgeCaps.flush(event);
-                    if (ModList.get().isLoaded("ae2"))
-                        com.hbm.integration.ae2.AE2Capabilities.register(event);
+                    Caps.flush(event);
+                    if (ModList.get().isLoaded("ae2")) AE2Capabilities.register(event);
                 });
         modBus.addListener(
                 (FMLCommonSetupEvent event) -> {
                     NuclearTech.commonSetup();
                     if (ModList.get().isLoaded("sophisticatedstorage")) {
                         HazardSystem.addTransformer(new HazardTransformerSophisticatedStorage());
-                        com.hbm.neoforge.inventory.SophisticatedItemInteriors.registerStorage();
+                        SophisticatedItemInteriors.registerStorage();
                     }
                     if (ModList.get().isLoaded("sophisticatedbackpacks")) {
                         HazardSystem.addTransformer(new HazardTransformerSophisticatedBackpacks());
-                        com.hbm.neoforge.inventory.SophisticatedItemInteriors.registerBackpacks();
+                        SophisticatedItemInteriors.registerBackpacks();
                     }
                     if (ModList.get().isLoaded("curios")) {
                         HazardSystem.addExternalEquipmentApplicator(CuriosHazards::apply);
                         WornAccessories.register(CuriosAccessories::collect);
                     }
+                    event.enqueueWork(
+                            () -> {
+                                if (ModList.get().isLoaded("mekanism")) MekanismEnergy.register();
+                                if (ModList.get().isLoaded("ae2")) AE2Energy.register();
+                            });
                     event.enqueueWork(NuclearTech::registerFlammability);
                 });
         modBus.addListener(
                 (ModConfigEvent.Reloading event) -> {
                     if (event.getConfig().getType() == ModConfig.Type.CLIENT) return;
-                    NeoForgeHbmConfig.externalEdit = true;
+                    HbmConfig.externalEdit = true;
                 });
         if (ModList.get().isLoaded("theoneprobe")) {
             modBus.addListener(
@@ -235,17 +268,10 @@ public final class NuclearTechNeoForge {
                 (ServerAboutToStartEvent event) ->
                         NuclearTech.serverAboutToStart(event.getServer()));
         NeoForge.EVENT_BUS.addListener(
-                (OnDatapackSyncEvent event) -> NeoForgeNetwork.onDatapackSync(event));
+                (OnDatapackSyncEvent event) -> Network.onDatapackSync(event));
         NeoForge.EVENT_BUS.addListener((ServerStoppedEvent event) -> NuclearTech.serverStopped());
         NeoForge.EVENT_BUS.addListener(
                 (ServerStartedEvent event) -> OreGeneration.serverStarted(event.getServer()));
-        NeoForge.EVENT_BUS.addListener(
-                (LevelEvent.PotentialSpawns event) -> {
-                    if (!event.isCanceled()
-                            && event.getLevel() instanceof ServerLevel serverLevel) {
-                        PollutionHandler.rampantScoutPopulator(serverLevel, event.getPos());
-                    }
-                });
         NeoForge.EVENT_BUS.addListener(
                 (MobSpawnEvent.PositionCheck event) -> {
                     EntitySpawnReason reason = event.getSpawnType();
@@ -256,8 +282,7 @@ public final class NuclearTechNeoForge {
                     }
                 });
         NeoForge.EVENT_BUS.addListener(
-                (CanPlayerSleepEvent event) ->
-                        PollutionHandler.rampantTargetSetter(event.getPos()));
+                (CanPlayerSleepEvent event) -> GlyphidSpawning.onSleepAttempt(event.getPos()));
         NeoForge.EVENT_BUS.addListener(
                 (RegisterCommandsEvent event) -> ModCommands.register(event.getDispatcher()));
     }

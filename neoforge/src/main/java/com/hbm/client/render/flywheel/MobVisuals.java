@@ -1,33 +1,49 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.VanishedEntities;
 import com.hbm.client.render.ParasiteMaggotRenderState;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.item.EntityDeliveryDrone;
-import com.hbm.entity.item.EntityDroneBase;
-import com.hbm.entity.item.EntityRequestDrone;
-import com.hbm.entity.mob.EntityCreeperBase;
-import com.hbm.entity.mob.EntityCyberCrab;
-import com.hbm.entity.mob.EntityDuck;
-import com.hbm.entity.mob.EntityFBIDrone;
-import com.hbm.entity.mob.EntityMaskMan;
-import com.hbm.entity.mob.EntityParasiteMaggot;
-import com.hbm.entity.mob.EntityPigeon;
-import com.hbm.entity.mob.EntityPlasticBag;
-import com.hbm.entity.mob.EntityQuackos;
-import com.hbm.entity.mob.EntityRADBeast;
-import com.hbm.entity.mob.EntityTaintCrab;
-import com.hbm.entity.mob.EntityTeslaCrab;
-import com.hbm.entity.mob.EntityUFO;
-import com.hbm.entity.mob.botprime.EntityBOTPrimeBody;
-import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
-import com.hbm.entity.mob.botprime.EntityWormBaseNT;
-import com.hbm.lib.Library;
+import com.hbm.entity.item.DeliveryDroneEntity;
+import com.hbm.entity.item.DroneBaseEntity;
+import com.hbm.entity.item.RequestDroneEntity;
+import com.hbm.entity.mob.CreeperBaseEntity;
+import com.hbm.entity.mob.CyberCrabEntity;
+import com.hbm.entity.mob.DuckEntity;
+import com.hbm.entity.mob.FBIDroneEntity;
+import com.hbm.entity.mob.MaskManEntity;
+import com.hbm.entity.mob.ParasiteMaggotEntity;
+import com.hbm.entity.mob.PigeonEntity;
+import com.hbm.entity.mob.PlasticBagEntity;
+import com.hbm.entity.mob.QuackosEntity;
+import com.hbm.entity.mob.RADBeastEntity;
+import com.hbm.entity.mob.TaintCrabEntity;
+import com.hbm.entity.mob.TeslaCrabEntity;
+import com.hbm.entity.mob.UFOEntity;
+import com.hbm.entity.mob.botprime.BOTPrimeBodyEntity;
+import com.hbm.entity.mob.botprime.BOTPrimeHeadEntity;
+import com.hbm.entity.mob.botprime.WormBaseNTEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;
@@ -63,7 +79,7 @@ public final class MobVisuals {
         return entity -> true;
     }
 
-    private static <T extends EntityCreeperBase> Predicate<T> uncharged() {
+    private static <T extends CreeperBaseEntity> Predicate<T> uncharged() {
         return entity -> !entity.isPowered();
     }
 
@@ -153,7 +169,7 @@ public final class MobVisuals {
                 * 57.3F;
     }
 
-    private static <T extends EntityDroneBase> MobObjVisual.Spec<T> drone(
+    private static <T extends DroneBaseEntity> MobObjVisual.Spec<T> drone(
             Supplier<Identifier> texture) {
         return MobObjVisual.Spec.of(
                 () -> ResourceManager.delivery_drone,
@@ -163,7 +179,7 @@ public final class MobVisuals {
                 MobObjVisual.Part.when("Barrel", entity -> entity.getAppearance() == 2));
     }
 
-    private static MobObjVisual.Spec<EntityDeliveryDrone> deliveryDrone() {
+    private static MobObjVisual.Spec<DeliveryDroneEntity> deliveryDrone() {
         Supplier<Material> express = cutout(() -> ResourceManager.delivery_drone_express_tex);
         return MobObjVisual.Spec.of(
                 () -> ResourceManager.delivery_drone,
@@ -173,13 +189,13 @@ public final class MobVisuals {
                         "Crate", entity -> !entity.isExpress() && entity.getAppearance() == 1),
                 MobObjVisual.Part.when(
                         "Barrel", entity -> !entity.isExpress() && entity.getAppearance() == 2),
-                MobObjVisual.Part.<EntityDeliveryDrone>when("Drone", EntityDeliveryDrone::isExpress)
+                MobObjVisual.Part.<DeliveryDroneEntity>when("Drone", DeliveryDroneEntity::isExpress)
                         .material(express),
-                MobObjVisual.Part.<EntityDeliveryDrone>when(
+                MobObjVisual.Part.<DeliveryDroneEntity>when(
                                 "Crate",
                                 entity -> entity.isExpress() && entity.getAppearance() == 1)
                         .material(express),
-                MobObjVisual.Part.<EntityDeliveryDrone>when(
+                MobObjVisual.Part.<DeliveryDroneEntity>when(
                                 "Barrel",
                                 entity -> entity.isExpress() && entity.getAppearance() == 2)
                         .material(express));
@@ -218,7 +234,7 @@ public final class MobVisuals {
                         });
     }
 
-    private static <T extends EntityWormBaseNT> MobObjVisual.Spec<T> worm(
+    private static <T extends WormBaseNTEntity> MobObjVisual.Spec<T> worm(
             Supplier<HFRWavefrontObject> mesh, Supplier<Identifier> texture) {
         return MobObjVisual.Spec.<T>of(mesh, cutout(texture), MobObjVisual.Part.of("Cylinder"))
                 .pose(
@@ -232,8 +248,8 @@ public final class MobVisuals {
                         });
     }
 
-    private static MobObjVisual.Spec<EntityUFO> ufo() {
-        return MobObjVisual.Spec.<EntityUFO>of(
+    private static MobObjVisual.Spec<UFOEntity> ufo() {
+        return MobObjVisual.Spec.<UFOEntity>of(
                         () -> ResourceManager.ufo,
                         cutout(() -> ResourceManager.ufo_tex, true),
                         MobObjVisual.Part.of("Circle_Circle.001"))
@@ -247,8 +263,8 @@ public final class MobVisuals {
                         });
     }
 
-    private static MobObjVisual.Spec<EntityMaskMan> maskMan() {
-        return MobObjVisual.Spec.<EntityMaskMan>of(
+    private static MobObjVisual.Spec<MaskManEntity> maskMan() {
+        return MobObjVisual.Spec.<MaskManEntity>of(
                         () -> ResourceManager.maskman,
                         cutout(() -> ResourceManager.maskman_tex),
                         MobObjVisual.Part.of("Torso"),
@@ -277,7 +293,7 @@ public final class MobVisuals {
                         });
     }
 
-    private static ObjEntityVisual.Pose<EntityMaskMan> maskManHead() {
+    private static ObjEntityVisual.Pose<MaskManEntity> maskManHead() {
         return (pose, entity, partialTick) -> {
             pose.translate(0.5F, 4F, 0F);
             pose.rotateY(
@@ -287,11 +303,11 @@ public final class MobVisuals {
         };
     }
 
-    private static boolean maskManWounded(EntityMaskMan entity) {
+    private static boolean maskManWounded(MaskManEntity entity) {
         return entity.getHealth() < entity.getMaxHealth() / 2F;
     }
 
-    private static ObjEntityVisual.Pose<EntityMaskMan> limb(
+    private static ObjEntityVisual.Pose<MaskManEntity> limb(
             float x, float y, float z, float swingMod) {
         return (pose, entity, partialTick) -> {
             pose.translate(x, y, z);
@@ -299,13 +315,13 @@ public final class MobVisuals {
         };
     }
 
-    private static float maskManSwing(EntityMaskMan entity, float partialTick) {
+    private static float maskManSwing(MaskManEntity entity, float partialTick) {
         float swing = entity.walkAnimation.position(partialTick);
         float amount = entity.walkAnimation.speed(partialTick) * 0.5F;
         return (float) Math.toDegrees(Mth.cos(swing / 2F + (float) Math.PI) * 1.4F * amount);
     }
 
-    private static <T extends EntityCreeperBase>
+    private static <T extends CreeperBaseEntity>
             Supplier<MobModelVisual.Spec<T, CreeperRenderState>> creeper(
                     Supplier<Identifier> texture, float swellMod) {
         Supplier<Material> material = cutout(texture);
@@ -341,7 +357,7 @@ public final class MobVisuals {
                         .shadow(0.5F, 1F);
     }
 
-    private static <T extends EntityDuck> Supplier<MobModelVisual.Spec<T, ChickenRenderState>> duck(
+    private static <T extends DuckEntity> Supplier<MobModelVisual.Spec<T, ChickenRenderState>> duck(
             float scale, float shadow) {
         Supplier<Material> material = cutout(() -> ResourceManager.duck_tex);
         return () ->
@@ -366,12 +382,12 @@ public final class MobVisuals {
                         .shadow(shadow, 1F);
     }
 
-    private static Supplier<MobModelVisual.Spec<EntityParasiteMaggot, ParasiteMaggotRenderState>>
+    private static Supplier<MobModelVisual.Spec<ParasiteMaggotEntity, ParasiteMaggotRenderState>>
             maggot() {
         Supplier<Material> material =
-                cutout(() -> Library.id("textures/entity/parasite_maggot.png"));
+                cutout(() -> RegistryUtil.id("textures/entity/parasite_maggot.png"));
         return () ->
-                MobModelVisual.Spec.<EntityParasiteMaggot, ParasiteMaggotRenderState>of(
+                MobModelVisual.Spec.<ParasiteMaggotEntity, ParasiteMaggotRenderState>of(
                                 () -> ModelTrees.of(ModelLayers.SILVERFISH, material.get()),
                                 bake(ModelLayers.SILVERFISH),
                                 SilverfishModel::new,
@@ -380,11 +396,11 @@ public final class MobVisuals {
                         .shadow(0.3F, 1F);
     }
 
-    private static Supplier<MobModelVisual.Spec<EntityRADBeast, LivingEntityRenderState>>
+    private static Supplier<MobModelVisual.Spec<RADBeastEntity, LivingEntityRenderState>>
             radBeast() {
         Supplier<Material> material = cutout(() -> ResourceManager.radbeast_tex);
         return () ->
-                MobModelVisual.Spec.<EntityRADBeast, LivingEntityRenderState>of(
+                MobModelVisual.Spec.<RADBeastEntity, LivingEntityRenderState>of(
                                 () -> ModelTrees.of(ModelLayers.BLAZE, material.get()),
                                 bake(ModelLayers.BLAZE),
                                 BlazeModel::new,
@@ -393,7 +409,7 @@ public final class MobVisuals {
                         .shadow(0.5F, 1F);
     }
 
-    public static <T extends EntityCreeperBase> void creeper(
+    public static <T extends CreeperBaseEntity> void creeper(
             EntityType<T> type, Supplier<Identifier> texture, float swellMod) {
         model(SimpleEntityVisualizer.builder(type), creeper(texture, swellMod), uncharged());
     }
@@ -406,14 +422,14 @@ public final class MobVisuals {
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.REQUEST_DRONE.get()),
                 () ->
-                        MobVisuals.<EntityRequestDrone>drone(
+                        MobVisuals.<RequestDroneEntity>drone(
                                 () -> ResourceManager.delivery_drone_request_tex),
                 always());
 
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.FBI_DRONE.get()),
                 () ->
-                        MobObjVisual.Spec.<EntityFBIDrone>of(
+                        MobObjVisual.Spec.<FBIDroneEntity>of(
                                         () -> ResourceManager.quadcopter,
                                         cutout(() -> ResourceManager.quadcopter_tex),
                                         MobObjVisual.Part.of("Cube_Cube.001"))
@@ -429,7 +445,7 @@ public final class MobVisuals {
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.PLASTIC_BAG.get()),
                 () ->
-                        MobObjVisual.Spec.<EntityPlasticBag>of(
+                        MobObjVisual.Spec.<PlasticBagEntity>of(
                                         () -> ResourceManager.plasticbag,
                                         cutout(() -> ResourceManager.plasticbag_tex),
                                         MobObjVisual.Part.of("Cube_Cube.001"))
@@ -443,11 +459,10 @@ public final class MobVisuals {
                                                                     + 90F)
                                                             * Mth.DEG_TO_RAD);
                                             pose.rotateZ(
-                                                    (Mth.lerp(
-                                                                            partialTick,
-                                                                            entity.xRotO,
-                                                                            entity.getXRot())
-                                                                    - 90F)
+                                                    Mth.lerp(
+                                                                    partialTick,
+                                                                    entity.xBodyRotO,
+                                                                    entity.xBodyRot)
                                                             * Mth.DEG_TO_RAD);
                                         }),
                 always());
@@ -455,7 +470,7 @@ public final class MobVisuals {
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.TESLA_CRAB.get()),
                 () ->
-                        MobVisuals.<EntityTeslaCrab>crab(
+                        MobVisuals.<TeslaCrabEntity>crab(
                                 () -> ResourceManager.teslacrab,
                                 () -> ResourceManager.teslacrab_tex,
                                 "Front",
@@ -465,7 +480,7 @@ public final class MobVisuals {
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.TAINT_CRAB.get()),
                 () ->
-                        MobVisuals.<EntityTaintCrab>crab(
+                        MobVisuals.<TaintCrabEntity>crab(
                                 () -> ResourceManager.taintcrab,
                                 () -> ResourceManager.taintcrab_tex,
                                 "Legs1",
@@ -496,11 +511,11 @@ public final class MobVisuals {
 
         model(
                 SimpleEntityVisualizer.builder(ModEntities.DUCK.get()),
-                MobVisuals.<EntityDuck>duck(1F, 0.3F),
+                MobVisuals.<DuckEntity>duck(1F, 0.3F),
                 always());
         model(
                 SimpleEntityVisualizer.builder(ModEntities.QUACKOS.get()),
-                MobVisuals.<EntityQuackos>duck(25F, 7.5F),
+                MobVisuals.<QuackosEntity>duck(25F, 7.5F),
                 always());
 
         model(
@@ -518,14 +533,14 @@ public final class MobVisuals {
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.BALLS_O_TRON.get()),
                 () ->
-                        MobVisuals.<EntityBOTPrimeHead>worm(
+                        MobVisuals.<BOTPrimeHeadEntity>worm(
                                 () -> ResourceManager.bot_prime_head,
                                 () -> ResourceManager.mark_zero_head_tex),
                 always());
         obj(
                 SimpleEntityVisualizer.builder(ModEntities.BALLS_O_TRON_SEG.get()),
                 () ->
-                        MobVisuals.<EntityBOTPrimeBody>worm(
+                        MobVisuals.<BOTPrimeBodyEntity>worm(
                                 () -> ResourceManager.bot_prime_body,
                                 () -> ResourceManager.mark_zero_body_tex),
                 always());
@@ -534,13 +549,13 @@ public final class MobVisuals {
                 MobVisuals::ufo,
                 entity -> !entity.getBeam());
 
-        Predicate<EntityCyberCrab> crabDrawn = unvanished(always());
+        Predicate<CyberCrabEntity> crabDrawn = unvanished(always());
         SimpleEntityVisualizer.builder(ModEntities.CYBER_CRAB.get())
                 .factory(
                         (ctx, entity, partialTick) -> new CyberCrabVisual(ctx, entity, partialTick))
                 .skipVanillaRender(crabDrawn)
                 .apply();
-        Predicate<EntityPigeon> pigeonDrawn = unvanished(always());
+        Predicate<PigeonEntity> pigeonDrawn = unvanished(always());
         SimpleEntityVisualizer.builder(ModEntities.PIGEON.get())
                 .factory((ctx, entity, partialTick) -> new PigeonVisual(ctx, entity, partialTick))
                 .skipVanillaRender(pigeonDrawn)

@@ -1,32 +1,66 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.client.HeldItemAnimations;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.Crosshair;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import com.hbm.items.weapon.sedna.GunConfig;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.Receiver;
-import com.hbm.items.weapon.sedna.impl.ItemGunDrill;
-import com.hbm.items.weapon.sedna.mags.IMagazine;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
+import com.hbm.items.weapon.sedna.impl.GunDrillItem;
+import com.hbm.items.weapon.sedna.mags.Magazine;
 import com.hbm.items.weapon.sedna.mags.MagazineLiquidEngine;
+import com.hbm.items.weapon.sedna.mods.GunAttribute;
+import com.hbm.items.weapon.sedna.mods.InstalledWeaponMods;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
+import com.hbm.lib.ModifiedDamageSource;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.BlockDestroyPayload;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.packet.layout.BlockDestroyLayout;
+import com.hbm.platform.Platform;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
-import com.hbm.render.anim.HbmAnimations;
 import com.hbm.sound.EntitySounds;
-import com.hbm.util.EntityDamageUtil;
+import com.hbm.util.EntityTargeting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -43,7 +77,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -53,11 +86,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 
 public class XFactoryDrill {
 
-    public static final String D_REACH = "D_REACH";
-    public static final String F_DTNEG = "F_DTNEG";
-    public static final String F_PIERCE = "F_PIERCE";
-    public static final String I_AOE = "I_AOE";
-    public static final String I_HARVEST = "I_HARVEST";
+    public static final GunAttribute.OfDouble REACH = new GunAttribute.OfDouble();
+    public static final GunAttribute.OfFloat DT_NEGATION = new GunAttribute.OfFloat();
+    public static final GunAttribute.OfFloat PIERCE = new GunAttribute.OfFloat();
+    public static final GunAttribute.OfInt AOE = new GunAttribute.OfInt();
+    public static final GunAttribute.OfInt HARVEST = new GunAttribute.OfInt();
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_DRILL_FIRE =
             (stack, ctx) -> {
                 doStandardFire(stack, ctx, GunAnimation.CYCLE, true);
@@ -70,32 +103,32 @@ public class XFactoryDrill {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .setPos(-1, 0, 0)
-                                                .addPos(0, 0, 0, 750, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .jump(-1, 0, 0)
+                                                .to(0, 0, 0, 750, IType.SIN_DOWN));
                     case CYCLE:
-                        double deploy = HbmAnimations.getRelevantTransformation("DEPLOY")[0];
-                        double speed = HbmAnimations.getRelevantTransformation("SPEED")[0];
-                        double spin = HbmAnimations.getRelevantTransformation("SPIN")[0] % 360;
+                        double deploy = HeldItemAnimations.getChannelValue("DEPLOY", 0);
+                        double speed = HeldItemAnimations.getChannelValue("SPEED", 0);
+                        double spin = HeldItemAnimations.getChannelValue("SPIN", 0) % 360;
                         return new BusAnimation()
                                 .addBus(
                                         "DEPLOY",
-                                        new BusAnimationSequence()
-                                                .setPos(deploy, 0, 0)
-                                                .addPos(
+                                        new AnimationSequence()
+                                                .jump(deploy, 0, 0)
+                                                .to(
                                                         1,
                                                         0,
                                                         0,
                                                         (int) (500 * (1 - deploy)),
                                                         IType.SIN_FULL)
-                                                .hold(1000)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL))
+                                                .stay(1000)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL))
                                 .addBus(
                                         "SPIN",
-                                        new BusAnimationSequence()
-                                                .setPos(spin, 0, 0)
-                                                .addPos(spin + 360 * 1.5, 0, 0, 1500)
-                                                .addPos(
+                                        new AnimationSequence()
+                                                .jump(spin, 0, 0)
+                                                .to(spin + 360 * 1.5, 0, 0, 1500)
+                                                .to(
                                                         360 * 3,
                                                         0,
                                                         0,
@@ -103,11 +136,11 @@ public class XFactoryDrill {
                                                         IType.SIN_DOWN))
                                 .addBus(
                                         "SPEED",
-                                        new BusAnimationSequence()
-                                                .setPos(speed, 0, 0)
-                                                .addPos(1, 0, 0, 500)
-                                                .hold(1000)
-                                                .addPos(
+                                        new AnimationSequence()
+                                                .jump(speed, 0, 0)
+                                                .to(1, 0, 0, 500)
+                                                .stay(1000)
+                                                .to(
                                                         0,
                                                         0,
                                                         0,
@@ -117,26 +150,25 @@ public class XFactoryDrill {
                         return new BusAnimation()
                                 .addBus(
                                         "DEPLOY",
-                                        new BusAnimationSequence()
-                                                .addPos(0.25, 0, 0, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0.25, 0, 0, 250, IType.SIN_FULL)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL))
                                 .addBus(
                                         "SPIN",
-                                        new BusAnimationSequence()
-                                                .addPos(360, 0, 0, 1500, IType.SIN_DOWN))
+                                        new AnimationSequence().to(360, 0, 0, 1500, IType.SIN_DOWN))
                                 .addBus(
                                         "SPEED",
-                                        new BusAnimationSequence()
-                                                .addPos(0.75, 0, 0, 250)
-                                                .addPos(0, 0, 0, 1000, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(0.75, 0, 0, 250)
+                                                .to(0, 0, 0, 1000, IType.SIN_DOWN));
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "LIFT",
-                                        new BusAnimationSequence()
-                                                .addPos(-45, 0, 0, 500, IType.SIN_FULL)
-                                                .hold(1000)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(-45, 0, 0, 500, IType.SIN_FULL)
+                                                .stay(1000)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                     default:
                         return null;
                 }
@@ -145,20 +177,20 @@ public class XFactoryDrill {
     public static void init() {
 
         ModItems.GUN_DRILL =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_drill",
                         props ->
-                                new ItemGunDrill(
+                                new GunDrillItem(
                                         WeaponQuality.UTILITY,
                                         props,
-                                        new GunConfig()
+                                        GunConfig.builder()
                                                 .dura(3_000)
                                                 .draw(10)
                                                 .inspect(55)
                                                 .hideCrosshair(false)
                                                 .crosshair(Crosshair.L_CIRCUMFLEX)
                                                 .rec(
-                                                        new Receiver(0)
+                                                        Receiver.builder()
                                                                 .dmg(10F)
                                                                 .delay(20)
                                                                 .dry(30)
@@ -189,7 +221,7 @@ public class XFactoryDrill {
                                                 .pr(Lego.LAMBDA_STANDARD_RELOAD)
                                                 .decider(GunStateDecider.LAMBDA_STANDARD_DECIDER)
                                                 .anim(LAMBDA_DRILL_ANIMS)
-                                                .orchestra(Orchestras.ORCHESTRA_DRILL)),
+                                                .orchestra(GunAnimationActions.DRILL)),
                         Item.Properties::new);
     }
 
@@ -197,26 +229,30 @@ public class XFactoryDrill {
             ItemStack stack, LambdaContext ctx, GunAnimation anim, boolean calcWear) {
         Player player = ctx.getPlayer();
         int index = ctx.configIndex();
-        if (anim != null) ItemGunBaseNT.playAnimation(player, stack, anim, ctx.configIndex());
+        if (anim != null) GunBaseNTItem.playAnimation(player, stack, anim, ctx.configIndex());
 
-        Receiver primary = ctx.config().getReceivers(stack)[0];
-        IMagazine mag = primary.getMagazine(stack);
+        Receiver primary = ctx.config().getReceivers(stack).get(0);
+        Magazine mag = primary.getMagazine(stack);
 
         HitResult mop =
-                EntityDamageUtil.getMouseOver(ctx.getPlayer(), getModdableReach(stack, 5.0D));
+                EntityTargeting.getMouseOver(ctx.getPlayer(), getModdableReach(stack, 5.0D));
         if (mop != null) {
             if (mop instanceof EntityHitResult entityHit) {
                 float damage = primary.getBaseDamage(stack);
                 if (entityHit.getEntity() instanceof LivingEntity living) {
-                    EntityDamageUtil.attackEntityFromNT(
-                            living,
-                            ctx.getPlayer().damageSources().playerAttack(ctx.getPlayer()),
-                            damage,
-                            true,
-                            true,
-                            0.1F,
-                            getModdableDTNegation(stack, 2F),
-                            getModdablePiercing(stack, 0.15F));
+                    if (living.level() instanceof ServerLevel server) {
+                        living.hurtServer(
+                                server,
+                                ModifiedDamageSource.of(
+                                        ctx.getPlayer()
+                                                .damageSources()
+                                                .playerAttack(ctx.getPlayer()),
+                                        true,
+                                        0.1F,
+                                        getModdableDTNegation(stack, 2F),
+                                        getModdablePiercing(stack, 0.15F)),
+                                damage);
+                    }
                 } else if (entityHit.getEntity().level() instanceof ServerLevel server) {
                     entityHit
                             .getEntity()
@@ -261,13 +297,13 @@ public class XFactoryDrill {
         int ammoToUse = 10;
         if (XWeaponModManager.hasUpgrade(stack, 0, XWeaponModManager.ID_ENGINE_ELECTRIC))
             ammoToUse = 1_000;
-        mag.useUpAmmo(stack, ctx.inventory(), ammoToUse);
+        mag.consumeAmmo(stack, ctx.inventory(), ammoToUse);
         if (calcWear)
-            ItemGunBaseNT.setWear(
+            GunBaseNTItem.setWear(
                     stack,
                     index,
                     Math.min(
-                            ItemGunBaseNT.getWear(stack, index),
+                            GunBaseNTItem.getWear(stack, index),
                             ctx.config().getDurability(stack)));
     }
 
@@ -279,7 +315,7 @@ public class XFactoryDrill {
 
         BlockState state = world.getBlockState(pos);
 
-        if (!state.canHarvestBlock((BlockGetter) world, pos, (Player) player)
+        if (!Platform.canHarvestBlock(world, pos, state, player)
                 || (state.getDestroySpeed(world, pos) == -1.0F
                         && state.getDestroyProgress(player, world, pos) == 0.0F)
                 || state.is(ModBlocks.STONE_KEYHOLE.get())) {
@@ -305,29 +341,35 @@ public class XFactoryDrill {
                 player.connection.send(
                         new ClientboundLevelEventPacket(2001, pos, Block.getId(state), false));
             } else {
-                PacketWire.sendTo(new BlockDestroyPayload(state, pos), player);
+                PacketWire.sendTo(
+                        BlockDestroyLayout.encode(
+                                pos.getX(),
+                                pos.getY(),
+                                pos.getZ(),
+                                Block.BLOCK_STATE_REGISTRY.getId(state)),
+                        player);
             }
         }
     }
 
     public static double getModdableReach(ItemStack stack, double base) {
-        return XWeaponModManager.eval(base, stack, D_REACH, ModItems.GUN_DRILL.get(), 0);
+        return REACH.resolve(base, InstalledWeaponMods.of(stack, 0));
     }
 
     public static float getModdableDTNegation(ItemStack stack, float base) {
-        return XWeaponModManager.eval(base, stack, F_DTNEG, ModItems.GUN_DRILL.get(), 0);
+        return DT_NEGATION.resolve(base, InstalledWeaponMods.of(stack, 0));
     }
 
     public static float getModdablePiercing(ItemStack stack, float base) {
-        return XWeaponModManager.eval(base, stack, F_PIERCE, ModItems.GUN_DRILL.get(), 0);
+        return PIERCE.resolve(base, InstalledWeaponMods.of(stack, 0));
     }
 
     public static int getModdableAoE(ItemStack stack, int base) {
-        return XWeaponModManager.eval(base, stack, I_AOE, ModItems.GUN_DRILL.get(), 0);
+        return AOE.resolve(base, InstalledWeaponMods.of(stack, 0));
     }
 
     public static int getModdableHarvestLevel(ItemStack stack, int base) {
-        return XWeaponModManager.eval(base, stack, I_HARVEST, ModItems.GUN_DRILL.get(), 0);
+        return HARVEST.resolve(base, InstalledWeaponMods.of(stack, 0));
     }
 
     public static void submitBlockHighlight(
@@ -336,7 +378,7 @@ public class XFactoryDrill {
             Vec3 cameraPos,
             Player player,
             ItemStack drill) {
-        HitResult mop = EntityDamageUtil.getMouseOver(player, getModdableReach(drill, 5.0D));
+        HitResult mop = EntityTargeting.getMouseOver(player, getModdableReach(drill, 5.0D));
 
         if (mop instanceof BlockHitResult blockHit && mop.getType() == HitResult.Type.BLOCK) {
             BlockPos pos = blockHit.getBlockPos();

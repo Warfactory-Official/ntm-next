@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.bomb.BlockLandmineAP;
-import com.hbm.lib.Library;
+import com.hbm.blocks.bomb.APLandmineBlock;
 import com.hbm.render.loader.GroupObject;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -61,7 +77,7 @@ public record MineModel(Kind kind) implements BlockModel<HFRWavefrontObject> {
                         .rotateY((float) Math.toRadians(180))
                         .scale(0.375F)
                         .translate(0F, -0.21875F, 0F),
-                state -> state.getValue(BlockLandmineAP.GROUND).getSerializedName(),
+                state -> state.getValue(APLandmineBlock.GROUND).getSerializedName(),
                 MineModel::flat,
                 "Circle"),
         HE(
@@ -111,7 +127,7 @@ public record MineModel(Kind kind) implements BlockModel<HFRWavefrontObject> {
                 Function<BlockState, String> slot,
                 Shading shading,
                 String... doubleSided) {
-            this.obj = Library.id(path);
+            this.obj = RegistryUtil.id(path);
             this.matrix = matrix;
             this.slot = slot;
             this.shading = shading;

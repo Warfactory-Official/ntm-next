@@ -4,6 +4,7 @@
     {
       "neoforge:ingredient_type": "hbm:fluid_content",
       "amount": 16000,
+      "drain": true,
       "fluid": "hbm:heatingoil"
     },
     "#hbm:tools/chemistry_set"

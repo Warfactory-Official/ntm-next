@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.data;
 
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import java.util.ArrayList;
@@ -16,7 +32,7 @@ import net.minecraft.resources.ResourceKey;
 public final class WorldData {
 
     public static final ResourceKey<Registry<DataGroup>> REGISTRY =
-            ResourceKey.createRegistryKey(Library.id("world_config"));
+            ResourceKey.createRegistryKey(RegistryUtil.id("world_config"));
 
     private static final List<DataGroups.Group> GROUPS = new ArrayList<>();
 
@@ -44,6 +60,11 @@ public final class WorldData {
     public static final DataGroups.Param<Boolean> ENABLE_IMPACT_ATMOSPHERE =
             WORLD.bool("enable_impact_atmosphere", true);
 
+    private static final DataGroups.Group MODE_528 = DataGroups.group(GROUPS, "mode_528");
+    public static final DataGroups.Param<Boolean> EXPLOSIVE_ENERGISTICS =
+            MODE_528.bool("explosive_energistics", true);
+    public static final DataGroups.Param<Boolean> NETHER_BURN = MODE_528.bool("nether_burn", true);
+
     private static final DataGroups.Group LOOT = DataGroups.group(GROUPS, "loot");
     public static final DataGroups.Param<Double> LOOT_AMOUNT_FACTOR =
             LOOT.bounded("amount_factor", 1D, 0D, 1000D);
@@ -55,6 +76,8 @@ public final class WorldData {
     public static final DataGroups.Param<Boolean> END_ORES = WORLDGEN.bool("end_ores", true);
     public static final DataGroups.Param<Boolean> COLTAN_SPAWN =
             WORLDGEN.bool("coltan_spawn", false);
+    public static final DataGroups.Param<Boolean> COLTAN_DEPOSIT =
+            WORLDGEN.bool("coltan_deposit", true);
     public static final DataGroups.Param<Boolean> NETHER_PLUTONIUM =
             WORLDGEN.bool("nether_plutonium", false);
     public static final Codec<DataGroups.Param<Boolean>> WORLDGEN_SWITCH =
@@ -65,6 +88,7 @@ public final class WorldData {
                                             NETHER_ORES,
                                             END_ORES,
                                             COLTAN_SPAWN,
+                                            COLTAN_DEPOSIT,
                                             NETHER_PLUTONIUM)
                                     .filter(param -> param.key().equals(key))
                                     .findFirst()

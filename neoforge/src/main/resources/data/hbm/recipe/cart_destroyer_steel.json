@@ -2,11 +2,14 @@
   "type": "hbm:crafting_shaped",
   "key": {
     "B": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:blades_steel",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:blades_steel"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "C": {
       "neoforge:ingredient_type": "neoforge:components",
@@ -18,6 +21,7 @@
     "L": {
       "neoforge:ingredient_type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "minecraft:lava"
     },
     "S": "#c:ingots/steel"

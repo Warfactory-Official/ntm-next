@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.blocks.IBlockHighlight;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.BlockOutlineProvider;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.interfaces.injected.IClientLevelExtension;
+import com.hbm.interfaces.injected.ClientLevelExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,12 +40,12 @@ public final class MultiblockOutline {
 
     public void invalidate(BlockPos pos) {
         if (core == null) return;
-        if (!(coreState.getBlock() instanceof BlockMultiblockCore block)) {
+        if (!(coreState.getBlock() instanceof MultiblockCoreBlock block)) {
             if (core.equals(pos)) invalidate();
             return;
         }
         if (block.hasVariableFootprint()
-                || block.footprint(coreState.getValue(BlockMultiblockCore.FACING))
+                || block.footprint(coreState.getValue(MultiblockCoreBlock.FACING))
                         .contains(
                                 pos.getX() - core.getX(),
                                 pos.getY() - core.getY(),
@@ -38,18 +54,18 @@ public final class MultiblockOutline {
 
     public void invalidateChunk(int x, int z) {
         if (core == null) return;
-        if (!(coreState.getBlock() instanceof BlockMultiblockCore block)) {
+        if (!(coreState.getBlock() instanceof MultiblockCoreBlock block)) {
             if (core.getX() >> 4 == x && core.getZ() >> 4 == z) invalidate();
             return;
         }
         if (block.hasVariableFootprint()
-                || block.footprint(coreState.getValue(BlockMultiblockCore.FACING))
+                || block.footprint(coreState.getValue(MultiblockCoreBlock.FACING))
                         .intersectsChunk(core, x, z)) invalidate();
     }
 
     public void invalidateAppearance(BlockPos pos) {
         if (core != null
-                && coreState.getBlock() instanceof BlockMultiblockCore block
+                && coreState.getBlock() instanceof MultiblockCoreBlock block
                 && block.hasVariableFootprint()) invalidate(pos);
     }
 
@@ -67,14 +83,14 @@ public final class MultiblockOutline {
             BlockState state,
             CollisionContext context,
             VoxelShape original) {
-        return ((IClientLevelExtension) level)
+        return ((ClientLevelExtension) level)
                 .hbm$multiblockOutline()
                 .resolve(level, hit, state, context, original);
     }
 
     public static MachineSilhouette.@Nullable State silhouette(
             Level level, BlockPos hit, Vec3 camera) {
-        return ((IClientLevelExtension) level).hbm$multiblockOutline().silhouette(hit, camera);
+        return ((ClientLevelExtension) level).hbm$multiblockOutline().silhouette(hit, camera);
     }
 
     private MachineSilhouette.@Nullable State silhouette(BlockPos hit, Vec3 camera) {
@@ -88,7 +104,8 @@ public final class MultiblockOutline {
             BlockState state,
             CollisionContext context,
             VoxelShape original) {
-        if (state.getBlock() instanceof IBlockHighlight && !MultiblockSurface.isSurface(state)) {
+        if (state.getBlock() instanceof BlockOutlineProvider
+                && !MultiblockSurface.isSurface(state)) {
             this.core = hit.immutable();
             this.coreState = state;
             this.hit = this.core;
@@ -99,9 +116,9 @@ public final class MultiblockOutline {
         BlockPos core = MultiblockSurface.coreOfAny(level, hit, state);
         if (core == null) return original;
         BlockState coreState = core.equals(hit) ? state : level.getBlockState(core);
-        BlockMultiblockCore block = (BlockMultiblockCore) coreState.getBlock();
+        MultiblockCoreBlock block = (MultiblockCoreBlock) coreState.getBlock();
         VoxelShape bounding =
-                block.selectionOutline(coreState.getValue(BlockMultiblockCore.FACING));
+                block.selectionOutline(coreState.getValue(MultiblockCoreBlock.FACING));
         if (!core.equals(this.core) || coreState != this.coreState) {
             this.core = core.immutable();
             this.coreState = coreState;

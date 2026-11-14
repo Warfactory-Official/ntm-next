@@ -1,7 +1,13 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "A": "hbm:gun_light_revolver",
+    "A": {
+      "fabric:type": "hbm:matchers",
+      "base": "hbm:gun_light_revolver",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
+    },
     "M": "#hbm:gun_mechanisms/weapon_steel"
   },
   "pattern": [

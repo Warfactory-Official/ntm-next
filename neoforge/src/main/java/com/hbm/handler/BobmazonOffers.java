@@ -1,25 +1,55 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.handler;
 
-import com.hbm.blockentity.BlockEntityPlushie;
-import com.hbm.blockentity.BlockEntitySnowglobe;
+import com.hbm.blockentity.PlushieBlockEntity;
+import com.hbm.blockentity.SnowglobeBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockPlushie.Plushie;
-import com.hbm.blocks.generic.BlockPlushie;
-import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
+import com.hbm.blocks.generic.PlushieBlock.Plushie;
+import com.hbm.blocks.generic.PlushieBlock;
+import com.hbm.blocks.generic.SnowglobeBlock.SnowglobeType;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.Materials;
 import com.hbm.items.ModItems;
-import com.hbm.items.food.ItemConserve.EnumFoodType;
-import com.hbm.items.machine.ItemBlueprintFolder;
-import com.hbm.items.special.ItemKitCustom;
-import com.hbm.items.special.ItemKitNBT;
+import com.hbm.items.food.ConserveItem.EnumFoodType;
+import com.hbm.items.machine.BlueprintFolderItem;
+import com.hbm.items.special.KitCustomItem;
+import com.hbm.items.special.KitNBTItem;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -35,11 +65,11 @@ import net.minecraft.world.level.material.Fluid;
 import org.jspecify.annotations.Nullable;
 
 import static com.hbm.handler.BobmazonRequirement.ASSEMBLY;
-import static com.hbm.handler.BobmazonRequirement.CHEMICS;
+import static com.hbm.handler.BobmazonRequirement.BLAST_FURNACE;
+import static com.hbm.handler.BobmazonRequirement.CHEMICAL_PLANT;
+import static com.hbm.handler.BobmazonRequirement.DESH;
 import static com.hbm.handler.BobmazonRequirement.HIDDEN;
-import static com.hbm.handler.BobmazonRequirement.NUCLEAR;
-import static com.hbm.handler.BobmazonRequirement.OIL;
-import static com.hbm.handler.BobmazonRequirement.STEEL;
+import static com.hbm.handler.BobmazonRequirement.TECHNETIUM;
 
 public final class BobmazonOffers {
 
@@ -63,7 +93,7 @@ public final class BobmazonOffers {
 
     public static synchronized void addonSpecial(
             Predicate<ItemStack> after, Supplier<BobmazonOffer> offer) {
-        NeoForgeRegistrar.assertOpen("BobmazonOffers.addonSpecial");
+        Registrar.assertOpen("BobmazonOffers.addonSpecial");
         SPECIAL_ADDONS.add(new Insert(after, offer));
     }
 
@@ -78,7 +108,7 @@ public final class BobmazonOffers {
         return null;
     }
 
-    private static ItemStack ingot(NTMMaterial material, int count) {
+    private static ItemStack ingot(Material material, int count) {
         return new ItemStack(ModItems.ingot(material), count);
     }
 
@@ -91,53 +121,79 @@ public final class BobmazonOffers {
     private static List<BobmazonOffer> buildStandard() {
         List<BobmazonOffer> out = new ArrayList<>();
 
-        out.add(new BobmazonOffer(new ItemStack(Items.TORCH, 64), BobmazonRequirement.NONE, 2));
+        out.add(new BobmazonOffer(new ItemStack(Items.TORCH, 64), BobmazonRequirement.FREE, 2));
         out.add(
                 new BobmazonOffer(
-                        new ItemStack(ModItems.DEFINITELY_FOOD, 16), BobmazonRequirement.NONE, 4));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.NITRA, 4), CHEMICS, 16));
+                        new ItemStack(ModItems.DEFINITELY_FOOD, 16), BobmazonRequirement.FREE, 4));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.NITRA, 4), CHEMICAL_PLANT, 16));
         out.add(new BobmazonOffer(new ItemStack(ModItems.GUN_KIT_1), ASSEMBLY, 16));
         out.add(
                 new BobmazonOffer(
-                        new ItemStack(ModItems.GEIGER_COUNTER), BobmazonRequirement.NONE, 16));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.MATCHSTICK, 16), STEEL, 2));
+                        new ItemStack(ModItems.GEIGER_COUNTER), BobmazonRequirement.FREE, 16));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.MATCHSTICK, 16), BLAST_FURNACE, 2));
         out.add(
                 new BobmazonOffer(
-                        ModItems.BLUEPRINT_FOLDER.stack(ItemBlueprintFolder.Kind.ALT),
+                        ModItems.BLUEPRINT_FOLDER.stack(BlueprintFolderItem.Kind.ALT),
                         ASSEMBLY,
                         64));
         out.add(
                 new BobmazonOffer(
-                        ModItems.BLUEPRINT_FOLDER.stack(ItemBlueprintFolder.Kind.DISCOVER),
-                        OIL,
+                        ModItems.BLUEPRINT_FOLDER.stack(BlueprintFolderItem.Kind.DISCOVER),
+                        DESH,
                         256));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.VENDING_MACHINE), CHEMICS, 64));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.VENDING_MACHINE_SNACKS), CHEMICS, 64));
-        out.add(new BobmazonOffer(new ItemStack(Items.JUNGLE_SAPLING), STEEL, 12, 9));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_FOXGLOVE), STEEL, 16, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_TOBACCO), STEEL, 16, 9));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_NIGHTSHADE), STEEL, 16, 3));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_WEED), STEEL, 4, 10));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_CD0), NUCLEAR, 64, 8));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_MACHINE, 16), CHEMICS, 4));
+        out.add(new BobmazonOffer(new ItemStack(ModBlocks.VENDING_MACHINE), CHEMICAL_PLANT, 64));
         out.add(
                 new BobmazonOffer(
-                        new ItemStack(ModBlocks.CONCRETE_EXT_MACHINE_STRIPE, 16), CHEMICS, 4));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_INDIGO, 16), CHEMICS, 4));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_PURPLE, 16), CHEMICS, 4));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_PINK, 16), CHEMICS, 4));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_HAZARD, 16), CHEMICS, 4));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_SAND, 16), CHEMICS, 4));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CONCRETE_EXT_BRONZE, 16), CHEMICS, 4));
+                        new ItemStack(ModBlocks.VENDING_MACHINE_SNACKS), CHEMICAL_PLANT, 64));
+        out.add(new BobmazonOffer(new ItemStack(Items.JUNGLE_SAPLING), BLAST_FURNACE, 12, 9));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.PLANT_FLOWER_FOXGLOVE), BLAST_FURNACE, 16, 5));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.PLANT_FLOWER_TOBACCO), BLAST_FURNACE, 16, 9));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.PLANT_FLOWER_NIGHTSHADE), BLAST_FURNACE, 16, 3));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.PLANT_FLOWER_WEED), BLAST_FURNACE, 4, 10));
+        out.add(new BobmazonOffer(new ItemStack(ModBlocks.PLANT_FLOWER_CD0), TECHNETIUM, 64, 8));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_MACHINE, 16), CHEMICAL_PLANT, 4));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_MACHINE_STRIPE, 16),
+                        CHEMICAL_PLANT,
+                        4));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_INDIGO, 16), CHEMICAL_PLANT, 4));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_PURPLE, 16), CHEMICAL_PLANT, 4));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_PINK, 16), CHEMICAL_PLANT, 4));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_HAZARD, 16), CHEMICAL_PLANT, 4));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_SAND, 16), CHEMICAL_PLANT, 4));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.CONCRETE_EXT_BRONZE, 16), CHEMICAL_PLANT, 4));
         for (SnowglobeType globe : SnowglobeType.values()) {
-            out.add(new BobmazonOffer(BlockEntitySnowglobe.stackOf(globe), CHEMICS, 128));
+            out.add(new BobmazonOffer(SnowglobeBlockEntity.stackOf(globe), CHEMICAL_PLANT, 128));
         }
-        List<Plushie> plushies = BlockPlushie.TYPES.values();
+        List<Plushie> plushies = PlushieBlock.TYPES.values();
         for (int ordinal = 1; ordinal < plushies.size(); ordinal++) {
             out.add(
                     new BobmazonOffer(
-                            BlockEntityPlushie.stackOf(plushies.get(ordinal)),
-                            OIL,
+                            PlushieBlockEntity.stackOf(plushies.get(ordinal)),
+                            DESH,
                             16,
                             ordinal < 3 ? 10 : 0));
         }
@@ -148,47 +204,49 @@ public final class BobmazonOffers {
     private static List<BobmazonOffer> buildSpecial() {
         List<BobmazonOffer> out = new ArrayList<>();
 
-        out.add(new BobmazonOffer(new ItemStack(Items.IRON_INGOT, 64), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_STEEL, 64), STEEL, 1));
-        out.add(new BobmazonOffer(new ItemStack(Items.COPPER_INGOT, 64), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_MINGRADE, 64), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_TITANIUM, 64), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_TUNGSTEN, 64), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_COBALT, 64), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_DESH, 64), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_TANTALIUM, 64), STEEL, 5));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_BISMUTH, 16), STEEL, 5));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_SCHRABIDIUM, 16), STEEL, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.INGOT_EUPHEMIUM, 8), STEEL, 16));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_DNT, 1), STEEL, 16));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_STAR, 16), STEEL, 8));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.INGOT_SEMTEX, 16), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_U235, 16), STEEL, 1));
-        out.add(new BobmazonOffer(ingot(Mats.MAT_PU239, 16), STEEL, 1));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.AMMO_CONTAINER, 16), STEEL, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.NUKE_STARTER_KIT), STEEL, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.NUKE_ADVANCED_KIT), STEEL, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.NUKE_COMMERCIALLY_KIT), STEEL, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.BOY_KIT), STEEL, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.PROTOTYPE_KIT), STEEL, 10));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.MISSILE_KIT), STEEL, 5));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.JETPACK_VECTOR), STEEL, 2));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.JETPACK_TANK), STEEL, 2));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.GUN_KIT_1), STEEL, 1));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.GUN_KIT_2), STEEL, 3));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.STRUCT_LAUNCHER_CORE), STEEL, 3));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.STRUCT_LAUNCHER_CORE_LARGE), STEEL, 3));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.STRUCT_LAUNCHER, 40), STEEL, 7));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.STRUCT_SCAFFOLD, 11), STEEL, 7));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.LOOT_10), STEEL, 2));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.LOOT_15), STEEL, 2));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.LOOT_MISC), STEEL, 2));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CRATE_CAN), STEEL, 1));
-        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CRATE_AMMO), STEEL, 2));
-        out.add(new BobmazonOffer(ModItems.CRUCIBLE.get().depleted(), STEEL, 10));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.SPAWN_CHOPPER), STEEL, 10));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.SPAWN_WORM), STEEL, 10));
-        out.add(new BobmazonOffer(new ItemStack(ModItems.SPAWN_UFO), STEEL, 10));
+        out.add(new BobmazonOffer(new ItemStack(Items.IRON_INGOT, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.STEEL, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(new ItemStack(Items.COPPER_INGOT, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.MINGRADE, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.TITANIUM, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.TUNGSTEN, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.COBALT, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.WORKERS_ALLOY, 64), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.TANTALUM, 64), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(ingot(Materials.BISMUTH, 16), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(ingot(Materials.SCHRABIDIUM, 16), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.INGOT_EUPHEMIUM, 8), BLAST_FURNACE, 16));
+        out.add(new BobmazonOffer(ingot(Materials.DINEUTRONIUM, 1), BLAST_FURNACE, 16));
+        out.add(new BobmazonOffer(ingot(Materials.STARMETAL, 16), BLAST_FURNACE, 8));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.INGOT_SEMTEX, 16), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.URANIUM_235, 16), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(ingot(Materials.PLUTONIUM_239, 16), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.AMMO_CONTAINER, 16), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.NUKE_STARTER_KIT), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.NUKE_ADVANCED_KIT), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.NUKE_COMMERCIALLY_KIT), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.BOY_KIT), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.PROTOTYPE_KIT), BLAST_FURNACE, 10));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.MISSILE_KIT), BLAST_FURNACE, 5));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.JETPACK_VECTOR), BLAST_FURNACE, 2));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.JETPACK_TANK), BLAST_FURNACE, 2));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.GUN_KIT_1), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.GUN_KIT_2), BLAST_FURNACE, 3));
+        out.add(new BobmazonOffer(new ItemStack(ModBlocks.STRUCT_LAUNCHER_CORE), BLAST_FURNACE, 3));
+        out.add(
+                new BobmazonOffer(
+                        new ItemStack(ModBlocks.STRUCT_LAUNCHER_CORE_LARGE), BLAST_FURNACE, 3));
+        out.add(new BobmazonOffer(new ItemStack(ModBlocks.STRUCT_LAUNCHER, 40), BLAST_FURNACE, 7));
+        out.add(new BobmazonOffer(new ItemStack(ModBlocks.STRUCT_SCAFFOLD, 11), BLAST_FURNACE, 7));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.LOOT_10), BLAST_FURNACE, 2));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.LOOT_15), BLAST_FURNACE, 2));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.LOOT_MISC), BLAST_FURNACE, 2));
+        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CRATE_CAN), BLAST_FURNACE, 1));
+        out.add(new BobmazonOffer(new ItemStack(ModBlocks.CRATE_AMMO), BLAST_FURNACE, 2));
+        out.add(new BobmazonOffer(ModItems.CRUCIBLE.get().depleted(), BLAST_FURNACE, 10));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.SPAWN_CHOPPER), BLAST_FURNACE, 10));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.SPAWN_WORM), BLAST_FURNACE, 10));
+        out.add(new BobmazonOffer(new ItemStack(ModItems.SPAWN_UFO), BLAST_FURNACE, 10));
         out.add(new BobmazonOffer(new ItemStack(ModItems.SAT_LASER), HIDDEN, 8));
         out.add(new BobmazonOffer(new ItemStack(ModItems.SAT_GERALD), HIDDEN, 32));
         out.add(new BobmazonOffer(new ItemStack(ModItems.BILLET_YHARONITE.get(), 4), HIDDEN, 16));
@@ -202,7 +260,7 @@ public final class BobmazonOffers {
 
         out.add(
                 new BobmazonOffer(
-                        ItemKitCustom.create(
+                        KitCustomItem.create(
                                 "Fusion Man",
                                 "For the nuclear physicist on the go",
                                 0xff00ff,
@@ -232,7 +290,7 @@ public final class BobmazonOffers {
 
         out.add(
                 new BobmazonOffer(
-                        ItemKitCustom.create(
+                        KitCustomItem.create(
                                 "Maid's Cleaning Utensils",
                                 "For the hard to reach spots",
                                 0x00ff00,
@@ -255,7 +313,7 @@ public final class BobmazonOffers {
         out.add(
                 new BobmazonOffer(
                         named(
-                                ItemKitNBT.create(
+                                KitNBTItem.create(
                                         named(new ItemStack(ModItems.ROD_OF_DISCORD), "Cock Joke"),
                                         named(
                                                 ModItems.CANNED_CONSERVE.stack(
@@ -272,7 +330,7 @@ public final class BobmazonOffers {
         out.add(
                 new BobmazonOffer(
                         named(
-                                ItemKitNBT.create(
+                                KitNBTItem.create(
                                         new ItemStack(ModItems.RPA_HELMET),
                                         new ItemStack(ModItems.RPA_PLATE),
                                         new ItemStack(ModItems.RPA_LEGS),

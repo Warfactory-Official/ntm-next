@@ -1,20 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.api.fluidmk2;
 
 import com.hbm.blocks.multiblock.MultiblockCoreIndex;
-import com.hbm.blocks.network.FluidDuctBlockBase;
+import com.hbm.blocks.network.FluidDuctBlock;
+import com.hbm.blocks.network.FluidPipeBlock;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.FluidPipeTintBulkPayload;
-import com.hbm.packet.toclient.FluidPipeTintPayload;
-import com.hbm.packet.toserver.FluidPipeTintRequestPayload;
+import com.hbm.packet.layout.FluidPipeTintBulkLayout;
+import com.hbm.packet.layout.FluidPipeTintLayout;
+import com.hbm.packet.layout.FluidPipeTintRequestLayout;
 import com.hbm.util.ChunkPositionIndex;
+import io.netty.handler.codec.DecoderException;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
@@ -27,16 +46,28 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.CommonColors;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
+
+import static com.hbm.lib.internal.UnsafeHolder.U;
 
 public final class FluidPipeTintData {
 
     public static final int DEFAULT_COLOR = 0xFF888888;
     public static final int UNKNOWN_FLUID_COLOR = CommonColors.WHITE;
+
+    public static int lightened(int color) {
+        int r = color >>> 16 & 255, g = color >>> 8 & 255, b = color & 255;
+        r = (int) (r + (255 - r) * 0.25);
+        g = (int) (g + (255 - g) * 0.25);
+        b = (int) (b + (255 - b) * 0.25);
+        return color & 0xFF000000 | r << 16 | g << 8 | b;
+    }
 
     private static final long VALUE_MASK = (1L << MultiblockCoreIndex.KEY_SHIFT) - 1;
     private static final long[] EMPTY = new long[0];
@@ -118,7 +149,7 @@ public final class FluidPipeTintData {
         int x = BlockPos.getX(posKey), z = BlockPos.getZ(posKey);
         if (!level.hasChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z)))
             return false;
-        return level.getBlockState(BlockPos.of(posKey)).getBlock() instanceof FluidDuctBlockBase;
+        return level.getBlockState(BlockPos.of(posKey)).getBlock() instanceof FluidDuctBlock;
     }
 
     private static long pack(int key, Fluid fluid) {
@@ -192,7 +223,7 @@ public final class FluidPipeTintData {
             if (cache.requested.add(posKey)) requests.add(posKey);
         }
         if (!requests.isEmpty())
-            PacketWire.sendToServer(new FluidPipeTintRequestPayload(requests.toLongArray()));
+            PacketWire.sendToServer(FluidPipeTintRequestLayout.encode(requests));
     }
 
     public static void set(Level level, long posKey, Fluid fluid) {
@@ -218,15 +249,17 @@ public final class FluidPipeTintData {
         }
     }
 
-    public static void setAll(Level level, long[] posKeys, Fluid fluid) {
-        if (posKeys.length == 0) return;
-        if (posKeys.length == 1) {
-            set(level, posKeys[0], fluid);
+    public static void setAll(
+            Level level, @Nullable Object storage, long address, int count, Fluid fluid) {
+        if (count == 0) return;
+        if (count == 1) {
+            set(level, U.getLong(storage, address), fluid);
             return;
         }
         Cache cache = select(level);
         Long2ObjectOpenHashMap<LongArrayList> byChunk = new Long2ObjectOpenHashMap<>();
-        for (long posKey : posKeys) {
+        for (int index = 0; index < count; index++) {
+            long posKey = U.getLong(storage, address + 8L * index);
             cache.requested.remove(posKey);
             if (!accepts(level, posKey)) continue;
             byChunk.computeIfAbsent(chunkOf(posKey), ignored -> new LongArrayList())
@@ -237,15 +270,15 @@ public final class FluidPipeTintData {
             Chunk chunk = chunkForWrite(cache, group.getLongKey());
             long[] incoming = group.getValue().toLongArray();
             Arrays.sort(incoming);
-            int count = 0;
+            int unique = 0;
             for (long entry : incoming) {
-                if (count == 0
-                        || MultiblockCoreIndex.keyOf(incoming[count - 1])
+                if (unique == 0
+                        || MultiblockCoreIndex.keyOf(incoming[unique - 1])
                                 != MultiblockCoreIndex.keyOf(entry)) {
-                    incoming[count++] = entry;
+                    incoming[unique++] = entry;
                 }
             }
-            chunk.entries = merge(chunk.entries, incoming, count);
+            chunk.entries = merge(chunk.entries, incoming, unique);
         }
     }
 
@@ -295,7 +328,7 @@ public final class FluidPipeTintData {
 
     public static void sync(ServerLevel level, BlockPos pos, Fluid fluid) {
         PacketWire.sendToAllTracking(
-                new FluidPipeTintPayload(pos, fluid),
+                FluidPipeTintLayout.encode(pos, BuiltInRegistries.FLUID.getId(fluid)),
                 new TargetPoint(
                         level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 64.0D));
     }
@@ -313,16 +346,55 @@ public final class FluidPipeTintData {
                             .getPlayers(ChunkPos.unpack(entry.getLongKey()), false);
             if (watching.isEmpty()) continue;
             PacketWire.sendToPlayers(
-                    new FluidPipeTintBulkPayload(entry.getValue().toLongArray(), fluid), watching);
+                    FluidPipeTintBulkLayout.encode(
+                            BuiltInRegistries.FLUID.getId(fluid), entry.getValue()),
+                    watching);
         }
     }
 
     public static void syncTo(ServerPlayer player, BlockPos pos, Fluid fluid) {
-        PacketWire.sendTo(new FluidPipeTintPayload(pos, fluid), player);
+        PacketWire.sendTo(
+                FluidPipeTintLayout.encode(pos, BuiltInRegistries.FLUID.getId(fluid)), player);
     }
 
-    public static void syncTo(ServerPlayer player, long[] posKeys, Fluid fluid) {
-        if (posKeys.length == 0) return;
-        PacketWire.sendTo(new FluidPipeTintBulkPayload(posKeys, fluid), player);
+    public static void syncTo(ServerPlayer player, LongList posKeys, Fluid fluid) {
+        if (posKeys.isEmpty()) return;
+        PacketWire.sendTo(
+                FluidPipeTintBulkLayout.encode(BuiltInRegistries.FLUID.getId(fluid), posKeys),
+                player);
+    }
+
+    public static void acceptClient(Player player, BlockPos pos, int fluidId) {
+        Level level = player.level();
+        Fluid fluid = fluidById(fluidId);
+        set(level, pos.asLong(), fluid);
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof FluidPipeBlock) {
+            level.sendBlockUpdated(pos, state, state, 0);
+        }
+    }
+
+    public static void acceptClient(
+            Player player, int fluidId, @Nullable Object storage, long address, int count) {
+        Level level = player.level();
+        Fluid fluid = fluidById(fluidId);
+        setAll(level, storage, address, count, fluid);
+        LongOpenHashSet dirtySections = new LongOpenHashSet();
+        for (int index = 0; index < count; index++) {
+            BlockPos pos = BlockPos.of(U.getLong(storage, address + 8L * index));
+            BlockState state = level.getBlockState(pos);
+            if (state.getBlock() instanceof FluidPipeBlock
+                    && dirtySections.add(SectionPos.asLong(pos))) {
+                level.sendBlockUpdated(pos, state, state, 0);
+            }
+        }
+    }
+
+    private static Fluid fluidById(int fluidId) {
+        Fluid fluid = BuiltInRegistries.FLUID.byId(fluidId);
+        if (BuiltInRegistries.FLUID.getId(fluid) != fluidId) {
+            throw new DecoderException("Unknown fluid registry id " + fluidId);
+        }
+        return fluid;
     }
 }

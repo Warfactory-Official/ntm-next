@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.api.entity.RadarEntry;
-import com.hbm.blockentity.machine.BlockEntityMachineRadarScreen;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.client.gui.ScreenMachineRadar;
+import com.hbm.blockentity.machine.RadarScreenBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.gui.RadarScreen;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.Facing;
 import com.hbm.util.GameTime;
@@ -25,6 +41,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import it.unimi.dsi.fastutil.HashCommon;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,8 +53,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
 public final class RadarScreenVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineRadarScreen>
-        implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<RadarScreenBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final float PLANE_X = .38F;
     private static final long BAR_PERIOD = 56L;
     private static final float BAR_SPEED = 30F;
@@ -70,11 +88,9 @@ public final class RadarScreenVisual
     private boolean initialized;
 
     public RadarScreenVisual(
-            VisualizationContext context,
-            BlockEntityMachineRadarScreen blockEntity,
-            float partialTick) {
+            VisualizationContext context, RadarScreenBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        Direction bodyFacing = BlockMultiblockCore.coreFacing(blockState);
+        Direction bodyFacing = MultiblockCoreBlock.coreFacing(blockState);
         basePose.translate(.5F, 0F, .5F).rotateY(Facing.yaw(bodyFacing, 90) * Mth.DEG_TO_RAD);
         staticPose
                 .set(basePose)
@@ -103,7 +119,7 @@ public final class RadarScreenVisual
                         .backfaceCulling(false)
                         .build();
         Material staticMaterial =
-                SimpleMaterial.builderOf(MeshPart.litCutout(ScreenMachineRadar.TEXTURE))
+                SimpleMaterial.builderOf(MeshPart.litCutout(RadarScreen.TEXTURE))
                         .backfaceCulling(false)
                         .build();
         PackedQuadMesh barMesh =
@@ -121,7 +137,7 @@ public final class RadarScreenVisual
 
     private static Material blipMaterial() {
         return SimpleMaterial.builder()
-                .texture(ScreenMachineRadar.TEXTURE)
+                .texture(RadarScreen.TEXTURE)
                 .mipmap(false)
                 .cutout(CutoutShaders.ONE_TENTH)
                 .light(LightShaders.SMOOTH)
@@ -142,7 +158,7 @@ public final class RadarScreenVisual
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 

@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "parts": [
@@ -28,7 +28,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       }
@@ -38,7 +38,7 @@
         "duration": 50,
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "kind": "normal",
@@ -88,7 +88,7 @@
         "random_degrees": 90,
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       }

@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.blocks.rail.RailStandardSwitch;
+import com.hbm.blocks.rail.RailSwitchBlock;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 
 public final class MachineVisuals {
@@ -12,13 +28,13 @@ public final class MachineVisuals {
 
     public static void register() {
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.FUSION_TORUS_STRUCT.get())
-                .factory(FusionTorusStructPreviewVisual::new)
+                .factory(StructurePreviewVisual::create)
                 .apply();
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.ICF_STRUCT.get())
-                .factory(ICFStructPreviewVisual::new)
+                .factory(StructurePreviewVisual::create)
                 .apply();
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.WATZ_STRUCT.get())
-                .factory(WatzStructPreviewVisual::new)
+                .factory(StructurePreviewVisual::create)
                 .apply();
 
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.FOUNDRY_SLAGTAP.get())
@@ -26,10 +42,10 @@ public final class MachineVisuals {
                 .apply();
 
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.MULTI_CORE.get())
-                .factory(MultiblockStructPreviewVisual::new)
+                .factory(StructurePreviewVisual::create)
                 .apply();
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.SOYUZ_STRUCT.get())
-                .factory(SoyuzStructPreviewVisual::new)
+                .factory(StructurePreviewVisual::create)
                 .apply();
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.RBMK_CONSOLE.get())
                 .factory(RBMKConsoleVisual::new)
@@ -379,7 +395,7 @@ public final class MachineVisuals {
         SimpleBlockEntityVisualizer.builder(ModBlockEntities.RAIL.get())
                 .factory(
                         (ctx, be, partialTick) ->
-                                be.getBlockState().getBlock() instanceof RailStandardSwitch
+                                be.getBlockState().getBlock() instanceof RailSwitchBlock
                                         ? new RailVisual(ctx, be, partialTick)
                                         : null)
                 .apply();

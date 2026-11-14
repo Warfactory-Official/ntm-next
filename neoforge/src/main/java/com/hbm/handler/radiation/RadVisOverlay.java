@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler.radiation;
 
@@ -9,7 +25,7 @@ import com.hbm.handler.radiation.RadVisGeometry.Mode;
 import com.hbm.handler.radiation.RadVisGeometry.Piece;
 import com.hbm.handler.radiation.RadVisGeometry.Probe;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toserver.RadVisWatchPayload;
+import com.hbm.packet.layout.RadiationWatchLayout;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.ArrayList;
@@ -95,7 +111,8 @@ public final class RadVisOverlay {
                         ? Mth.clamp(CONFIG.radiusChunks, 0, RadVisServer.MAX_RADIUS)
                         : -1;
         if (want != watchedRadius) {
-            if (mc.getConnection() != null) PacketWire.sendToServer(new RadVisWatchPayload(want));
+            if (mc.getConnection() != null)
+                PacketWire.sendToServer(RadiationWatchLayout.encode(want));
             watchedRadius = want;
             snapshot = null;
             errors = List.of();

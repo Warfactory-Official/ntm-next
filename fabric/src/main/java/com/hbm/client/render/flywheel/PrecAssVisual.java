@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachinePrecAss;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.PrecisionAssemblerBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.render.AssemblyMachineRenderer;
 import com.hbm.client.render.FramedItem;
-import com.hbm.client.render.RenderAssemblyMachine;
-import com.hbm.client.render.RenderPrecAss;
+import com.hbm.client.render.PrecAssRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -19,6 +35,8 @@ import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Arrays;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
@@ -26,9 +44,11 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
 
-public final class PrecAssVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachinePrecAss>
-        implements ShaderLightVisual {
+public final class PrecAssVisual
+        extends AbstractBoundedBlockEntityVisual<PrecisionAssemblerBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int COUNT = 4;
     private static final int FRAME = 0;
     private static final int RING = 1;
@@ -73,10 +93,10 @@ public final class PrecAssVisual extends HbmDynamicBlockEntityVisual<BlockEntity
 
     public PrecAssVisual(
             VisualizationContext context,
-            BlockEntityMachinePrecAss blockEntity,
+            PrecisionAssemblerBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
-        yaw = BASE_YAW + Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 0);
+        yaw = BASE_YAW + Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 0);
         for (int i = 0; i < local.length; i++) local[i] = new Matrix4f();
         local[FRAME].translation(.5F, 0F, .5F).rotateY(yaw * Mth.DEG_TO_RAD);
         bodyBounds = LightBounds.of(MODEL, "Base", local[FRAME], pos);
@@ -104,8 +124,8 @@ public final class PrecAssVisual extends HbmDynamicBlockEntityVisual<BlockEntity
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockEntityMachinePrecAss be) {
-        return !WorldItem.drawsFramed(RenderPrecAss.previewStack(be));
+    public static boolean vanillaNeeded(PrecisionAssemblerBlockEntity be) {
+        return !WorldItem.drawsFramed(PrecAssRenderer.previewStack(be));
     }
 
     private static boolean same(double[] first, double[] second) {
@@ -114,20 +134,21 @@ public final class PrecAssVisual extends HbmDynamicBlockEntityVisual<BlockEntity
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
         updatePreview(context.partialTick());
     }
 
     private void updatePreview(float partialTick) {
-        ItemStack stack = RenderPrecAss.previewStack(blockEntity);
+        ItemStack stack = PrecAssRenderer.previewStack(blockEntity);
         FramedItem.Arm arm = preview.setFramed(stack, level);
         if (arm == null) return;
         previewPoses.setIdentity();
         previewPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
         previewPoses.translate(.5, 0, .5);
-        previewPoses.mulPose(Axis.YP.rotationDegrees(yaw));
-        RenderAssemblyMachine.previewPose(previewPoses, arm, stack.getItem() instanceof BlockItem);
+        previewPoses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+        AssemblyMachineRenderer.previewPose(
+                previewPoses, arm, stack.getItem() instanceof BlockItem);
         preview.write(previewPoses.last().pose(), partialTick);
     }
 

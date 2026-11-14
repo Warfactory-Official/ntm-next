@@ -1,18 +1,48 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.render;
 
 import com.hbm.handler.ArmorUtil;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
-import com.hbm.items.armor.ItemGasMask;
-import com.hbm.items.armor.ItemHazmatMask;
-import com.hbm.items.armor.ItemModGasmask;
+import com.hbm.items.armor.GasMaskItem;
+import com.hbm.items.armor.HazmatMaskItem;
 import com.hbm.items.armor.ModArmorItem;
-import com.hbm.lib.Library;
+import com.hbm.items.armor.ModGasmaskItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -39,15 +69,17 @@ public final class ArmorHeadRenderer {
     private static final int NO9_FLAME = ResourceManager.armor_no9.partId("Flame");
     private static final int LAMP_COLOR = ARGB.colorFromFloat(1F, 1F, 1F, .8F);
 
-    private static final Identifier M65_TEXTURE = Library.id("textures/models/model_m65.png");
+    private static final Identifier M65_TEXTURE = RegistryUtil.id("textures/models/model_m65.png");
     private static final Identifier M65_MONO_TEXTURE =
-            Library.id("textures/models/model_m65_mono.png");
-    private static final Identifier OLDE_TEXTURE = Library.id("textures/armor/mask_olde.png");
-    private static final Identifier GOGGLES_TEXTURE = Library.id("textures/models/goggles.png");
+            RegistryUtil.id("textures/models/model_m65_mono.png");
+    private static final Identifier OLDE_TEXTURE = RegistryUtil.id("textures/armor/mask_olde.png");
+    private static final Identifier GOGGLES_TEXTURE =
+            RegistryUtil.id("textures/models/goggles.png");
     private static final Identifier LIQUIDATOR_TEXTURE =
-            Library.id("textures/armor/liquidator_helmet.png");
+            RegistryUtil.id("textures/armor/liquidator_helmet.png");
 
-    private static final Identifier GAS_MASK_TEXTURE = Library.id("textures/models/gas_mask.png");
+    private static final Identifier GAS_MASK_TEXTURE =
+            RegistryUtil.id("textures/models/gas_mask.png");
 
     private static final ModelPart M65_MASK = createM65Mask();
     private static final ModelPart GAS_MASK = createGasMask();
@@ -97,12 +129,12 @@ public final class ArmorHeadRenderer {
             int light,
             ModelPart head,
             HumanoidRenderState state,
-            ItemModGasmask attachment,
+            ModGasmaskItem attachment,
             ItemStack mod,
             int outlineColor) {
         if (!ArmorWorldRenderer.visible(head, state)) return;
         Identifier texture =
-                attachment.variant() == ItemModGasmask.Variant.MONO
+                attachment.variant() == ModGasmaskItem.Variant.MONO
                         ? M65_MONO_TEXTURE
                         : M65_TEXTURE;
         new M65Mask(texture, true).submit(pose, collector, light, head, state, mod, outlineColor);
@@ -110,12 +142,12 @@ public final class ArmorHeadRenderer {
 
     private static @Nullable Mask resolve(ItemStack stack) {
         if (!(stack.getItem() instanceof ModArmorItem armor)) return null;
-        if (armor instanceof ItemHazmatMask hazmatMask) {
+        if (armor instanceof HazmatMaskItem hazmatMask) {
             Identifier texture = hazmatMask.variant().modelTexture();
             return texture == null ? null : new M65Mask(texture, true);
         }
-        if (armor instanceof ItemGasMask gasMask) {
-            if (gasMask.type() == ItemGasMask.Type.GAS_MASK) return GAS_MASK_MASK;
+        if (armor instanceof GasMaskItem gasMask) {
+            if (gasMask.type() == GasMaskItem.Type.GAS_MASK) return GAS_MASK_MASK;
             return new M65Mask(
                     switch (gasMask.type()) {
                         case M65 -> M65_TEXTURE;
@@ -134,7 +166,7 @@ public final class ArmorHeadRenderer {
         return null;
     }
 
-    private sealed interface Mask {
+    public sealed interface Mask {
         void submit(
                 PoseStack pose,
                 SubmitNodeCollector collector,
@@ -221,7 +253,7 @@ public final class ArmorHeadRenderer {
         }
     }
 
-    private record WholeMeshMask(HFRWavefrontObject mesh, Identifier texture) implements Mask {
+    public record WholeMeshMask(HFRWavefrontObject mesh, Identifier texture) implements Mask {
         @Override
         public void submit(
                 PoseStack pose,

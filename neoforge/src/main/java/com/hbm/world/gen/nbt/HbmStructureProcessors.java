@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.gen.nbt;
 
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.levelgen.structure.templatesystem.GravityProcessor;
@@ -26,41 +42,37 @@ public final class HbmStructureProcessors {
     private HbmStructureProcessors() {}
 
     public static void register() {
-        PICK_ONE =
-                NeoForgeRegistrar.registerStructureProcessorType(
-                        "pick_one", PickOneProcessor.MAP_CODEC);
+        PICK_ONE = Registrar.registerStructureProcessorType("pick_one", PickOneProcessor.MAP_CODEC);
         BOBBLE_RANDOMIZER =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "bobble_randomizer", BobbleRandomizerProcessor.MAP_CODEC);
         MULTIBLOCK_ASSEMBLY =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "multiblock_assembly", MultiblockAssemblyProcessor.MAP_CODEC);
         MAYBE_PLACE =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "maybe_place", MaybePlaceProcessor.MAP_CODEC);
         LOOT_PILE =
-                NeoForgeRegistrar.registerStructureProcessorType(
-                        "loot_pile", LootPileProcessor.MAP_CODEC);
+                Registrar.registerStructureProcessorType("loot_pile", LootPileProcessor.MAP_CODEC);
         WEIGHTED_PLACE =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "weighted_place", WeightedPlaceProcessor.MAP_CODEC);
         LOCK_PINS =
-                NeoForgeRegistrar.registerStructureProcessorType(
-                        "lock_pins", LockPinProcessor.MAP_CODEC);
+                Registrar.registerStructureProcessorType("lock_pins", LockPinProcessor.MAP_CODEC);
         GROUND_HEIGHT =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "ground_height", GroundHeightProcessor.MAP_CODEC);
         IMPACT_VILLAGE =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "impact_village", ImpactVillageProcessor.MAP_CODEC);
         SPAWNER_ENTITY =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "spawner_entity", SpawnerEntityProcessor.MAP_CODEC);
         DUCT_FLUID =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "duct_fluid", DuctFluidProcessor.MAP_CODEC);
         MARKER_TABLE =
-                NeoForgeRegistrar.registerStructureProcessorType(
+                Registrar.registerStructureProcessorType(
                         "marker_table", MarkerTableProcessor.MAP_CODEC);
     }
 }

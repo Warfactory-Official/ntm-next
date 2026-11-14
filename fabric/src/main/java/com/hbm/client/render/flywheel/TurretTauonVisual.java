@@ -1,28 +1,45 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.turret.BlockEntityTurretTauon;
+import com.hbm.blockentity.turret.TurretTauonBlockEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
-import org.jspecify.annotations.Nullable;
 
-public final class TurretTauonVisual extends HbmDynamicBlockEntityVisual<BlockEntityTurretTauon>
-        implements ShaderLightVisual {
-    private static final int CONNECTORS = 8;
-    private static final float[] PLUG_ROT = {0F, 0F, 90F, 90F, 180F, 180F, 270F, 270F};
-    private static final float[] PLUG_OZ = {0F, -1F, -1F, 0F, -1F, 0F, -1F, 0F};
+public final class TurretTauonVisual
+        extends AbstractDynamicExtentBlockEntityVisual<TurretTauonBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final int CARRIAGE = ResourceManager.turret_chekhov.partId("Carriage");
     private static final int CANNON = ResourceManager.turret_tauon.partId("Cannon");
     private static final int ROTOR = ResourceManager.turret_tauon.partId("Rotor");
@@ -47,26 +64,25 @@ public final class TurretTauonVisual extends HbmDynamicBlockEntityVisual<BlockEn
                     ResourceManager.turret_tauon.groups[ROTOR],
                     true,
                     MeshPart.litCutout(ResourceManager.turret_tauon_tex));
-    private final TransformedInstance[] connectors = new TransformedInstance[CONNECTORS];
-    private final TransformedInstance carriage;
-    private final TransformedInstance cannon;
-    private final TransformedInstance rotor;
+    private static final int SPIN = 2;
+    private static final ChainInstance.Chain[] CHAINS = {
+        TurretChains.carriage(),
+        TurretChains.pitched(1.5F, false, 1F).end(),
+        TurretChains.pitched(1.5F, false, 1F)
+                .translate(0F, 1.375F, 0F)
+                .rotateX(SPIN, -Mth.DEG_TO_RAD)
+                .translate(0F, -1.375F, 0F)
+                .end()
+    };
+    private final TurretConnectors connectors;
+    private final ChainParts parts;
     private final BeamVisual beam;
     private final Matrix4f placement = new Matrix4f();
-    private final Matrix4f[] connectorPoses = new Matrix4f[CONNECTORS];
-    private final Matrix4f carriagePose = new Matrix4f();
-    private final Matrix4f cannonPose = new Matrix4f();
-    private final Matrix4f rotorPose = new Matrix4f();
     private final Matrix4f beamPose = new Matrix4f();
-    private final Matrix4f instancePose = new Matrix4f();
     private Vec3 beamVector = Vec3.ZERO;
-    private final double[] lightBoundsAccumulator = new double[6];
-    private final AABB rawBodyBounds;
-    private @Nullable AABB lastLightBounds;
-    private int lastConnectorMask = Integer.MIN_VALUE;
+    private final AABB lightBounds;
     private float lastYaw = Float.NaN;
     private float lastPitch = Float.NaN;
-    private float lastSpin = Float.NaN;
     private long lastBeamTick = Long.MIN_VALUE;
     private double lastBeamDistance = Double.NaN;
     private boolean lastBeam;
@@ -75,46 +91,41 @@ public final class TurretTauonVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private double extentDistance = Double.NaN;
 
     public TurretTauonVisual(
-            VisualizationContext context, BlockEntityTurretTauon blockEntity, float partialTick) {
+            VisualizationContext context, TurretTauonBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         var rawOffset = blockEntity.getHorizontalOffset();
         placement.translation((float) rawOffset.x, 0F, (float) rawOffset.z);
-        rawBodyBounds =
+        AABB rawBodyBounds =
                 new AABB(pos)
                         .minmax(
                                 LightBounds.of(
                                         ResourceManager.turret_chekhov, "Base", placement, pos));
-        for (int i = 0; i < CONNECTORS; i++) {
-            connectorPoses[i] =
-                    new Matrix4f(placement)
-                            .rotateY((PLUG_ROT[i]) * Mth.DEG_TO_RAD)
-                            .translate(0F, 0F, PLUG_OZ[i]);
-            connectors[i] =
-                    instancerProvider()
-                            .instancer(InstanceTypes.TRANSFORMED, CONNECTOR_PART.model())
-                            .createInstance();
-        }
-        carriage =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, CARRIAGE_PART.model())
-                        .createInstance();
-        cannon =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, CANNON_PART.model())
-                        .createInstance();
-        rotor =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, ROTOR_PART.model())
-                        .createInstance();
+        connectors = new TurretConnectors(context, visualPos, placement, CONNECTOR_PART.model());
+        parts =
+                new ChainParts(
+                        context,
+                        visualPos,
+                        placement,
+                        new Model[] {
+                            CARRIAGE_PART.model(), CANNON_PART.model(), ROTOR_PART.model()
+                        },
+                        CHAINS,
+                        3);
+        double[] bounds = new double[6];
+        LightBounds.resetBounds(bounds, rawBodyBounds.minmax(new AABB(pos).inflate(8)));
+        parts.includeLightBounds(bounds, pos);
+        connectors.includeLightBounds(bounds, pos);
+        lightBounds = new AABB(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
         beam = new BeamVisual(context, level, pos, true, 1, 1F);
-        trackExtent();
+        beforeFrame();
+        updateAim();
         updateMovingParts(partialTick);
     }
 
     public static void initModels() {}
 
     @Override
-    protected void trackExtent() {
+    public void beforeFrame() {
         boolean active = blockEntity.beam > 0;
         double distance = blockEntity.lastDist;
         if (active == extentBeam && (!active || distance == extentDistance)) return;
@@ -124,117 +135,86 @@ public final class TurretTauonVisual extends HbmDynamicBlockEntityVisual<BlockEn
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(DynamicVisual.Context context) {
         updateMovingParts(context.partialTick());
     }
 
+    @Override
+    public void tick(TickableVisual.Context context) {
+        updateAim();
+    }
+
+    private void updateAim() {
+        TurretChains.aim(parts, blockEntity, Mth.HALF_PI);
+        parts.set(SPIN, blockEntity.lastSpin, blockEntity.spin);
+        parts.write();
+    }
+
     public void updateMovingParts(float partialTick) {
-        float yaw =
-                (float)
-                        -Math.toDegrees(
-                                Mth.lerp(
-                                        partialTick,
-                                        blockEntity.lastRotationYaw,
-                                        blockEntity.rotationYaw));
-        float pitch =
-                (float)
-                        Math.toDegrees(
-                                Mth.lerp(
-                                        partialTick,
-                                        blockEntity.lastRotationPitch,
-                                        blockEntity.rotationPitch));
-        int mask = blockEntity.connectorMask;
-        float spin = Mth.lerp(partialTick, blockEntity.lastSpin, blockEntity.spin);
-        boolean maskChanged = !initialized || mask != lastConnectorMask;
-        boolean mechanicalChanged =
-                !initialized
-                        || Float.compare(yaw, lastYaw) != 0
-                        || Float.compare(pitch, lastPitch) != 0
-                        || Float.compare(spin, lastSpin) != 0;
+        connectors.update(blockEntity.connectorMask);
         boolean beamActive = blockEntity.beam > 0;
+        float yaw =
+                beamActive
+                        ? (float)
+                                -Math.toDegrees(
+                                        Mth.lerp(
+                                                partialTick,
+                                                blockEntity.lastRotationYaw,
+                                                blockEntity.rotationYaw))
+                        : lastYaw;
+        float pitch =
+                beamActive
+                        ? (float)
+                                Math.toDegrees(
+                                        Mth.lerp(
+                                                partialTick,
+                                                blockEntity.lastRotationPitch,
+                                                blockEntity.rotationPitch))
+                        : lastPitch;
         long beamTick = level.getGameTime() / 5L;
         double beamDistance = blockEntity.lastDist;
         double previousBeamDistance = lastBeamDistance;
+        boolean aimChanged =
+                Float.compare(yaw, lastYaw) != 0 || Float.compare(pitch, lastPitch) != 0;
         boolean beamChanged =
                 !initialized
                         || beamActive != lastBeam
                         || beamActive
-                                && (mechanicalChanged
+                                && (aimChanged
                                         || beamTick != lastBeamTick
                                         || Double.compare(beamDistance, lastBeamDistance) != 0);
-        if (!maskChanged && !mechanicalChanged && !beamChanged) return;
-        if (maskChanged)
-            for (int i = 0; i < CONNECTORS; i++) {
-                boolean present = (mask & (1 << i)) != 0;
-                connectors[i].setVisible(present);
-                if (present) write(connectors[i], connectorPoses[i]);
-            }
-        lastConnectorMask = mask;
         lastYaw = yaw;
         lastPitch = pitch;
-        lastSpin = spin;
         lastBeam = beamActive;
         lastBeamTick = beamTick;
         lastBeamDistance = beamDistance;
         initialized = true;
-        if (mechanicalChanged) {
-            carriagePose.set(placement).rotateY((yaw - 90F) * Mth.DEG_TO_RAD);
-            cannonPose
-                    .set(carriagePose)
+        if (!beamChanged) return;
+        if (beamActive) {
+            beamPose.set(placement)
+                    .rotateY((yaw - 90F) * Mth.DEG_TO_RAD)
                     .translate(0F, 1.5F, 0F)
                     .rotateZ((pitch) * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.5F, 0F);
-            rotorPose
-                    .set(cannonPose)
-                    .translate(0F, 1.375F, 0F)
-                    .rotateX(-(spin) * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.375F, 0F);
-            write(carriage, carriagePose);
-            write(cannon, cannonPose);
-            write(rotor, rotorPose);
-        }
-        if (mechanicalChanged || maskChanged) {
-            LightBounds.resetBounds(lightBoundsAccumulator, rawBodyBounds);
-            LightBounds.includeLightBounds(
-                    lightBoundsAccumulator, CARRIAGE_PART.model(), carriagePose, pos);
-            LightBounds.includeLightBounds(
-                    lightBoundsAccumulator, CANNON_PART.model(), cannonPose, pos);
-            LightBounds.includeLightBounds(
-                    lightBoundsAccumulator, ROTOR_PART.model(), rotorPose, pos);
-            for (int i = 0; i < CONNECTORS; i++)
-                if ((mask & (1 << i)) != 0)
-                    LightBounds.includeLightBounds(
-                            lightBoundsAccumulator, CONNECTOR_PART.model(), connectorPoses[i], pos);
-            lastLightBounds =
-                    LightBounds.sections(lightSections, lightBoundsAccumulator, lastLightBounds);
-        }
-        if (beamChanged) {
-            if (beamActive) {
-                beamPose.set(cannonPose).translate(0F, 1.5F, 0F);
-                if (Double.compare(beamDistance, previousBeamDistance) != 0
-                        || beamVector == Vec3.ZERO) beamVector = new Vec3(beamDistance, 0D, 0D);
-                beam.update(
-                        beamPose,
-                        beamVector,
-                        EnumWaveType.RANDOM,
-                        (int) (beamTick % 360L),
-                        (int) beamDistance + 1,
-                        .1F,
-                        0F,
-                        0xFFA200,
-                        0xFFD000);
-            } else beam.hide();
-        }
-    }
-
-    private void write(TransformedInstance instance, Matrix4f pose) {
-        instancePose.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(pose);
-        instance.setTransform(instancePose).light(0).setChanged();
+                    .translate(0F, -1.5F, 0F)
+                    .translate(0F, 1.5F, 0F);
+            if (Double.compare(beamDistance, previousBeamDistance) != 0 || beamVector == Vec3.ZERO)
+                beamVector = new Vec3(beamDistance, 0D, 0D);
+            beam.update(
+                    beamPose,
+                    beamVector,
+                    EnumWaveType.RANDOM,
+                    (int) (beamTick % 360L),
+                    (int) beamDistance + 1,
+                    .1F,
+                    0F,
+                    0xFFA200,
+                    0xFFD000);
+        } else beam.hide();
     }
 
     @Override
     protected AABB getRenderBoundingBox() {
-        return rawBodyBounds.minmax(new AABB(pos).inflate(8));
+        return lightBounds;
     }
 
     @Override
@@ -245,18 +225,14 @@ public final class TurretTauonVisual extends HbmDynamicBlockEntityVisual<BlockEn
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        for (TransformedInstance instance : connectors) consumer.accept(instance);
-        consumer.accept(carriage);
-        consumer.accept(cannon);
-        consumer.accept(rotor);
+        connectors.collectCrumblingInstances(consumer);
+        parts.collectCrumblingInstances(consumer);
     }
 
     @Override
     protected void _delete() {
-        for (TransformedInstance connector : connectors) connector.delete();
-        carriage.delete();
-        cannon.delete();
-        rotor.delete();
+        connectors.delete();
+        parts.delete();
         beam.delete();
     }
 }

@@ -1,8 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.sound;
 
+import com.hbm.platform.Platform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -70,30 +87,34 @@ public final class EntitySounds {
             float pitch) {
         if (!(emitter instanceof ServerPlayer player)) {
             emitter.level().playSound(null, x, y, z, sound, source, volume, pitch);
+            WorldSounds.entityNoise(emitter, x, y, z, volume);
             return;
         }
         ServerLevel level = player.level();
-        Emission emission = new EntitySounds.Emission(sound, source, volume, pitch);
+        Emission emission = Platform.soundAtPosition(level, x, y, z, sound, source, volume, pitch);
         if (emission == null) return;
         long seed = level.soundSeedGenerator.nextLong();
-        level.getServer()
-                .getPlayerList()
-                .broadcast(
-                        player,
-                        x,
-                        y,
-                        z,
-                        emission.sound().value().getRange(emission.volume()),
-                        level.dimension(),
-                        new ClientboundSoundPacket(
-                                emission.sound(),
-                                emission.source(),
-                                x,
-                                y,
-                                z,
-                                emission.volume(),
-                                emission.pitch(),
-                                seed));
+        if (!player.isSpectator()) {
+            WorldSounds.entityNoise(emitter, x, y, z, emission.volume());
+            level.getServer()
+                    .getPlayerList()
+                    .broadcast(
+                            player,
+                            x,
+                            y,
+                            z,
+                            emission.sound().value().getRange(emission.volume()),
+                            level.dimension(),
+                            new ClientboundSoundPacket(
+                                    emission.sound(),
+                                    emission.source(),
+                                    x,
+                                    y,
+                                    z,
+                                    emission.volume(),
+                                    emission.pitch(),
+                                    seed));
+        }
         player.connection.send(
                 new ClientboundSoundEntityPacket(
                         emission.sound(),

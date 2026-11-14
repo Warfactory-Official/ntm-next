@@ -382,7 +382,9 @@ https://github.com/JCTools/JCTools
    limitations under the License.
 
 =================================================
-Easing equations (Robert Penner)
+Easing equations (Robert Penner), via Blender
+https://projects.blender.org/blender/blender
+source/blender/blenlib/intern/easing.cc
 =================================================
 
 Copyright (c) 2001 Robert Penner. All rights reserved.
@@ -439,3 +441,8 @@ The inherited 1.7 code and assets are credited to HbmMods (The Bobcat) and
 Contributors to Hbm's Nuclear Tech Mod. Raw ore item art retains the artists
 named in the mod metadata and REUSE.toml. The port's authored changes credit
 movblock.
+
+Minecraft material remains copyright Mojang AB, under the Minecraft End User
+License Agreement (LicenseRef-Minecraft-EULA): the spawn egg sprites, the vanilla
+stone, deepslate and brick pixels in generated ore and furnace textures, and the
+core shaders adapted from Minecraft. REUSE.toml lists each file.

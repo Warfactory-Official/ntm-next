@@ -1,22 +1,38 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.entity.mob.glyphid.ai;
 
-import com.hbm.entity.mob.glyphid.EntityGlyphid;
+import com.hbm.entity.mob.glyphid.GlyphidEntity;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 
 public class GlyphidWanderGoal extends RandomStrollGoal {
 
-    private final EntityGlyphid glyphid;
+    private final GlyphidEntity glyphid;
 
-    public GlyphidWanderGoal(EntityGlyphid glyphid, double speedModifier) {
+    public GlyphidWanderGoal(GlyphidEntity glyphid, double speedModifier) {
         super(glyphid, speedModifier);
         this.glyphid = glyphid;
     }
 
     @Override
     public boolean canUse() {
-        return glyphid.getCurrentTask() == EntityGlyphid.TASK_IDLE && super.canUse();
+        return glyphid.getCurrentTask() == GlyphidEntity.TASK_IDLE && super.canUse();
     }
 }

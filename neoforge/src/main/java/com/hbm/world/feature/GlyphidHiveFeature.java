@@ -1,14 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.feature;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockLoot;
 import com.hbm.data.MobData;
-import com.hbm.entity.mob.glyphid.EntityGlyphid;
-import com.hbm.util.LootGenerator;
+import com.hbm.entity.mob.glyphid.GlyphidEntity;
+import com.hbm.itempool.LootPile;
+import com.hbm.util.RegistryUtil;
+import java.util.ArrayList;
+import java.util.Comparator;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -17,76 +36,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
-
-    private static final int[][][] SCHEMATIC = {
-        {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        },
-        {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        },
-        {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 1, 1, 1, 3, 3, 3, 1, 1, 1, 0},
-            {0, 1, 1, 1, 3, 3, 3, 1, 1, 1, 0},
-            {0, 1, 1, 1, 3, 3, 3, 1, 1, 1, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        },
-        {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 2, 2, 2, 1, 1, 0, 0},
-            {0, 1, 1, 2, 2, 2, 2, 2, 1, 1, 0},
-            {0, 1, 1, 2, 2, 2, 2, 2, 1, 1, 0},
-            {0, 1, 1, 2, 2, 2, 2, 2, 1, 1, 0},
-            {0, 0, 1, 1, 2, 2, 2, 1, 1, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        },
-        {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-            {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-            {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        },
-    };
+    public static final Identifier TEMPLATE = RegistryUtil.id("glyphid_hive/small");
 
     public GlyphidHiveFeature() {
         super(NoneFeatureConfiguration.CODEC);
@@ -94,9 +48,9 @@ public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
 
     private static BlockState base(int subtype) {
         return switch (subtype) {
-            case EntityGlyphid.TYPE_INFECTED ->
+            case GlyphidEntity.TYPE_INFECTED ->
                     ModBlocks.GLYPHID_BASE_INFESTED.get().defaultBlockState();
-            case EntityGlyphid.TYPE_RADIOACTIVE ->
+            case GlyphidEntity.TYPE_RADIOACTIVE ->
                     ModBlocks.GLYPHID_BASE_RAD.get().defaultBlockState();
             default -> ModBlocks.GLYPHID_BASE.get().defaultBlockState();
         };
@@ -104,9 +58,9 @@ public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
 
     private static BlockState spawner(int subtype) {
         return switch (subtype) {
-            case EntityGlyphid.TYPE_INFECTED ->
+            case GlyphidEntity.TYPE_INFECTED ->
                     ModBlocks.GLYPHID_SPAWNER_INFESTED.get().defaultBlockState();
-            case EntityGlyphid.TYPE_RADIOACTIVE ->
+            case GlyphidEntity.TYPE_RADIOACTIVE ->
                     ModBlocks.GLYPHID_SPAWNER_RAD.get().defaultBlockState();
             default -> ModBlocks.GLYPHID_SPAWNER.get().defaultBlockState();
         };
@@ -151,27 +105,31 @@ public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
             RandomSource rand,
             boolean infected,
             boolean loot) {
-        int subtype = infected ? EntityGlyphid.TYPE_INFECTED : EntityGlyphid.TYPE_NORMAL;
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 5; j++) {
-                for (int k = 0; k < 11; k++) {
-                    int block = SCHEMATIC[4 - j][i][k];
-                    if (block == 0) continue;
-                    pos.set(x + i - 5, y + j - 2, z + k - 5);
-
-                    switch (block) {
-                        case 1 -> level.setBlock(pos, base(subtype), 2);
-                        case 2 ->
-                                level.setBlock(
-                                        pos,
-                                        rand.nextInt(3) == 0 ? spawner(subtype) : base(subtype),
-                                        2);
-                        case 3 -> generateTreasureCell(level, rand, pos, subtype, loot);
-                        default -> {}
-                    }
-                }
+        int subtype = infected ? GlyphidEntity.TYPE_INFECTED : GlyphidEntity.TYPE_NORMAL;
+        var template = level.getLevel().getStructureManager().get(TEMPLATE).orElseThrow();
+        var origin = new BlockPos(x - 5, y - 2, z - 5);
+        var settings = new StructurePlaceSettings();
+        var cells = new ArrayList<StructureTemplate.StructureBlockInfo>();
+        cells.addAll(template.filterBlocks(origin, settings, ModBlocks.GLYPHID_BASE.get()));
+        cells.addAll(template.filterBlocks(origin, settings, ModBlocks.GLYPHID_SPAWNER.get()));
+        cells.addAll(template.filterBlocks(origin, settings, Blocks.SKELETON_SKULL));
+        cells.sort(
+                Comparator.<StructureTemplate.StructureBlockInfo>comparingInt(
+                                cell -> cell.pos().getX())
+                        .thenComparingInt(cell -> cell.pos().getY())
+                        .thenComparingInt(cell -> cell.pos().getZ()));
+        var base = base(subtype);
+        var spawner = spawner(subtype);
+        for (var cell : cells) {
+            if (cell.state().is(Blocks.SKELETON_SKULL)) {
+                generateTreasureCell(level, rand, cell.pos(), subtype, loot);
+            } else {
+                level.setBlock(
+                        cell.pos(),
+                        cell.state().is(ModBlocks.GLYPHID_SPAWNER.get()) && rand.nextInt(3) == 0
+                                ? spawner
+                                : base,
+                        2);
             }
         }
     }
@@ -186,20 +144,14 @@ public class GlyphidHiveFeature extends Feature<NoneFeatureConfiguration> {
                                     .defaultBlockState()
                                     .setValue(SkullBlock.ROTATION, rand.nextInt(16)),
                             3);
-            case 1 -> placeLootPile(level, rand, pos, LootGenerator.LOOT_BONES);
+            case 1 -> LootPile.BONES.place(level, pos, rand, level.getSeed());
             default -> {
                 if (loot) {
-                    placeLootPile(level, rand, pos, LootGenerator.LOOT_GLYPHID_HIVE);
+                    LootPile.GLYPHID_HIVE.place(level, pos, rand, level.getSeed());
                 } else {
                     level.setBlock(pos, base(subtype), 2);
                 }
             }
         }
-    }
-
-    private static void placeLootPile(
-            WorldGenLevel level, RandomSource rand, BlockPos pos, String pool) {
-        BlockLoot.place(
-                level, pos, LootGenerator.roll(pool, level.getLevel(), rand, level.getSeed()));
     }
 }

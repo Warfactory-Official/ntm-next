@@ -1,0 +1,8 @@
+{
+  "ambientocclusion": true,
+  "gui_light": "side",
+  "textures": {
+    "particle": "hbm:block/digamma_matter",
+    "texture": "hbm:block/digamma_matter"
+  }
+}

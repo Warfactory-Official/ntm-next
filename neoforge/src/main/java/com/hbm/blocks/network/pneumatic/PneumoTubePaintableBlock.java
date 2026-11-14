@@ -1,19 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network.pneumatic;
 
-import com.hbm.api.ntl.IPneumaticConnector;
 import com.hbm.api.ntl.PneumaticNetwork;
-import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
-import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTubePaintable;
-import com.hbm.blocks.ITickingBlock;
+import com.hbm.blockentity.network.pneumatic.PneumaticTubeBlockEntity;
+import com.hbm.blockentity.network.pneumatic.PneumoTubePaintableBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.TickingEntityBlock;
+import com.hbm.blocks.network.CamouflageStateProvider;
 import com.hbm.blocks.network.FluidDuctPaintableBlock;
-import com.hbm.blocks.network.PaintableCamoBlock;
-import com.hbm.capability.ICapabilityBlock;
+import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.interfaces.IToolable;
+import com.hbm.interfaces.ToolInteractionHandler;
+import com.hbm.interfaces.ToolType;
+import com.hbm.inventory.BlockMenus;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,12 +52,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class PneumoTubePaintableBlock extends Block
-        implements ITickingBlock,
-                IToolable,
-                ICapabilityBlock,
-                PaintableCamoBlock,
-                IPneumaticConnector {
+public non-sealed class PneumoTubePaintableBlock extends Block
+        implements TickingEntityBlock,
+                ToolInteractionHandler,
+                CapabilityBlock,
+                CamouflageStateProvider,
+                PneumaticConnection {
 
     public static final BooleanProperty PAINTED = BooleanProperty.create("painted");
     public static final BooleanProperty OVERLAY = BooleanProperty.create("overlay");
@@ -79,7 +96,7 @@ public class PneumoTubePaintableBlock extends Block
                 && !state.getValue(PAINTED)
                 && FluidDuctPaintableBlock.allowedPaint(blockItem.getBlock(), this)) {
             if (!level.isClientSide()
-                    && level.getBlockEntity(pos) instanceof BlockEntityPneumoTubePaintable tube) {
+                    && level.getBlockEntity(pos) instanceof PneumoTubePaintableBlockEntity tube) {
                 tube.setCamo(blockItem.getBlock().defaultBlockState());
                 level.setBlock(pos, state.setValue(PAINTED, true), Block.UPDATE_ALL);
             }
@@ -97,15 +114,15 @@ public class PneumoTubePaintableBlock extends Block
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isSecondaryUseActive()) return InteractionResult.PASS;
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube))
+        if (!(level.getBlockEntity(pos) instanceof PneumaticTubeBlockEntity tube))
             return InteractionResult.PASS;
-        if (!tube.isCompressor() && !tube.isEndpoint()) return InteractionResult.PASS;
-        if (!level.isClientSide()) tube.openMenu(player, pos);
+        if (!tube.hasIntake() && !tube.hasOutlet()) return InteractionResult.PASS;
+        if (!level.isClientSide()) BlockMenus.open(player, tube);
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public boolean onScrew(
+    public boolean onToolUse(
             Level level,
             Player player,
             BlockPos pos,
@@ -117,7 +134,7 @@ public class PneumoTubePaintableBlock extends Block
         if (tool == ToolType.HAND_DRILL) {
             if (!state.getValue(PAINTED)) return false;
             if (!level.isClientSide()) {
-                if (level.getBlockEntity(pos) instanceof BlockEntityPneumoTubePaintable tube)
+                if (level.getBlockEntity(pos) instanceof PneumoTubePaintableBlockEntity tube)
                     tube.setCamo(null);
                 level.setBlock(pos, state.setValue(PAINTED, false), Block.UPDATE_ALL);
             }
@@ -148,7 +165,7 @@ public class PneumoTubePaintableBlock extends Block
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (level instanceof ServerLevel sl && !oldState.is(this))
             PneumaticNetwork.addNode(sl, pos);
-        if (level.getBlockEntity(pos) instanceof BlockEntityPneumoTube be) be.refreshRedstone();
+        if (level.getBlockEntity(pos) instanceof PneumaticTubeBlockEntity be) be.refreshPower();
     }
 
     @Override
@@ -168,7 +185,7 @@ public class PneumoTubePaintableBlock extends Block
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
         if (level instanceof ServerLevel sl) LevelNodeGraph.invalidateEndpointsAt(sl, pos);
-        if (level.getBlockEntity(pos) instanceof BlockEntityPneumoTube be) be.refreshRedstone();
+        if (level.getBlockEntity(pos) instanceof PneumaticTubeBlockEntity be) be.refreshPower();
     }
 
     @Override
@@ -179,7 +196,7 @@ public class PneumoTubePaintableBlock extends Block
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityPneumoTubePaintable(pos, state);
+        return new PneumoTubePaintableBlockEntity(pos, state);
     }
 
     @Override
@@ -187,7 +204,7 @@ public class PneumoTubePaintableBlock extends Block
         return MachineCaps.of(ModBlockEntities.PNEUMATIC_TUBE_PAINTABLE)
                 .fluidIn()
                 .fluidFaces(
-                        BlockEntityPneumoTube.class,
+                        PneumaticTubeBlockEntity.class,
                         (be, face) ->
                                 face.fluid() == null || be.acceptsFluid(face.fluid(), face.side()));
     }

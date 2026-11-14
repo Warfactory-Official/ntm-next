@@ -2,23 +2,30 @@
   "type": "hbm:crafting_shapeless",
   "ingredients": [
     {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:gun_kit_1",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:gun_kit_1"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:wrench",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:wrench"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "hbm:ducttape",
     {
       "neoforge:ingredient_type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "hbm:lubricant"
     }
   ],

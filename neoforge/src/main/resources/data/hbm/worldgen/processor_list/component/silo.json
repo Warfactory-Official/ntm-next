@@ -669,13 +669,7 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:barrel_corroded",
-                "Properties": {
-                  "east": "false",
-                  "north": "false",
-                  "south": "false",
-                  "west": "false"
-                }
+                "Name": "hbm:barrel_corroded"
               },
               "weight": 4
             },

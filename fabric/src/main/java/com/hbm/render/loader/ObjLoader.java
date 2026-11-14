@@ -1,8 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.loader;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +40,7 @@ public final class ObjLoader {
 
     public static GroupObject[] parse(InputStream in, String source) throws IOException {
         Floats positions = new Floats(3);
+        var colors = new IntArrayList();
         Floats uvs = new Floats(2);
         Floats normals = new Floats(3);
         List<Group> groups = new ArrayList<>();
@@ -37,7 +55,7 @@ public final class ObjLoader {
                 if (!tokens.hasNext() || line.charAt(tokens.at) == '#') continue;
                 if (tokens.command("v")) {
                     positions.add(tokens.number(), tokens.number(), tokens.number());
-                    tokens.extraNumbers(4);
+                    colors.add(tokens.vertexColor());
                 } else if (tokens.command("vn")) {
                     normals.add(tokens.number(), tokens.number(), tokens.number());
                     tokens.extraNumbers(1);
@@ -46,7 +64,7 @@ public final class ObjLoader {
                     tokens.extraNumbers(1);
                 } else if (tokens.command("f")) {
                     if (current == null) current = new Group("Default");
-                    current.face(tokens, positions, uvs, normals);
+                    current.face(tokens, positions, uvs, normals, colors);
                 } else if (tokens.command("g") || tokens.command("o")) {
                     String name = tokens.name();
                     if (current != null) groups.add(current);
@@ -120,6 +138,21 @@ public final class ObjLoader {
             }
         }
 
+        int vertexColor() {
+            if (!hasNext()) return -1;
+            float first = number();
+            if (!hasNext()) return -1;
+            float second = number();
+            if (!hasNext()) return -1;
+            float third = number();
+            float alpha = hasNext() ? number() : 1;
+            if (hasNext()) throw fail(null);
+            return ((int) (alpha * 255) & 255) << 24
+                    | ((int) (first * 255) & 255) << 16
+                    | ((int) (second * 255) & 255) << 8
+                    | ((int) (third * 255) & 255);
+        }
+
         void extraNumbers(int maximum) {
             for (int count = 0; hasNext(); count++) {
                 if (count == maximum) throw fail(null);
@@ -179,12 +212,19 @@ public final class ObjLoader {
         private final Floats faceNormals = new Floats(3);
         private final float[] faceNormal = new float[3];
         private final int[] normalIndex = new int[4];
+        private final IntArrayList colors = new IntArrayList();
+        private boolean colored;
 
         Group(String name) {
             this.name = name;
         }
 
-        void face(Line tokens, Floats positions, Floats uvs, Floats normals) {
+        void face(
+                Line tokens,
+                Floats positions,
+                Floats uvs,
+                Floats normals,
+                IntArrayList vertexColors) {
             int base = quads.size();
             quads.grow(GroupObject.QUAD);
             int corners = 0;
@@ -211,6 +251,9 @@ public final class ObjLoader {
                 tokens.endToken();
                 if (corners == 0) format = currentFormat;
                 else if (format != currentFormat) throw tokens.fail(null);
+                int tint = vertexColors.getInt(position);
+                colors.add(tint);
+                colored |= tint != -1;
                 int at = base + corners * GroupObject.STRIDE;
                 quads.set(at, positions.get(position, 0));
                 quads.set(at + 1, positions.get(position, 1));
@@ -230,6 +273,7 @@ public final class ObjLoader {
                         base + 3 * GroupObject.STRIDE,
                         GroupObject.STRIDE);
                 normalIndex[3] = normalIndex[2];
+                colors.add(colors.getInt(colors.size() - 1));
             }
 
             GroupObject.normal(quads.array(), base, GroupObject.STRIDE, faceNormal, 0);
@@ -244,7 +288,11 @@ public final class ObjLoader {
         }
 
         GroupObject build() {
-            return new GroupObject(name, quads.trimmed(), faceNormals.trimmed());
+            return new GroupObject(
+                    name,
+                    quads.trimmed(),
+                    faceNormals.trimmed(),
+                    colored ? colors.toIntArray() : null);
         }
     }
 

@@ -1,17 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.hazard.type;
 
 import com.hbm.config.BalanceConfig;
 import com.hbm.config.RadiationConfig;
 import com.hbm.hazard.helper.HazardHelper;
-import com.hbm.hazard.modifier.IHazardModifier;
-import com.hbm.lib.Library;
-import com.hbm.util.BobMathUtil;
+import com.hbm.hazard.modifier.HazardModifier;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
+import com.hbm.util.NtmMath;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -22,7 +51,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
-public class HazardTypeRadiation implements IHazardType {
+public class HazardTypeRadiation implements HazardKind {
     public static double getNewValue(double radiation) {
         if (radiation < 1_000_000D) return radiation;
         if (radiation < 1_000_000_000D) return radiation * 0.000001D;
@@ -47,7 +76,7 @@ public class HazardTypeRadiation implements IHazardType {
 
     private static Component radLine(double rads, @Nullable String prefixKey) {
         String suffixKey = getSuffixKey(rads);
-        String value = " " + Library.roundFloat(getNewValue(rads), 3);
+        String value = " " + NtmMath.roundFloat(getNewValue(rads), 3);
         MutableComponent line =
                 prefixKey == null
                         ? Component.literal(value)
@@ -62,7 +91,8 @@ public class HazardTypeRadiation implements IHazardType {
     }
 
     @Override
-    public void onUpdate(LivingEntity target, double level, ItemStack stack) {
+    public void onUpdate(LivingEntity target, float base, ItemStack stack) {
+        double level = base;
         boolean reacher = HazardHelper.isHoldingReacher(target);
         level *= stack.getCount();
         if (level <= 0) return;
@@ -71,7 +101,7 @@ public class HazardTypeRadiation implements IHazardType {
         if (BalanceConfig.enable528 && reacher) {
             rad = rad / 49D;
         } else if (reacher) {
-            rad = BobMathUtil.sqrt(rad);
+            rad = NtmMath.dampedSqrt(rad);
         }
 
         ContaminationUtil.contaminate(
@@ -82,16 +112,16 @@ public class HazardTypeRadiation implements IHazardType {
     }
 
     @Override
-    public void updateEntity(ItemEntity item, double level) {}
+    public void onDropped(ItemEntity item, float level) {}
 
     @Override
-    public void addHazardInformation(
+    public void appendTooltip(
             Player player,
             List<Component> list,
-            double level,
+            float base,
             ItemStack stack,
-            List<IHazardModifier> modifiers) {
-        level = IHazardModifier.evalAllModifiers(stack, player, level, modifiers);
+            List<HazardModifier> modifiers) {
+        double level = HazardModifier.evalAllModifiers(stack, player, base, modifiers);
         if (level < 1e-5D) return;
         appendRadiationLines(list, level, stack.getCount());
     }

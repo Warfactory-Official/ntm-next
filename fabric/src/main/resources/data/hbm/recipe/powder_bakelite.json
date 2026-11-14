@@ -4,11 +4,13 @@
     {
       "fabric:type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "hbm:aromatics"
     },
     {
       "fabric:type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "hbm:petroleum"
     },
     "#hbm:tools/chemistry_set"

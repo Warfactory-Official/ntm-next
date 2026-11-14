@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.api.fluidmk2;
 
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
@@ -18,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,8 +52,8 @@ public final class FlushRegister {
     private static final long[] NO_WORDS = new long[0];
 
     private final FluidFlushSender machine;
-    private final List<IFluidHandlerMK2> gather = new ArrayList<>(4);
-    private final IdentitySet<IFluidHandlerMK2> seen = new IdentitySet<>();
+    private final List<FluidHandler> gather = new ArrayList<>(4);
+    private final IdentitySet<FluidHandler> seen = new IdentitySet<>();
 
     private FlushLane[] lanes = NO_LANES;
     private BlockPos[] positions = NO_POSITIONS;
@@ -48,7 +65,7 @@ public final class FlushRegister {
     private long[] parked = NO_WORDS;
     private long[] buckets = NO_WORDS;
 
-    private IFluidHandlerMK2[] receivers = new IFluidHandlerMK2[0];
+    private FluidHandler[] receivers = new FluidHandler[0];
     private Fluid[] receiverTypes = new Fluid[0];
     private BlockEntity[] owners = new BlockEntity[0];
     private LevelChunk[] ownerChunks = new LevelChunk[0];
@@ -80,7 +97,7 @@ public final class FlushRegister {
                         probePending(level);
                         probed = true;
                     }
-                    serve(level, lane, type, tank.getPressure(), from, to);
+                    serve(level, lane, type, tank.getComponents(), tank.getPressure(), from, to);
                 }
             }
             from = to;
@@ -168,7 +185,7 @@ public final class FlushRegister {
         laneEnd = ends;
         contactKeys = new long[positions.length];
         for (int i = 0; i < positions.length; i++) contactKeys[i] = positions[i].asLong();
-        receivers = new IFluidHandlerMK2[positions.length];
+        receivers = new FluidHandler[positions.length];
         receiverTypes = new Fluid[positions.length];
         owners = new BlockEntity[positions.length];
         ownerChunks = new LevelChunk[positions.length];
@@ -235,7 +252,7 @@ public final class FlushRegister {
         ownerStates[index] = null;
     }
 
-    private IFluidHandlerMK2 receiver(ServerLevel level, int index, Fluid type) {
+    private FluidHandler receiver(ServerLevel level, int index, Fluid type) {
         BlockEntity owner = owners[index];
         if (receiverTypes[index] == type
                 && owner != null
@@ -243,7 +260,7 @@ public final class FlushRegister {
                 && ChunkUtil.resident(owner, ownerChunks[index])) return receivers[index];
         clearReceiver(index);
         BlockPos position = positions[index];
-        IFluidHandlerMK2 receiver =
+        FluidHandler receiver =
                 FluidCaps.RECEIVER.find((Level) level, position, FluidFace.of(sides[index], type));
         owner =
                 receiver instanceof BlockEntity be
@@ -260,7 +277,7 @@ public final class FlushRegister {
                             level, position, level.getBlockState(position), sides[index]);
         if (owner == null) return receiver;
         LevelChunk chunk =
-                BlockMultiblockCore.readableChunk(
+                MultiblockCoreBlock.readableChunk(
                         level, owner.getBlockPos().getX(), owner.getBlockPos().getZ());
         if (chunk == null) return null;
         receivers[index] = receiver;
@@ -273,25 +290,31 @@ public final class FlushRegister {
     }
 
     private void serve(
-            ServerLevel level, FlushLane lane, Fluid type, int pressure, int from, int to) {
-        List<IFluidHandlerMK2> out = inUse ? new ArrayList<>(4) : gather;
+            ServerLevel level,
+            FlushLane lane,
+            Fluid type,
+            DataComponentPatch components,
+            int pressure,
+            int from,
+            int to) {
+        List<FluidHandler> out = inUse ? new ArrayList<>(4) : gather;
         boolean pooled = out == gather;
-        IdentitySet<IFluidHandlerMK2> identities = pooled ? seen : new IdentitySet<>();
+        IdentitySet<FluidHandler> identities = pooled ? seen : new IdentitySet<>();
         identities.clear();
         if (pooled) {
             gather.clear();
             inUse = true;
         }
         try {
-            IFluidHandlerMK2 provider = lane.provider();
+            FluidHandler provider = lane.provider();
             for (int i = from; i < to; i++) {
                 if ((live[i >>> 6] & (1L << i)) == 0) continue;
-                IFluidHandlerMK2 receiver = receiver(level, i, type);
+                FluidHandler receiver = receiver(level, i, type);
                 if (receiver == null || receiver == provider) continue;
                 if (identities.add(receiver)) out.add(receiver);
             }
             if (out.isEmpty()) return;
-            FluidNetwork.provideDirect(provider, type, pressure, out);
+            FluidNetwork.provideDirect(provider, type, components, pressure, out);
         } finally {
             if (pooled) inUse = false;
         }

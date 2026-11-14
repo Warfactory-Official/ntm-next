@@ -205,5 +205,8 @@
     "hev_arm": "hbm:armor/hev_arm",
     "hev_chest": "hbm:armor/hev_chest",
     "particle": "hbm:armor/hev_chest"
-  }
+  },
+  "tiled": [
+    "Body"
+  ]
 }

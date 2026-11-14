@@ -5,27 +5,44 @@ license = "LGPL-3.0-only"
 [[mods]]
 modId = "hbm"
 version = "${file.jarVersion}"
-displayName = "NTM"
+displayName = "NTM NEXT"
 iconFile = "hbm.png"
 iconBlur = true
 bannerFile = "hbm.png"
-description = "Nuclear Tech Mod, ported to Minecraft 26.2 for Fabric and NeoForge."
+description = "Nuclear Tech Mod, ported to Minecraft ${minecraft_version} for Fabric and NeoForge."
 authors = "HbmMods (The Bobcat), movblock"
-credits = "HbmMods (The Bobcat): creating the original mod. movblock: porting to 26.2. Raw ore textures: MrNorwood (thorium, cobalt, lithium, schrabidium); Mr. Morgan and NuclearGrandFather (aluminium, beryllium, lead, plutonium, titanium, tungsten, uranium)."
+credits = "HbmMods (The Bobcat): creating the original mod. movblock: porting to 26.2. Raw ore textures: MrNorwood (thorium, cobalt, lithium, schrabidium); Mr. Morgan and NuclearGrandFather (aluminium, beryllium, lead, plutonium, titanium, tungsten, uranium). Copyright HbmMods (The Bobcat), Contributors to Hbm's Nuclear Tech Mod, 2026 movblock <admin@movblock.mov>; the GNU GPL and LGPL texts are LICENSES/GPL-3.0-only.txt and LICENSES/LGPL-3.0-only.txt in this jar."
+displayURL = "https://github.com/Warfactory-Official/ntm-next"
 displayTest = "IGNORE_ALL_VERSION"
 enumExtensions = "META-INF/enumextensions.json"
 
 [[mixins]]
 config = "hbm-common.mixins.json"
+behaviorVersion = "0.17.4"
 
 [[mixins]]
 config = "hbm-iris-compat.mixins.json"
+behaviorVersion = "0.17.4"
+
+[[mixins]]
+config = "hbm-jigsaw-optimizer.mixins.json"
+behaviorVersion = "0.17.4"
 
 [[mixins]]
 config = "hbm-network-optimizer.mixins.json"
+behaviorVersion = "0.17.4"
+
+[[mixins]]
+config = "hbm-replay-timing.mixins.json"
+behaviorVersion = "0.17.4"
+
+[[mixins]]
+config = "hbm-replay-timing-neoforge.mixins.json"
+behaviorVersion = "0.17.4"
 
 [[mixins]]
 config = "hbm-neoforge.mixins.json"
+behaviorVersion = "0.17.4"
 
 [[accessTransformers]]
 file = "META-INF/accesstransformer.cfg"
@@ -33,21 +50,21 @@ file = "META-INF/accesstransformer.cfg"
 [[dependencies.hbm]]
 modId = "minecraft"
 type = "required"
-versionRange = "[26.2,26.3)"
+versionRange = "[${minecraft_version},${minecraft_next_version})"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.hbm]]
 modId = "crankshaft"
 type = "required"
-versionRange = "[1.6.0+mc26.2,)"
+versionRange = "[${crankshaft_minimum},)"
 ordering = "AFTER"
 side = "CLIENT"
 
 [[dependencies.hbm]]
 modId = "ctm"
 type = "optional"
-versionRange = "[26.2.0.1]"
+versionRange = "[${ctm_library_version}]"
 ordering = "AFTER"
 side = "CLIENT"
 
@@ -61,7 +78,7 @@ side = "CLIENT"
 [[dependencies.hbm]]
 modId = "ae2"
 type = "optional"
-versionRange = "[26.2.1-alpha]"
+versionRange = "[${ae2_version}]"
 ordering = "AFTER"
 side = "BOTH"
 
@@ -75,34 +92,48 @@ side = "BOTH"
 [[dependencies.hbm]]
 modId = "lithium"
 type = "optional"
-versionRange = "[0.25.3,0.26)"
+versionRange = "[${lithium_minimum},${lithium_maximum})"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.hbm]]
 modId = "sophisticatedcore"
 type = "optional"
-versionRange = "[1.5.0,)"
+versionRange = "[${sophisticated_core_minimum},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hbm]]
+modId = "sophisticatedstorage"
+type = "optional"
+versionRange = "[${sophisticated_storage_minimum},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.hbm]]
+modId = "sophisticatedbackpacks"
+type = "optional"
+versionRange = "[${sophisticated_backpacks_minimum},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.hbm]]
 modId = "iris"
 type = "incompatible"
-versionRange = "(,1.11.4+mc26.2)"
+versionRange = "(,${iris_minimum}+mc${minecraft_version})"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.hbm]]
 modId = "sodium"
 type = "incompatible"
-versionRange = "(,0.9.2-beta.1+mc26.2)"
+versionRange = "(,${sodium_minimum}+mc${minecraft_version})"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.hbm]]
 modId = "neoforge"
 type = "required"
-versionRange = "[26.2.0.7-beta,26.3)"
+versionRange = "[${neoforge_minimum},${neoforge_maximum})"
 ordering = "NONE"
 side = "BOTH"

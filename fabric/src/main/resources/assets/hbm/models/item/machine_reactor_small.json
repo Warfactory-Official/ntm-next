@@ -167,24 +167,6 @@
       "texture": "reactor_small_base"
     },
     {
-      "matrix": [
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ],
       "model": "hbm:models/reactors/reactor_small_rods.obj",
       "parts": [
         "Cylinder"

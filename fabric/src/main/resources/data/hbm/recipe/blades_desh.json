@@ -2,10 +2,13 @@
   "type": "hbm:crafting_shaped",
   "key": {
     "B": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:blades_titanium",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     "P": "hbm:plate_desh"

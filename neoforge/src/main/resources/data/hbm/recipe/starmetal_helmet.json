@@ -6,14 +6,13 @@
     }
   ],
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "C": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:cobalt_helmet"
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "C": "hbm:cobalt_helmet",
     "E": "#c:ingots/starmetal"
   },
   "pattern": [

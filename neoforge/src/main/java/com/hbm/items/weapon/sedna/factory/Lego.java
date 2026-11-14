@@ -1,29 +1,58 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.entity.projectile.EntityBulletBeamBase;
-import com.hbm.explosion.vanillant.ExplosionVNT;
-import com.hbm.explosion.vanillant.standard.EntityProcessorCrossSmooth;
+import com.hbm.client.weapon.GunClientState.SmokeNode;
+import com.hbm.client.weapon.GunClientState;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.entity.projectile.BulletBeamBaseEntity;
+import com.hbm.explosion.vanillant.ComposableExplosion;
 import com.hbm.explosion.vanillant.standard.ExplosionEffectTiny;
-import com.hbm.explosion.vanillant.standard.ExplosionEffectWeapon;
-import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
+import com.hbm.explosion.vanillant.standard.SmallExplosionEffect;
+import com.hbm.explosion.vanillant.standard.WeaponExplosionEntityProcessor;
 import com.hbm.items.weapon.sedna.BulletConfig.ProjectileType;
 import com.hbm.items.weapon.sedna.BulletConfig;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.GunState;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import com.hbm.items.weapon.sedna.GunConfig;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.GunState;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.SmokeNode;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.items.weapon.sedna.Receiver;
-import com.hbm.items.weapon.sedna.mags.IMagazine;
+import com.hbm.items.weapon.sedna.mags.Magazine;
 import com.hbm.particle.helper.ParticleCreators;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.stats.ModStats;
@@ -49,33 +78,33 @@ public class Lego {
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STANDARD_RELOAD =
             (stack, ctx) -> {
                 Player player = ctx.getPlayer();
-                Receiver rec = ctx.config().getReceivers(stack)[0];
-                GunState state = ItemGunBaseNT.getState(stack, ctx.configIndex());
+                Receiver rec = ctx.config().getReceivers(stack).get(0);
+                GunState state = GunBaseNTItem.getState(stack, ctx.configIndex());
 
                 if (state == GunState.IDLE) {
 
-                    ItemGunBaseNT.setIsAiming(stack, false);
-                    IMagazine mag = rec.getMagazine(stack);
+                    GunBaseNTItem.setIsAiming(stack, false);
+                    Magazine mag = rec.getMagazine(stack);
 
                     if (mag.canReload(stack, ctx.inventory())) {
                         int loaded = mag.getAmount(stack, ctx.inventory());
                         mag.setAmountBeforeReload(stack, loaded);
-                        ItemGunBaseNT.setState(stack, ctx.configIndex(), GunState.RELOADING);
-                        ItemGunBaseNT.setTimer(
+                        GunBaseNTItem.setState(stack, ctx.configIndex(), GunState.RELOADING);
+                        GunBaseNTItem.setTimer(
                                 stack,
                                 ctx.configIndex(),
                                 rec.getReloadBeginDuration(stack)
                                         + (loaded <= 0 ? rec.getReloadCockOnEmptyPre(stack) : 0));
-                        ItemGunBaseNT.playAnimation(
+                        GunBaseNTItem.playAnimation(
                                 player, stack, GunAnimation.RELOAD, ctx.configIndex());
                         if (ctx.config().getReloadChangesType(stack))
                             mag.initNewType(stack, ctx.inventory());
                     } else {
-                        ItemGunBaseNT.playAnimation(
+                        GunBaseNTItem.playAnimation(
                                 player, stack, GunAnimation.INSPECT, ctx.configIndex());
                         if (!ctx.config().getInspectCancel(stack)) {
-                            ItemGunBaseNT.setState(stack, ctx.configIndex(), GunState.DRAWING);
-                            ItemGunBaseNT.setTimer(
+                            GunBaseNTItem.setState(stack, ctx.configIndex(), GunState.DRAWING);
+                            GunBaseNTItem.setTimer(
                                     stack,
                                     ctx.configIndex(),
                                     ctx.config().getInspectDuration(stack));
@@ -92,11 +121,11 @@ public class Lego {
             (stack, ctx) -> {
                 LivingEntity entity = ctx.entity();
                 int index = ctx.configIndex();
-                GunState state = ItemGunBaseNT.getState(stack, index);
+                GunState state = GunBaseNTItem.getState(stack, index);
 
                 if (state == GunState.IDLE) {
-                    int mode = ItemGunBaseNT.getMode(stack, 0);
-                    ItemGunBaseNT.setMode(stack, index, 1 - mode);
+                    int mode = GunBaseNTItem.getMode(stack, 0);
+                    GunBaseNTItem.setMode(stack, index, 1 - mode);
                     if (mode == 0)
                         EntitySounds.play(
                                 entity,
@@ -125,12 +154,13 @@ public class Lego {
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_TOGGLE_AIM =
             (stack, ctx) -> {
-                ItemGunBaseNT.setIsAiming(stack, !ItemGunBaseNT.getIsAiming(stack));
+                GunBaseNTItem.setIsAiming(stack, !GunBaseNTItem.getIsAiming(stack));
             };
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_STANDARD_CAN_FIRE =
             (stack, ctx) -> {
                 return ctx.config()
-                                .getReceivers(stack)[0]
+                                .getReceivers(stack)
+                                .get(0)
                                 .getMagazine(stack)
                                 .getAmount(stack, ctx.inventory())
                         > 0;
@@ -138,7 +168,8 @@ public class Lego {
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_SECOND_CAN_FIRE =
             (stack, ctx) -> {
                 return ctx.config()
-                                .getReceivers(stack)[1]
+                                .getReceivers(stack)
+                                .get(1)
                                 .getMagazine(stack)
                                 .getAmount(stack, ctx.inventory())
                         > 0;
@@ -146,11 +177,12 @@ public class Lego {
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_LOCKON_CAN_FIRE =
             (stack, ctx) -> {
                 return ctx.config()
-                                        .getReceivers(stack)[0]
+                                        .getReceivers(stack)
+                                        .get(0)
                                         .getMagazine(stack)
                                         .getAmount(stack, ctx.inventory())
                                 > 0
-                        && ItemGunBaseNT.getIsLockedOn(stack);
+                        && GunBaseNTItem.getIsLockedOn(stack);
             };
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_DEBUG_CAN_FIRE =
             (stack, ctx) -> {
@@ -171,7 +203,7 @@ public class Lego {
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_LOCKON_FIRE =
             (stack, ctx) -> {
                 doStandardFire(stack, ctx, GunAnimation.CYCLE, 0, true);
-                ItemGunBaseNT.setIsLockedOn(stack, false);
+                GunBaseNTItem.setIsLockedOn(stack, false);
             };
 
     @SuppressWarnings("incomplete-switch")
@@ -182,108 +214,102 @@ public class Lego {
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 50)
-                                                .addPos(0, 0, -3, 50)
-                                                .addPos(0, 0, 0, 250))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 50)
+                                                .to(0, 0, -3, 50)
+                                                .to(0, 0, 0, 250))
                                 .addBus(
                                         "HAMMER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 1, 50)
-                                                .addPos(0, 0, 1, 400)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 1, 50)
+                                                .to(0, 0, 1, 400)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "DRUM",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 450)
-                                                .addPos(0, 0, 1, 200));
+                                        new AnimationSequence().to(0, 0, 0, 450).to(0, 0, 1, 200));
                     case CYCLE_DRY:
                         return new BusAnimation()
                                 .addBus(
                                         "HAMMER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 1, 50)
-                                                .addPos(0, 0, 1, 300 + 100)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 1, 50)
+                                                .to(0, 0, 1, 300 + 100)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "DRUM",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 450)
-                                                .addPos(0, 0, 1, 200));
+                                        new AnimationSequence().to(0, 0, 0, 450).to(0, 0, 1, 200));
                     case EQUIP:
                         return new BusAnimation()
-                                .addBus(
-                                        "ROTATE",
-                                        new BusAnimationSequence().addPos(-360, 0, 0, 350));
+                                .addBus("ROTATE", new AnimationSequence().to(-360, 0, 0, 350));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "RELAOD_TILT",
-                                        new BusAnimationSequence()
-                                                .addPos(-15, 0, 0, 100)
-                                                .addPos(65, 0, 0, 100)
-                                                .addPos(45, 0, 0, 50)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(0, 0, 0, 1450)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(-15, 0, 0, 100)
+                                                .to(65, 0, 0, 100)
+                                                .to(45, 0, 0, 50)
+                                                .to(0, 0, 0, 200)
+                                                .to(0, 0, 0, 1450)
+                                                .to(-80, 0, 0, 100)
+                                                .to(-80, 0, 0, 100)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "RELOAD_CYLINDER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(90, 0, 0, 100)
-                                                .addPos(90, 0, 0, 1700)
-                                                .addPos(0, 0, 0, 70))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 200)
+                                                .to(90, 0, 0, 100)
+                                                .to(90, 0, 0, 1700)
+                                                .to(0, 0, 0, 70))
                                 .addBus(
                                         "RELOAD_LIFT",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 350)
-                                                .addPos(-45, 0, 0, 250)
-                                                .addPos(-45, 0, 0, 350)
-                                                .addPos(-15, 0, 0, 200)
-                                                .addPos(-15, 0, 0, 1050)
-                                                .addPos(0, 0, 0, 100))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 350)
+                                                .to(-45, 0, 0, 250)
+                                                .to(-45, 0, 0, 350)
+                                                .to(-15, 0, 0, 200)
+                                                .to(-15, 0, 0, 1050)
+                                                .to(0, 0, 0, 100))
                                 .addBus(
                                         "RELOAD_JOLT",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 600)
-                                                .addPos(2, 0, 0, 50)
-                                                .addPos(0, 0, 0, 100))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 600)
+                                                .to(2, 0, 0, 50)
+                                                .to(0, 0, 0, 100))
                                 .addBus(
                                         "RELOAD_BULLETS",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 650)
-                                                .addPos(10, 0, 0, 300)
-                                                .addPos(10, 0, 0, 200)
-                                                .addPos(0, 0, 0, 700))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 650)
+                                                .to(10, 0, 0, 300)
+                                                .to(10, 0, 0, 200)
+                                                .to(0, 0, 0, 700))
                                 .addBus(
                                         "RELOAD_BULLETS_CON",
-                                        new BusAnimationSequence()
-                                                .addPos(1, 0, 0, 0)
-                                                .addPos(1, 0, 0, 950)
-                                                .addPos(0, 0, 0, 1));
+                                        new AnimationSequence()
+                                                .to(1, 0, 0, 0)
+                                                .to(1, 0, 0, 950)
+                                                .to(0, 0, 0, 1));
                     case INSPECT:
                     case JAMMED:
                         return new BusAnimation()
                                 .addBus(
                                         "RELAOD_TILT",
-                                        new BusAnimationSequence()
-                                                .addPos(-15, 0, 0, 100)
-                                                .addPos(65, 0, 0, 100)
-                                                .addPos(45, 0, 0, 50)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(-15, 0, 0, 100)
+                                                .to(65, 0, 0, 100)
+                                                .to(45, 0, 0, 50)
+                                                .to(0, 0, 0, 200)
+                                                .to(0, 0, 0, 200)
+                                                .to(-80, 0, 0, 100)
+                                                .to(-80, 0, 0, 100)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "RELOAD_CYLINDER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(90, 0, 0, 100)
-                                                .addPos(90, 0, 0, 450)
-                                                .addPos(0, 0, 0, 70));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 200)
+                                                .to(90, 0, 0, 100)
+                                                .to(90, 0, 0, 450)
+                                                .to(0, 0, 0, 70));
                 }
 
                 return null;
@@ -293,9 +319,9 @@ public class Lego {
 
         LivingEntity entity = ctx.entity();
         Player player = ctx.getPlayer();
-        Receiver rec = ctx.config().getReceivers(stack)[receiver];
+        Receiver rec = ctx.config().getReceivers(stack).get(receiver);
         int index = ctx.configIndex();
-        GunState state = ItemGunBaseNT.getState(stack, index);
+        GunState state = GunBaseNTItem.getState(stack, index);
 
         if (state == GunState.IDLE) {
 
@@ -318,23 +344,23 @@ public class Lego {
                     if (rec.getCanFire(stack).apply(stack, ctx))
                         rec.getOnFire(stack).accept(stack, ctx);
 
-                ItemGunBaseNT.setState(stack, index, GunState.COOLDOWN);
-                ItemGunBaseNT.setTimer(stack, index, rec.getDelayAfterFire(stack));
+                GunBaseNTItem.setState(stack, index, GunState.COOLDOWN);
+                GunBaseNTItem.setTimer(stack, index, rec.getDelayAfterFire(stack));
             } else {
 
                 if (rec.getDoesDryFire(stack)) {
-                    ItemGunBaseNT.playAnimation(player, stack, GunAnimation.CYCLE_DRY, index);
-                    ItemGunBaseNT.setState(
+                    GunBaseNTItem.playAnimation(player, stack, GunAnimation.CYCLE_DRY, index);
+                    GunBaseNTItem.setState(
                             stack,
                             index,
                             rec.getRefireAfterDry(stack) ? GunState.COOLDOWN : GunState.DRAWING);
-                    ItemGunBaseNT.setTimer(stack, index, rec.getDelayAfterDryFire(stack));
+                    GunBaseNTItem.setTimer(stack, index, rec.getDelayAfterDryFire(stack));
                 }
             }
         }
 
         if (state == GunState.RELOADING) {
-            ItemGunBaseNT.setReloadCancel(stack, true);
+            GunBaseNTItem.setReloadCancel(stack, true);
         }
     }
 
@@ -345,9 +371,9 @@ public class Lego {
             double alphaDecay,
             double widthGrowth,
             int index) {
-        ItemGunBaseNT gun = (ItemGunBaseNT) stack.getItem();
-        long lastShot = gun.lastShot[index];
-        List<SmokeNode> smokeNodes = gun.getConfig(stack, index).smokeNodes;
+        GunBaseNTItem gun = (GunBaseNTItem) stack.getItem();
+        long lastShot = GunClientState.getLastShotTime(gun, index);
+        List<SmokeNode> smokeNodes = GunClientState.getSmokeParticles(gun, index);
 
         boolean smoking = lastShot + smokeDuration > GameTime.millis(entity.level());
         if (!smoking && !smokeNodes.isEmpty()) smokeNodes.clear();
@@ -374,7 +400,7 @@ public class Lego {
             double alpha = (GameTime.millis(entity.level()) - lastShot) / (double) smokeDuration;
             alpha = (1 - alpha) * 0.5D;
 
-            if (ItemGunBaseNT.getState(stack, index) == GunState.RELOADING
+            if (GunBaseNTItem.getState(stack, index) == GunState.RELOADING
                     || smokeNodes.size() == 0) alpha = 0;
             smokeNodes.add(new SmokeNode(alpha));
         }
@@ -385,15 +411,15 @@ public class Lego {
         LivingEntity entity = ctx.entity();
         Player player = ctx.getPlayer();
         int index = ctx.configIndex();
-        if (anim != null) ItemGunBaseNT.playAnimation(player, stack, anim, ctx.configIndex());
+        if (anim != null) GunBaseNTItem.playAnimation(player, stack, anim, ctx.configIndex());
 
-        boolean aim = ItemGunBaseNT.getIsAiming(stack);
-        Receiver primary = ctx.config().getReceivers(stack)[receiver];
-        IMagazine mag = primary.getMagazine(stack);
+        boolean aim = GunBaseNTItem.getIsAiming(stack);
+        Receiver primary = ctx.config().getReceivers(stack).get(receiver);
+        Magazine mag = primary.getMagazine(stack);
         BulletConfig config = (BulletConfig) mag.getType(stack, ctx.inventory());
 
         Vec3 offset =
-                ItemGunBaseNT.getIsAiming(stack)
+                GunBaseNTItem.getIsAiming(stack)
                         ? primary.getProjectileOffsetScoped(stack)
                         : primary.getProjectileOffset(stack);
         double forwardOffset = offset.x;
@@ -412,8 +438,8 @@ public class Lego {
 
             if (config.pType == ProjectileType.BULLET
                     || config.pType == ProjectileType.BULLET_CHUNKLOADING) {
-                EntityBulletBaseMK4 mk4 =
-                        new EntityBulletBaseMK4(
+                BulletBaseMK4Entity mk4 =
+                        new BulletBaseMK4Entity(
                                 entity,
                                 config,
                                 damage,
@@ -421,11 +447,11 @@ public class Lego {
                                 sideOffset,
                                 heightOffset,
                                 forwardOffset);
-                if (ItemGunBaseNT.getIsLockedOn(stack)
+                if (GunBaseNTItem.getIsLockedOn(stack)
                         && entity.level() instanceof ServerLevel server)
-                    mk4.lockonTarget = server.getEntity(ItemGunBaseNT.getLockonTarget(stack));
+                    mk4.lockonTarget = server.getEntity(GunBaseNTItem.getLockonTarget(stack));
                 if (i == 0 && config.blackPowder) {
-                    Vec3 motion = mk4.getDeltaMovement();
+                    Vec3 motion = mk4.getFlightDirection();
                     ParticleCreators.blackPowder(
                             entity.level(),
                             mk4.getX(),
@@ -442,8 +468,8 @@ public class Lego {
                 }
                 entity.level().addFreshEntity(mk4);
             } else if (config.pType == ProjectileType.BEAM) {
-                EntityBulletBeamBase beam =
-                        new EntityBulletBeamBase(
+                BulletBeamBaseEntity beam =
+                        new BulletBeamBaseEntity(
                                 entity,
                                 config,
                                 damage,
@@ -456,24 +482,24 @@ public class Lego {
         }
 
         if (player != null) player.awardStat(ModStats.BULLETS.get());
-        mag.useUpAmmo(stack, ctx.inventory(), 1);
+        mag.consumeAmmo(stack, ctx.inventory(), 1);
         if (calcWear)
-            ItemGunBaseNT.setWear(
+            GunBaseNTItem.setWear(
                     stack,
                     index,
                     Math.min(
-                            ItemGunBaseNT.getWear(stack, index) + config.wear,
+                            GunBaseNTItem.getWear(stack, index) + config.wear,
                             ctx.config().getDurability(stack)));
     }
 
     public static float getStandardWearSpread(ItemStack stack, GunConfig config, int index) {
-        float percent = ItemGunBaseNT.getWear(stack, index) / config.getDurability(stack);
+        float percent = GunBaseNTItem.getWear(stack, index) / config.getDurability(stack);
         if (percent < 0.5F) return 0F;
         return (percent - 0.5F) * 2F;
     }
 
     public static float getStandardWearDamage(ItemStack stack, GunConfig config, int index) {
-        float percent = ItemGunBaseNT.getWear(stack, index) / config.getDurability(stack);
+        float percent = GunBaseNTItem.getWear(stack, index) / config.getDurability(stack);
         if (percent < 0.75F) return 1F;
         return 1F - (percent - 0.75F) * 2F;
     }
@@ -504,45 +530,45 @@ public class Lego {
         return spreadInnate + spreadAmmo + spreadHipfire + spreadWear;
     }
 
-    public static void standardExplode(EntityBulletBaseMK4 bullet, HitResult mop, float range) {
+    public static void standardExplode(BulletBaseMK4Entity bullet, HitResult mop, float range) {
         standardExplode(bullet, mop, range, 1F);
     }
 
     public static void standardExplode(
-            EntityBulletBaseMK4 bullet, HitResult mop, float range, float damageMod) {
+            BulletBaseMK4Entity bullet, HitResult mop, float range, float damageMod) {
         Vec3 hit = mop.getLocation();
-        ExplosionVNT vnt =
-                new ExplosionVNT(bullet.level(), hit.x, hit.y, hit.z, range, bullet.getThrower());
-        vnt.setEntityProcessor(
-                new EntityProcessorCrossSmooth(1, bullet.damage * damageMod)
-                        .setupPiercing(
+        ComposableExplosion vnt =
+                new ComposableExplosion(
+                        bullet.level(), hit.x, hit.y, hit.z, range, bullet.getThrower());
+        vnt.entityProcessor(
+                new WeaponExplosionEntityProcessor(1, bullet.damage * damageMod)
+                        .piercing(
                                 bullet.config.armorThresholdNegation,
                                 bullet.config.armorPiercingPercent));
-        vnt.setPlayerProcessor(new PlayerProcessorStandard());
-        vnt.setSFX(new ExplosionEffectWeapon(10, 2.5F, 1F));
+        vnt.effects(new SmallExplosionEffect(10, 2.5F, 1F));
         vnt.explode();
     }
 
-    public static void tinyExplode(EntityBulletBaseMK4 bullet, HitResult mop, float range) {
+    public static void tinyExplode(BulletBaseMK4Entity bullet, HitResult mop, float range) {
         tinyExplode(bullet, mop, range, 1F);
     }
 
     public static void tinyExplode(
-            EntityBulletBaseMK4 bullet, HitResult mop, float range, float damageMod) {
+            BulletBaseMK4Entity bullet, HitResult mop, float range, float damageMod) {
         Direction dir = mop instanceof BlockHitResult block ? block.getDirection() : Direction.UP;
         Vec3 hit = mop.getLocation();
         double x = hit.x + dir.getStepX() * 0.25D;
         double y = hit.y + dir.getStepY() * 0.25D;
         double z = hit.z + dir.getStepZ() * 0.25D;
-        ExplosionVNT vnt = new ExplosionVNT(bullet.level(), x, y, z, range, bullet.getThrower());
-        vnt.setEntityProcessor(
-                new EntityProcessorCrossSmooth(0.5, bullet.damage * damageMod)
-                        .setupPiercing(
+        ComposableExplosion vnt =
+                new ComposableExplosion(bullet.level(), x, y, z, range, bullet.getThrower());
+        vnt.entityProcessor(
+                new WeaponExplosionEntityProcessor(0.5, bullet.damage * damageMod)
+                        .piercing(
                                 bullet.config.armorThresholdNegation,
                                 bullet.config.armorPiercingPercent)
-                        .setKnockback(0.25D));
-        vnt.setPlayerProcessor(new PlayerProcessorStandard());
-        vnt.setSFX(new ExplosionEffectTiny());
+                        .knockback(0.25D));
+        vnt.effects(new ExplosionEffectTiny());
         vnt.explode();
     }
 }

@@ -1,15 +1,14 @@
 {
   "type": "hbm:crafting_shaped",
+  "input_state": {
+    "X": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "C": "#c:plates/copper",
     "D": "#c:ingots/workers_alloy",
-    "X": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:steel_boots",
-      "components": {
-        "minecraft:damage": 0
-      }
-    }
+    "X": "hbm:steel_boots"
   },
   "pattern": [
     "C C",

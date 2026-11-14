@@ -1,77 +1,205 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.api.energymk2;
 
+import com.hbm.platform.Caps;
 import com.hbm.platform.FabricTrEnergyBridge;
+import com.hbm.uninos.ConnectionPriority;
 import com.hbm.uninos.graph.Distribution.Bucket;
 import com.hbm.uninos.graph.Distribution.Total;
+import com.hbm.uninos.graph.Distribution;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import org.jspecify.annotations.Nullable;
 import team.reborn.energy.api.EnergyStorage;
 
-final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
+final class ForeignEnergyEndpoint implements EnergyHandler, EnergyProbe {
     static final boolean BIDIRECTIONAL_IS_RECEIVER_ONLY = true;
 
-    static final IEnergyHandlerMK2.ConnectionPriority FOREIGN_PRIORITY =
-            IEnergyHandlerMK2.ConnectionPriority.LOWEST;
+    static final ConnectionPriority FOREIGN_PRIORITY = ConnectionPriority.LOWEST;
     EnergyStorage store;
     private final EnergyConversion.Carry carry = new EnergyConversion.Carry();
+    ServerLevel level;
+    long posKey;
+    Direction side;
+    @Nullable ForeignEnergyNode node;
+    long probedInput;
+    long probedOutput;
+    private int directions;
     private long availableHe;
     private long roomHe;
     private boolean provider;
     private boolean receiver;
-
-    private boolean bidirectionalSeen;
     private long owedFe;
+    private @Nullable ForeignEnergyBridge bank;
+    private @Nullable MixedEnergyPlan plan;
+    private int toSlot = -1;
+    private int fromSlot = -1;
 
     ForeignEnergyEndpoint(EnergyStorage store) {
         this.store = store;
     }
 
-    static void fileForeignDemand(
-            Bucket<IEnergyHandlerMK2> foreign,
+    static <E> void fileForeignDemand(
+            Bucket<E> foreign,
             Total powerAvailable,
             double reserve,
-            Total nativeDemand,
-            Bucket<IEnergyHandlerMK2>[] receivers,
+            Total consumerDemand,
+            Bucket<E>[] receivers,
             Total reserveBudget,
-            Total surplusBudget,
+            Total foreignBudget,
             Total added) {
         reserveBudget.fraction(powerAvailable, Math.clamp(reserve, 0.0, 1.0));
-        surplusBudget.positiveDifference(powerAvailable, nativeDemand);
+        foreignBudget.positiveDifference(powerAvailable, consumerDemand);
+        if (foreignBudget.compareTo(reserveBudget) < 0) foreignBudget.set(reserveBudget);
+        foreignBudget.setMin(foreignBudget, foreign.total);
+        reserveBudget.setMin(reserveBudget, foreignBudget);
+        Total weight = foreign.weight.set(foreign.total);
         int lowest = FOREIGN_PRIORITY.ordinal();
         int normal = ConnectionPriority.NORMAL.ordinal();
-        added.set(0);
+        added.set(foreignBudget);
         for (int i = 0; i < foreign.size(); i++) {
-            long amount = foreign.amount(i);
-            long atNormal = Math.min(amount, reserveBudget.limit());
+            long want = foreign.amount(i);
+            long amount = Distribution.weightedShare(foreignBudget, want, weight, want);
+            long atNormal =
+                    Distribution.weightedShare(reserveBudget, amount, foreignBudget, amount);
+            weight.subtract(want);
+            foreignBudget.subtract(amount);
             reserveBudget.subtract(atNormal);
-            long atLowest = Math.min(amount - atNormal, surplusBudget.limit());
-            surplusBudget.subtract(atLowest);
+            long atLowest = amount - atNormal;
             if (atNormal > 0) {
                 if (receivers[normal] == null) receivers[normal] = new Bucket<>();
                 receivers[normal].add(foreign.endpoint(i), atNormal);
-                added.add(atNormal);
             }
             if (atLowest > 0) {
                 if (receivers[lowest] == null) receivers[lowest] = new Bucket<>();
                 receivers[lowest].add(foreign.endpoint(i), atLowest);
-                added.add(atLowest);
             }
         }
     }
 
+    void bind(ServerLevel level, long posKey, Direction side, @Nullable ForeignEnergyNode node) {
+        this.level = level;
+        this.posKey = posKey;
+        this.side = side;
+        this.node = node;
+        plan = null;
+        toSlot = fromSlot = -1;
+    }
+
+    boolean planned() {
+        return node != null && node.kind() != ForeignEnergyNode.Kind.CONSUMER;
+    }
+
+    Object identity() {
+        return node == null ? store : node.identity();
+    }
+
     void refresh() {
-        long insertableFe = FabricTrEnergyBridge.insertable(store);
-        long extractableFe = FabricTrEnergyBridge.extractable(store);
-        boolean canInsert = insertableFe > 0;
-        boolean canExtract = extractableFe > 0;
-        if (canInsert && canExtract) bidirectionalSeen = true;
+        boolean planned = planned();
+        Caps.probeEnergy(store, this);
+        receiver = probedInput > 0;
+        provider =
+                probedOutput > 0
+                        && (planned
+                                || !BIDIRECTIONAL_IS_RECEIVER_ONLY
+                                || directions != (RECEIVE | SEND));
+        long output = Math.max(0, probedOutput - owedFe);
+        availableHe =
+                provider
+                        ? planned
+                                ? EnergyConversion.heFromFeCeil(output)
+                                : EnergyConversion.heFromFe(output)
+                        : 0;
+        roomHe =
+                receiver
+                        ? planned
+                                ? EnergyConversion.heFromFeCeil(probedInput)
+                                : EnergyConversion.heFromFe(probedInput)
+                        : 0;
+    }
 
-        receiver = canInsert;
-        provider = canExtract && !(BIDIRECTIONAL_IS_RECEIVER_ONLY && bidirectionalSeen);
+    @Override
+    public void energyProbe(long input, long output, int directions) {
+        probedInput = input;
+        probedOutput = output;
+        this.directions = directions;
+    }
 
-        availableHe = provider ? EnergyConversion.heFromFe(Math.max(0, extractableFe - owedFe)) : 0;
-        roomHe = receiver ? EnergyConversion.heFromFe(insertableFe) : 0;
+    void bank(ForeignEnergyBridge bank) {
+        if (this.bank != bank) {
+            bank.transferCarry().absorb(carry);
+            carry.restore(0, 0);
+            bank.changed();
+        }
+        this.bank = bank;
+    }
+
+    void plan(MixedEnergyPlan plan, int edge) {
+        this.plan = plan;
+        toSlot = MixedEnergyPlan.slot(edge, true);
+        fromSlot = MixedEnergyPlan.slot(edge, false);
+    }
+
+    private long towardFe() {
+        return plan == null || !plan.active ? 0 : plan.availableFe(toSlot);
+    }
+
+    private long fromFe() {
+        return plan == null || !plan.active ? 0 : plan.availableFe(fromSlot);
+    }
+
+    private void committed(long fe) {
+        if (fe > 0 && level != null) ForeignEnergyAdapters.committed(level, BlockPos.of(posKey));
+    }
+
+    long prefund(long maximumHe) {
+        maximumHe = Math.min(maximumHe, Long.MAX_VALUE - bank.injected());
+        long request =
+                Math.min(Math.min(probedOutput, fromFe()), EnergyConversion.feFromHe(maximumHe));
+        long fe =
+                request > 0
+                        ? FabricTrEnergyBridge.transfer(store, request, (long) 1, false, false)
+                        : 0;
+        if (fe <= 0) return 0;
+        plan.take(fromSlot, fe);
+        bank.fundFe(fe);
+        probedOutput -= fe;
+        committed(fe);
+        return EnergyConversion.heFromFe(fe);
+    }
+
+    long relay(long reserveHe) {
+        long offered = Math.min(Math.min(probedInput, towardFe()), bank.paidFe(reserveHe));
+        long accepted =
+                offered > 0
+                        ? FabricTrEnergyBridge.transfer(store, offered, (long) 1, false, true)
+                        : 0;
+        if (accepted <= 0) return 0;
+        plan.take(toSlot, accepted);
+        bank.spendFe(accepted);
+        probedInput -= accepted;
+        roomHe = EnergyConversion.heFromFeCeil(probedInput);
+        committed(accepted);
+        return accepted;
     }
 
     boolean servesAsProvider() {
@@ -100,34 +228,34 @@ final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
     }
 
     @Override
-    public long getProviderSpeed() {
+    public long getSendRate() {
         return availableHe;
     }
 
     @Override
-    public long getReceiverSpeed() {
+    public long getReceiveRate() {
         return roomHe;
     }
 
     @Override
-    public ConnectionPriority getPriority() {
+    public ConnectionPriority getEnergyTier() {
         return FOREIGN_PRIORITY;
     }
 
     @Override
-    public long transferPower(long power, boolean simulate) {
+    public long transferPower(long power) {
         if (power <= 0 || !receiver) return power;
-        if (simulate) {
-            long fits =
-                    Math.min(
-                            EnergyConversion.feFromHe(power),
-                            FabricTrEnergyBridge.insertable(store));
-            return power - EnergyConversion.heFromFe(fits);
-        }
-        long fe = carry.feFromHe(power);
-        long acceptedFe = fe > 0 ? FabricTrEnergyBridge.transfer(store, fe, 1L, false, true) : 0;
-        long unplacedHe = acceptedFe < fe ? carry.refundFe(fe - acceptedFe, power) : 0;
+        boolean planned = planned();
+        EnergyConversion.Carry transfer = bank != null ? bank.transferCarry() : carry;
+        long fe = transfer.feFromHe(power);
+        long offered = planned ? Math.min(fe, towardFe()) : fe;
+        long acceptedFe =
+                offered > 0 ? FabricTrEnergyBridge.transfer(store, offered, 1L, false, true) : 0;
+        long unplacedHe = acceptedFe < fe ? transfer.refundFe(fe - acceptedFe, power) : 0;
+        if (planned && acceptedFe > 0) plan.take(toSlot, acceptedFe);
+        if (bank != null) bank.changed();
         roomHe = Math.max(0, roomHe - (power - unplacedHe));
+        committed(acceptedFe);
         return unplacedHe;
     }
 
@@ -135,9 +263,12 @@ final class ForeignEnergyEndpoint implements IEnergyHandlerMK2 {
     public void usePower(long power) {
         if (power <= 0) return;
         availableHe = Math.max(0, availableHe - power);
-        long fe = carry.feFromHe(power) + owedFe;
+        long fe = (bank != null ? bank.transferCarry() : carry).feFromHe(power) + owedFe;
+        if (bank != null) bank.changed();
         if (fe <= 0) return;
-        owedFe = fe - FabricTrEnergyBridge.transfer(store, fe, 1L, false, false);
+        long taken = FabricTrEnergyBridge.transfer(store, fe, 1L, false, false);
+        owedFe = fe - taken;
+        committed(taken);
     }
 
     EnergyConversion.Carry carry() {

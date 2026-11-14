@@ -1,10 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.item.weapon.sedna;
 
 import com.hbm.client.render.WeaponRenderTypes;
 import com.hbm.main.ResourceManager;
+import com.hbm.render.item.weapon.sedna.WeaponItemRenderer;
 import com.hbm.render.loader.UnitQuad;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -43,21 +60,21 @@ public enum MuzzleFlash {
     }
 
     public double fire(long lastShot, int duration) {
-        return ItemRenderWeaponBase.flashFire(
+        return WeaponItemRenderer.flashFire(
                 lastShot,
                 switch (this) {
-                    case GAP -> ItemRenderWeaponBase.GAP_FLASH;
-                    case FIREBALL -> ItemRenderAberrator.FIREBALL_FLASH;
+                    case GAP -> WeaponItemRenderer.GAP_FLASH;
+                    case FIREBALL -> AberratorItemRenderer.FIREBALL_FLASH;
                     case NORMAL, LASER -> duration;
                 });
     }
 
     public void quads(double fire, double length, Matrix4f scratch, UnitQuad.Visitor visitor) {
         switch (this) {
-            case NORMAL -> ItemRenderWeaponBase.muzzleFlashQuads(fire, length, scratch, visitor);
-            case GAP -> ItemRenderWeaponBase.gapFlashQuads(fire, scratch, visitor);
-            case LASER -> ItemRenderWeaponBase.laserFlashQuads(fire, length, scratch, visitor);
-            case FIREBALL -> ItemRenderAberrator.fireballQuads(fire, scratch, visitor);
+            case NORMAL -> WeaponItemRenderer.muzzleFlashQuads(fire, length, scratch, visitor);
+            case GAP -> WeaponItemRenderer.gapFlashQuads(fire, scratch, visitor);
+            case LASER -> WeaponItemRenderer.laserFlashQuads(fire, length, scratch, visitor);
+            case FIREBALL -> AberratorItemRenderer.fireballQuads(fire, scratch, visitor);
         }
     }
 
@@ -101,7 +118,7 @@ public enum MuzzleFlash {
                                             scratch,
                                             tess,
                                             m,
-                                            ItemRenderWeaponBase.FLASH_LIGHT,
+                                            WeaponItemRenderer.FLASH_LIGHT,
                                             argb));
                 });
     }

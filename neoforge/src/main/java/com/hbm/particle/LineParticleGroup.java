@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
@@ -37,19 +53,17 @@ public class LineParticleGroup extends ParticleGroup<Particle> {
         Vec3 cam = camera.position();
 
         for (Particle particle : this.particles) {
-            if (particle instanceof ParticleSpark spark) {
-                int steps = spark.steps().size();
+            if (particle instanceof SparkParticle spark) {
+                int steps = spark.stepCount();
                 if (steps < 2) continue;
                 double px = spark.interpX(partialTicks) - cam.x;
                 double py = spark.interpY(partialTicks) - cam.y;
                 double pz = spark.interpZ(partialTicks) - cam.z;
 
-                int i = 0;
-                for (double[] step : spark.steps()) {
-                    boolean skip = i == 0 || i == steps - 1;
-                    i++;
-                    if (skip) continue;
-                    double nx = px + step[0], ny = py + step[1], nz = pz + step[2];
+                for (int i = 1; i < steps - 1; i++) {
+                    double nx = px + spark.step(i, 0),
+                            ny = py + spark.step(i, 1),
+                            nz = pz + spark.step(i, 2);
                     sparks.add(
                             new Segment(
                                     (float) px,
@@ -64,7 +78,7 @@ public class LineParticleGroup extends ParticleGroup<Particle> {
                     py = ny;
                     pz = nz;
                 }
-            } else if (particle instanceof ParticleDebugLine line) {
+            } else if (particle instanceof DebugLineParticle line) {
                 float px = (float) (line.interpX(partialTicks) - cam.x);
                 float py = (float) (line.interpY(partialTicks) - cam.y);
                 float pz = (float) (line.interpZ(partialTicks) - cam.z);

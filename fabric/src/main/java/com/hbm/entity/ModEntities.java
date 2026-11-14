@@ -1,152 +1,152 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.entity;
 
-import com.hbm.entity.cart.EntityMinecartCrate;
-import com.hbm.entity.cart.EntityMinecartDestroyer;
-import com.hbm.entity.cart.EntityMinecartOre;
-import com.hbm.entity.cart.EntityMinecartPowder;
-import com.hbm.entity.cart.EntityMinecartSemtex;
+import com.hbm.entity.cart.MinecartCrateEntity;
+import com.hbm.entity.cart.MinecartDestroyerEntity;
+import com.hbm.entity.cart.MinecartOreEntity;
+import com.hbm.entity.cart.MinecartPowderEntity;
+import com.hbm.entity.cart.MinecartSemtexEntity;
 import com.hbm.entity.effect.*;
-import com.hbm.entity.grenade.EntityDisperserCanister;
-import com.hbm.entity.grenade.EntityGrenadeBouncyGeneric;
-import com.hbm.entity.grenade.EntityGrenadeUniversal;
-import com.hbm.entity.grenade.EntityWastePearl;
-import com.hbm.entity.item.EntityBoatRubber;
-import com.hbm.entity.item.EntityDeliveryDrone;
-import com.hbm.entity.item.EntityFallingBlockBatch;
-import com.hbm.entity.item.EntityFallingBlockNT;
-import com.hbm.entity.item.EntityFallingMultiblock;
-import com.hbm.entity.item.EntityFireworks;
-import com.hbm.entity.item.EntityItemBuoyant;
-import com.hbm.entity.item.EntityItemWaste;
-import com.hbm.entity.item.EntityMinecartTest;
-import com.hbm.entity.item.EntityMovingItem;
-import com.hbm.entity.item.EntityMovingItem;
-import com.hbm.entity.item.EntityMovingPackage;
-import com.hbm.entity.item.EntityMovingPackage;
-import com.hbm.entity.item.EntityParachuteCrate;
-import com.hbm.entity.item.EntityRequestDrone;
-import com.hbm.entity.item.EntityTntNtm;
-import com.hbm.entity.logic.EntityBalefire;
-import com.hbm.entity.logic.EntityBomber;
-import com.hbm.entity.logic.EntityC130;
-import com.hbm.entity.logic.EntityDeathBlast;
-import com.hbm.entity.logic.EntityEMP;
-import com.hbm.entity.logic.EntityNukeExplosionMK3;
-import com.hbm.entity.logic.EntityNukeExplosionMK5;
-import com.hbm.entity.logic.EntityOrbitalLaser;
-import com.hbm.entity.logic.EntityTomBlast;
-import com.hbm.entity.logic.EntityWaypoint;
-import com.hbm.entity.missile.EntityBobmazon;
-import com.hbm.entity.missile.EntityMissileAntiBallistic;
-import com.hbm.entity.missile.EntityMissileBaseNT;
-import com.hbm.entity.missile.EntityMissileCustom;
-import com.hbm.entity.missile.EntityMissileShuttle;
-import com.hbm.entity.missile.EntityMissileStealth;
-import com.hbm.entity.missile.EntityMissileTier0.EntityMissileBHole;
-import com.hbm.entity.missile.EntityMissileTier0.EntityMissileEMP;
-import com.hbm.entity.missile.EntityMissileTier0.EntityMissileMicro;
-import com.hbm.entity.missile.EntityMissileTier0.EntityMissileSchrabidium;
-import com.hbm.entity.missile.EntityMissileTier0.EntityMissileTaint;
-import com.hbm.entity.missile.EntityMissileTier0.EntityMissileTest;
-import com.hbm.entity.missile.EntityMissileTier1.EntityMissileBunkerBuster;
-import com.hbm.entity.missile.EntityMissileTier1.EntityMissileCluster;
-import com.hbm.entity.missile.EntityMissileTier1.EntityMissileDecoy;
-import com.hbm.entity.missile.EntityMissileTier1.EntityMissileGeneric;
-import com.hbm.entity.missile.EntityMissileTier1.EntityMissileIncendiary;
-import com.hbm.entity.missile.EntityMissileTier2.EntityMissileBusterStrong;
-import com.hbm.entity.missile.EntityMissileTier2.EntityMissileClusterStrong;
-import com.hbm.entity.missile.EntityMissileTier2.EntityMissileEMPStrong;
-import com.hbm.entity.missile.EntityMissileTier2.EntityMissileIncendiaryStrong;
-import com.hbm.entity.missile.EntityMissileTier2.EntityMissileStrong;
-import com.hbm.entity.missile.EntityMissileTier3.EntityMissileBurst;
-import com.hbm.entity.missile.EntityMissileTier3.EntityMissileDrill;
-import com.hbm.entity.missile.EntityMissileTier3.EntityMissileInferno;
-import com.hbm.entity.missile.EntityMissileTier3.EntityMissileRain;
-import com.hbm.entity.missile.EntityMissileTier4.EntityMissileDoomsday;
-import com.hbm.entity.missile.EntityMissileTier4.EntityMissileDoomsdayRusted;
-import com.hbm.entity.missile.EntityMissileTier4.EntityMissileMirv;
-import com.hbm.entity.missile.EntityMissileTier4.EntityMissileNuclear;
-import com.hbm.entity.missile.EntityMissileTier4.EntityMissileVolcano;
-import com.hbm.entity.missile.EntitySatellitePod;
-import com.hbm.entity.missile.EntitySoyuz;
-import com.hbm.entity.missile.EntitySoyuzCapsule;
-import com.hbm.entity.mob.EntityBlockSpider;
-import com.hbm.entity.mob.EntityCreeperGold;
-import com.hbm.entity.mob.EntityCreeperNuclear;
-import com.hbm.entity.mob.EntityCreeperPhosgene;
-import com.hbm.entity.mob.EntityCreeperTainted;
-import com.hbm.entity.mob.EntityCreeperVolatile;
-import com.hbm.entity.mob.EntityCyberCrab;
-import com.hbm.entity.mob.EntityDuck;
-import com.hbm.entity.mob.EntityDummy;
-import com.hbm.entity.mob.EntityFBI;
-import com.hbm.entity.mob.EntityFBIDrone;
-import com.hbm.entity.mob.EntityGhost;
-import com.hbm.entity.mob.EntityHunterChopper;
-import com.hbm.entity.mob.EntityMaskMan;
-import com.hbm.entity.mob.EntityParasiteMaggot;
-import com.hbm.entity.mob.EntityPigeon;
-import com.hbm.entity.mob.EntityPlasticBag;
-import com.hbm.entity.mob.EntityQuackos;
-import com.hbm.entity.mob.EntityRADBeast;
-import com.hbm.entity.mob.EntityTaintCrab;
-import com.hbm.entity.mob.EntityTeslaCrab;
-import com.hbm.entity.mob.EntityUFO;
-import com.hbm.entity.mob.EntityUndeadSoldier;
-import com.hbm.entity.mob.botprime.EntityBOTPrimeBody;
-import com.hbm.entity.mob.botprime.EntityBOTPrimeHead;
-import com.hbm.entity.mob.glyphid.EntityGlyphid;
-import com.hbm.entity.mob.glyphid.EntityGlyphidBehemoth;
-import com.hbm.entity.mob.glyphid.EntityGlyphidBlaster;
-import com.hbm.entity.mob.glyphid.EntityGlyphidBombardier;
-import com.hbm.entity.mob.glyphid.EntityGlyphidBrawler;
-import com.hbm.entity.mob.glyphid.EntityGlyphidBrenda;
-import com.hbm.entity.mob.glyphid.EntityGlyphidDigger;
-import com.hbm.entity.mob.glyphid.EntityGlyphidNuclear;
-import com.hbm.entity.mob.glyphid.EntityGlyphidScout;
-import com.hbm.entity.particle.EntityChlorineFX;
-import com.hbm.entity.particle.EntityCloudFX;
-import com.hbm.entity.particle.EntityOrangeFX;
-import com.hbm.entity.particle.EntityPinkCloudFX;
-import com.hbm.entity.projectile.EntityAcidBomb;
-import com.hbm.entity.projectile.EntityArtilleryRocket;
-import com.hbm.entity.projectile.EntityArtilleryShell;
-import com.hbm.entity.projectile.EntityB92Beam;
-import com.hbm.entity.projectile.EntityBombletZeta;
-import com.hbm.entity.projectile.EntityBoxcar;
-import com.hbm.entity.projectile.EntityBuilding;
-import com.hbm.entity.projectile.EntityBullet;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.entity.projectile.EntityBulletBeamBase;
-import com.hbm.entity.projectile.EntityBurningFOEQ;
-import com.hbm.entity.projectile.EntityChemical;
-import com.hbm.entity.projectile.EntityChopperMine;
-import com.hbm.entity.projectile.EntityCog;
-import com.hbm.entity.projectile.EntityCoin;
-import com.hbm.entity.projectile.EntityDuchessGambit;
-import com.hbm.entity.projectile.EntityFallingNuke;
-import com.hbm.entity.projectile.EntityMeteor;
-import com.hbm.entity.projectile.EntityRBMKDebris;
-import com.hbm.entity.projectile.EntityRubble;
-import com.hbm.entity.projectile.EntitySawblade;
-import com.hbm.entity.projectile.EntityShrapnel;
-import com.hbm.entity.projectile.EntitySiegeLaser;
-import com.hbm.entity.projectile.EntityTom;
-import com.hbm.entity.projectile.EntityTorpedo;
-import com.hbm.entity.projectile.EntityZirnoxDebris;
-import com.hbm.entity.train.EntityRailCarBase;
-import com.hbm.entity.train.EntityRailCarRidable;
+import com.hbm.entity.effect.*;
+import com.hbm.entity.grenade.DisperserCanisterEntity;
+import com.hbm.entity.grenade.GrenadeBouncyGenericEntity;
+import com.hbm.entity.grenade.GrenadeUniversalEntity;
+import com.hbm.entity.grenade.WastePearlEntity;
+import com.hbm.entity.item.BoatRubberEntity;
+import com.hbm.entity.item.DeliveryDroneEntity;
+import com.hbm.entity.item.FallingBlockBatchEntity;
+import com.hbm.entity.item.FallingBlockNTEntity;
+import com.hbm.entity.item.FallingMultiblockEntity;
+import com.hbm.entity.item.FireworksEntity;
+import com.hbm.entity.item.ItemBuoyantEntity;
+import com.hbm.entity.item.ItemWasteEntity;
+import com.hbm.entity.item.MinecartTestEntity;
+import com.hbm.entity.item.MovingItemEntity;
+import com.hbm.entity.item.MovingItemEntity;
+import com.hbm.entity.item.MovingPackageEntity;
+import com.hbm.entity.item.MovingPackageEntity;
+import com.hbm.entity.item.ParachuteCrateEntity;
+import com.hbm.entity.item.RequestDroneEntity;
+import com.hbm.entity.item.TntNtmEntity;
+import com.hbm.entity.logic.BalefireEntity;
+import com.hbm.entity.logic.BomberEntity;
+import com.hbm.entity.logic.C130Entity;
+import com.hbm.entity.logic.DeathBlastEntity;
+import com.hbm.entity.logic.EMPEntity;
+import com.hbm.entity.logic.NukeExplosionMK3Entity;
+import com.hbm.entity.logic.NukeExplosionMK5Entity;
+import com.hbm.entity.logic.OrbitalLaserEntity;
+import com.hbm.entity.logic.TomBlastEntity;
+import com.hbm.entity.logic.WaypointEntity;
+import com.hbm.entity.missile.BobmazonEntity;
+import com.hbm.entity.missile.CustomMissile;
+import com.hbm.entity.missile.Missile;
+import com.hbm.entity.missile.MissileAntiBallisticEntity;
+import com.hbm.entity.missile.MissileTier0Entity.EntityMissileBHole;
+import com.hbm.entity.missile.MissileTier0Entity.EntityMissileEMP;
+import com.hbm.entity.missile.MissileTier0Entity.EntityMissileMicro;
+import com.hbm.entity.missile.MissileTier0Entity.EntityMissileSchrabidium;
+import com.hbm.entity.missile.MissileTier0Entity.EntityMissileTaint;
+import com.hbm.entity.missile.MissileTier0Entity.EntityMissileTest;
+import com.hbm.entity.missile.MissileVariant;
+import com.hbm.entity.missile.MissileVariants;
+import com.hbm.entity.missile.SatellitePod;
+import com.hbm.entity.missile.SoyuzCapsule;
+import com.hbm.entity.missile.SoyuzEntity;
+import com.hbm.entity.missile.StandardMissile;
+import com.hbm.entity.mob.BlockSpiderEntity;
+import com.hbm.entity.mob.CreeperGoldEntity;
+import com.hbm.entity.mob.CreeperNuclearEntity;
+import com.hbm.entity.mob.CreeperPhosgeneEntity;
+import com.hbm.entity.mob.CreeperTaintedEntity;
+import com.hbm.entity.mob.CreeperVolatileEntity;
+import com.hbm.entity.mob.CyberCrabEntity;
+import com.hbm.entity.mob.DuckEntity;
+import com.hbm.entity.mob.DummyEntity;
+import com.hbm.entity.mob.FBIDroneEntity;
+import com.hbm.entity.mob.FBIEntity;
+import com.hbm.entity.mob.GhostEntity;
+import com.hbm.entity.mob.HunterChopperEntity;
+import com.hbm.entity.mob.MaskManEntity;
+import com.hbm.entity.mob.ParasiteMaggotEntity;
+import com.hbm.entity.mob.PigeonEntity;
+import com.hbm.entity.mob.PlasticBagEntity;
+import com.hbm.entity.mob.QuackosEntity;
+import com.hbm.entity.mob.RADBeastEntity;
+import com.hbm.entity.mob.TaintCrabEntity;
+import com.hbm.entity.mob.TeslaCrabEntity;
+import com.hbm.entity.mob.UFOEntity;
+import com.hbm.entity.mob.UndeadSoldierEntity;
+import com.hbm.entity.mob.botprime.BOTPrimeBodyEntity;
+import com.hbm.entity.mob.botprime.BOTPrimeHeadEntity;
+import com.hbm.entity.mob.glyphid.GlyphidBehemothEntity;
+import com.hbm.entity.mob.glyphid.GlyphidBlasterEntity;
+import com.hbm.entity.mob.glyphid.GlyphidBombardierEntity;
+import com.hbm.entity.mob.glyphid.GlyphidBrawlerEntity;
+import com.hbm.entity.mob.glyphid.GlyphidBrendaEntity;
+import com.hbm.entity.mob.glyphid.GlyphidDiggerEntity;
+import com.hbm.entity.mob.glyphid.GlyphidEntity;
+import com.hbm.entity.mob.glyphid.GlyphidNuclearEntity;
+import com.hbm.entity.mob.glyphid.GlyphidScoutEntity;
+import com.hbm.entity.particle.ChlorineFXEntity;
+import com.hbm.entity.particle.CloudFXEntity;
+import com.hbm.entity.particle.OrangeFXEntity;
+import com.hbm.entity.particle.PinkCloudFXEntity;
+import com.hbm.entity.projectile.AcidBombEntity;
+import com.hbm.entity.projectile.ArtilleryRocketEntity;
+import com.hbm.entity.projectile.ArtilleryShellEntity;
+import com.hbm.entity.projectile.B92BeamEntity;
+import com.hbm.entity.projectile.BombletZetaEntity;
+import com.hbm.entity.projectile.BoxcarEntity;
+import com.hbm.entity.projectile.BuildingEntity;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.entity.projectile.BulletBeamBaseEntity;
+import com.hbm.entity.projectile.BulletEntity;
+import com.hbm.entity.projectile.BurningFOEQEntity;
+import com.hbm.entity.projectile.ChemicalEntity;
+import com.hbm.entity.projectile.ChopperMineEntity;
+import com.hbm.entity.projectile.CogEntity;
+import com.hbm.entity.projectile.CoinEntity;
+import com.hbm.entity.projectile.DuchessGambitEntity;
+import com.hbm.entity.projectile.FallingNukeEntity;
+import com.hbm.entity.projectile.MeteorEntity;
+import com.hbm.entity.projectile.RBMKDebrisEntity;
+import com.hbm.entity.projectile.RubbleEntity;
+import com.hbm.entity.projectile.SawbladeEntity;
+import com.hbm.entity.projectile.ShrapnelEntity;
+import com.hbm.entity.projectile.SiegeLaserEntity;
+import com.hbm.entity.projectile.TomEntity;
+import com.hbm.entity.projectile.TorpedoEntity;
+import com.hbm.entity.projectile.ZirnoxDebrisEntity;
+import com.hbm.entity.train.RailCarBaseEntity;
+import com.hbm.entity.train.RailCarRidableEntity;
 import com.hbm.entity.train.TrainCargoTram;
 import com.hbm.entity.train.TrainCargoTramTrailer;
-import com.hbm.lib.Library;
-import com.hbm.platform.FabricBiomeInjection;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.platform.BiomeInjection;
 import com.hbm.registration.Reg;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.util.RegistryUtil;
 import com.hbm.world.BiomeTarget;
+import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -164,167 +164,166 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 public final class ModEntities {
 
-    public static RegistryHandle<EntityType<EntityDischargeBeam>> BEAM_DISCHARGE;
-    public static RegistryHandle<EntityType<EntityNukeExplosionMK5>> NUKE_EXPLOSION_MK5;
-    public static RegistryHandle<EntityType<EntityFalloutRain>> FALLOUT_RAIN;
-    public static RegistryHandle<EntityType<EntityNukeTorex>> NUKE_TOREX;
-    public static RegistryHandle<EntityType<EntityVortex>> VORTEX;
-    public static RegistryHandle<EntityType<EntityUndeadSoldier>> UNDEAD_SOLDIER;
-    public static RegistryHandle<EntityType<EntityFBI>> FBI;
+    public static RegistryHandle<EntityType<DischargeBeamEntity>> BEAM_DISCHARGE;
+    public static RegistryHandle<EntityType<NukeExplosionMK5Entity>> NUKE_EXPLOSION_MK5;
+    public static RegistryHandle<EntityType<FalloutRainEntity>> FALLOUT_RAIN;
+    public static RegistryHandle<EntityType<NukeTorexEntity>> NUKE_TOREX;
+    public static RegistryHandle<EntityType<VortexEntity>> VORTEX;
+    public static RegistryHandle<EntityType<UndeadSoldierEntity>> UNDEAD_SOLDIER;
+    public static RegistryHandle<EntityType<FBIEntity>> FBI;
 
-    public static RegistryHandle<EntityType<EntityCreeperGold>> CREEPER_GOLD;
-    public static RegistryHandle<EntityType<EntityCreeperVolatile>> CREEPER_VOLATILE;
-    public static RegistryHandle<EntityType<EntityCreeperPhosgene>> CREEPER_PHOSGENE;
-    public static RegistryHandle<EntityType<EntityCreeperTainted>> CREEPER_TAINTED;
-    public static RegistryHandle<EntityType<EntityCreeperNuclear>> CREEPER_NUCLEAR;
+    public static RegistryHandle<EntityType<CreeperGoldEntity>> CREEPER_GOLD;
+    public static RegistryHandle<EntityType<CreeperVolatileEntity>> CREEPER_VOLATILE;
+    public static RegistryHandle<EntityType<CreeperPhosgeneEntity>> CREEPER_PHOSGENE;
+    public static RegistryHandle<EntityType<CreeperTaintedEntity>> CREEPER_TAINTED;
+    public static RegistryHandle<EntityType<CreeperNuclearEntity>> CREEPER_NUCLEAR;
 
-    public static RegistryHandle<EntityType<EntityCyberCrab>> CYBER_CRAB;
-    public static RegistryHandle<EntityType<EntityTeslaCrab>> TESLA_CRAB;
-    public static RegistryHandle<EntityType<EntityTaintCrab>> TAINT_CRAB;
+    public static RegistryHandle<EntityType<CyberCrabEntity>> CYBER_CRAB;
+    public static RegistryHandle<EntityType<TeslaCrabEntity>> TESLA_CRAB;
+    public static RegistryHandle<EntityType<TaintCrabEntity>> TAINT_CRAB;
 
-    public static RegistryHandle<EntityType<EntityDuck>> DUCK;
-    public static RegistryHandle<EntityType<EntityGhost>> GHOST;
-    public static RegistryHandle<EntityType<EntityDummy>> TEST_DUMMY;
-    public static RegistryHandle<EntityType<EntityBlockSpider>> BLOCK_SPIDER;
-    public static RegistryHandle<EntityType<EntityQuackos>> QUACKOS;
-    public static RegistryHandle<EntityType<EntityPlasticBag>> PLASTIC_BAG;
-    public static RegistryHandle<EntityType<EntityPigeon>> PIGEON;
+    public static RegistryHandle<EntityType<DuckEntity>> DUCK;
+    public static RegistryHandle<EntityType<GhostEntity>> GHOST;
+    public static RegistryHandle<EntityType<DummyEntity>> TEST_DUMMY;
+    public static RegistryHandle<EntityType<BlockSpiderEntity>> BLOCK_SPIDER;
+    public static RegistryHandle<EntityType<QuackosEntity>> QUACKOS;
+    public static RegistryHandle<EntityType<PlasticBagEntity>> PLASTIC_BAG;
+    public static RegistryHandle<EntityType<PigeonEntity>> PIGEON;
 
-    public static RegistryHandle<EntityType<EntityGlyphid>> GLYPHID;
-    public static RegistryHandle<EntityType<EntityGlyphidBrawler>> GLYPHID_BRAWLER;
-    public static RegistryHandle<EntityType<EntityGlyphidBehemoth>> GLYPHID_BEHEMOTH;
-    public static RegistryHandle<EntityType<EntityGlyphidBrenda>> GLYPHID_BRENDA;
-    public static RegistryHandle<EntityType<EntityGlyphidBombardier>> GLYPHID_BOMBARDIER;
-    public static RegistryHandle<EntityType<EntityGlyphidBlaster>> GLYPHID_BLASTER;
-    public static RegistryHandle<EntityType<EntityGlyphidScout>> GLYPHID_SCOUT;
-    public static RegistryHandle<EntityType<EntityGlyphidNuclear>> GLYPHID_NUCLEAR;
-    public static RegistryHandle<EntityType<EntityGlyphidDigger>> GLYPHID_DIGGER;
-    public static RegistryHandle<EntityType<EntityWaypoint>> GLYPHID_WAYPOINT;
-    public static RegistryHandle<EntityType<EntityAcidBomb>> ACID_BOMB;
-    public static RegistryHandle<EntityType<EntityParasiteMaggot>> PARASITE_MAGGOT;
+    public static RegistryHandle<EntityType<GlyphidEntity>> GLYPHID;
+    public static RegistryHandle<EntityType<GlyphidBrawlerEntity>> GLYPHID_BRAWLER;
+    public static RegistryHandle<EntityType<GlyphidBehemothEntity>> GLYPHID_BEHEMOTH;
+    public static RegistryHandle<EntityType<GlyphidBrendaEntity>> GLYPHID_BRENDA;
+    public static RegistryHandle<EntityType<GlyphidBombardierEntity>> GLYPHID_BOMBARDIER;
+    public static RegistryHandle<EntityType<GlyphidBlasterEntity>> GLYPHID_BLASTER;
+    public static RegistryHandle<EntityType<GlyphidScoutEntity>> GLYPHID_SCOUT;
+    public static RegistryHandle<EntityType<GlyphidNuclearEntity>> GLYPHID_NUCLEAR;
+    public static RegistryHandle<EntityType<GlyphidDiggerEntity>> GLYPHID_DIGGER;
+    public static RegistryHandle<EntityType<WaypointEntity>> GLYPHID_WAYPOINT;
+    public static RegistryHandle<EntityType<AcidBombEntity>> ACID_BOMB;
+    public static RegistryHandle<EntityType<ParasiteMaggotEntity>> PARASITE_MAGGOT;
 
-    public static RegistryHandle<EntityType<EntityMissileGeneric>> MISSILE_GENERIC;
-    public static RegistryHandle<EntityType<EntityMissileIncendiary>> MISSILE_INCENDIARY;
-    public static RegistryHandle<EntityType<EntityMissileDecoy>> MISSILE_DECOY;
-    public static RegistryHandle<EntityType<EntityMissileBunkerBuster>> MISSILE_BUSTER;
-    public static RegistryHandle<EntityType<EntityMissileStrong>> MISSILE_STRONG;
-    public static RegistryHandle<EntityType<EntityMissileIncendiaryStrong>>
-            MISSILE_INCENDIARY_STRONG;
-    public static RegistryHandle<EntityType<EntityMissileBusterStrong>> MISSILE_BUSTER_STRONG;
-    public static RegistryHandle<EntityType<EntityMissileBurst>> MISSILE_BURST;
-    public static RegistryHandle<EntityType<EntityMissileInferno>> MISSILE_INFERNO;
-    public static RegistryHandle<EntityType<EntityMissileNuclear>> MISSILE_NUCLEAR;
-    public static RegistryHandle<EntityType<EntityMissileMirv>> MISSILE_NUCLEAR_CLUSTER;
-    public static RegistryHandle<EntityType<EntityMissileStealth>> MISSILE_STEALTH;
-    public static RegistryHandle<EntityType<EntityMissileCustom>> MISSILE_CUSTOM;
-    public static RegistryHandle<EntityType<EntityMissileShuttle>> MISSILE_SHUTTLE;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_GENERIC;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_INCENDIARY;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_DECOY;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_BUSTER;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_STRONG;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_INCENDIARY_STRONG;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_BUSTER_STRONG;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_BURST;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_INFERNO;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_NUCLEAR;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_NUCLEAR_CLUSTER;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_STEALTH;
+    public static RegistryHandle<EntityType<CustomMissile>> MISSILE_CUSTOM;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_SHUTTLE;
     public static RegistryHandle<EntityType<EntityMissileTest>> MISSILE_TEST;
     public static RegistryHandle<EntityType<EntityMissileMicro>> MISSILE_MICRO;
     public static RegistryHandle<EntityType<EntityMissileSchrabidium>> MISSILE_SCHRABIDIUM;
     public static RegistryHandle<EntityType<EntityMissileBHole>> MISSILE_BHOLE;
     public static RegistryHandle<EntityType<EntityMissileTaint>> MISSILE_TAINT;
     public static RegistryHandle<EntityType<EntityMissileEMP>> MISSILE_EMP;
-    public static RegistryHandle<EntityType<EntityMissileCluster>> MISSILE_CLUSTER;
-    public static RegistryHandle<EntityType<EntityMissileClusterStrong>> MISSILE_CLUSTER_STRONG;
-    public static RegistryHandle<EntityType<EntityMissileEMPStrong>> MISSILE_EMP_STRONG;
-    public static RegistryHandle<EntityType<EntityMissileRain>> MISSILE_RAIN;
-    public static RegistryHandle<EntityType<EntityMissileDrill>> MISSILE_DRILL;
-    public static RegistryHandle<EntityType<EntityMissileVolcano>> MISSILE_VOLCANO;
-    public static RegistryHandle<EntityType<EntityMissileDoomsday>> MISSILE_DOOMSDAY;
-    public static RegistryHandle<EntityType<EntityMissileDoomsdayRusted>> MISSILE_DOOMSDAY_RUSTED;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_CLUSTER;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_CLUSTER_STRONG;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_EMP_STRONG;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_RAIN;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_DRILL;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_VOLCANO;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_DOOMSDAY;
+    public static RegistryHandle<EntityType<StandardMissile>> MISSILE_DOOMSDAY_RUSTED;
 
-    public static RegistryHandle<EntityType<EntityShrapnel>> SHRAPNEL;
-    public static RegistryHandle<EntityType<EntityBulletBaseMK4>> BULLET_MK4;
-    public static RegistryHandle<EntityType<EntityBulletBeamBase>> BULLET_BEAM;
-    public static RegistryHandle<EntityType<EntityFireLingering>> FIRE_LINGERING;
-    public static RegistryHandle<EntityType<EntityCoin>> COIN;
-    public static RegistryHandle<EntityType<EntityRubble>> RUBBLE;
-    public static RegistryHandle<EntityType<EntityCog>> COG;
-    public static RegistryHandle<EntityType<EntityRBMKDebris>> RBMK_DEBRIS;
-    public static RegistryHandle<EntityType<EntityZirnoxDebris>> ZIRNOX_DEBRIS;
-    public static RegistryHandle<EntityType<EntitySpear>> SPEAR;
-    public static RegistryHandle<EntityType<EntityItemWaste>> WASTE_ITEM;
-    public static RegistryHandle<EntityType<EntityMist>> MIST;
-    public static RegistryHandle<EntityType<EntityOrangeFX>> AGENT_ORANGE;
-    public static RegistryHandle<EntityType<EntityFireworks>> FIREWORK_BALL;
-    public static RegistryHandle<EntityType<EntityMinecartOre>> CART_ORE;
-    public static RegistryHandle<EntityType<EntityMinecartCrate>> CART_CRATE;
+    public static RegistryHandle<EntityType<ShrapnelEntity>> SHRAPNEL;
+    public static RegistryHandle<EntityType<BulletBaseMK4Entity>> BULLET_MK4;
+    public static RegistryHandle<EntityType<BulletBeamBaseEntity>> BULLET_BEAM;
+    public static RegistryHandle<EntityType<FireLingeringEntity>> FIRE_LINGERING;
+    public static RegistryHandle<EntityType<CoinEntity>> COIN;
+    public static RegistryHandle<EntityType<RubbleEntity>> RUBBLE;
+    public static RegistryHandle<EntityType<CogEntity>> COG;
+    public static RegistryHandle<EntityType<RBMKDebrisEntity>> RBMK_DEBRIS;
+    public static RegistryHandle<EntityType<ZirnoxDebrisEntity>> ZIRNOX_DEBRIS;
+    public static RegistryHandle<EntityType<SpearEntity>> SPEAR;
+    public static RegistryHandle<EntityType<ItemWasteEntity>> WASTE_ITEM;
+    public static RegistryHandle<EntityType<MistEntity>> MIST;
+    public static RegistryHandle<EntityType<OrangeFXEntity>> AGENT_ORANGE;
+    public static RegistryHandle<EntityType<FireworksEntity>> FIREWORK_BALL;
+    public static RegistryHandle<EntityType<MinecartOreEntity>> CART_ORE;
+    public static RegistryHandle<EntityType<MinecartCrateEntity>> CART_CRATE;
     public static RegistryHandle<EntityType<TrainCargoTram>> CARGO_TRAM;
     public static RegistryHandle<EntityType<TrainCargoTramTrailer>> CARGO_TRAM_TRAILER;
-    public static RegistryHandle<EntityType<EntityRailCarBase.BoundingBoxDummyEntity>>
+    public static RegistryHandle<EntityType<RailCarBaseEntity.BoundingBoxDummyEntity>>
             BOUNDING_DUMMY;
-    public static RegistryHandle<EntityType<EntityRailCarRidable.SeatDummyEntity>> SEAT_DUMMY;
-    public static RegistryHandle<EntityType<EntityMinecartDestroyer>> CART_DESTROYER;
-    public static RegistryHandle<EntityType<EntityMinecartTest>> CART_TEST;
-    public static RegistryHandle<EntityType<EntityBoatRubber>> BOAT_RUBBER;
-    public static RegistryHandle<EntityType<EntityMovingItem>> MOVING_ITEM;
-    public static RegistryHandle<EntityType<EntityMovingPackage>> MOVING_PACKAGE;
-    public static RegistryHandle<EntityType<EntityDeliveryDrone>> DELIVERY_DRONE;
-    public static RegistryHandle<EntityType<EntityRequestDrone>> REQUEST_DRONE;
-    public static RegistryHandle<EntityType<EntityFBIDrone>> FBI_DRONE;
-    public static RegistryHandle<EntityType<EntityRADBeast>> RAD_BEAST;
-    public static RegistryHandle<EntityType<EntityMaskMan>> MASK_MAN;
-    public static RegistryHandle<EntityType<EntityUFO>> UFO;
-    public static RegistryHandle<EntityType<EntityBOTPrimeHead>> BALLS_O_TRON;
-    public static RegistryHandle<EntityType<EntityBOTPrimeBody>> BALLS_O_TRON_SEG;
-    public static RegistryHandle<EntityType<EntityHunterChopper>> HUNTER_CHOPPER;
-    public static RegistryHandle<EntityType<EntityMinecartPowder>> CART_POWDER;
-    public static RegistryHandle<EntityType<EntityMinecartSemtex>> CART_SEMTEX;
-    public static RegistryHandle<EntityType<EntityChlorineFX>> CHLORINE_FX;
-    public static RegistryHandle<EntityType<EntityCloudFX>> CLOUD_FX;
-    public static RegistryHandle<EntityType<EntityPinkCloudFX>> PINK_CLOUD_FX;
-    public static RegistryHandle<EntityType<EntityMeteor>> METEOR;
+    public static RegistryHandle<EntityType<RailCarRidableEntity.SeatDummyEntity>> SEAT_DUMMY;
+    public static RegistryHandle<EntityType<MinecartDestroyerEntity>> CART_DESTROYER;
+    public static RegistryHandle<EntityType<MinecartTestEntity>> CART_TEST;
+    public static RegistryHandle<EntityType<BoatRubberEntity>> BOAT_RUBBER;
+    public static RegistryHandle<EntityType<MovingItemEntity>> MOVING_ITEM;
+    public static RegistryHandle<EntityType<MovingPackageEntity>> MOVING_PACKAGE;
+    public static RegistryHandle<EntityType<DeliveryDroneEntity>> DELIVERY_DRONE;
+    public static RegistryHandle<EntityType<RequestDroneEntity>> REQUEST_DRONE;
+    public static RegistryHandle<EntityType<FBIDroneEntity>> FBI_DRONE;
+    public static RegistryHandle<EntityType<RADBeastEntity>> RAD_BEAST;
+    public static RegistryHandle<EntityType<MaskManEntity>> MASK_MAN;
+    public static RegistryHandle<EntityType<UFOEntity>> UFO;
+    public static RegistryHandle<EntityType<BOTPrimeHeadEntity>> BALLS_O_TRON;
+    public static RegistryHandle<EntityType<BOTPrimeBodyEntity>> BALLS_O_TRON_SEG;
+    public static RegistryHandle<EntityType<HunterChopperEntity>> HUNTER_CHOPPER;
+    public static RegistryHandle<EntityType<MinecartPowderEntity>> CART_POWDER;
+    public static RegistryHandle<EntityType<MinecartSemtexEntity>> CART_SEMTEX;
+    public static RegistryHandle<EntityType<ChlorineFXEntity>> CHLORINE_FX;
+    public static RegistryHandle<EntityType<CloudFXEntity>> CLOUD_FX;
+    public static RegistryHandle<EntityType<PinkCloudFXEntity>> PINK_CLOUD_FX;
+    public static RegistryHandle<EntityType<MeteorEntity>> METEOR;
 
-    public static RegistryHandle<EntityType<EntityTntNtm>> TNT_NTM;
-    public static RegistryHandle<EntityType<EntityFallingBlockNT>> FALLING_BLOCK_NT;
-    public static RegistryHandle<EntityType<EntityFallingBlockBatch>> FALLING_BLOCK_BATCH;
-    public static RegistryHandle<EntityType<EntityFallingMultiblock>> FALLING_MULTIBLOCK;
+    public static RegistryHandle<EntityType<TntNtmEntity>> TNT_NTM;
+    public static RegistryHandle<EntityType<FallingBlockNTEntity>> FALLING_BLOCK_NT;
+    public static RegistryHandle<EntityType<FallingBlockBatchEntity>> FALLING_BLOCK_BATCH;
+    public static RegistryHandle<EntityType<FallingMultiblockEntity>> FALLING_MULTIBLOCK;
 
-    public static RegistryHandle<EntityType<EntityC130>> C130;
-    public static RegistryHandle<EntityType<EntityBomber>> BOMBER;
-    public static RegistryHandle<EntityType<EntityBombletZeta>> BOMBLET_ZETA;
-    public static RegistryHandle<EntityType<EntityGrenadeUniversal>> GRENADE_UNIVERSAL;
-    public static RegistryHandle<EntityType<EntityGrenadeBouncyGeneric>> GRENADE_BOUNCY_GENERIC;
-    public static RegistryHandle<EntityType<EntityDisperserCanister>> DISPERSER_CANISTER;
-    public static RegistryHandle<EntityType<EntityWastePearl>> WASTE_PEARL;
-    public static RegistryHandle<EntityType<EntityItemBuoyant>> ITEM_BUOYANT;
-    public static RegistryHandle<EntityType<EntityNukeExplosionMK3>> NUKE_EXPLOSION_MK3;
-    public static RegistryHandle<EntityType<EntityCloudFleija>> CLOUD_FLEIJA;
-    public static RegistryHandle<EntityType<EntityCloudSolinium>> CLOUD_SOLINIUM;
-    public static RegistryHandle<EntityType<EntityCloudFleijaRainbow>> CLOUD_RAINBOW;
-    public static RegistryHandle<EntityType<EntityParachuteCrate>> PARACHUTE_CRATE;
-    public static RegistryHandle<EntityType<EntityBoxcar>> BOXCAR;
-    public static RegistryHandle<EntityType<EntityTorpedo>> TORPEDO;
-    public static RegistryHandle<EntityType<EntityDuchessGambit>> DUCHESS_GAMBIT;
-    public static RegistryHandle<EntityType<EntityBuilding>> FALLING_BUILDING;
-    public static RegistryHandle<EntityType<EntityChemical>> CHEMICAL;
+    public static RegistryHandle<EntityType<C130Entity>> C130;
+    public static RegistryHandle<EntityType<BomberEntity>> BOMBER;
+    public static RegistryHandle<EntityType<BombletZetaEntity>> BOMBLET_ZETA;
+    public static RegistryHandle<EntityType<GrenadeUniversalEntity>> GRENADE_UNIVERSAL;
+    public static RegistryHandle<EntityType<GrenadeBouncyGenericEntity>> GRENADE_BOUNCY_GENERIC;
+    public static RegistryHandle<EntityType<DisperserCanisterEntity>> DISPERSER_CANISTER;
+    public static RegistryHandle<EntityType<WastePearlEntity>> WASTE_PEARL;
+    public static RegistryHandle<EntityType<ItemBuoyantEntity>> ITEM_BUOYANT;
+    public static RegistryHandle<EntityType<NukeExplosionMK3Entity>> NUKE_EXPLOSION_MK3;
+    public static RegistryHandle<EntityType<CloudFleijaEntity>> CLOUD_FLEIJA;
+    public static RegistryHandle<EntityType<CloudSoliniumEntity>> CLOUD_SOLINIUM;
+    public static RegistryHandle<EntityType<CloudFleijaRainbowEntity>> CLOUD_RAINBOW;
+    public static RegistryHandle<EntityType<ParachuteCrateEntity>> PARACHUTE_CRATE;
+    public static RegistryHandle<EntityType<BoxcarEntity>> BOXCAR;
+    public static RegistryHandle<EntityType<TorpedoEntity>> TORPEDO;
+    public static RegistryHandle<EntityType<DuchessGambitEntity>> DUCHESS_GAMBIT;
+    public static RegistryHandle<EntityType<BuildingEntity>> FALLING_BUILDING;
+    public static RegistryHandle<EntityType<ChemicalEntity>> CHEMICAL;
 
-    public static RegistryHandle<EntityType<EntitySoyuz>> SOYUZ;
-    public static RegistryHandle<EntityType<EntitySoyuzCapsule>> SOYUZ_CAPSULE;
-    public static RegistryHandle<EntityType<EntitySatellitePod>> SATELLITE_POD;
-    public static RegistryHandle<EntityType<EntityChopperMine>> CHOPPER_MINE;
+    public static RegistryHandle<EntityType<SoyuzEntity>> SOYUZ;
+    public static RegistryHandle<EntityType<SoyuzCapsule>> SOYUZ_CAPSULE;
+    public static RegistryHandle<EntityType<SatellitePod>> SATELLITE_POD;
+    public static RegistryHandle<EntityType<ChopperMineEntity>> CHOPPER_MINE;
 
-    public static RegistryHandle<EntityType<EntityBobmazon>> BOBMAZON_DELIVERY;
-    public static RegistryHandle<EntityType<EntityMissileAntiBallistic>> MISSILE_ANTI;
-    public static RegistryHandle<EntityType<EntityBlackHole>> BLACK_HOLE;
-    public static RegistryHandle<EntityType<EntityQuasar>> DIGAMMA_QUASAR;
-    public static RegistryHandle<EntityType<EntityEMPBlast>> EMP_BLAST;
-    public static RegistryHandle<EntityType<EntityEMP>> EMP_LOGIC;
-    public static RegistryHandle<EntityType<EntityBalefire>> BALEFIRE;
-    public static RegistryHandle<EntityType<EntityDeathBlast>> LASER_BLAST;
-    public static RegistryHandle<EntityType<EntityOrbitalLaser>> ORBITAL_LASER;
-    public static RegistryHandle<EntityType<EntityTomBlast>> TOM_BUST;
-    public static RegistryHandle<EntityType<EntityRagingVortex>> RAGING_VORTEX;
-    public static RegistryHandle<EntityType<EntityCloudTom>> MOONSTONE_BLAST;
-    public static RegistryHandle<EntityType<EntityArtilleryShell>> ARTILLERY_SHELL;
-    public static RegistryHandle<EntityType<EntityArtilleryRocket>> HIMARS;
-    public static RegistryHandle<EntityType<EntityB92Beam>> BEAM_BOMB;
-    public static RegistryHandle<EntityType<EntityBullet>> BULLET;
-    public static RegistryHandle<EntityType<EntityBurningFOEQ>> BURNING_FOEQ;
-    public static RegistryHandle<EntityType<EntityFallingNuke>> FALLING_BOMB;
-    public static RegistryHandle<EntityType<EntitySiegeLaser>> SIEGE_LASER;
-    public static RegistryHandle<EntityType<EntitySawblade>> STRAY_SAW;
-    public static RegistryHandle<EntityType<EntityTom>> TOM_THE_MOONSTONE;
+    public static RegistryHandle<EntityType<BobmazonEntity>> BOBMAZON_DELIVERY;
+    public static RegistryHandle<EntityType<MissileAntiBallisticEntity>> MISSILE_ANTI;
+    public static RegistryHandle<EntityType<BlackHoleEntity>> BLACK_HOLE;
+    public static RegistryHandle<EntityType<QuasarEntity>> DIGAMMA_QUASAR;
+    public static RegistryHandle<EntityType<EMPBlastEntity>> EMP_BLAST;
+    public static RegistryHandle<EntityType<EMPEntity>> EMP_LOGIC;
+    public static RegistryHandle<EntityType<BalefireEntity>> BALEFIRE;
+    public static RegistryHandle<EntityType<DeathBlastEntity>> LASER_BLAST;
+    public static RegistryHandle<EntityType<OrbitalLaserEntity>> ORBITAL_LASER;
+    public static RegistryHandle<EntityType<TomBlastEntity>> TOM_BUST;
+    public static RegistryHandle<EntityType<RagingVortexEntity>> RAGING_VORTEX;
+    public static RegistryHandle<EntityType<CloudTomEntity>> MOONSTONE_BLAST;
+    public static RegistryHandle<EntityType<ArtilleryShellEntity>> ARTILLERY_SHELL;
+    public static RegistryHandle<EntityType<ArtilleryRocketEntity>> HIMARS;
+    public static RegistryHandle<EntityType<B92BeamEntity>> BEAM_BOMB;
+    public static RegistryHandle<EntityType<BulletEntity>> BULLET;
+    public static RegistryHandle<EntityType<BurningFOEQEntity>> BURNING_FOEQ;
+    public static RegistryHandle<EntityType<FallingNukeEntity>> FALLING_BOMB;
+    public static RegistryHandle<EntityType<SiegeLaserEntity>> SIEGE_LASER;
+    public static RegistryHandle<EntityType<SawbladeEntity>> STRAY_SAW;
+    public static RegistryHandle<EntityType<TomEntity>> TOM_THE_MOONSTONE;
 
     private ModEntities() {}
 
@@ -335,7 +334,7 @@ public final class ModEntities {
                 Reg.entity(
                         "beam_discharge",
                         () ->
-                                EntityType.Builder.of(EntityDischargeBeam::new, MobCategory.MISC)
+                                EntityType.Builder.of(DischargeBeamEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .fireImmune()
@@ -345,12 +344,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("beam_discharge"))));
+                                                        RegistryUtil.id("beam_discharge"))));
         NUKE_EXPLOSION_MK5 =
                 Reg.entity(
                         "nuke_mk5",
                         () ->
-                                EntityType.Builder.of(EntityNukeExplosionMK5::new, MobCategory.MISC)
+                                EntityType.Builder.of(NukeExplosionMK5Entity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 1.0F)
@@ -359,12 +358,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("nuke_mk5"))));
+                                                        RegistryUtil.id("nuke_mk5"))));
         FALLOUT_RAIN =
                 Reg.entity(
                         "fallout_rain",
                         () ->
-                                EntityType.Builder.of(EntityFalloutRain::new, MobCategory.MISC)
+                                EntityType.Builder.of(FalloutRainEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 1.0F)
@@ -373,12 +372,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("fallout_rain"))));
+                                                        RegistryUtil.id("fallout_rain"))));
         UNDEAD_SOLDIER =
                 Reg.entity(
                         "entity_undead_soldier",
                         () ->
-                                EntityType.Builder.of(EntityUndeadSoldier::new, MobCategory.MONSTER)
+                                EntityType.Builder.of(UndeadSoldierEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .sized(.6F, 1.95F)
@@ -387,16 +386,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_undead_soldier"))));
-        FabricRegistrar.registerLivingAttributes(
-                UNDEAD_SOLDIER, EntityUndeadSoldier::createAttributes);
+                                                        RegistryUtil.id("entity_undead_soldier"))));
+        Registrar.registerLivingAttributes(UNDEAD_SOLDIER, UndeadSoldierEntity::createAttributes);
 
         FBI =
                 Reg.entity(
                         "entity_fbi",
                         () ->
-                                EntityType.Builder.<EntityFBI>of(
-                                                EntityFBI::new, MobCategory.MONSTER)
+                                EntityType.Builder.<FBIEntity>of(
+                                                FBIEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(0.6F, 1.8F)
                                         .fireImmune()
@@ -405,15 +403,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_fbi"))));
-        FabricRegistrar.registerLivingAttributes(FBI, EntityFBI::createAttributes);
+                                                        RegistryUtil.id("entity_fbi"))));
+        Registrar.registerLivingAttributes(FBI, FBIEntity::createAttributes);
 
         CREEPER_GOLD =
                 Reg.entity(
                         "entity_mob_gold_creeper",
                         () ->
-                                EntityType.Builder.<EntityCreeperGold>of(
-                                                EntityCreeperGold::new, MobCategory.MONSTER)
+                                EntityType.Builder.<CreeperGoldEntity>of(
+                                                CreeperGoldEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -421,9 +419,10 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_mob_gold_creeper"))));
-        FabricRegistrar.registerLivingAttributes(CREEPER_GOLD, Creeper::createAttributes);
-        FabricRegistrar.registerSpawnPlacement(
+                                                        RegistryUtil.id(
+                                                                "entity_mob_gold_creeper"))));
+        Registrar.registerLivingAttributes(CREEPER_GOLD, Creeper::createAttributes);
+        Registrar.registerSpawnPlacement(
                 CREEPER_GOLD,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -433,8 +432,8 @@ public final class ModEntities {
                 Reg.entity(
                         "entity_mob_volatile_creeper",
                         () ->
-                                EntityType.Builder.<EntityCreeperVolatile>of(
-                                                EntityCreeperVolatile::new, MobCategory.MONSTER)
+                                EntityType.Builder.<CreeperVolatileEntity>of(
+                                                CreeperVolatileEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -442,10 +441,10 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id(
+                                                        RegistryUtil.id(
                                                                 "entity_mob_volatile_creeper"))));
-        FabricRegistrar.registerLivingAttributes(CREEPER_VOLATILE, Creeper::createAttributes);
-        FabricRegistrar.registerSpawnPlacement(
+        Registrar.registerLivingAttributes(CREEPER_VOLATILE, Creeper::createAttributes);
+        Registrar.registerSpawnPlacement(
                 CREEPER_VOLATILE,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -455,8 +454,8 @@ public final class ModEntities {
                 Reg.entity(
                         "entity_mob_phosgene_creeper",
                         () ->
-                                EntityType.Builder.<EntityCreeperPhosgene>of(
-                                                EntityCreeperPhosgene::new, MobCategory.MONSTER)
+                                EntityType.Builder.<CreeperPhosgeneEntity>of(
+                                                CreeperPhosgeneEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -464,10 +463,10 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id(
+                                                        RegistryUtil.id(
                                                                 "entity_mob_phosgene_creeper"))));
-        FabricRegistrar.registerLivingAttributes(CREEPER_PHOSGENE, Creeper::createAttributes);
-        FabricRegistrar.registerSpawnPlacement(
+        Registrar.registerLivingAttributes(CREEPER_PHOSGENE, Creeper::createAttributes);
+        Registrar.registerSpawnPlacement(
                 CREEPER_PHOSGENE,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -477,8 +476,8 @@ public final class ModEntities {
                 Reg.entity(
                         "entity_mob_tainted_creeper",
                         () ->
-                                EntityType.Builder.<EntityCreeperTainted>of(
-                                                EntityCreeperTainted::new, MobCategory.MONSTER)
+                                EntityType.Builder.<CreeperTaintedEntity>of(
+                                                CreeperTaintedEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -486,16 +485,16 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_mob_tainted_creeper"))));
-        FabricRegistrar.registerLivingAttributes(
-                CREEPER_TAINTED, EntityCreeperTainted::createAttributes);
+                                                        RegistryUtil.id(
+                                                                "entity_mob_tainted_creeper"))));
+        Registrar.registerLivingAttributes(CREEPER_TAINTED, CreeperTaintedEntity::createAttributes);
 
         CREEPER_NUCLEAR =
                 Reg.entity(
                         "entity_mob_nuclear_creeper",
                         () ->
-                                EntityType.Builder.<EntityCreeperNuclear>of(
-                                                EntityCreeperNuclear::new, MobCategory.MONSTER)
+                                EntityType.Builder.<CreeperNuclearEntity>of(
+                                                CreeperNuclearEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(0.6F, 1.7F)
                                         .clientTrackingRange(5)
@@ -503,16 +502,16 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_mob_nuclear_creeper"))));
-        FabricRegistrar.registerLivingAttributes(
-                CREEPER_NUCLEAR, EntityCreeperNuclear::createAttributes);
+                                                        RegistryUtil.id(
+                                                                "entity_mob_nuclear_creeper"))));
+        Registrar.registerLivingAttributes(CREEPER_NUCLEAR, CreeperNuclearEntity::createAttributes);
 
         CYBER_CRAB =
                 Reg.entity(
                         "entity_cyber_crab",
                         () ->
-                                EntityType.Builder.<EntityCyberCrab>of(
-                                                EntityCyberCrab::new, MobCategory.MONSTER)
+                                EntityType.Builder.<CyberCrabEntity>of(
+                                                CyberCrabEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.75F, 0.35F)
@@ -521,15 +520,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cyber_crab"))));
-        FabricRegistrar.registerLivingAttributes(CYBER_CRAB, EntityCyberCrab::createAttributes);
+                                                        RegistryUtil.id("entity_cyber_crab"))));
+        Registrar.registerLivingAttributes(CYBER_CRAB, CyberCrabEntity::createAttributes);
 
         TESLA_CRAB =
                 Reg.entity(
                         "entity_tesla_crab",
                         () ->
-                                EntityType.Builder.<EntityTeslaCrab>of(
-                                                EntityTeslaCrab::new, MobCategory.MONSTER)
+                                EntityType.Builder.<TeslaCrabEntity>of(
+                                                TeslaCrabEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(0.75F, 1.25F)
                                         .clientTrackingRange(5)
@@ -537,15 +536,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_tesla_crab"))));
-        FabricRegistrar.registerLivingAttributes(TESLA_CRAB, EntityTeslaCrab::createAttributes);
+                                                        RegistryUtil.id("entity_tesla_crab"))));
+        Registrar.registerLivingAttributes(TESLA_CRAB, TeslaCrabEntity::createAttributes);
 
         TAINT_CRAB =
                 Reg.entity(
                         "entity_taint_crab",
                         () ->
-                                EntityType.Builder.<EntityTaintCrab>of(
-                                                EntityTaintCrab::new, MobCategory.MONSTER)
+                                EntityType.Builder.<TaintCrabEntity>of(
+                                                TaintCrabEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(1.25F, 1.25F)
                                         .clientTrackingRange(5)
@@ -553,30 +552,30 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_taint_crab"))));
-        FabricRegistrar.registerLivingAttributes(TAINT_CRAB, EntityTaintCrab::createAttributes);
+                                                        RegistryUtil.id("entity_taint_crab"))));
+        Registrar.registerLivingAttributes(TAINT_CRAB, TaintCrabEntity::createAttributes);
 
         DUCK =
                 Reg.entity(
                         "entity_fucc_a_ducc",
                         () ->
-                                EntityType.Builder.<EntityDuck>of(
-                                                EntityDuck::new, MobCategory.CREATURE)
+                                EntityType.Builder.<DuckEntity>of(
+                                                DuckEntity::new, MobCategory.CREATURE)
                                         .sized(0.4F, 0.7F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_fucc_a_ducc"))));
-        FabricRegistrar.registerLivingAttributes(DUCK, Chicken::createAttributes);
+                                                        RegistryUtil.id("entity_fucc_a_ducc"))));
+        Registrar.registerLivingAttributes(DUCK, Chicken::createAttributes);
 
         GHOST =
                 Reg.entity(
                         "entity_ghost",
                         () ->
-                                EntityType.Builder.<EntityGhost>of(
-                                                EntityGhost::new, MobCategory.MONSTER)
+                                EntityType.Builder.<GhostEntity>of(
+                                                GhostEntity::new, MobCategory.MONSTER)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(63)
@@ -584,15 +583,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_ghost"))));
-        FabricRegistrar.registerLivingAttributes(GHOST, EntityGhost::createAttributes);
+                                                        RegistryUtil.id("entity_ghost"))));
+        Registrar.registerLivingAttributes(GHOST, GhostEntity::createAttributes);
 
         TEST_DUMMY =
                 Reg.entity(
                         "entity_test_dummy",
                         () ->
-                                EntityType.Builder.<EntityDummy>of(
-                                                EntityDummy::new, MobCategory.CREATURE)
+                                EntityType.Builder.<DummyEntity>of(
+                                                DummyEntity::new, MobCategory.CREATURE)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(5)
@@ -600,15 +599,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_test_dummy"))));
-        FabricRegistrar.registerLivingAttributes(TEST_DUMMY, EntityDummy::createAttributes);
+                                                        RegistryUtil.id("entity_test_dummy"))));
+        Registrar.registerLivingAttributes(TEST_DUMMY, DummyEntity::createAttributes);
 
         BLOCK_SPIDER =
                 Reg.entity(
                         "entity_taintcrawler",
                         () ->
-                                EntityType.Builder.<EntityBlockSpider>of(
-                                                EntityBlockSpider::new, MobCategory.MONSTER)
+                                EntityType.Builder.<BlockSpiderEntity>of(
+                                                BlockSpiderEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .sized(0.95F, 1.25F)
@@ -617,15 +616,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_taintcrawler"))));
-        FabricRegistrar.registerLivingAttributes(BLOCK_SPIDER, EntityBlockSpider::createAttributes);
+                                                        RegistryUtil.id("entity_taintcrawler"))));
+        Registrar.registerLivingAttributes(BLOCK_SPIDER, BlockSpiderEntity::createAttributes);
 
         QUACKOS =
                 Reg.entity(
                         "entity_elder_one",
                         () ->
-                                EntityType.Builder.<EntityQuackos>of(
-                                                EntityQuackos::new, MobCategory.CREATURE)
+                                EntityType.Builder.<QuackosEntity>of(
+                                                QuackosEntity::new, MobCategory.CREATURE)
                                         .noLootTable()
                                         .sized(7.5F, 17.5F)
                                         .clientTrackingRange(5)
@@ -633,15 +632,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_elder_one"))));
-        FabricRegistrar.registerLivingAttributes(QUACKOS, Chicken::createAttributes);
+                                                        RegistryUtil.id("entity_elder_one"))));
+        Registrar.registerLivingAttributes(QUACKOS, Chicken::createAttributes);
 
         PLASTIC_BAG =
                 Reg.entity(
                         "entity_plastic_bag",
                         () ->
-                                EntityType.Builder.<EntityPlasticBag>of(
-                                                EntityPlasticBag::new, MobCategory.WATER_CREATURE)
+                                EntityType.Builder.<PlasticBagEntity>of(
+                                                PlasticBagEntity::new, MobCategory.WATER_CREATURE)
                                         .noLootTable()
                                         .sized(0.45F, 0.45F)
                                         .clientTrackingRange(5)
@@ -649,9 +648,9 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_plastic_bag"))));
-        FabricRegistrar.registerLivingAttributes(PLASTIC_BAG, EntityPlasticBag::createAttributes);
-        FabricRegistrar.registerSpawnPlacement(
+                                                        RegistryUtil.id("entity_plastic_bag"))));
+        Registrar.registerLivingAttributes(PLASTIC_BAG, PlasticBagEntity::createAttributes);
+        Registrar.registerSpawnPlacement(
                 PLASTIC_BAG,
                 SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -661,17 +660,17 @@ public final class ModEntities {
                 Reg.entity(
                         "entity_pigeon",
                         () ->
-                                EntityType.Builder.<EntityPigeon>of(
-                                                EntityPigeon::new, MobCategory.CREATURE)
+                                EntityType.Builder.<PigeonEntity>of(
+                                                PigeonEntity::new, MobCategory.CREATURE)
                                         .sized(0.5F, 1.0F)
                                         .clientTrackingRange(5)
                                         .updateInterval(3)
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_pigeon"))));
-        FabricRegistrar.registerLivingAttributes(PIGEON, EntityPigeon::createAttributes);
-        FabricRegistrar.registerSpawnPlacement(
+                                                        RegistryUtil.id("entity_pigeon"))));
+        Registrar.registerLivingAttributes(PIGEON, PigeonEntity::createAttributes);
+        Registrar.registerSpawnPlacement(
                 PIGEON,
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -688,12 +687,12 @@ public final class ModEntities {
                 5,
                 10);
 
-        Reg.EntityHandle<EntityGlyphid> grunt =
+        Reg.EntityHandle<GlyphidEntity> grunt =
                 Reg.entity(
                         "entity_glyphid",
                         () ->
-                                EntityType.Builder.<EntityGlyphid>of(
-                                                EntityGlyphid::new, MobCategory.MONSTER)
+                                EntityType.Builder.<GlyphidEntity>of(
+                                                GlyphidEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(1.75F, 1F)
                                         .clientTrackingRange(5)
@@ -701,20 +700,20 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_glyphid"))));
+                                                        RegistryUtil.id("entity_glyphid"))));
         GLYPHID = grunt;
-        FabricRegistrar.registerLivingAttributes(GLYPHID, EntityGlyphid::createAttributes);
-        EntityGlyphidBrenda.GRUNT_TYPE = grunt;
+        Registrar.registerLivingAttributes(GLYPHID, GlyphidEntity::createAttributes);
+        GlyphidBrendaEntity.GRUNT_TYPE = grunt;
 
-        EntityGlyphidBrawler.register();
-        GLYPHID_BRAWLER = EntityGlyphidBrawler.TYPE;
+        GlyphidBrawlerEntity.register();
+        GLYPHID_BRAWLER = GlyphidBrawlerEntity.TYPE;
 
         GLYPHID_BEHEMOTH =
                 Reg.entity(
                         "entity_glyphid_behemoth",
                         () ->
-                                EntityType.Builder.<EntityGlyphidBehemoth>of(
-                                                EntityGlyphidBehemoth::new, MobCategory.MONSTER)
+                                EntityType.Builder.<GlyphidBehemothEntity>of(
+                                                GlyphidBehemothEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(2.5F, 1.5F)
                                         .clientTrackingRange(5)
@@ -722,16 +721,17 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_glyphid_behemoth"))));
-        FabricRegistrar.registerLivingAttributes(
-                GLYPHID_BEHEMOTH, EntityGlyphidBehemoth::createAttributes);
+                                                        RegistryUtil.id(
+                                                                "entity_glyphid_behemoth"))));
+        Registrar.registerLivingAttributes(
+                GLYPHID_BEHEMOTH, GlyphidBehemothEntity::createAttributes);
 
         GLYPHID_BRENDA =
                 Reg.entity(
                         "entity_glyphid_brenda",
                         () ->
-                                EntityType.Builder.<EntityGlyphidBrenda>of(
-                                                EntityGlyphidBrenda::new, MobCategory.MONSTER)
+                                EntityType.Builder.<GlyphidBrendaEntity>of(
+                                                GlyphidBrendaEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(2.5F, 1.75F)
                                         .clientTrackingRange(5)
@@ -739,22 +739,21 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_glyphid_brenda"))));
-        FabricRegistrar.registerLivingAttributes(
-                GLYPHID_BRENDA, EntityGlyphidBrenda::createAttributes);
+                                                        RegistryUtil.id("entity_glyphid_brenda"))));
+        Registrar.registerLivingAttributes(GLYPHID_BRENDA, GlyphidBrendaEntity::createAttributes);
 
-        EntityGlyphidBombardier.register();
-        GLYPHID_BOMBARDIER = EntityGlyphidBombardier.TYPE;
+        GlyphidBombardierEntity.register();
+        GLYPHID_BOMBARDIER = GlyphidBombardierEntity.TYPE;
 
-        EntityGlyphidBlaster.register();
-        GLYPHID_BLASTER = EntityGlyphidBlaster.TYPE;
+        GlyphidBlasterEntity.register();
+        GLYPHID_BLASTER = GlyphidBlasterEntity.TYPE;
 
         GLYPHID_SCOUT =
                 Reg.entity(
                         "entity_glyphid_scout",
                         () ->
-                                EntityType.Builder.<EntityGlyphidScout>of(
-                                                EntityGlyphidScout::new, MobCategory.MONSTER)
+                                EntityType.Builder.<GlyphidScoutEntity>of(
+                                                GlyphidScoutEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(1.25F, 0.75F)
                                         .clientTrackingRange(5)
@@ -762,16 +761,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_glyphid_scout"))));
-        FabricRegistrar.registerLivingAttributes(
-                GLYPHID_SCOUT, EntityGlyphidScout::createAttributes);
+                                                        RegistryUtil.id("entity_glyphid_scout"))));
+        Registrar.registerLivingAttributes(GLYPHID_SCOUT, GlyphidScoutEntity::createAttributes);
 
         GLYPHID_NUCLEAR =
                 Reg.entity(
                         "entity_glyphid_nuclear",
                         () ->
-                                EntityType.Builder.<EntityGlyphidNuclear>of(
-                                                EntityGlyphidNuclear::new, MobCategory.MONSTER)
+                                EntityType.Builder.<GlyphidNuclearEntity>of(
+                                                GlyphidNuclearEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .sized(2.5F, 1.75F)
                                         .clientTrackingRange(5)
@@ -779,27 +777,27 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_glyphid_nuclear"))));
-        FabricRegistrar.registerLivingAttributes(
-                GLYPHID_NUCLEAR, EntityGlyphidNuclear::createAttributes);
+                                                        RegistryUtil.id(
+                                                                "entity_glyphid_nuclear"))));
+        Registrar.registerLivingAttributes(GLYPHID_NUCLEAR, GlyphidNuclearEntity::createAttributes);
 
-        EntityGlyphidDigger.register();
-        GLYPHID_DIGGER = EntityGlyphidDigger.TYPE;
+        GlyphidDiggerEntity.register();
+        GLYPHID_DIGGER = GlyphidDiggerEntity.TYPE;
 
-        EntityWaypoint.register();
-        GLYPHID_WAYPOINT = EntityWaypoint.TYPE;
+        WaypointEntity.register();
+        GLYPHID_WAYPOINT = WaypointEntity.TYPE;
 
-        EntityAcidBomb.register();
-        ACID_BOMB = EntityAcidBomb.TYPE;
+        AcidBombEntity.register();
+        ACID_BOMB = AcidBombEntity.TYPE;
 
-        EntityParasiteMaggot.register();
-        PARASITE_MAGGOT = EntityParasiteMaggot.TYPE;
+        ParasiteMaggotEntity.register();
+        PARASITE_MAGGOT = ParasiteMaggotEntity.TYPE;
 
         NUKE_TOREX =
                 Reg.entity(
                         "nuke_torex",
                         () ->
-                                EntityType.Builder.of(EntityNukeTorex::new, MobCategory.MISC)
+                                EntityType.Builder.of(NukeTorexEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .fireImmune()
@@ -809,13 +807,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("nuke_torex"))));
+                                                        RegistryUtil.id("nuke_torex"))));
         VORTEX =
                 Reg.entity(
                         "entity_vortex",
                         () ->
-                                EntityType.Builder.<EntityVortex>of(
-                                                EntityVortex::new, MobCategory.MISC)
+                                EntityType.Builder.<VortexEntity>of(
+                                                VortexEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.6F, 1.8F)
@@ -824,13 +822,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_vortex"))));
+                                                        RegistryUtil.id("entity_vortex"))));
         METEOR =
                 Reg.entity(
                         "entity_meteor",
                         () ->
-                                EntityType.Builder.<EntityMeteor>of(
-                                                EntityMeteor::new, MobCategory.MISC)
+                                EntityType.Builder.<MeteorEntity>of(
+                                                MeteorEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(4F, 4F)
@@ -839,30 +837,18 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_meteor"))));
+                                                        RegistryUtil.id("entity_meteor"))));
 
-        MISSILE_GENERIC =
-                ModEntities.<EntityMissileGeneric>missile(
-                        "missile_generic", EntityMissileGeneric::new);
-        MISSILE_INCENDIARY =
-                ModEntities.<EntityMissileIncendiary>missile(
-                        "missile_incendiary", EntityMissileIncendiary::new);
-        MISSILE_DECOY =
-                ModEntities.<EntityMissileDecoy>missile("missile_decoy", EntityMissileDecoy::new);
-        MISSILE_BUSTER =
-                ModEntities.<EntityMissileBunkerBuster>missile(
-                        "missile_buster", EntityMissileBunkerBuster::new);
-        MISSILE_STRONG =
-                ModEntities.<EntityMissileStrong>missile(
-                        "missile_strong", EntityMissileStrong::new);
+        MISSILE_GENERIC = standard("missile_generic", () -> MissileVariants.GENERIC);
+        MISSILE_INCENDIARY = standard("missile_incendiary", () -> MissileVariants.INCENDIARY);
+        MISSILE_DECOY = standard("missile_decoy", () -> MissileVariants.DECOY);
+        MISSILE_BUSTER = standard("missile_buster", () -> MissileVariants.BUSTER);
+        MISSILE_STRONG = standard("missile_strong", () -> MissileVariants.STRONG);
         MISSILE_INCENDIARY_STRONG =
-                ModEntities.<EntityMissileIncendiaryStrong>missile(
-                        "missile_incendiary_strong", EntityMissileIncendiaryStrong::new);
+                standard("missile_incendiary_strong", () -> MissileVariants.INCENDIARY_STRONG);
         MISSILE_BUSTER_STRONG =
-                ModEntities.<EntityMissileBusterStrong>missile(
-                        "missile_buster_strong", EntityMissileBusterStrong::new);
-        MISSILE_BURST =
-                ModEntities.<EntityMissileBurst>missile("missile_burst", EntityMissileBurst::new);
+                standard("missile_buster_strong", () -> MissileVariants.BUSTER_STRONG);
+        MISSILE_BURST = standard("missile_burst", () -> MissileVariants.BURST);
 
         MISSILE_TEST =
                 ModEntities.<EntityMissileTest>missile("missile_test", EntityMissileTest::new);
@@ -877,78 +863,67 @@ public final class ModEntities {
                 ModEntities.<EntityMissileTaint>missile("missile_taint", EntityMissileTaint::new);
         MISSILE_EMP = ModEntities.<EntityMissileEMP>missile("missile_emp", EntityMissileEMP::new);
 
-        MISSILE_CLUSTER =
-                ModEntities.<EntityMissileCluster>missile(
-                        "missile_cluster", EntityMissileCluster::new);
+        MISSILE_CLUSTER = standard("missile_cluster", () -> MissileVariants.CLUSTER);
         MISSILE_CLUSTER_STRONG =
-                ModEntities.<EntityMissileClusterStrong>missile(
-                        "missile_cluster_strong", EntityMissileClusterStrong::new);
-        MISSILE_EMP_STRONG =
-                ModEntities.<EntityMissileEMPStrong>missile(
-                        "missile_emp_strong", EntityMissileEMPStrong::new);
-        MISSILE_RAIN =
-                ModEntities.<EntityMissileRain>missile("missile_rain", EntityMissileRain::new);
-        MISSILE_DRILL =
-                ModEntities.<EntityMissileDrill>missile("missile_drill", EntityMissileDrill::new);
-        MISSILE_VOLCANO =
-                ModEntities.<EntityMissileVolcano>missile(
-                        "missile_volcano", EntityMissileVolcano::new);
+                standard("missile_cluster_strong", () -> MissileVariants.CLUSTER_STRONG);
+        MISSILE_EMP_STRONG = standard("missile_emp_strong", () -> MissileVariants.EMP_STRONG);
+        MISSILE_RAIN = standard("missile_rain", () -> MissileVariants.RAIN);
+        MISSILE_DRILL = standard("missile_drill", () -> MissileVariants.DRILL);
+        MISSILE_VOLCANO = standard("missile_volcano", () -> MissileVariants.VOLCANO);
 
         MISSILE_CUSTOM =
-                ModEntities.<EntityMissileCustom>missile(
-                        "entity_custom_missile", EntityMissileCustom::new);
-        MISSILE_SHUTTLE =
-                ModEntities.<EntityMissileShuttle>missile(
-                        "entity_missile_shuttle", EntityMissileShuttle::new);
-        MISSILE_INFERNO =
-                ModEntities.<EntityMissileInferno>missile(
-                        "missile_inferno", EntityMissileInferno::new);
-        MISSILE_NUCLEAR =
-                ModEntities.<EntityMissileNuclear>missile(
-                        "missile_nuclear", EntityMissileNuclear::new);
-        MISSILE_NUCLEAR_CLUSTER =
-                ModEntities.<EntityMissileMirv>missile(
-                        "missile_nuclear_cluster", EntityMissileMirv::new);
-        MISSILE_STEALTH =
-                ModEntities.<EntityMissileStealth>missile(
-                        "missile_stealth", EntityMissileStealth::new);
+                ModEntities.<CustomMissile>missile("entity_custom_missile", CustomMissile::new);
+        MISSILE_SHUTTLE = standard("entity_missile_shuttle", () -> MissileVariants.SHUTTLE);
+        MISSILE_INFERNO = standard("missile_inferno", () -> MissileVariants.INFERNO);
+        MISSILE_NUCLEAR = standard("missile_nuclear", () -> MissileVariants.NUCLEAR);
+        MISSILE_NUCLEAR_CLUSTER = standard("missile_nuclear_cluster", () -> MissileVariants.MIRV);
+        MISSILE_STEALTH = standard("missile_stealth", () -> MissileVariants.STEALTH);
         MISSILE_DOOMSDAY =
                 Reg.entity(
                         "missile_doomsday",
                         () ->
-                                EntityType.Builder.<EntityMissileDoomsday>of(
-                                                EntityMissileDoomsday::new, MobCategory.MISC)
+                                EntityType.Builder.<StandardMissile>of(
+                                                (type, level) ->
+                                                        new StandardMissile(
+                                                                type,
+                                                                level,
+                                                                MissileVariants.DOOMSDAY),
+                                                MobCategory.MISC)
                                         .noLootTable()
-                                        .fireImmune()
                                         .sized(1.5F, 1.5F)
                                         .clientTrackingRange(63)
                                         .updateInterval(1)
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("missile_doomsday"))));
+                                                        RegistryUtil.id("missile_doomsday"))));
         MISSILE_DOOMSDAY_RUSTED =
                 Reg.entity(
                         "missile_doomsday_rusted",
                         () ->
-                                EntityType.Builder.<EntityMissileDoomsdayRusted>of(
-                                                EntityMissileDoomsdayRusted::new, MobCategory.MISC)
+                                EntityType.Builder.<StandardMissile>of(
+                                                (type, level) ->
+                                                        new StandardMissile(
+                                                                type,
+                                                                level,
+                                                                MissileVariants.DOOMSDAY_RUSTED),
+                                                MobCategory.MISC)
                                         .noLootTable()
-                                        .fireImmune()
                                         .sized(1.5F, 1.5F)
                                         .clientTrackingRange(63)
                                         .updateInterval(1)
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("missile_doomsday_rusted"))));
+                                                        RegistryUtil.id(
+                                                                "missile_doomsday_rusted"))));
 
         SHRAPNEL =
                 Reg.entity(
                         "shrapnel",
                         () ->
-                                EntityType.Builder.<EntityShrapnel>of(
-                                                EntityShrapnel::new, MobCategory.MISC)
+                                EntityType.Builder.<ShrapnelEntity>of(
+                                                ShrapnelEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .fireImmune()
@@ -958,13 +933,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("shrapnel"))));
+                                                        RegistryUtil.id("shrapnel"))));
         BULLET_MK4 =
                 Reg.entity(
                         "bullet_mk4",
                         () ->
-                                EntityType.Builder.<EntityBulletBaseMK4>of(
-                                                EntityBulletBaseMK4::new, MobCategory.MISC)
+                                EntityType.Builder.<BulletBaseMK4Entity>of(
+                                                BulletBaseMK4Entity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .fireImmune()
@@ -974,13 +949,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("bullet_mk4"))));
+                                                        RegistryUtil.id("bullet_mk4"))));
         BULLET_BEAM =
                 Reg.entity(
                         "bullet_beam",
                         () ->
-                                EntityType.Builder.<EntityBulletBeamBase>of(
-                                                EntityBulletBeamBase::new, MobCategory.MISC)
+                                EntityType.Builder.<BulletBeamBaseEntity>of(
+                                                BulletBeamBaseEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .fireImmune()
@@ -990,13 +965,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("bullet_beam"))));
+                                                        RegistryUtil.id("bullet_beam"))));
         FIRE_LINGERING =
                 Reg.entity(
                         "fire_lingering",
                         () ->
-                                EntityType.Builder.<EntityFireLingering>of(
-                                                EntityFireLingering::new, MobCategory.MISC)
+                                EntityType.Builder.<FireLingeringEntity>of(
+                                                FireLingeringEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .fireImmune()
@@ -1006,12 +981,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("fire_lingering"))));
+                                                        RegistryUtil.id("fire_lingering"))));
         COIN =
                 Reg.entity(
                         "coin",
                         () ->
-                                EntityType.Builder.<EntityCoin>of(EntityCoin::new, MobCategory.MISC)
+                                EntityType.Builder.<CoinEntity>of(CoinEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .sized(1F, 1F)
@@ -1020,13 +995,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("coin"))));
+                                                        RegistryUtil.id("coin"))));
         RUBBLE =
                 Reg.entity(
                         "rubble",
                         () ->
-                                EntityType.Builder.<EntityRubble>of(
-                                                EntityRubble::new, MobCategory.MISC)
+                                EntityType.Builder.<RubbleEntity>of(
+                                                RubbleEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(63)
@@ -1034,12 +1009,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("rubble"))));
+                                                        RegistryUtil.id("rubble"))));
         COG =
                 Reg.entity(
                         "entity_stray_cog",
                         () ->
-                                EntityType.Builder.<EntityCog>of(EntityCog::new, MobCategory.MISC)
+                                EntityType.Builder.<CogEntity>of(CogEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1.0F, 1.0F)
                                         .clientTrackingRange(63)
@@ -1047,13 +1022,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_stray_cog"))));
+                                                        RegistryUtil.id("entity_stray_cog"))));
         RBMK_DEBRIS =
                 Reg.entity(
                         "rbmk_debris",
                         () ->
-                                EntityType.Builder.<EntityRBMKDebris>of(
-                                                EntityRBMKDebris::new, MobCategory.MISC)
+                                EntityType.Builder.<RBMKDebrisEntity>of(
+                                                RBMKDebrisEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 1.0F)
@@ -1062,13 +1037,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("rbmk_debris"))));
+                                                        RegistryUtil.id("rbmk_debris"))));
         ZIRNOX_DEBRIS =
                 Reg.entity(
                         "zirnox_debris",
                         () ->
-                                EntityType.Builder.<EntityZirnoxDebris>of(
-                                                EntityZirnoxDebris::new, MobCategory.MISC)
+                                EntityType.Builder.<ZirnoxDebrisEntity>of(
+                                                ZirnoxDebrisEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 1.0F)
@@ -1077,12 +1052,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("zirnox_debris"))));
+                                                        RegistryUtil.id("zirnox_debris"))));
         SPEAR =
                 Reg.entity(
                         "entity_spear",
                         () ->
-                                EntityType.Builder.of(EntitySpear::new, MobCategory.MISC)
+                                EntityType.Builder.of(SpearEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(2.0F, 10.0F)
@@ -1091,25 +1066,25 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_spear"))));
+                                                        RegistryUtil.id("entity_spear"))));
         WASTE_ITEM =
                 Reg.entity(
                         "waste_item",
                         () ->
-                                EntityType.Builder.<EntityItemWaste>of(
-                                                EntityItemWaste::new, MobCategory.MISC)
+                                EntityType.Builder.<ItemWasteEntity>of(
+                                                ItemWasteEntity::new, MobCategory.MISC)
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(7)
                                         .updateInterval(1)
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("waste_item"))));
+                                                        RegistryUtil.id("waste_item"))));
         MIST =
                 Reg.entity(
                         "mist",
                         () ->
-                                EntityType.Builder.<EntityMist>of(EntityMist::new, MobCategory.MISC)
+                                EntityType.Builder.<MistEntity>of(MistEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1.0F, 1.0F)
                                         .clientTrackingRange(16)
@@ -1117,13 +1092,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("mist"))));
+                                                        RegistryUtil.id("mist"))));
         AGENT_ORANGE =
                 Reg.entity(
                         "entity_agent_orange",
                         () ->
-                                EntityType.Builder.<EntityOrangeFX>of(
-                                                EntityOrangeFX::new, MobCategory.MISC)
+                                EntityType.Builder.<OrangeFXEntity>of(
+                                                OrangeFXEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .sized(0.2F, 0.2F)
@@ -1132,13 +1107,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_agent_orange"))));
+                                                        RegistryUtil.id("entity_agent_orange"))));
         CHLORINE_FX =
                 Reg.entity(
                         "entity_chlorine_fx",
                         () ->
-                                EntityType.Builder.<EntityChlorineFX>of(
-                                                EntityChlorineFX::new, MobCategory.MISC)
+                                EntityType.Builder.<ChlorineFXEntity>of(
+                                                ChlorineFXEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .sized(0.2F, 0.2F)
@@ -1147,13 +1122,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_chlorine_fx"))));
+                                                        RegistryUtil.id("entity_chlorine_fx"))));
         CLOUD_FX =
                 Reg.entity(
                         "entity_cloud_fx",
                         () ->
-                                EntityType.Builder.<EntityCloudFX>of(
-                                                EntityCloudFX::new, MobCategory.MISC)
+                                EntityType.Builder.<CloudFXEntity>of(
+                                                CloudFXEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .sized(0.2F, 0.2F)
@@ -1162,13 +1137,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cloud_fx"))));
+                                                        RegistryUtil.id("entity_cloud_fx"))));
         PINK_CLOUD_FX =
                 Reg.entity(
                         "entity_pink_cloud_fx",
                         () ->
-                                EntityType.Builder.<EntityPinkCloudFX>of(
-                                                EntityPinkCloudFX::new, MobCategory.MISC)
+                                EntityType.Builder.<PinkCloudFXEntity>of(
+                                                PinkCloudFXEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .sized(0.2F, 0.2F)
@@ -1177,13 +1152,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_pink_cloud_fx"))));
+                                                        RegistryUtil.id("entity_pink_cloud_fx"))));
         FIREWORK_BALL =
                 Reg.entity(
                         "entity_firework_ball",
                         () ->
-                                EntityType.Builder.<EntityFireworks>of(
-                                                EntityFireworks::new, MobCategory.MISC)
+                                EntityType.Builder.<FireworksEntity>of(
+                                                FireworksEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(63)
@@ -1191,14 +1166,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_firework_ball"))));
+                                                        RegistryUtil.id("entity_firework_ball"))));
 
         CART_ORE =
                 Reg.entity(
                         "entity_cart_ore",
                         () ->
-                                EntityType.Builder.<EntityMinecartOre>of(
-                                                EntityMinecartOre::new, MobCategory.MISC)
+                                EntityType.Builder.<MinecartOreEntity>of(
+                                                MinecartOreEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.7F)
                                         .clientTrackingRange(16)
@@ -1206,13 +1181,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cart_ore"))));
+                                                        RegistryUtil.id("entity_cart_ore"))));
         CART_POWDER =
                 Reg.entity(
                         "entity_cart_powder",
                         () ->
-                                EntityType.Builder.<EntityMinecartPowder>of(
-                                                EntityMinecartPowder::new, MobCategory.MISC)
+                                EntityType.Builder.<MinecartPowderEntity>of(
+                                                MinecartPowderEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.7F)
                                         .clientTrackingRange(16)
@@ -1220,13 +1195,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cart_powder"))));
+                                                        RegistryUtil.id("entity_cart_powder"))));
         CART_SEMTEX =
                 Reg.entity(
                         "entity_cart_semtex",
                         () ->
-                                EntityType.Builder.<EntityMinecartSemtex>of(
-                                                EntityMinecartSemtex::new, MobCategory.MISC)
+                                EntityType.Builder.<MinecartSemtexEntity>of(
+                                                MinecartSemtexEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.7F)
                                         .clientTrackingRange(16)
@@ -1234,13 +1209,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cart_semtex"))));
+                                                        RegistryUtil.id("entity_cart_semtex"))));
         CART_CRATE =
                 Reg.entity(
                         "entity_cart_crate",
                         () ->
-                                EntityType.Builder.<EntityMinecartCrate>of(
-                                                EntityMinecartCrate::new, MobCategory.MISC)
+                                EntityType.Builder.<MinecartCrateEntity>of(
+                                                MinecartCrateEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.7F)
                                         .clientTrackingRange(16)
@@ -1248,13 +1223,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cart_crate"))));
+                                                        RegistryUtil.id("entity_cart_crate"))));
         CART_DESTROYER =
                 Reg.entity(
                         "entity_cart_destroyer",
                         () ->
-                                EntityType.Builder.<EntityMinecartDestroyer>of(
-                                                EntityMinecartDestroyer::new, MobCategory.MISC)
+                                EntityType.Builder.<MinecartDestroyerEntity>of(
+                                                MinecartDestroyerEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.7F)
                                         .clientTrackingRange(16)
@@ -1262,13 +1237,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cart_destroyer"))));
+                                                        RegistryUtil.id("entity_cart_destroyer"))));
         CART_TEST =
                 Reg.entity(
                         "entity_minecart_test",
                         () ->
-                                EntityType.Builder.<EntityMinecartTest>of(
-                                                EntityMinecartTest::new, MobCategory.MISC)
+                                EntityType.Builder.<MinecartTestEntity>of(
+                                                MinecartTestEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.7F)
                                         .clientTrackingRange(63)
@@ -1276,13 +1251,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_minecart_test"))));
+                                                        RegistryUtil.id("entity_minecart_test"))));
         BOAT_RUBBER =
                 Reg.entity(
                         "entity_rubber_boat",
                         () ->
-                                EntityType.Builder.<EntityBoatRubber>of(
-                                                EntityBoatRubber::new, MobCategory.MISC)
+                                EntityType.Builder.<BoatRubberEntity>of(
+                                                BoatRubberEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1.375F, 0.5625F)
                                         .eyeHeight(0.5625F)
@@ -1291,7 +1266,7 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_rubber_boat"))));
+                                                        RegistryUtil.id("entity_rubber_boat"))));
         CARGO_TRAM =
                 Reg.entity(
                         "entity_cargo_tram",
@@ -1305,7 +1280,7 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cargo_tram"))));
+                                                        RegistryUtil.id("entity_cargo_tram"))));
         CARGO_TRAM_TRAILER =
                 Reg.entity(
                         "entity_cargo_tram_trailer",
@@ -1319,13 +1294,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_cargo_tram_trailer"))));
+                                                        RegistryUtil.id(
+                                                                "entity_cargo_tram_trailer"))));
         BOUNDING_DUMMY =
                 Reg.entity(
                         "entity_bounding_dummy",
                         () ->
-                                EntityType.Builder.<EntityRailCarBase.BoundingBoxDummyEntity>of(
-                                                EntityRailCarBase.BoundingBoxDummyEntity::new,
+                                EntityType.Builder.<RailCarBaseEntity.BoundingBoxDummyEntity>of(
+                                                RailCarBaseEntity.BoundingBoxDummyEntity::new,
                                                 MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1F, 1F)
@@ -1334,13 +1310,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_bounding_dummy"))));
+                                                        RegistryUtil.id("entity_bounding_dummy"))));
         SEAT_DUMMY =
                 Reg.entity(
                         "entity_seat_dummy",
                         () ->
-                                EntityType.Builder.<EntityRailCarRidable.SeatDummyEntity>of(
-                                                EntityRailCarRidable.SeatDummyEntity::new,
+                                EntityType.Builder.<RailCarRidableEntity.SeatDummyEntity>of(
+                                                RailCarRidableEntity.SeatDummyEntity::new,
                                                 MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.5F, 0.1F)
@@ -1349,13 +1325,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_seat_dummy"))));
+                                                        RegistryUtil.id("entity_seat_dummy"))));
         MOVING_ITEM =
                 Reg.entity(
                         "entity_c_item",
                         () ->
-                                EntityType.Builder.<EntityMovingItem>of(
-                                                EntityMovingItem::new, MobCategory.MISC)
+                                EntityType.Builder.<MovingItemEntity>of(
+                                                MovingItemEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.375F, 0.375F)
                                         .clientTrackingRange(63)
@@ -1363,13 +1339,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_c_item"))));
+                                                        RegistryUtil.id("entity_c_item"))));
         MOVING_PACKAGE =
                 Reg.entity(
                         "entity_c_package",
                         () ->
-                                EntityType.Builder.<EntityMovingPackage>of(
-                                                EntityMovingPackage::new, MobCategory.MISC)
+                                EntityType.Builder.<MovingPackageEntity>of(
+                                                MovingPackageEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.5F, 0.5F)
                                         .clientTrackingRange(63)
@@ -1377,13 +1353,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_c_package"))));
+                                                        RegistryUtil.id("entity_c_package"))));
         DELIVERY_DRONE =
                 Reg.entity(
                         "entity_delivery_drone",
                         () ->
-                                EntityType.Builder.<EntityDeliveryDrone>of(
-                                                EntityDeliveryDrone::new, MobCategory.MISC)
+                                EntityType.Builder.<DeliveryDroneEntity>of(
+                                                DeliveryDroneEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.75F, 0.75F)
                                         .clientTrackingRange(16)
@@ -1391,13 +1367,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_delivery_drone"))));
+                                                        RegistryUtil.id("entity_delivery_drone"))));
         REQUEST_DRONE =
                 Reg.entity(
                         "entity_request_drone",
                         () ->
-                                EntityType.Builder.<EntityRequestDrone>of(
-                                                EntityRequestDrone::new, MobCategory.MISC)
+                                EntityType.Builder.<RequestDroneEntity>of(
+                                                RequestDroneEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.75F, 0.75F)
                                         .clientTrackingRange(16)
@@ -1405,13 +1381,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_request_drone"))));
+                                                        RegistryUtil.id("entity_request_drone"))));
         FBI_DRONE =
                 Reg.entity(
                         "entity_fbi_drone",
                         () ->
-                                EntityType.Builder.<EntityFBIDrone>of(
-                                                EntityFBIDrone::new, MobCategory.MONSTER)
+                                EntityType.Builder.<FBIDroneEntity>of(
+                                                FBIDroneEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
@@ -1421,14 +1397,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_fbi_drone"))));
-        FabricRegistrar.registerLivingAttributes(FBI_DRONE, EntityFBIDrone::createAttributes);
+                                                        RegistryUtil.id("entity_fbi_drone"))));
+        Registrar.registerLivingAttributes(FBI_DRONE, FBIDroneEntity::createAttributes);
         RAD_BEAST =
                 Reg.entity(
                         "entity_radiation_blaze",
                         () ->
-                                EntityType.Builder.<EntityRADBeast>of(
-                                                EntityRADBeast::new, MobCategory.MONSTER)
+                                EntityType.Builder.<RADBeastEntity>of(
+                                                RADBeastEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .fireImmune()
                                         .sized(0.6F, 1.8F)
@@ -1437,14 +1413,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_radiation_blaze"))));
-        FabricRegistrar.registerLivingAttributes(RAD_BEAST, EntityRADBeast::createAttributes);
+                                                        RegistryUtil.id(
+                                                                "entity_radiation_blaze"))));
+        Registrar.registerLivingAttributes(RAD_BEAST, RADBeastEntity::createAttributes);
         MASK_MAN =
                 Reg.entity(
                         "entity_mob_mask_man",
                         () ->
-                                EntityType.Builder.<EntityMaskMan>of(
-                                                EntityMaskMan::new, MobCategory.MONSTER)
+                                EntityType.Builder.<MaskManEntity>of(
+                                                MaskManEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .fireImmune()
                                         .sized(2.0F, 5.0F)
@@ -1453,14 +1430,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_mob_mask_man"))));
-        FabricRegistrar.registerLivingAttributes(MASK_MAN, EntityMaskMan::createAttributes);
+                                                        RegistryUtil.id("entity_mob_mask_man"))));
+        Registrar.registerLivingAttributes(MASK_MAN, MaskManEntity::createAttributes);
         UFO =
                 Reg.entity(
                         "entity_ufo",
                         () ->
-                                EntityType.Builder.<EntityUFO>of(
-                                                EntityUFO::new, MobCategory.MONSTER)
+                                EntityType.Builder.<UFOEntity>of(
+                                                UFOEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
@@ -1470,14 +1447,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_ufo"))));
-        FabricRegistrar.registerLivingAttributes(UFO, EntityUFO::createAttributes);
+                                                        RegistryUtil.id("entity_ufo"))));
+        Registrar.registerLivingAttributes(UFO, UFOEntity::createAttributes);
         BALLS_O_TRON =
                 Reg.entity(
                         "entity_balls_o_tron",
                         () ->
-                                EntityType.Builder.<EntityBOTPrimeHead>of(
-                                                EntityBOTPrimeHead::new, MobCategory.MONSTER)
+                                EntityType.Builder.<BOTPrimeHeadEntity>of(
+                                                BOTPrimeHeadEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
@@ -1488,15 +1465,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_balls_o_tron"))));
-        FabricRegistrar.registerLivingAttributes(
-                BALLS_O_TRON, EntityBOTPrimeHead::createAttributes);
+                                                        RegistryUtil.id("entity_balls_o_tron"))));
+        Registrar.registerLivingAttributes(BALLS_O_TRON, BOTPrimeHeadEntity::createAttributes);
         BALLS_O_TRON_SEG =
                 Reg.entity(
                         "entity_balls_o_tron_seg",
                         () ->
-                                EntityType.Builder.<EntityBOTPrimeBody>of(
-                                                EntityBOTPrimeBody::new, MobCategory.MONSTER)
+                                EntityType.Builder.<BOTPrimeBodyEntity>of(
+                                                BOTPrimeBodyEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
@@ -1507,15 +1483,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_balls_o_tron_seg"))));
-        FabricRegistrar.registerLivingAttributes(
-                BALLS_O_TRON_SEG, EntityBOTPrimeBody::createAttributes);
+                                                        RegistryUtil.id(
+                                                                "entity_balls_o_tron_seg"))));
+        Registrar.registerLivingAttributes(BALLS_O_TRON_SEG, BOTPrimeBodyEntity::createAttributes);
         HUNTER_CHOPPER =
                 Reg.entity(
                         "entity_mob_hunter_chopper",
                         () ->
-                                EntityType.Builder.<EntityHunterChopper>of(
-                                                EntityHunterChopper::new, MobCategory.MONSTER)
+                                EntityType.Builder.<HunterChopperEntity>of(
+                                                HunterChopperEntity::new, MobCategory.MONSTER)
                                         .notInPeaceful()
                                         .noLootTable()
                                         .fireImmune()
@@ -1525,15 +1501,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_mob_hunter_chopper"))));
-        FabricRegistrar.registerLivingAttributes(
-                HUNTER_CHOPPER, EntityHunterChopper::createAttributes);
+                                                        RegistryUtil.id(
+                                                                "entity_mob_hunter_chopper"))));
+        Registrar.registerLivingAttributes(HUNTER_CHOPPER, HunterChopperEntity::createAttributes);
         TNT_NTM =
                 Reg.entity(
                         "tnt",
                         () ->
-                                EntityType.Builder.<EntityTntNtm>of(
-                                                EntityTntNtm::new, MobCategory.MISC)
+                                EntityType.Builder.<TntNtmEntity>of(
+                                                TntNtmEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.98F, 0.98F)
@@ -1543,12 +1519,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("tnt"))));
+                                                        RegistryUtil.id("tnt"))));
         FALLING_BLOCK_NT =
                 Reg.entity(
                         "entity_falling_block",
                         () ->
-                                EntityType.Builder.of(EntityFallingBlockNT::new, MobCategory.MISC)
+                                EntityType.Builder.of(FallingBlockNTEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.98F)
                                         .clientTrackingRange(63)
@@ -1556,13 +1532,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_falling_block"))));
+                                                        RegistryUtil.id("entity_falling_block"))));
         FALLING_BLOCK_BATCH =
                 Reg.entity(
                         "entity_falling_block_batch",
                         () ->
                                 EntityType.Builder.of(
-                                                EntityFallingBlockBatch::new, MobCategory.MISC)
+                                                FallingBlockBatchEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.01F, 0.01F)
                                         .clientTrackingRange(63)
@@ -1570,13 +1546,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_falling_block_batch"))));
+                                                        RegistryUtil.id(
+                                                                "entity_falling_block_batch"))));
         FALLING_MULTIBLOCK =
                 Reg.entity(
                         "entity_falling_multiblock",
                         () ->
                                 EntityType.Builder.of(
-                                                EntityFallingMultiblock::new, MobCategory.MISC)
+                                                FallingMultiblockEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.98F)
                                         .clientTrackingRange(64)
@@ -1584,13 +1561,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_falling_multiblock"))));
+                                                        RegistryUtil.id(
+                                                                "entity_falling_multiblock"))));
 
         C130 =
                 Reg.entity(
                         "c130",
                         () ->
-                                EntityType.Builder.of(EntityC130::new, MobCategory.MISC)
+                                EntityType.Builder.of(C130Entity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(8.0F, 4.0F)
                                         .clientTrackingRange(63)
@@ -1598,12 +1576,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("c130"))));
+                                                        RegistryUtil.id("c130"))));
         BOMBER =
                 Reg.entity(
                         "entity_bomber",
                         () ->
-                                EntityType.Builder.of(EntityBomber::new, MobCategory.MISC)
+                                EntityType.Builder.of(BomberEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(8.0F, 4.0F)
                                         .clientTrackingRange(63)
@@ -1611,12 +1589,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_bomber"))));
+                                                        RegistryUtil.id("entity_bomber"))));
         BOMBLET_ZETA =
                 Reg.entity(
                         "entity_zeta",
                         () ->
-                                EntityType.Builder.of(EntityBombletZeta::new, MobCategory.MISC)
+                                EntityType.Builder.of(BombletZetaEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .sized(0.25F, 0.25F)
@@ -1625,13 +1603,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_zeta"))));
+                                                        RegistryUtil.id("entity_zeta"))));
         GRENADE_UNIVERSAL =
                 Reg.entity(
                         "grenade_universal",
                         () ->
-                                EntityType.Builder.<EntityGrenadeUniversal>of(
-                                                EntityGrenadeUniversal::new, MobCategory.MISC)
+                                EntityType.Builder.<GrenadeUniversalEntity>of(
+                                                GrenadeUniversalEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(16)
@@ -1639,13 +1617,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("grenade_universal"))));
+                                                        RegistryUtil.id("grenade_universal"))));
         WASTE_PEARL =
                 Reg.entity(
                         "entity_waste_pearl",
                         () ->
-                                EntityType.Builder.<EntityWastePearl>of(
-                                                EntityWastePearl::new, MobCategory.MISC)
+                                EntityType.Builder.<WastePearlEntity>of(
+                                                WastePearlEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(63)
@@ -1653,13 +1631,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_waste_pearl"))));
+                                                        RegistryUtil.id("entity_waste_pearl"))));
         GRENADE_BOUNCY_GENERIC =
                 Reg.entity(
                         "grenade_bouncy_generic",
                         () ->
-                                EntityType.Builder.<EntityGrenadeBouncyGeneric>of(
-                                                EntityGrenadeBouncyGeneric::new, MobCategory.MISC)
+                                EntityType.Builder.<GrenadeBouncyGenericEntity>of(
+                                                GrenadeBouncyGenericEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(16)
@@ -1667,13 +1645,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("grenade_bouncy_generic"))));
+                                                        RegistryUtil.id(
+                                                                "grenade_bouncy_generic"))));
         DISPERSER_CANISTER =
                 Reg.entity(
                         "disperser_canister",
                         () ->
-                                EntityType.Builder.<EntityDisperserCanister>of(
-                                                EntityDisperserCanister::new, MobCategory.MISC)
+                                EntityType.Builder.<DisperserCanisterEntity>of(
+                                                DisperserCanisterEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(16)
@@ -1681,25 +1660,25 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("disperser_canister"))));
+                                                        RegistryUtil.id("disperser_canister"))));
         ITEM_BUOYANT =
                 Reg.entity(
                         "item_buoyant",
                         () ->
-                                EntityType.Builder.<EntityItemBuoyant>of(
-                                                EntityItemBuoyant::new, MobCategory.MISC)
+                                EntityType.Builder.<ItemBuoyantEntity>of(
+                                                ItemBuoyantEntity::new, MobCategory.MISC)
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(7)
                                         .updateInterval(1)
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("item_buoyant"))));
+                                                        RegistryUtil.id("item_buoyant"))));
         NUKE_EXPLOSION_MK3 =
                 Reg.entity(
                         "nuke_mk3",
                         () ->
-                                EntityType.Builder.of(EntityNukeExplosionMK3::new, MobCategory.MISC)
+                                EntityType.Builder.of(NukeExplosionMK3Entity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 1.0F)
@@ -1708,12 +1687,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("nuke_mk3"))));
+                                                        RegistryUtil.id("nuke_mk3"))));
         CLOUD_FLEIJA =
                 Reg.entity(
                         "cloud_fleija",
                         () ->
-                                EntityType.Builder.of(EntityCloudFleija::new, MobCategory.MISC)
+                                EntityType.Builder.of(CloudFleijaEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(20.0F, 40.0F)
@@ -1722,12 +1701,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("cloud_fleija"))));
+                                                        RegistryUtil.id("cloud_fleija"))));
         CLOUD_SOLINIUM =
                 Reg.entity(
                         "cloud_solinium",
                         () ->
-                                EntityType.Builder.of(EntityCloudSolinium::new, MobCategory.MISC)
+                                EntityType.Builder.of(CloudSoliniumEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(20.0F, 40.0F)
@@ -1736,13 +1715,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("cloud_solinium"))));
+                                                        RegistryUtil.id("cloud_solinium"))));
         CLOUD_RAINBOW =
                 Reg.entity(
                         "cloud_rainbow",
                         () ->
                                 EntityType.Builder.of(
-                                                EntityCloudFleijaRainbow::new, MobCategory.MISC)
+                                                CloudFleijaRainbowEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(20.0F, 40.0F)
@@ -1751,12 +1730,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("cloud_rainbow"))));
+                                                        RegistryUtil.id("cloud_rainbow"))));
         PARACHUTE_CRATE =
                 Reg.entity(
                         "parachute_crate",
                         () ->
-                                EntityType.Builder.of(EntityParachuteCrate::new, MobCategory.MISC)
+                                EntityType.Builder.of(ParachuteCrateEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 1.0F)
@@ -1765,12 +1744,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("parachute_crate"))));
+                                                        RegistryUtil.id("parachute_crate"))));
         BOXCAR =
                 Reg.entity(
                         "boxcar",
                         () ->
-                                EntityType.Builder.of(EntityBoxcar::new, MobCategory.MISC)
+                                EntityType.Builder.of(BoxcarEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.25F, 0.25F)
@@ -1779,12 +1758,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("boxcar"))));
+                                                        RegistryUtil.id("boxcar"))));
         TORPEDO =
                 Reg.entity(
                         "torpedo",
                         () ->
-                                EntityType.Builder.of(EntityTorpedo::new, MobCategory.MISC)
+                                EntityType.Builder.of(TorpedoEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.25F, 0.25F)
@@ -1793,12 +1772,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("torpedo"))));
+                                                        RegistryUtil.id("torpedo"))));
         DUCHESS_GAMBIT =
                 Reg.entity(
                         "duchessgambit",
                         () ->
-                                EntityType.Builder.of(EntityDuchessGambit::new, MobCategory.MISC)
+                                EntityType.Builder.of(DuchessGambitEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.25F, 0.25F)
@@ -1807,12 +1786,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("duchessgambit"))));
+                                                        RegistryUtil.id("duchessgambit"))));
         FALLING_BUILDING =
                 Reg.entity(
                         "falling_building",
                         () ->
-                                EntityType.Builder.of(EntityBuilding::new, MobCategory.MISC)
+                                EntityType.Builder.of(BuildingEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.25F, 0.25F)
@@ -1821,13 +1800,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("falling_building"))));
+                                                        RegistryUtil.id("falling_building"))));
         CHEMICAL =
                 Reg.entity(
                         "chemical",
                         () ->
-                                EntityType.Builder.<EntityChemical>of(
-                                                EntityChemical::new, MobCategory.MISC)
+                                EntityType.Builder.<ChemicalEntity>of(
+                                                ChemicalEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .noSave()
                                         .fireImmune()
@@ -1837,14 +1816,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("chemical"))));
+                                                        RegistryUtil.id("chemical"))));
 
         BOBMAZON_DELIVERY =
                 Reg.entity(
                         "entity_bobmazon_delivery",
                         () ->
-                                EntityType.Builder.<EntityBobmazon>of(
-                                                EntityBobmazon::new, MobCategory.MISC)
+                                EntityType.Builder.<BobmazonEntity>of(
+                                                BobmazonEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1.0F, 3.0F)
                                         .clientTrackingRange(63)
@@ -1852,14 +1831,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_bobmazon_delivery"))));
+                                                        RegistryUtil.id(
+                                                                "entity_bobmazon_delivery"))));
 
         SATELLITE_POD =
                 Reg.entity(
                         "entity_miner_lander",
                         () ->
-                                EntityType.Builder.<EntitySatellitePod>of(
-                                                EntitySatellitePod::new, MobCategory.MISC)
+                                EntityType.Builder.<SatellitePod>of(
+                                                SatellitePod::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.95F, 3.75F)
@@ -1868,14 +1848,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_miner_lander"))));
+                                                        RegistryUtil.id("entity_miner_lander"))));
 
         MISSILE_ANTI =
                 Reg.entity(
                         "entity_missile_anti",
                         () ->
-                                EntityType.Builder.<EntityMissileAntiBallistic>of(
-                                                EntityMissileAntiBallistic::new, MobCategory.MISC)
+                                EntityType.Builder.<MissileAntiBallisticEntity>of(
+                                                MissileAntiBallisticEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1.5F, 1.5F)
                                         .clientTrackingRange(63)
@@ -1883,14 +1863,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_missile_anti"))));
+                                                        RegistryUtil.id("entity_missile_anti"))));
 
         BLACK_HOLE =
                 Reg.entity(
                         "entity_black_hole",
                         () ->
-                                EntityType.Builder.<EntityBlackHole>of(
-                                                EntityBlackHole::new, MobCategory.MISC)
+                                EntityType.Builder.<BlackHoleEntity>of(
+                                                BlackHoleEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.6F, 1.8F)
@@ -1899,14 +1879,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_black_hole"))));
+                                                        RegistryUtil.id("entity_black_hole"))));
 
         DIGAMMA_QUASAR =
                 Reg.entity(
                         "entity_digamma_quasar",
                         () ->
-                                EntityType.Builder.<EntityQuasar>of(
-                                                EntityQuasar::new, MobCategory.MISC)
+                                EntityType.Builder.<QuasarEntity>of(
+                                                QuasarEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(16)
@@ -1914,14 +1894,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_digamma_quasar"))));
+                                                        RegistryUtil.id("entity_digamma_quasar"))));
 
         EMP_BLAST =
                 Reg.entity(
                         "entity_emp_blast",
                         () ->
-                                EntityType.Builder.<EntityEMPBlast>of(
-                                                EntityEMPBlast::new, MobCategory.MISC)
+                                EntityType.Builder.<EMPBlastEntity>of(
+                                                EMPBlastEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1.5F, 1.5F)
                                         .clientTrackingRange(63)
@@ -1929,13 +1909,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_emp_blast"))));
+                                                        RegistryUtil.id("entity_emp_blast"))));
 
         EMP_LOGIC =
                 Reg.entity(
                         "entity_emp_logic",
                         () ->
-                                EntityType.Builder.<EntityEMP>of(EntityEMP::new, MobCategory.MISC)
+                                EntityType.Builder.<EMPEntity>of(EMPEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(63)
@@ -1943,14 +1923,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_emp_logic"))));
+                                                        RegistryUtil.id("entity_emp_logic"))));
 
         BALEFIRE =
                 Reg.entity(
                         "entity_balefire",
                         () ->
-                                EntityType.Builder.<EntityBalefire>of(
-                                                EntityBalefire::new, MobCategory.MISC)
+                                EntityType.Builder.<BalefireEntity>of(
+                                                BalefireEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(63)
@@ -1958,14 +1938,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_balefire"))));
+                                                        RegistryUtil.id("entity_balefire"))));
 
         LASER_BLAST =
                 Reg.entity(
                         "entity_laser_blast",
                         () ->
-                                EntityType.Builder.<EntityDeathBlast>of(
-                                                EntityDeathBlast::new, MobCategory.MISC)
+                                EntityType.Builder.<DeathBlastEntity>of(
+                                                DeathBlastEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(63)
@@ -1973,13 +1953,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_laser_blast"))));
+                                                        RegistryUtil.id("entity_laser_blast"))));
         ORBITAL_LASER =
                 Reg.entity(
                         "entity_orbital_laser",
                         () ->
-                                EntityType.Builder.<EntityOrbitalLaser>of(
-                                                EntityOrbitalLaser::new, MobCategory.MISC)
+                                EntityType.Builder.<OrbitalLaserEntity>of(
+                                                OrbitalLaserEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(63)
@@ -1987,14 +1967,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_orbital_laser"))));
+                                                        RegistryUtil.id("entity_orbital_laser"))));
 
         TOM_BUST =
                 Reg.entity(
                         "entity_tom_bust",
                         () ->
-                                EntityType.Builder.<EntityTomBlast>of(
-                                                EntityTomBlast::new, MobCategory.MISC)
+                                EntityType.Builder.<TomBlastEntity>of(
+                                                TomBlastEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.6F, 1.8F)
                                         .clientTrackingRange(63)
@@ -2002,14 +1982,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_tom_bust"))));
+                                                        RegistryUtil.id("entity_tom_bust"))));
 
         RAGING_VORTEX =
                 Reg.entity(
                         "entity_raging_vortex",
                         () ->
-                                EntityType.Builder.<EntityRagingVortex>of(
-                                                EntityRagingVortex::new, MobCategory.MISC)
+                                EntityType.Builder.<RagingVortexEntity>of(
+                                                RagingVortexEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(0.6F, 1.8F)
@@ -2018,14 +1998,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_raging_vortex"))));
+                                                        RegistryUtil.id("entity_raging_vortex"))));
 
         MOONSTONE_BLAST =
                 Reg.entity(
                         "entity_moonstone_blast",
                         () ->
-                                EntityType.Builder.<EntityCloudTom>of(
-                                                EntityCloudTom::new, MobCategory.MISC)
+                                EntityType.Builder.<CloudTomEntity>of(
+                                                CloudTomEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 4.0F)
@@ -2034,14 +2014,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_moonstone_blast"))));
+                                                        RegistryUtil.id(
+                                                                "entity_moonstone_blast"))));
 
         ARTILLERY_SHELL =
                 Reg.entity(
                         "entity_artillery_shell",
                         () ->
-                                EntityType.Builder.<EntityArtilleryShell>of(
-                                                EntityArtilleryShell::new, MobCategory.MISC)
+                                EntityType.Builder.<ArtilleryShellEntity>of(
+                                                ArtilleryShellEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.5F, 0.5F)
                                         .clientTrackingRange(63)
@@ -2049,14 +2030,15 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_artillery_shell"))));
+                                                        RegistryUtil.id(
+                                                                "entity_artillery_shell"))));
 
         HIMARS =
                 Reg.entity(
                         "entity_himars",
                         () ->
-                                EntityType.Builder.<EntityArtilleryRocket>of(
-                                                EntityArtilleryRocket::new, MobCategory.MISC)
+                                EntityType.Builder.<ArtilleryRocketEntity>of(
+                                                ArtilleryRocketEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(63)
@@ -2064,14 +2046,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_himars"))));
+                                                        RegistryUtil.id("entity_himars"))));
 
         BEAM_BOMB =
                 Reg.entity(
                         "entity_beam_bomb",
                         () ->
-                                EntityType.Builder.<EntityB92Beam>of(
-                                                EntityB92Beam::new, MobCategory.MISC)
+                                EntityType.Builder.<B92BeamEntity>of(
+                                                B92BeamEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.5F, 0.5F)
                                         .clientTrackingRange(63)
@@ -2079,14 +2061,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_beam_bomb"))));
+                                                        RegistryUtil.id("entity_beam_bomb"))));
 
         BULLET =
                 Reg.entity(
                         "entity_bullet",
                         () ->
-                                EntityType.Builder.<EntityBullet>of(
-                                                EntityBullet::new, MobCategory.MISC)
+                                EntityType.Builder.<BulletEntity>of(
+                                                BulletEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.5F, 0.5F)
                                         .clientTrackingRange(16)
@@ -2094,14 +2076,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_bullet"))));
+                                                        RegistryUtil.id("entity_bullet"))));
 
         BURNING_FOEQ =
                 Reg.entity(
                         "entity_burning_foeq",
                         () ->
-                                EntityType.Builder.<EntityBurningFOEQ>of(
-                                                EntityBurningFOEQ::new, MobCategory.MISC)
+                                EntityType.Builder.<BurningFOEQEntity>of(
+                                                BurningFOEQEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(63)
@@ -2109,14 +2091,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_burning_foeq"))));
+                                                        RegistryUtil.id("entity_burning_foeq"))));
 
         FALLING_BOMB =
                 Reg.entity(
                         "entity_falling_bomb",
                         () ->
-                                EntityType.Builder.<EntityFallingNuke>of(
-                                                EntityFallingNuke::new, MobCategory.MISC)
+                                EntityType.Builder.<FallingNukeEntity>of(
+                                                FallingNukeEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.98F, 0.98F)
                                         .clientTrackingRange(63)
@@ -2124,14 +2106,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_falling_bomb"))));
+                                                        RegistryUtil.id("entity_falling_bomb"))));
 
         SIEGE_LASER =
                 Reg.entity(
                         "entity_siege_laser",
                         () ->
-                                EntityType.Builder.<EntitySiegeLaser>of(
-                                                EntitySiegeLaser::new, MobCategory.MISC)
+                                EntityType.Builder.<SiegeLaserEntity>of(
+                                                SiegeLaserEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(63)
@@ -2139,14 +2121,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_siege_laser"))));
+                                                        RegistryUtil.id("entity_siege_laser"))));
 
         STRAY_SAW =
                 Reg.entity(
                         "entity_stray_saw",
                         () ->
-                                EntityType.Builder.<EntitySawblade>of(
-                                                EntitySawblade::new, MobCategory.MISC)
+                                EntityType.Builder.<SawbladeEntity>of(
+                                                SawbladeEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(1.0F, 1.0F)
                                         .clientTrackingRange(63)
@@ -2154,13 +2136,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_stray_saw"))));
+                                                        RegistryUtil.id("entity_stray_saw"))));
 
         TOM_THE_MOONSTONE =
                 Reg.entity(
                         "entity_tom_the_moonstone",
                         () ->
-                                EntityType.Builder.<EntityTom>of(EntityTom::new, MobCategory.MISC)
+                                EntityType.Builder.<TomEntity>of(TomEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .sized(0.25F, 0.25F)
                                         .clientTrackingRange(63)
@@ -2168,13 +2150,14 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_tom_the_moonstone"))));
+                                                        RegistryUtil.id(
+                                                                "entity_tom_the_moonstone"))));
 
         SOYUZ =
                 Reg.entity(
                         "entity_soyuz",
                         () ->
-                                EntityType.Builder.of(EntitySoyuz::new, MobCategory.MISC)
+                                EntityType.Builder.of(SoyuzEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(5.0F, 50.0F)
@@ -2183,12 +2166,12 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_soyuz"))));
+                                                        RegistryUtil.id("entity_soyuz"))));
         SOYUZ_CAPSULE =
                 Reg.entity(
                         "entity_soyuz_capsule",
                         () ->
-                                EntityType.Builder.of(EntitySoyuzCapsule::new, MobCategory.MISC)
+                                EntityType.Builder.of(SoyuzCapsule::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(1.0F, 1.0F)
@@ -2197,13 +2180,13 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_soyuz_capsule"))));
+                                                        RegistryUtil.id("entity_soyuz_capsule"))));
         CHOPPER_MINE =
                 Reg.entity(
                         "entity_chopper_mine",
                         () ->
-                                EntityType.Builder.<EntityChopperMine>of(
-                                                EntityChopperMine::new, MobCategory.MISC)
+                                EntityType.Builder.<ChopperMineEntity>of(
+                                                ChopperMineEntity::new, MobCategory.MISC)
                                         .noLootTable()
                                         .fireImmune()
                                         .sized(12.0F, 12.0F)
@@ -2212,7 +2195,7 @@ public final class ModEntities {
                                         .build(
                                                 ResourceKey.create(
                                                         Registries.ENTITY_TYPE,
-                                                        Library.id("entity_chopper_mine"))));
+                                                        RegistryUtil.id("entity_chopper_mine"))));
     }
 
     private static void spawn(
@@ -2221,26 +2204,30 @@ public final class ModEntities {
             int weight,
             int min,
             int max) {
-        FabricBiomeInjection.addSpawn(biomes, NO_DEFAULT_MONSTERS, type, weight, min, max);
+        BiomeInjection.addSpawn(biomes, NO_DEFAULT_MONSTERS, type, weight, min, max);
     }
 
     private static TagKey<Biome> convention(String path) {
         return TagKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("c", path));
     }
 
-    private static <T extends EntityMissileBaseNT> Reg.EntityHandle<T> missile(
+    private static <T extends Missile> Reg.EntityHandle<T> missile(
             String name, EntityType.EntityFactory<T> factory) {
         return Reg.entity(
                 name,
                 () ->
                         EntityType.Builder.of(factory, MobCategory.MISC)
                                 .noLootTable()
-                                .fireImmune()
                                 .sized(1.5F, 1.5F)
                                 .clientTrackingRange(63)
                                 .updateInterval(1)
                                 .build(
                                         ResourceKey.create(
-                                                Registries.ENTITY_TYPE, Library.id(name))));
+                                                Registries.ENTITY_TYPE, RegistryUtil.id(name))));
+    }
+
+    private static Reg.EntityHandle<StandardMissile> standard(
+            String name, Supplier<MissileVariant> variant) {
+        return missile(name, (type, level) -> new StandardMissile(type, level, variant.get()));
     }
 }

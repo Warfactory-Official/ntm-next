@@ -1,12 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.structure;
 
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.world.gen.component.*;
-import com.hbm.world.gen.dungeon.HolePunchPiece;
+import com.hbm.world.gen.component.*;
+import com.hbm.world.gen.dungeon.JungleDungeonPiece;
 import com.hbm.world.gen.dungeon.JungleDungeonStructure;
 import com.hbm.world.gen.nbt.ConductorPoolElement;
 import com.hbm.world.gen.nbt.LegacyPiecePoolElement;
@@ -57,7 +74,7 @@ public final class HbmStructureTypes {
     public static RegistryHandle<StructurePieceType> NTM_BUNKER_POWER_ROOM;
 
     public static RegistryHandle<StructureType<JungleDungeonStructure>> JUNGLE_DUNGEON;
-    public static RegistryHandle<StructurePieceType> JUNGLE_HOLE_PUNCH;
+    public static RegistryHandle<StructurePieceType> JUNGLE_DUNGEON_PIECE;
     public static RegistryHandle<StructurePoolElementType<ParentOverlapPoolElement>>
             PARENT_OVERLAP_POOL_ELEMENT;
     public static RegistryHandle<StructurePoolElementType<LegacyStartPoolElement>>
@@ -82,113 +99,97 @@ public final class HbmStructureTypes {
     private HbmStructureTypes() {}
 
     public static void register() {
-        SINGLE_PIECE =
-                FabricRegistrar.registerStructureType("single_piece", SinglePieceStructure.CODEC);
+        SINGLE_PIECE = Registrar.registerStructureType("single_piece", SinglePieceStructure.CODEC);
         CONDUCTOR_POOL_ELEMENT =
-                FabricRegistrar.registerStructurePoolElementType(
+                Registrar.registerStructurePoolElementType(
                         "conductor_template", ConductorPoolElement.CODEC);
         PARENT_OVERLAP_POOL_ELEMENT =
-                FabricRegistrar.registerStructurePoolElementType(
+                Registrar.registerStructurePoolElementType(
                         "parent_overlap", ParentOverlapPoolElement.CODEC);
         LEGACY_START_POOL_ELEMENT =
-                FabricRegistrar.registerStructurePoolElementType(
+                Registrar.registerStructurePoolElementType(
                         "legacy_start", LegacyStartPoolElement.CODEC);
         LEGACY_PIECE_POOL_ELEMENT =
-                FabricRegistrar.registerStructurePoolElementType(
+                Registrar.registerStructurePoolElementType(
                         "legacy_piece", LegacyPiecePoolElement.CODEC);
         LEGACY_JIGSAW =
-                FabricRegistrar.registerStructureType("legacy_jigsaw", LegacyJigsawStructure.CODEC);
-        NULL_SPAWN = FabricRegistrar.registerStructureType("null_spawn", NullSpawnStructure.CODEC);
+                Registrar.registerStructureType("legacy_jigsaw", LegacyJigsawStructure.CODEC);
+        NULL_SPAWN = Registrar.registerStructureType("null_spawn", NullSpawnStructure.CODEC);
         NULL_SPAWN_PIECE =
-                FabricRegistrar.registerStructurePieceType("null_spawn_piece", NullSpawnPiece::new);
-        NTM_FEATURES =
-                FabricRegistrar.registerStructureType("features", NtmFeaturesStructure.CODEC);
+                Registrar.registerStructurePieceType("null_spawn_piece", NullSpawnPiece::new);
+        NTM_FEATURES = Registrar.registerStructureType("features", NtmFeaturesStructure.CODEC);
         NTM_PROCEDURAL =
-                FabricRegistrar.registerStructureType("procedural", NtmProceduralStructure.CODEC);
+                Registrar.registerStructureType("procedural", NtmProceduralStructure.CODEC);
         NTM_PROCEDURAL_PIECE =
-                FabricRegistrar.registerStructurePieceType(
-                        "procedural_piece", NtmProceduralPiece::new);
+                Registrar.registerStructurePieceType("procedural_piece", NtmProceduralPiece::new);
         NTM_HOUSE1_PIECE =
-                FabricRegistrar.registerStructurePieceType("house1_piece", NTMHouse1Piece::new);
+                Registrar.registerStructurePieceType("house1_piece", NTMHouse1Piece::new);
         NTM_HOUSE2_PIECE =
-                FabricRegistrar.registerStructurePieceType("house2_piece", NTMHouse2Piece::new);
-        NTM_LAB1_PIECE =
-                FabricRegistrar.registerStructurePieceType("lab1_piece", NTMLab1Piece::new);
-        NTM_LAB2_PIECE =
-                FabricRegistrar.registerStructurePieceType("lab2_piece", NTMLab2Piece::new);
+                Registrar.registerStructurePieceType("house2_piece", NTMHouse2Piece::new);
+        NTM_LAB1_PIECE = Registrar.registerStructurePieceType("lab1_piece", NTMLab1Piece::new);
+        NTM_LAB2_PIECE = Registrar.registerStructurePieceType("lab2_piece", NTMLab2Piece::new);
         NTM_RURAL_HOUSE1_PIECE =
-                FabricRegistrar.registerStructurePieceType(
-                        "rural_house1_piece", RuralHouse1Piece::new);
+                Registrar.registerStructurePieceType("rural_house1_piece", RuralHouse1Piece::new);
         NTM_LARGE_OFFICE_PIECE =
-                FabricRegistrar.registerStructurePieceType(
-                        "large_office_piece", LargeOfficePiece::new);
+                Registrar.registerStructurePieceType("large_office_piece", LargeOfficePiece::new);
         NTM_LARGE_OFFICE_CORNER_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "large_office_corner_piece", LargeOfficeCornerPiece::new);
         NTM_SILO_PIECE =
-                FabricRegistrar.registerStructurePieceType("silo_piece", SiloComponentPiece::new);
+                Registrar.registerStructurePieceType("silo_piece", SiloComponentPiece::new);
         NTM_RUIN1_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "ruin1_piece", RuinFeaturesPieces.NTMRuin1Piece::new);
         NTM_RUIN2_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "ruin2_piece", RuinFeaturesPieces.NTMRuin2Piece::new);
         NTM_RUIN3_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "ruin3_piece", RuinFeaturesPieces.NTMRuin3Piece::new);
         NTM_RUIN4_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "ruin4_piece", RuinFeaturesPieces.NTMRuin4Piece::new);
         SELLAFIELD_CRATER =
-                FabricRegistrar.registerStructureType(
+                Registrar.registerStructureType(
                         "sellafield_crater", SellafieldCraterStructure.CODEC);
         SELLAFIELD_CRATER_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "sellafield_crater_piece", SellafieldCraterPiece::new);
-        OIL_BUBBLE = FabricRegistrar.registerStructureType("oil_bubble", OilBubbleStructure.CODEC);
+        OIL_BUBBLE = Registrar.registerStructureType("oil_bubble", OilBubbleStructure.CODEC);
         OIL_BUBBLE_PIECE =
-                FabricRegistrar.registerStructurePieceType("oil_bubble_piece", OilBubblePiece::new);
-        NTM_BUNKER = FabricRegistrar.registerStructureType("bunker", NtmBunkerStructure.CODEC);
+                Registrar.registerStructurePieceType("oil_bubble_piece", OilBubblePiece::new);
+        NTM_BUNKER = Registrar.registerStructureType("bunker", NtmBunkerStructure.CODEC);
         NTM_BUNKER_STARTING_HUB =
-                FabricRegistrar.registerStructurePieceType(
-                        "bunker_starting_hub", StartingHubPiece::new);
+                Registrar.registerStructurePieceType("bunker_starting_hub", StartingHubPiece::new);
         NTM_BUNKER_CORRIDOR =
-                FabricRegistrar.registerStructurePieceType("bunker_corridor", CorridorPiece::new);
+                Registrar.registerStructurePieceType("bunker_corridor", CorridorPiece::new);
         NTM_BUNKER_BEDROOM_L =
-                FabricRegistrar.registerStructurePieceType("bunker_bedroom_l", BedroomLPiece::new);
+                Registrar.registerStructurePieceType("bunker_bedroom_l", BedroomLPiece::new);
         NTM_BUNKER_FUN_JUNCTION =
-                FabricRegistrar.registerStructurePieceType(
-                        "bunker_fun_junction", FunJunctionPiece::new);
+                Registrar.registerStructurePieceType("bunker_fun_junction", FunJunctionPiece::new);
         NTM_BUNKER_BATHROOM_L =
-                FabricRegistrar.registerStructurePieceType(
-                        "bunker_bathroom_l", BathroomLPiece::new);
+                Registrar.registerStructurePieceType("bunker_bathroom_l", BathroomLPiece::new);
         NTM_BUNKER_LABORATORY =
-                FabricRegistrar.registerStructurePieceType(
-                        "bunker_laboratory", LaboratoryPiece::new);
+                Registrar.registerStructurePieceType("bunker_laboratory", LaboratoryPiece::new);
         NTM_BUNKER_POWER_ROOM =
-                FabricRegistrar.registerStructurePieceType(
-                        "bunker_power_room", PowerRoomPiece::new);
+                Registrar.registerStructurePieceType("bunker_power_room", PowerRoomPiece::new);
         JUNGLE_DUNGEON =
-                FabricRegistrar.registerStructureType(
-                        "jungle_dungeon", JungleDungeonStructure.CODEC);
-        JUNGLE_HOLE_PUNCH =
-                FabricRegistrar.registerStructurePieceType(
-                        "jungle_hole_punch", HolePunchPiece::new);
-        ANCIENT_TOMB =
-                FabricRegistrar.registerStructureType("ancient_tomb", AncientTombStructure.CODEC);
+                Registrar.registerStructureType("jungle_dungeon", JungleDungeonStructure.CODEC);
+        JUNGLE_DUNGEON_PIECE =
+                Registrar.registerStructurePieceType(
+                        "jungle_dungeon_piece", JungleDungeonPiece::new);
+        ANCIENT_TOMB = Registrar.registerStructureType("ancient_tomb", AncientTombStructure.CODEC);
         ANCIENT_TOMB_PIECE =
-                FabricRegistrar.registerStructurePieceType(
-                        "ancient_tomb_piece", AncientTombPiece::new);
-        DESERT_ATOM =
-                FabricRegistrar.registerStructureType("desert_atom", DesertAtomStructure.CODEC);
+                Registrar.registerStructurePieceType("ancient_tomb_piece", AncientTombPiece::new);
+        DESERT_ATOM = Registrar.registerStructureType("desert_atom", DesertAtomStructure.CODEC);
         DESERT_ATOM_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "desert_atom_piece",
                         (context, tag) ->
                                 new TemplateStructurePiece(DESERT_ATOM_PIECE.get(), context, tag));
-        SPACESHIP = FabricRegistrar.registerStructureType("spaceship", SpaceshipStructure.CODEC);
+        SPACESHIP = Registrar.registerStructureType("spaceship", SpaceshipStructure.CODEC);
         SPACESHIP_PIECE =
-                FabricRegistrar.registerStructurePieceType(
+                Registrar.registerStructurePieceType(
                         "spaceship_piece",
                         (context, tag) ->
                                 new TemplateStructurePiece(SPACESHIP_PIECE.get(), context, tag));

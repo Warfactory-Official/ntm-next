@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
@@ -15,14 +31,22 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
+public class AshesParticleGroup extends ParticleGroup<AshesParticle> {
+
+    private final Identifier texture;
 
     public AshesParticleGroup(ParticleEngine engine) {
+        this(engine, ResourceManager.particle_base_tex);
+    }
+
+    public AshesParticleGroup(ParticleEngine engine, Identifier texture) {
         super(engine);
+        this.texture = texture;
     }
 
     @Override
@@ -34,10 +58,11 @@ public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
         Vec3 cam = camera.position();
 
         int i = 0;
-        for (ParticleAshes fx : this.particles) {
+        for (AshesParticle fx : this.particles) {
             if (fx.ownsVisual()) continue;
             geo[i * 5] = (float) (fx.interpX(partialTicks) - cam.x);
-            geo[i * 5 + 1] = (float) (fx.interpY(partialTicks) - cam.y);
+            float y = (float) (fx.interpY(partialTicks) - cam.y);
+            geo[i * 5 + 1] = fx.settled() ? fx.settledY(y) : y;
             geo[i * 5 + 2] = (float) (fx.interpZ(partialTicks) - cam.z);
             geo[i * 5 + 3] = fx.size();
             geo[i * 5 + 4] = fx.spin(partialTicks);
@@ -49,10 +74,11 @@ public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
             i++;
         }
 
-        return new State(i, geo, tint);
+        return new State(i, geo, tint, texture);
     }
 
-    private record State(int count, float[] geo, int[] tint) implements ParticleGroupRenderState {
+    private record State(int count, float[] geo, int[] tint, Identifier texture)
+            implements ParticleGroupRenderState {
 
         @Override
         public void submit(SubmitNodeCollector collector, CameraRenderState camera) {
@@ -63,7 +89,7 @@ public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
 
             collector.submitCustomGeometry(
                     new PoseStack(),
-                    WeaponRenderTypes.cloud(ResourceManager.particle_base_tex),
+                    WeaponRenderTypes.cloud(texture),
                     (p, tess) -> {
                         for (int i = 0; i < count; i++) {
                             float px = geo[i * 5], py = geo[i * 5 + 1], pz = geo[i * 5 + 2];
@@ -97,7 +123,7 @@ public class AshesParticleGroup extends ParticleGroup<ParticleAshes> {
                 float v = c == 0 || c == 3 ? 1F : 0F;
                 tess.addVertex(
                         px + vx,
-                        py - 0.09F,
+                        py,
                         pz + vz,
                         color,
                         u,

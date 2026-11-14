@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.render.RenderTextures;
-import com.hbm.entity.projectile.EntityBurningFOEQ;
+import com.hbm.entity.projectile.BurningFOEQEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.GameTime;
@@ -29,7 +45,7 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public final class FOEQVisual extends HbmDynamicEntityVisual<EntityBurningFOEQ> {
+public final class FOEQVisual extends HbmDynamicEntityVisual<BurningFOEQEntity> {
     private static final int STACKS = 10;
     private static final float DROP = 75F;
     private static final int[] FLAME = {
@@ -69,7 +85,7 @@ public final class FOEQVisual extends HbmDynamicEntityVisual<EntityBurningFOEQ> 
     private long lastSeed;
     private float reach;
 
-    public FOEQVisual(VisualizationContext ctx, EntityBurningFOEQ entity, float partialTick) {
+    public FOEQVisual(VisualizationContext ctx, BurningFOEQEntity entity, float partialTick) {
         super(ctx, entity, partialTick);
         body =
                 instancerProvider()
@@ -112,7 +128,7 @@ public final class FOEQVisual extends HbmDynamicEntityVisual<EntityBurningFOEQ> 
     private void writeFrame(float partialTick) {
         Vector3f visualPos = getVisualPosition(partialTick, interpolatedPosition);
         float yaw = Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
-        float pitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
+        float pitch = Mth.lerp(partialTick, entity.renderPitchO, entity.renderPitch);
         long seed = GameTime.millis(entity.level()) / 50L;
         if (visualPos.x == lastX
                 && visualPos.y == lastY

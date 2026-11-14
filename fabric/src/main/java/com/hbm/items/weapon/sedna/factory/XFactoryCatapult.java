@@ -1,32 +1,65 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
 import com.hbm.client.ClientPlayerAccess;
-import com.hbm.entity.logic.EntityNukeExplosionMK5;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.explosion.vanillant.ExplosionVNT;
+import com.hbm.entity.logic.NukeExplosionMK5Entity;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.explosion.vanillant.ComposableExplosion;
 import com.hbm.explosion.vanillant.standard.*;
 import com.hbm.handler.radiation.RadiationSystemNT;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
 import com.hbm.main.Polaroid;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.MukePayload;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.packet.layout.MukeFullLayout;
+import com.hbm.packet.layout.MukeTinyLayout;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
-import com.hbm.saveddata.satellites.SatelliteDetector;
+import com.hbm.saveddata.satellites.RadiationBursts;
 import com.hbm.sound.ModSounds;
+import com.hbm.sound.WorldSounds;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import net.minecraft.core.BlockPos;
@@ -51,7 +84,7 @@ public class XFactoryCatapult {
 
     public static BulletConfig cluster_submunition;
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_NUKE_STANDARD =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_NUKE_STANDARD =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
@@ -60,17 +93,17 @@ public class XFactoryCatapult {
                 bullet.discard();
                 Vec3 hit = mop.getLocation();
 
-                ExplosionVNT vnt = new ExplosionVNT(bullet.level(), hit.x, hit.y, hit.z, 10);
-                vnt.setEntityProcessor(
-                        new EntityProcessorCrossSmooth(2, bullet.damage).withRangeMod(1.5F));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
+                ComposableExplosion vnt =
+                        new ComposableExplosion(bullet.level(), hit.x, hit.y, hit.z, 10);
+                vnt.entityProcessor(
+                        new WeaponExplosionEntityProcessor(2, bullet.damage).range(1.5F));
                 vnt.explode();
 
                 incrementRad(bullet.level(), hit.x, hit.y, hit.z, 1F);
                 spawnMush(bullet, mop);
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_NUKE_DEMO =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_NUKE_DEMO =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
@@ -79,20 +112,19 @@ public class XFactoryCatapult {
                 bullet.discard();
                 Vec3 hit = mop.getLocation();
 
-                ExplosionVNT vnt = new ExplosionVNT(bullet.level(), hit.x, hit.y, hit.z, 15);
-                vnt.setBlockAllocator(new BlockAllocatorStandard(64));
-                vnt.setBlockProcessor(
-                        new BlockProcessorStandard().withBlockEffect(new BlockMutatorFire()));
-                vnt.setEntityProcessor(
-                        new EntityProcessorCrossSmooth(2, bullet.damage).withRangeMod(1.5F));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
+                ComposableExplosion vnt =
+                        new ComposableExplosion(bullet.level(), hit.x, hit.y, hit.z, 15);
+                vnt.blockSelector(new AttenuatedRayBlockSelector(64));
+                vnt.blockProcessor(CellDestruction.decay().transform(new BlockMutatorFire()));
+                vnt.entityProcessor(
+                        new WeaponExplosionEntityProcessor(2, bullet.damage).range(1.5F));
                 vnt.explode();
 
                 incrementRad(bullet.level(), hit.x, hit.y, hit.z, 1.5F);
                 spawnMush(bullet, mop);
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_NUKE_HIGH =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_NUKE_HIGH =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
@@ -102,12 +134,12 @@ public class XFactoryCatapult {
                 Vec3 hit = mop.getLocation();
                 bullet.level()
                         .addFreshEntity(
-                                EntityNukeExplosionMK5.statFac(
+                                NukeExplosionMK5Entity.statFac(
                                         bullet.level(), 35, hit.x, hit.y, hit.z));
                 spawnMush(bullet, mop);
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_NUKE_BALEFIRE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_NUKE_BALEFIRE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
@@ -116,39 +148,34 @@ public class XFactoryCatapult {
                 bullet.discard();
                 Vec3 hit = mop.getLocation();
 
-                ExplosionVNT vnt = new ExplosionVNT(bullet.level(), hit.x, hit.y, hit.z, 10);
-                vnt.setBlockAllocator(new BlockAllocatorStandard(64));
-                vnt.setBlockProcessor(
-                        new BlockProcessorStandard().withBlockEffect(new BlockMutatorBalefire()));
-                vnt.setEntityProcessor(
-                        new EntityProcessorCrossSmooth(2, bullet.damage).withRangeMod(1.5F));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
+                ComposableExplosion vnt =
+                        new ComposableExplosion(bullet.level(), hit.x, hit.y, hit.z, 10);
+                vnt.blockSelector(new AttenuatedRayBlockSelector(64));
+                vnt.blockProcessor(CellDestruction.decay().transform(new BlockMutatorBalefire()));
+                vnt.entityProcessor(
+                        new WeaponExplosionEntityProcessor(2, bullet.damage).range(1.5F));
                 vnt.explode();
 
                 incrementRad(bullet.level(), hit.x, hit.y, hit.z, 1.5F);
 
                 if (bullet.level() instanceof ServerLevel server) {
-                    SatelliteDetector.reportEvent(
-                            server,
-                            SatelliteDetector.DURATION_LOW,
-                            SatelliteDetector.BurstIntensity.LOW,
-                            bullet.getX(),
-                            bullet.getZ());
+                    RadiationBursts.report(
+                            server, RadiationBursts.Intensity.LOW, bullet.getX(), bullet.getZ());
                 }
 
-                bullet.level()
-                        .playSound(
-                                null,
-                                hit.x,
-                                hit.y + 0.5,
-                                hit.z,
-                                ModSounds.GUN_MINI_NUKE_EXPLOSION.get(),
-                                SoundSource.BLOCKS,
-                                15.0F,
-                                1.0F);
+                WorldSounds.play(
+                        bullet.level(),
+                        null,
+                        hit.x,
+                        hit.y + 0.5,
+                        hit.z,
+                        ModSounds.GUN_MINI_NUKE_EXPLOSION.get(),
+                        SoundSource.BLOCKS,
+                        15.0F,
+                        1.0F);
                 sendMuke(bullet.level(), hit, false, true);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_NUKE_TINYTOT =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_NUKE_TINYTOT =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
@@ -157,38 +184,34 @@ public class XFactoryCatapult {
                 bullet.discard();
                 Vec3 hit = mop.getLocation();
 
-                ExplosionVNT vnt = new ExplosionVNT(bullet.level(), hit.x, hit.y, hit.z, 5);
-                vnt.setEntityProcessor(
-                        new EntityProcessorCrossSmooth(2, bullet.damage).withRangeMod(1.5F));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
+                ComposableExplosion vnt =
+                        new ComposableExplosion(bullet.level(), hit.x, hit.y, hit.z, 5);
+                vnt.entityProcessor(
+                        new WeaponExplosionEntityProcessor(2, bullet.damage).range(1.5F));
                 vnt.explode();
 
                 incrementRad(bullet.level(), hit.x, hit.y, hit.z, 0.25F);
                 if (bullet.level() instanceof ServerLevel server) {
-                    SatelliteDetector.reportEvent(
-                            server,
-                            SatelliteDetector.DURATION_LOW,
-                            SatelliteDetector.BurstIntensity.LOW,
-                            bullet.getX(),
-                            bullet.getZ());
+                    RadiationBursts.report(
+                            server, RadiationBursts.Intensity.LOW, bullet.getX(), bullet.getZ());
                 }
-                bullet.level()
-                        .playSound(
-                                null,
-                                hit.x,
-                                hit.y + 0.5,
-                                hit.z,
-                                ModSounds.GUN_MINI_NUKE_EXPLOSION.get(),
-                                SoundSource.BLOCKS,
-                                15.0F,
-                                1.0F);
+                WorldSounds.play(
+                        bullet.level(),
+                        null,
+                        hit.x,
+                        hit.y + 0.5,
+                        hit.z,
+                        ModSounds.GUN_MINI_NUKE_EXPLOSION.get(),
+                        SoundSource.BLOCKS,
+                        15.0F,
+                        1.0F);
                 sendMuke(
                         bullet.level(),
                         hit,
                         true,
                         Polaroid.isBalefireDay() || bullet.level().getRandom().nextInt(100) == 0);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_NUKE_HIVE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_NUKE_HIVE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
@@ -196,24 +219,23 @@ public class XFactoryCatapult {
                 if (bullet.isRemoved()) return;
                 bullet.discard();
                 Vec3 hit = mop.getLocation();
-                ExplosionVNT vnt = new ExplosionVNT(bullet.level(), hit.x, hit.y, hit.z, 5);
-                vnt.setEntityProcessor(
-                        new EntityProcessorCrossSmooth(1, bullet.damage).withRangeMod(1.5F));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
-                vnt.setSFX(new ExplosionEffectWeapon(10, 2.5F, 1F));
+                ComposableExplosion vnt =
+                        new ComposableExplosion(bullet.level(), hit.x, hit.y, hit.z, 5);
+                vnt.entityProcessor(
+                        new WeaponExplosionEntityProcessor(1, bullet.damage).range(1.5F));
+                vnt.effects(new SmallExplosionEffect(10, 2.5F, 1F));
                 vnt.explode();
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_SUBMUNITION =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_SUBMUNITION =
             (bullet, mop) -> {
                 Vec3 hit = mop.getLocation();
-                ExplosionVNT vnt =
-                        new ExplosionVNT(
+                ComposableExplosion vnt =
+                        new ComposableExplosion(
                                 bullet.level(), hit.x, hit.y, hit.z, 7.5F, bullet.getThrower());
-                vnt.setBlockAllocator(new BlockAllocatorStandard());
-                vnt.setBlockProcessor(new BlockProcessorStandard());
-                vnt.setEntityProcessor(new EntityProcessorCrossSmooth(1, bullet.damage));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
-                vnt.setSFX(new ExplosionEffectWeapon(10, 2.5F, 1F));
+                vnt.blockSelector(new AttenuatedRayBlockSelector());
+                vnt.blockProcessor(CellDestruction.decay());
+                vnt.entityProcessor(new WeaponExplosionEntityProcessor(1, bullet.damage));
+                vnt.effects(new SmallExplosionEffect(10, 2.5F, 1F));
                 vnt.explode();
                 bullet.discard();
             };
@@ -227,106 +249,105 @@ public class XFactoryCatapult {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 0)
-                                                .addPos(0, 0, 0, 1000, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 0)
+                                                .to(0, 0, 0, 1000, IType.SIN_DOWN));
                     case CYCLE:
                         RandomSource rand = ClientPlayerAccess.player().getRandom();
                         return new BusAnimation()
                                 .addBus(
                                         "GAUGE",
-                                        new BusAnimationSequence()
-                                                .addPos(
+                                        new AnimationSequence()
+                                                .to(
                                                         0,
                                                         0,
                                                         135 + rand.nextInt(136),
                                                         100,
                                                         IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN))
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN))
                                 .addBus(
                                         "PISTON",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 3, 100, IType.SIN_UP))
+                                        new AnimationSequence().to(0, 0, 3, 100, IType.SIN_UP))
                                 .addBus(
                                         "NUKE",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 3, 100, IType.SIN_UP)
-                                                .addPos(0, 0, 0, 0));
+                                        new AnimationSequence()
+                                                .to(0, 0, 3, 100, IType.SIN_UP)
+                                                .to(0, 0, 0, 0));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "LID",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 250)
-                                                .addPos(0, 0, -45, 250, IType.SIN_UP)
-                                                .addPos(0, 0, -45, 1200)
-                                                .addPos(0, 0, 0, 250, IType.SIN_UP))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 250)
+                                                .to(0, 0, -45, 250, IType.SIN_UP)
+                                                .to(0, 0, -45, 1200)
+                                                .to(0, 0, 0, 250, IType.SIN_UP))
                                 .addBus(
                                         "HANDLE",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, -2, 500, IType.SIN_FULL)
-                                                .addPos(0, 0, -2, 1700)
-                                                .addPos(0, 0, 0, 750, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, -2, 500, IType.SIN_FULL)
+                                                .to(0, 0, -2, 1700)
+                                                .to(0, 0, 0, 750, IType.SIN_FULL))
                                 .addBus(
                                         "NUKE",
-                                        new BusAnimationSequence()
-                                                .addPos(5, -4, 3, 0)
-                                                .addPos(5, -4, 3, 750)
-                                                .addPos(2, 0.5, 3, 500, IType.SIN_UP)
-                                                .addPos(1, 0.5, 3, 100)
-                                                .addPos(0, 0, 3, 100)
-                                                .addPos(0, 0, 3, 750)
-                                                .addPos(0, 0, 0, 750, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(5, -4, 3, 0)
+                                                .to(5, -4, 3, 750)
+                                                .to(2, 0.5, 3, 500, IType.SIN_UP)
+                                                .to(1, 0.5, 3, 100)
+                                                .to(0, 0, 3, 100)
+                                                .to(0, 0, 3, 750)
+                                                .to(0, 0, 0, 750, IType.SIN_FULL))
                                 .addBus(
                                         "PISTON",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 3, 0)
-                                                .addPos(0, 0, 3, 2200)
-                                                .addPos(0, 0, 0, 750, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 3, 0)
+                                                .to(0, 0, 3, 2200)
+                                                .to(0, 0, 0, 750, IType.SIN_FULL))
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(5, 0, 0, 500, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 450)
-                                                .addPos(3, 0, 0, 100, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 100, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(-10, 0, 0, 375, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 375, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(5, 0, 0, 500, IType.SIN_FULL)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL)
+                                                .to(0, 0, 0, 450)
+                                                .to(3, 0, 0, 100, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 100, IType.SIN_FULL)
+                                                .to(0, 0, 0, 500)
+                                                .to(-10, 0, 0, 375, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 375, IType.SIN_UP));
                     case JAMMED:
                         return new BusAnimation()
                                 .addBus(
                                         "HANDLE",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 750)
-                                                .addPos(0, 0, -2, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, -2, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 750)
+                                                .to(0, 0, -2, 250, IType.SIN_FULL)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL)
+                                                .to(0, 0, -2, 250, IType.SIN_FULL)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL))
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(-15, 0, 0, 250, IType.SIN_FULL)
-                                                .addPos(-15, 0, 0, 1000)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(-15, 0, 0, 250, IType.SIN_FULL)
+                                                .to(-15, 0, 0, 1000)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL));
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "HANDLE",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 250)
-                                                .addPos(0, 0, -2, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, -2, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 250)
+                                                .to(0, 0, -2, 250, IType.SIN_FULL)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL)
+                                                .to(0, 0, -2, 250, IType.SIN_FULL)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL))
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(-15, 0, 0, 250, IType.SIN_FULL)
-                                                .addPos(-15, 0, 0, 1000)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(-15, 0, 0, 250, IType.SIN_FULL)
+                                                .to(-15, 0, 0, 1000)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL));
                 }
                 return null;
             };
@@ -345,26 +366,22 @@ public class XFactoryCatapult {
         }
     }
 
-    public static void spawnMush(EntityBulletBaseMK4 bullet, HitResult mop) {
+    public static void spawnMush(BulletBaseMK4Entity bullet, HitResult mop) {
         Vec3 hit = mop.getLocation();
         if (bullet.level() instanceof ServerLevel server) {
-            SatelliteDetector.reportEvent(
-                    server,
-                    SatelliteDetector.DURATION_LOW,
-                    SatelliteDetector.BurstIntensity.LOW,
-                    bullet.getX(),
-                    bullet.getZ());
+            RadiationBursts.report(
+                    server, RadiationBursts.Intensity.LOW, bullet.getX(), bullet.getZ());
         }
-        bullet.level()
-                .playSound(
-                        null,
-                        hit.x,
-                        hit.y + 0.5,
-                        hit.z,
-                        ModSounds.GUN_MINI_NUKE_EXPLOSION.get(),
-                        SoundSource.BLOCKS,
-                        15.0F,
-                        1.0F);
+        WorldSounds.play(
+                bullet.level(),
+                null,
+                hit.x,
+                hit.y + 0.5,
+                hit.z,
+                ModSounds.GUN_MINI_NUKE_EXPLOSION.get(),
+                SoundSource.BLOCKS,
+                15.0F,
+                1.0F);
         sendMuke(
                 bullet.level(),
                 hit,
@@ -375,7 +392,9 @@ public class XFactoryCatapult {
     private static void sendMuke(Level level, Vec3 hit, boolean tinytot, boolean balefire) {
         if (!(level instanceof ServerLevel server)) return;
         PacketWire.sendToAllAround(
-                new MukePayload(hit.x, hit.y + 0.5, hit.z, tinytot, balefire),
+                tinytot
+                        ? MukeTinyLayout.encode(hit.x, hit.y + 0.5, hit.z)
+                        : MukeFullLayout.encode(hit.x, hit.y + 0.5, hit.z, balefire),
                 new TargetPoint(server, hit.x, hit.y, hit.z, 250));
     }
 
@@ -435,13 +454,13 @@ public class XFactoryCatapult {
                 new BulletConfig().setLife(1_200).setGrav(0.025F).setOnImpact(LAMBDA_SUBMUNITION);
 
         ModItems.GUN_FATMAN =
-                FabricRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_fatman",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.A_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(300)
                                                         .draw(20)
                                                         .inspect(30)
@@ -449,7 +468,7 @@ public class XFactoryCatapult {
                                                         .crosshair(Crosshair.L_CIRCUMFLEX)
                                                         .hideCrosshair(false)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(100F)
                                                                         .spreadHipfire(0F)
                                                                         .delay(10)
@@ -486,7 +505,7 @@ public class XFactoryCatapult {
                                                                                 LAMBDA_RECOIL_FATMAN))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_FATMAN_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_FATMAN))
+                                                        .orchestra(GunAnimationActions.FATMAN))
                                         .setDefaultAmmoExpensive(EnumAmmo.NUKE_STANDARD, 1),
                         Item.Properties::new);
     }

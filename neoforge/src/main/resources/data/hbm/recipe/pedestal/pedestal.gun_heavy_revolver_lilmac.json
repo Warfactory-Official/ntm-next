@@ -8,7 +8,10 @@
       "ingredient": "hbm:powder_magic"
     },
     "C": {
-      "ingredient": "hbm:gun_heavy_revolver"
+      "ingredient": "hbm:gun_heavy_revolver",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "D": {
       "ingredient": "#c:plates/weapon_steel"

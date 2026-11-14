@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntitySolarMirror;
+import com.hbm.blockentity.machine.SolarMirrorBlockEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.GroupObject;
 import dev.engine_room.flywheel.api.instance.Instance;
@@ -16,6 +32,8 @@ import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Arrays;
 import java.util.function.Consumer;
 import net.minecraft.util.ARGB;
@@ -24,8 +42,9 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class SolarMirrorVisual extends HbmDynamicBlockEntityVisual<BlockEntitySolarMirror>
-        implements ShaderLightVisual {
+public final class SolarMirrorVisual
+        extends AbstractBoundedBlockEntityVisual<SolarMirrorBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Material MIRROR_MATERIAL =
             SimpleMaterial.builderOf(MeshPart.litCutout(ResourceManager.solar_mirror_tex))
                     .cutout(CutoutShaders.HALF)
@@ -48,7 +67,7 @@ public final class SolarMirrorVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private @Nullable AABB lastLightBounds;
 
     public SolarMirrorVisual(
-            VisualizationContext context, BlockEntitySolarMirror blockEntity, float partialTick) {
+            VisualizationContext context, SolarMirrorBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         var rawBodyLocal = new Matrix4f().translation(.5F, 0F, .5F);
         rawBodyBounds =
@@ -95,35 +114,31 @@ public final class SolarMirrorVisual extends HbmDynamicBlockEntityVisual<BlockEn
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
-        int dx = blockEntity.tX - pos.getX();
-        int dy = blockEntity.tY - pos.getY();
-        int dz = blockEntity.tZ - pos.getZ();
-        boolean isAimed = blockEntity.tY > pos.getY();
+        int targetX = blockEntity.targetX();
+        int targetY = blockEntity.targetY();
+        int targetZ = blockEntity.targetZ();
+        boolean isAimed = targetY > pos.getY();
         if (initialized
-                && dx == lastTargetX
-                && dy == lastTargetY
-                && dz == lastTargetZ
+                && targetX == lastTargetX
+                && targetY == lastTargetY
+                && targetZ == lastTargetZ
                 && isAimed == lastAimed) return;
-        lastTargetX = dx;
-        lastTargetY = dy;
-        lastTargetZ = dz;
+        lastTargetX = targetX;
+        lastTargetY = targetY;
+        lastTargetZ = targetZ;
         lastAimed = isAimed;
         initialized = true;
         if (isAimed) {
-            double distance = Math.sqrt((double) dx * dx + (double) dy * dy + (double) dz * dz);
-            float pitch =
-                    (float)
-                            (Math.toDegrees(
-                                            -Math.asin(
-                                                    Math.max(
-                                                            -1D,
-                                                            Math.min(1D, (dy + .5D) / distance))))
-                                    + 90D);
+            double dx = (double) targetX - pos.getX();
+            double dy = (double) targetY - pos.getY();
+            double dz = (double) targetZ - pos.getZ();
+            double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            float pitch = (float) (Math.toDegrees(-Math.asin(dy / distance)) + 90D);
             float yaw = (float) (Math.toDegrees(-Math.atan2(dz, dx)) + 180D);
             localPose
                     .identity()

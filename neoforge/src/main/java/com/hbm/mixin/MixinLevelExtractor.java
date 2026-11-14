@@ -1,12 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin;
 
 import com.hbm.NuclearTech;
-import com.hbm.blocks.IBlockHighlight;
+import com.hbm.blocks.BlockOutlineProvider;
 import com.hbm.blocks.multiblock.MultiblockSurface;
-import com.hbm.client.render.CullableRenderer;
 import com.hbm.client.render.MultiblockCrumbling;
 import com.hbm.client.render.MultiblockOutline;
 import com.hbm.client.render.flywheel.FalloutRainVisuals;
@@ -80,8 +95,8 @@ public class MixinLevelExtractor {
             @Local BlockPos pos,
             @Local BlockState state,
             @Local CollisionContext context) {
-        if (!MultiblockSurface.isSurface(state) && !(state.getBlock() instanceof IBlockHighlight))
-            return original;
+        if (!MultiblockSurface.isSurface(state)
+                && !(state.getBlock() instanceof BlockOutlineProvider)) return original;
         return MultiblockOutline.shape(level, pos, state, context, original);
     }
 
@@ -141,13 +156,17 @@ public class MixinLevelExtractor {
         if (original.call(renderer, pos) || entity instanceof FarVisible) return true;
         return NuclearTech.MOD_ID.equals(
                         BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace())
-                && !((CullableRenderer) renderer.entityRenderDispatcher().getRenderer(entity))
+                && !((com.hbm.client.render.CullableRenderer)
+                                (renderer.entityRenderDispatcher().getRenderer(entity)))
                         .hbm$affectedByCulling(entity);
     }
 
     @Inject(method = "setLevel", at = @At("HEAD"))
     private void hbm$releaseGeometry(ClientLevel next, CallbackInfo ci) {
-        if (level != null && level != next) level.hbm$sectionGeometryIndex().clear();
+        if (level != null && level != next)
+            ((com.hbm.interfaces.injected.ClientLevelExtension) (level))
+                    .hbm$sectionGeometryIndex()
+                    .clear();
     }
 
     @Inject(
@@ -159,7 +178,8 @@ public class MixinLevelExtractor {
                                     "Lnet/minecraft/client/multiplayer/ClientChunkCache;flipUpdateTrackingSets()V",
                             shift = At.Shift.AFTER))
     private void hbm$includeGeometry(CallbackInfo ci) {
-        level.hbm$sectionGeometryIndex()
+        ((com.hbm.interfaces.injected.ClientLevelExtension) (level))
+                .hbm$sectionGeometryIndex()
                 .emptySections(level, levelRenderState.chunkLoadingRenderState);
     }
 }

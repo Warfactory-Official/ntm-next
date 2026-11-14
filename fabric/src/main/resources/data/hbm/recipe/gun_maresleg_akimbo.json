@@ -2,7 +2,13 @@
   "type": "hbm:crafting_shaped",
   "key": {
     "M": "#hbm:gun_mechanisms/weapon_steel",
-    "U": "hbm:gun_maresleg"
+    "U": {
+      "fabric:type": "hbm:matchers",
+      "base": "hbm:gun_maresleg",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
+    }
   },
   "pattern": [
     "UMU"

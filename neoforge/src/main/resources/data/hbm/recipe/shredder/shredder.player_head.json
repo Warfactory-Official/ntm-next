@@ -2,7 +2,10 @@
   "type": "hbm:shredder",
   "input_items": [
     {
-      "ingredient": "minecraft:player_head"
+      "ingredient": "minecraft:player_head",
+      "predicates": {
+        "hbm:consume_component": "minecraft:profile"
+      }
     }
   ],
   "order": 24064,

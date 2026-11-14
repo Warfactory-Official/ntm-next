@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
@@ -17,79 +33,79 @@ public final class HbmParticleGroups {
 
     public static void forEach(
             BiConsumer<ParticleRenderType, Function<ParticleEngine, ParticleGroup<?>>> out) {
-        out.accept(ParticleSpentCasing.CASING_GROUP, engine -> new CasingParticleGroup(engine));
+        out.accept(CasingParticle.GROUP, engine -> new CasingParticleGroup(engine));
         out.accept(
-                ParticlePlasmaBlast.PLASMA_BLAST_GROUP,
+                PlasmaBlastParticle.PLASMA_BLAST_GROUP,
                 engine -> new PlasmaBlastParticleGroup(engine));
         out.accept(
-                ParticleExplosionSmall.EXPLOSION_SMALL_GROUP,
+                ExplosionSmallParticle.EXPLOSION_SMALL_GROUP,
                 engine -> new ExplosionSmallParticleGroup(engine));
-        out.accept(ParticleMukeWave.MUKE_WAVE_GROUP, engine -> new MukeWaveParticleGroup(engine));
+        out.accept(MukeWaveParticle.MUKE_WAVE_GROUP, engine -> new MukeWaveParticleGroup(engine));
         out.accept(
-                ParticleMukeFlash.MUKE_FLASH_GROUP, engine -> new MukeFlashParticleGroup(engine));
+                MukeFlashParticle.MUKE_FLASH_GROUP, engine -> new MukeFlashParticleGroup(engine));
         out.accept(
-                ParticleMukeCloud.MUKE_CLOUD_GROUP, engine -> new MukeCloudParticleGroup(engine));
-        out.accept(ParticleExSmoke.EX_SMOKE_GROUP, engine -> new ExSmokeParticleGroup(engine));
-        out.accept(ParticleHaze.HAZE_GROUP, engine -> new HazeParticleGroup(engine));
+                MukeCloudParticle.MUKE_CLOUD_GROUP, engine -> new MukeCloudParticleGroup(engine));
+        out.accept(ExSmokeParticle.EX_SMOKE_GROUP, engine -> new ExSmokeParticleGroup(engine));
+        out.accept(HazeParticle.HAZE_GROUP, engine -> new HazeParticleGroup(engine));
         out.accept(
-                ParticleRocketFlame.ROCKET_FLAME_GROUP,
+                RocketFlameParticle.ROCKET_FLAME_GROUP,
                 engine -> new RocketFlameParticleGroup(engine));
-        out.accept(ParticleContrail.CONTRAIL_GROUP, engine -> new ContrailParticleGroup(engine));
-        out.accept(ParticleDebris.DEBRIS_GROUP, engine -> new DebrisParticleGroup(engine));
+        out.accept(ContrailParticle.CONTRAIL_GROUP, engine -> new ContrailParticleGroup(engine));
+        out.accept(DebrisParticle.DEBRIS_GROUP, engine -> new DebrisParticleGroup(engine));
         out.accept(
-                ParticleAmatFlash.AMAT_FLASH_GROUP, engine -> new AmatFlashParticleGroup(engine));
-        out.accept(ParticleRift.RIFT_GROUP, engine -> new RiftParticleGroup(engine));
-        out.accept(ParticleAshes.ASHES_GROUP, engine -> new AshesParticleGroup(engine));
-        out.accept(ParticleFoam.FOAM_GROUP, engine -> new FoamParticleGroup(engine));
+                AmatFlashParticle.AMAT_FLASH_GROUP, engine -> new AmatFlashParticleGroup(engine));
+        out.accept(RiftParticle.RIFT_GROUP, engine -> new RiftParticleGroup(engine));
+        out.accept(AshesParticle.ASHES_GROUP, engine -> new AshesParticleGroup(engine));
+        out.accept(FoamParticle.FOAM_GROUP, engine -> new FoamParticleGroup(engine));
         out.accept(
-                ParticleRBMKFlame.RBMK_FLAME_GROUP,
+                RBMKFlameParticle.RBMK_FLAME_GROUP,
                 engine -> new RbmkJetParticleGroup(engine, ResourceManager.rbmk_fire_tex));
         out.accept(
-                ParticleRBMKSteam.RBMK_STEAM_GROUP,
+                RBMKSteamParticle.RBMK_STEAM_GROUP,
                 engine -> new RbmkJetParticleGroup(engine, ResourceManager.rbmk_jet_steam_tex));
         out.accept(
-                ParticleSkeleton.SKELETON_GROUP,
+                SkeletonParticle.SKELETON_GROUP,
                 engine -> new SkeletonParticleGroup(engine, ResourceManager.skeleton_tex));
         out.accept(
-                ParticleSkeleton.SKELETON_EXT_GROUP,
+                SkeletonParticle.SKELETON_EXT_GROUP,
                 engine -> new SkeletonParticleGroup(engine, ResourceManager.skoilet_tex));
         out.accept(
-                ParticleSkeleton.GIB_GROUP,
+                SkeletonParticle.GIB_GROUP,
                 engine -> new SkeletonParticleGroup(engine, ResourceManager.skeleton_blood_tex));
         out.accept(
-                ParticleSkeleton.GIB_EXT_GROUP,
+                SkeletonParticle.GIB_EXT_GROUP,
                 engine -> new SkeletonParticleGroup(engine, ResourceManager.skoilet_blood_tex));
         out.accept(
-                ParticleGiblet.MEAT_GROUP,
+                GibletParticle.MEAT_GROUP,
                 engine ->
                         new QuadParticleGroup(
                                 engine, ParticleRenderTypes.opaque(ResourceManager.meat_tex)));
         out.accept(
-                ParticleGiblet.SLIME_GROUP,
+                GibletParticle.SLIME_GROUP,
                 engine ->
                         new QuadParticleGroup(
                                 engine, ParticleRenderTypes.opaque(ResourceManager.slime_tex)));
         out.accept(
-                ParticleGiblet.METAL_GROUP,
+                GibletParticle.METAL_GROUP,
                 engine ->
                         new QuadParticleGroup(
                                 engine, ParticleRenderTypes.opaque(ResourceManager.metal_tex)));
         out.accept(
-                ParticleDeadLeaf.DEAD_LEAF_GROUP,
+                DeadLeafParticle.DEAD_LEAF_GROUP,
                 engine ->
                         new QuadParticleGroup(
                                 engine,
                                 ParticleRenderTypes.litTranslucent(ResourceManager.dead_leaf_tex)));
         out.accept(
-                ParticleBlackPowderSmoke.BLACK_POWDER_SMOKE_GROUP,
+                BlackPowderSmokeParticle.BLACK_POWDER_SMOKE_GROUP,
                 engine ->
                         new QuadParticleGroup(
                                 engine,
                                 ParticleRenderTypes.litTranslucent(
                                         ResourceManager.particle_base_tex)));
-        out.accept(ParticleSpark.SPARK_GROUP, engine -> new LineParticleGroup(engine));
-        out.accept(ParticleDebugLine.DEBUG_LINE_GROUP, engine -> new LineParticleGroup(engine));
-        out.accept(ParticleText.TEXT_GROUP, engine -> new TextParticleGroup(engine));
-        out.accept(ParticleLetter.LETTER_GROUP, engine -> new TextParticleGroup(engine));
+        out.accept(SparkParticle.SPARK_GROUP, engine -> new LineParticleGroup(engine));
+        out.accept(DebugLineParticle.DEBUG_LINE_GROUP, engine -> new LineParticleGroup(engine));
+        out.accept(TextParticle.TEXT_GROUP, engine -> new TextParticleGroup(engine));
+        out.accept(LetterParticle.LETTER_GROUP, engine -> new TextParticleGroup(engine));
     }
 }

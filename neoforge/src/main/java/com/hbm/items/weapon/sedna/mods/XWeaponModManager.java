@@ -1,104 +1,159 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items.weapon.sedna.mods;
 
-import com.google.common.collect.HashBiMap;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.BulletConfig;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
-import com.hbm.items.weapon.sedna.factory.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
+import com.hbm.items.weapon.sedna.GunConfig;
+import com.hbm.items.weapon.sedna.Receiver;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumModCaliber;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumModGeneric;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumModSpecial;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumModTest;
-import com.hbm.items.weapon.sedna.mags.IMagazine;
+import com.hbm.items.weapon.sedna.factory.XFactory12ga;
+import com.hbm.items.weapon.sedna.factory.XFactory22lr;
+import com.hbm.items.weapon.sedna.factory.XFactory357;
+import com.hbm.items.weapon.sedna.factory.XFactory44;
+import com.hbm.items.weapon.sedna.factory.XFactory45;
+import com.hbm.items.weapon.sedna.factory.XFactory50;
+import com.hbm.items.weapon.sedna.factory.XFactory556mm;
+import com.hbm.items.weapon.sedna.factory.XFactory762mm;
+import com.hbm.items.weapon.sedna.factory.XFactory9mm;
+import com.hbm.items.weapon.sedna.factory.XFactoryTool;
+import com.hbm.items.weapon.sedna.mags.Magazine;
+import com.hbm.items.weapon.sedna.mods.WeaponModBase.Operations;
+import com.hbm.items.weapon.sedna.mods.WeaponModBase.Slot;
 import com.hbm.registration.ItemFamily;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.sound.ModSounds;
+import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
-public class XWeaponModManager {
+public final class XWeaponModManager {
 
     public static final String KEY_MOD_LIST = "KEY_MOD_LIST_";
-    public static final int ID_SILENCER = 201;
-    public static final int ID_SCOPE = 202;
-    public static final int ID_SAWED_OFF = 203;
-    public static final int ID_NO_SHIELD = 204;
-    public static final int ID_NO_STOCK = 205;
-    public static final int ID_GREASEGUN_CLEAN = 206;
-    public static final int ID_MINIGUN_SPEED = 208;
-    public static final int ID_FURNITURE_GREEN = 211;
-    public static final int ID_FURNITURE_BLACK = 212;
-    public static final int ID_MAS_BAYONET = 213;
-    public static final int ID_UZI_SATURN = 215;
-    public static final int ID_LAS_SHOTGUN = 216;
-    public static final int ID_LAS_CAPACITOR = 217;
-    public static final int ID_LAS_AUTO = 218;
-    public static final int ID_CARBINE_BAYONET = 219;
-    public static final int ID_NI4NI_NICKEL = 220;
-    public static final int ID_NI4NI_DOUBLOONS = 221;
-    public static final int ID_DRILL_HSS = 222;
-    public static final int ID_DRILL_WSTEEL = 223;
-    public static final int ID_DRILL_TCALLOY = 224;
-    public static final int ID_DRILL_SATURN = 225;
-    public static final int ID_ENGINE_DIESEL = 226;
-    public static final int ID_ENGINE_AVIATION = 227;
-    public static final int ID_ENGINE_ELECTRIC = 228;
-    public static final int ID_ENGINE_TURBO = 229;
-    public static HashBiMap<Integer, IWeaponMod> idToMod = HashBiMap.create();
-    public static HashMap<Item, WeaponModDefinition> stackToMod = new HashMap<>();
-    public static HashMap<IWeaponMod, Supplier<ItemStack>> modToStack = new HashMap<>();
-    public static Comparator<IWeaponMod> modSorter =
-            new Comparator<IWeaponMod>() {
+    public static final Codec<List<Identifier>> MOD_LIST_CODEC = Identifier.CODEC.listOf();
+    public static final RegistryHandle<Declaration> ID_SILENCER =
+            handle("weapon_mod_special_silencer");
+    public static final RegistryHandle<Declaration> ID_SCOPE = handle("weapon_mod_special_scope");
+    public static final RegistryHandle<Declaration> ID_SAWED_OFF =
+            handle("weapon_mod_special_saw/sawed_off");
+    public static final RegistryHandle<Declaration> ID_NO_SHIELD =
+            handle("weapon_mod_special_saw/no_shield");
+    public static final RegistryHandle<Declaration> ID_NO_STOCK =
+            handle("weapon_mod_special_saw/no_stock");
+    public static final RegistryHandle<Declaration> ID_GREASEGUN_CLEAN =
+            handle("weapon_mod_special_greasegun");
+    public static final RegistryHandle<Declaration> ID_MINIGUN_SPEED =
+            handle("weapon_mod_special_speedup/minigun");
+    public static final RegistryHandle<Declaration> ID_SLOWDOWN =
+            handle("weapon_mod_special_slowdown");
+    public static final RegistryHandle<Declaration> ID_FURNITURE_GREEN =
+            handle("weapon_mod_special_furniture_green");
+    public static final RegistryHandle<Declaration> ID_FURNITURE_BLACK =
+            handle("weapon_mod_special_furniture_black");
+    public static final RegistryHandle<Declaration> ID_MAS_BAYONET =
+            handle("weapon_mod_special_bayonet/mas36");
+    public static final RegistryHandle<Declaration> ID_UZI_SATURN =
+            handle("weapon_mod_special_skin_saturnite");
+    public static final RegistryHandle<Declaration> ID_LAS_SHOTGUN =
+            handle("weapon_mod_special_las_shotgun");
+    public static final RegistryHandle<Declaration> ID_LAS_CAPACITOR =
+            handle("weapon_mod_special_las_capacitor");
+    public static final RegistryHandle<Declaration> ID_LAS_AUTO =
+            handle("weapon_mod_special_las_auto");
+    public static final RegistryHandle<Declaration> ID_CARBINE_BAYONET =
+            handle("weapon_mod_special_bayonet/carbine");
+    public static final RegistryHandle<Declaration> ID_NI4NI_NICKEL =
+            handle("weapon_mod_special_nickel");
+    public static final RegistryHandle<Declaration> ID_NI4NI_DOUBLOONS =
+            handle("weapon_mod_special_doubloons");
+    public static final RegistryHandle<Declaration> ID_DRILL_HSS =
+            handle("weapon_mod_special_drill_hss");
+    public static final RegistryHandle<Declaration> ID_DRILL_WSTEEL =
+            handle("weapon_mod_special_drill_weaponsteel");
+    public static final RegistryHandle<Declaration> ID_DRILL_TCALLOY =
+            handle("weapon_mod_special_drill_tcalloy");
+    public static final RegistryHandle<Declaration> ID_DRILL_SATURN =
+            handle("weapon_mod_special_drill_saturnite");
+    public static final RegistryHandle<Declaration> ID_ENGINE_DIESEL =
+            handle("weapon_mod_special_engine_diesel");
+    public static final RegistryHandle<Declaration> ID_ENGINE_AVIATION =
+            handle("weapon_mod_special_engine_aviation");
+    public static final RegistryHandle<Declaration> ID_ENGINE_ELECTRIC =
+            handle("weapon_mod_special_engine_electric");
+    public static final RegistryHandle<Declaration> ID_ENGINE_TURBO =
+            handle("weapon_mod_special_engine_turbo");
 
-                @Override
-                public int compare(IWeaponMod o1, IWeaponMod o2) {
-                    return o2.getModPriority() - o1.getModPriority();
-                }
-            };
-    private static Object prevMagType;
-    private static int prevMagCount;
-    private static boolean changedMagState = false;
+    private static final Comparator<Declaration> INSTALL_ORDER =
+            Comparator.comparingInt((Declaration declaration) -> declaration.modifier.priority())
+                    .reversed();
+    private static final Map<Identifier, Declaration> BY_ID = new LinkedHashMap<>();
+    private static final Map<Item, ModItem> BY_ITEM = new LinkedHashMap<>();
+    private static @Nullable List<Runnable> addonVariants = new ArrayList<>();
+    private static int nextBinding;
+
+    private XWeaponModManager() {}
+
+    private static RegistryHandle<Declaration> handle(String path) {
+        var id = Identifier.fromNamespaceAndPath("hbm", path);
+        return RegistryHandle.of(id, () -> BY_ID.get(id));
+    }
 
     public static void init() {
-        if (!idToMod.isEmpty()) return;
+        var test = ModItems.WEAPON_MOD_TEST;
+        mod(test, EnumModTest.FIRERATE).anyGun(new WeaponModTestFirerate());
+        mod(test, EnumModTest.DAMAGE).anyGun(new WeaponModTestDamage());
+        mod(test, EnumModTest.MULTI).anyGun(new WeaponModTestMulti());
+        mod(test, EnumModTest.OVERRIDE_2_5).anyGun(new WeaponModOverride(2.5F));
+        mod(test, EnumModTest.OVERRIDE_5).anyGun(new WeaponModOverride(5F));
+        mod(test, EnumModTest.OVERRIDE_7_5).anyGun(new WeaponModOverride(7.5F));
+        mod(test, EnumModTest.OVERRIDE_10).anyGun(new WeaponModOverride(10F));
+        mod(test, EnumModTest.OVERRIDE_12_5).anyGun(new WeaponModOverride(125F));
+        mod(test, EnumModTest.OVERRIDE_15).anyGun(new WeaponModOverride(15F));
+        mod(test, EnumModTest.OVERRIDE_20).anyGun(new WeaponModOverride(20F));
 
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.FIRERATE)
-                .addDefault(new WeaponModTestFirerate(0, "FIRERATE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.DAMAGE)
-                .addDefault(new WeaponModTestDamage(1, "DAMAGE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.MULTI)
-                .addDefault(new WeaponModTestMulti(2, "MULTI"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_2_5)
-                .addDefault(new WeaponModOverride(3, 2.5F, "OVERRIDE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_5)
-                .addDefault(new WeaponModOverride(4, 5F, "OVERRIDE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_7_5)
-                .addDefault(new WeaponModOverride(5, 7.5F, "OVERRIDE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_10)
-                .addDefault(new WeaponModOverride(6, 10F, "OVERRIDE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_12_5)
-                .addDefault(new WeaponModOverride(7, 125F, "OVERRIDE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_15)
-                .addDefault(new WeaponModOverride(8, 15F, "OVERRIDE"));
-        def(ModItems.WEAPON_MOD_TEST, EnumModTest.OVERRIDE_20)
-                .addDefault(new WeaponModOverride(9, 20F, "OVERRIDE"));
-
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.IRON_DAMAGE)
-                .addMod(ModItems.GUN_PEPPERBOX.get(), new WeaponModGenericDamage(100));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.IRON_DURA)
-                .addMod(ModItems.GUN_PEPPERBOX.get(), new WeaponModGenericDurability(101));
-        Item[] steel =
-                items(
+        var generic = ModItems.WEAPON_MOD_GENERIC;
+        mod(generic, EnumModGeneric.IRON_DAMAGE)
+                .guns(new WeaponModGenericDamage(), ModItems.GUN_PEPPERBOX);
+        mod(generic, EnumModGeneric.IRON_DURA)
+                .guns(new WeaponModGenericDurability(), ModItems.GUN_PEPPERBOX);
+        List<RegistryHandle<? extends GunBaseNTItem>> steel =
+                List.of(
                         ModItems.GUN_LIGHT_REVOLVER,
                         ModItems.GUN_LIGHT_REVOLVER_ATLAS,
                         ModItems.GUN_HENRY,
@@ -107,245 +162,185 @@ public class XWeaponModManager {
                         ModItems.GUN_MARESLEG,
                         ModItems.GUN_MARESLEG_AKIMBO,
                         ModItems.GUN_FLAREGUN);
-        Item[] dura =
-                items(
+        List<RegistryHandle<? extends GunBaseNTItem>> dura =
+                List.of(
                         ModItems.GUN_AM180,
                         ModItems.GUN_LIBERATOR,
                         ModItems.GUN_CONGOLAKE,
                         ModItems.GUN_FLAMER,
                         ModItems.GUN_FLAMER_TOPAZ);
-        Item[] desh =
-                items(
+        List<RegistryHandle<? extends GunBaseNTItem>> desh =
+                List.of(
                         ModItems.GUN_HEAVY_REVOLVER,
                         ModItems.GUN_CARBINE,
                         ModItems.GUN_UZI,
                         ModItems.GUN_UZI_AKIMBO,
                         ModItems.GUN_SPAS12,
                         ModItems.GUN_PANZERSCHRECK);
-        Item[] wsteel =
-                items(
+        List<RegistryHandle<? extends GunBaseNTItem>> wsteel =
+                List.of(
                         ModItems.GUN_STAR_F,
                         ModItems.GUN_STAR_F_AKIMBO,
                         ModItems.GUN_G3,
                         ModItems.GUN_G3_ZEBRA,
                         ModItems.GUN_MK108,
                         ModItems.GUN_CHEMTHROWER);
-        Item[] ferro =
-                items(
+        List<RegistryHandle<? extends GunBaseNTItem>> ferro =
+                List.of(
                         ModItems.GUN_AMAT,
                         ModItems.GUN_M2,
                         ModItems.GUN_AUTOSHOTGUN,
                         ModItems.GUN_AUTOSHOTGUN_SHREDDER,
                         ModItems.GUN_QUADRO);
-        Item[] tcalloy =
-                items(
+        List<RegistryHandle<? extends GunBaseNTItem>> tcalloy =
+                List.of(
                         ModItems.GUN_LAG,
                         ModItems.GUN_MINIGUN,
                         ModItems.GUN_MISSILE_LAUNCHER,
                         ModItems.GUN_TESLA_CANNON);
-        Item[] bigmt =
-                items(
+        List<RegistryHandle<? extends GunBaseNTItem>> bigmt =
+                List.of(
                         ModItems.GUN_LASER_PISTOL,
                         ModItems.GUN_LASER_PISTOL_PEW_PEW,
                         ModItems.GUN_STG77,
                         ModItems.GUN_FATMAN,
                         ModItems.GUN_TAU);
-        Item[] bronze = items(ModItems.GUN_LASRIFLE);
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.STEEL_DAMAGE)
-                .addMod(steel, new WeaponModGenericDamage(102));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.STEEL_DURA)
-                .addMod(steel, new WeaponModGenericDurability(103));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.DURA_DAMAGE)
-                .addMod(dura, new WeaponModGenericDamage(104));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.DURA_DURA)
-                .addMod(dura, new WeaponModGenericDurability(105));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.DESH_DAMAGE)
-                .addMod(desh, new WeaponModGenericDamage(106));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.DESH_DURA)
-                .addMod(desh, new WeaponModGenericDurability(107));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.WSTEEL_DAMAGE)
-                .addMod(wsteel, new WeaponModGenericDamage(108));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.WSTEEL_DURA)
-                .addMod(wsteel, new WeaponModGenericDurability(109));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.FERRO_DAMAGE)
-                .addMod(ferro, new WeaponModGenericDamage(110));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.FERRO_DURA)
-                .addMod(ferro, new WeaponModGenericDurability(111));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.TCALLOY_DAMAGE)
-                .addMod(tcalloy, new WeaponModGenericDamage(112));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.TCALLOY_DURA)
-                .addMod(tcalloy, new WeaponModGenericDurability(113));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.BIGMT_DAMAGE)
-                .addMod(bigmt, new WeaponModGenericDamage(114));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.BIGMT_DURA)
-                .addMod(bigmt, new WeaponModGenericDurability(115));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.BRONZE_DAMAGE)
-                .addMod(bronze, new WeaponModGenericDamage(116));
-        def(ModItems.WEAPON_MOD_GENERIC, EnumModGeneric.BRONZE_DURA)
-                .addMod(bronze, new WeaponModGenericDurability(117));
+        List<RegistryHandle<? extends GunBaseNTItem>> bronze = List.of(ModItems.GUN_LASRIFLE);
+        mod(generic, EnumModGeneric.STEEL_DAMAGE).guns(new WeaponModGenericDamage(), steel);
+        mod(generic, EnumModGeneric.STEEL_DURA).guns(new WeaponModGenericDurability(), steel);
+        mod(generic, EnumModGeneric.DURA_DAMAGE).guns(new WeaponModGenericDamage(), dura);
+        mod(generic, EnumModGeneric.DURA_DURA).guns(new WeaponModGenericDurability(), dura);
+        mod(generic, EnumModGeneric.DESH_DAMAGE).guns(new WeaponModGenericDamage(), desh);
+        mod(generic, EnumModGeneric.DESH_DURA).guns(new WeaponModGenericDurability(), desh);
+        mod(generic, EnumModGeneric.WSTEEL_DAMAGE).guns(new WeaponModGenericDamage(), wsteel);
+        mod(generic, EnumModGeneric.WSTEEL_DURA).guns(new WeaponModGenericDurability(), wsteel);
+        mod(generic, EnumModGeneric.FERRO_DAMAGE).guns(new WeaponModGenericDamage(), ferro);
+        mod(generic, EnumModGeneric.FERRO_DURA).guns(new WeaponModGenericDurability(), ferro);
+        mod(generic, EnumModGeneric.TCALLOY_DAMAGE).guns(new WeaponModGenericDamage(), tcalloy);
+        mod(generic, EnumModGeneric.TCALLOY_DURA).guns(new WeaponModGenericDurability(), tcalloy);
+        mod(generic, EnumModGeneric.BIGMT_DAMAGE).guns(new WeaponModGenericDamage(), bigmt);
+        mod(generic, EnumModGeneric.BIGMT_DURA).guns(new WeaponModGenericDurability(), bigmt);
+        mod(generic, EnumModGeneric.BRONZE_DAMAGE).guns(new WeaponModGenericDamage(), bronze);
+        mod(generic, EnumModGeneric.BRONZE_DURA).guns(new WeaponModGenericDurability(), bronze);
 
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SPEEDLOADER)
-                .addMod(ModItems.GUN_LIBERATOR.get(), new WeaponModLiberatorSpeedloader(200));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SILENCER)
-                .addMod(
-                        items(
-                                ModItems.GUN_AM180,
-                                ModItems.GUN_UZI,
-                                ModItems.GUN_UZI_AKIMBO,
-                                ModItems.GUN_STAR_F,
-                                ModItems.GUN_STAR_F_AKIMBO,
-                                ModItems.GUN_G3,
-                                ModItems.GUN_AMAT),
-                        new WeaponModSilencer(ID_SILENCER));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SCOPE)
-                .addMod(
-                        items(
-                                ModItems.GUN_HEAVY_REVOLVER,
-                                ModItems.GUN_CARBINE,
-                                ModItems.GUN_G3,
-                                ModItems.GUN_MAS36,
-                                ModItems.GUN_CHARGE_THROWER),
-                        new WeaponModScope(ID_SCOPE));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SAW)
-                .addMod(
-                        items(ModItems.GUN_MARESLEG, ModItems.GUN_DOUBLE_BARREL),
-                        new WeaponModSawedOff(ID_SAWED_OFF))
-                .addMod(
-                        ModItems.GUN_PANZERSCHRECK.get(),
-                        new WeaponModPanzerschreckSawedOff(ID_NO_SHIELD))
-                .addMod(
-                        items(ModItems.GUN_G3, ModItems.GUN_G3_ZEBRA),
-                        new WeapnModG3SawedOff(ID_NO_STOCK));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.GREASEGUN)
-                .addMod(ModItems.GUN_GREASEGUN.get(), new WeaponModGreasegun(ID_GREASEGUN_CLEAN));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SLOWDOWN)
-                .addMod(
-                        items(ModItems.GUN_MINIGUN, ModItems.GUN_MINIGUN_DUAL),
-                        new WeaponModSlowdown(207));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SPEEDUP)
-                .addMod(
-                        items(ModItems.GUN_MINIGUN, ModItems.GUN_MINIGUN_DUAL),
-                        new WeaponModMinigunSpeedup(ID_MINIGUN_SPEED))
-                .addMod(
-                        items(
-                                ModItems.GUN_AUTOSHOTGUN,
-                                ModItems.GUN_AUTOSHOTGUN_SHREDDER,
-                                ModItems.GUN_MK108),
-                        new WeaponModShredderSpeedup(209));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.CHOKE)
-                .addMod(
-                        items(
-                                ModItems.GUN_PEPPERBOX,
-                                ModItems.GUN_MARESLEG,
-                                ModItems.GUN_DOUBLE_BARREL,
-                                ModItems.GUN_LIBERATOR,
-                                ModItems.GUN_SPAS12,
-                                ModItems.GUN_AUTOSHOTGUN_SEXY,
-                                ModItems.GUN_AUTOSHOTGUN_HERETIC),
-                        new WeaponModChoke(210));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.FURNITURE_GREEN)
-                .addMod(ModItems.GUN_G3.get(), new WeaponModPolymerFurniture(ID_FURNITURE_GREEN));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.FURNITURE_BLACK)
-                .addMod(ModItems.GUN_G3.get(), new WeaponModPolymerFurniture(ID_FURNITURE_BLACK));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.BAYONET)
-                .addMod(ModItems.GUN_MAS36.get(), new WeaponModMASBayonet(ID_MAS_BAYONET))
-                .addMod(
-                        ModItems.GUN_CARBINE.get(),
-                        new WeaponModCarbineBayonet(ID_CARBINE_BAYONET));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.STACK_MAG)
-                .addMod(
-                        items(
-                                ModItems.GUN_GREASEGUN,
-                                ModItems.GUN_UZI,
-                                ModItems.GUN_UZI_AKIMBO,
-                                ModItems.GUN_ABERRATOR,
-                                ModItems.GUN_ABERRATOR_EOTT),
-                        new WeaponModStackMag(214));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SKIN_SATURNITE)
-                .addMod(
-                        items(ModItems.GUN_UZI, ModItems.GUN_UZI_AKIMBO),
-                        new WeaponModUziSaturnite(ID_UZI_SATURN));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.LAS_SHOTGUN)
-                .addMod(ModItems.GUN_LASRIFLE.get(), new WeaponModLasShotgun(ID_LAS_SHOTGUN));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.LAS_CAPACITOR)
-                .addMod(ModItems.GUN_LASRIFLE.get(), new WeaponModLasCapacitor(ID_LAS_CAPACITOR));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.LAS_AUTO)
-                .addMod(ModItems.GUN_LASRIFLE.get(), new WeaponModLasAuto(ID_LAS_AUTO));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.NICKEL)
-                .addMod(
-                        ModItems.GUN_N_I_4_N_I.get(),
-                        new WeaponModNickel(ID_NI4NI_NICKEL, "COIN1"));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.DOUBLOONS)
-                .addMod(
-                        ModItems.GUN_N_I_4_N_I.get(),
-                        new WeaponModNickel(ID_NI4NI_DOUBLOONS, "COIN2"));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.DRILL_HSS)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModDrill(ID_DRILL_HSS)
-                                .damage(1.25F)
-                                .dt(3F)
-                                .pierce(0.15F)
-                                .harvest(3));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.DRILL_WEAPONSTEEL)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModDrill(ID_DRILL_WSTEEL)
-                                .damage(1.5F)
-                                .dt(5F)
-                                .pierce(0.2F)
-                                .aoe(2)
-                                .harvest(3));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.DRILL_TCALLOY)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModDrill(ID_DRILL_TCALLOY)
-                                .damage(2F)
-                                .dt(7.5F)
-                                .pierce(0.2F)
-                                .reach(2)
-                                .aoe(3)
-                                .harvest(4));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.DRILL_SATURNITE)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModDrill(ID_DRILL_SATURN)
-                                .damage(3F)
-                                .dt(10F)
-                                .pierce(0.25F)
-                                .reach(2)
-                                .aoe(3)
-                                .harvest(5));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.ENGINE_DIESEL)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModEngine(ID_ENGINE_DIESEL)
-                                .mag(WeaponModEngine.ENGINE_DIESEL)
-                                .delay(15));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.ENGINE_AVIATION)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModEngine(ID_ENGINE_AVIATION)
-                                .mag(WeaponModEngine.ENGINE_AVIATION)
-                                .delay(10));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.ENGINE_ELECTRIC)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModEngine(ID_ENGINE_ELECTRIC)
-                                .mag(WeaponModEngine.ENGINE_ELECTRIC)
-                                .delay(15));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.ENGINE_TURBO)
-                .addMod(
-                        ModItems.GUN_DRILL.get(),
-                        new WeaponModEngine(ID_ENGINE_TURBO)
-                                .mag(WeaponModEngine.ENGINE_TURBO)
-                                .delay(5));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.MAGNET)
-                .addMod(ModItems.GUN_DRILL.get(), new WeaponModDrillFortune(230, "MAGNET", 2));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.SIFTER)
-                .addMod(ModItems.GUN_DRILL.get(), new WeaponModDrillFortune(231, "SIFTER", 1));
-        def(ModItems.WEAPON_MOD_SPECIAL, EnumModSpecial.CANISTERS)
-                .addMod(ModItems.GUN_DRILL.get(), new WeaponModCanisters(232));
+        var special = ModItems.WEAPON_MOD_SPECIAL;
+        mod(special, EnumModSpecial.SPEEDLOADER)
+                .guns(new WeaponModLiberatorSpeedloader(), ModItems.GUN_LIBERATOR);
+        mod(special, EnumModSpecial.SILENCER)
+                .guns(
+                        new WeaponModSilencer(),
+                        ModItems.GUN_AM180,
+                        ModItems.GUN_UZI,
+                        ModItems.GUN_UZI_AKIMBO,
+                        ModItems.GUN_STAR_F,
+                        ModItems.GUN_STAR_F_AKIMBO,
+                        ModItems.GUN_G3,
+                        ModItems.GUN_AMAT)
+                .variant(
+                        ModItems.GUN_AMAT.get(),
+                        ops -> ops.set(Receiver.FIRE_SOUND, ModSounds.GUN_AMAT_SILENCER));
+        mod(special, EnumModSpecial.SCOPE)
+                .guns(
+                        new WeaponModScope(),
+                        ModItems.GUN_HEAVY_REVOLVER,
+                        ModItems.GUN_CARBINE,
+                        ModItems.GUN_G3,
+                        ModItems.GUN_MAS36,
+                        ModItems.GUN_CHARGE_THROWER)
+                .variant(
+                        ModItems.GUN_HEAVY_REVOLVER.get(),
+                        ops -> ops.set(GunConfig.SCOPE_TEXTURE, XFactory44.scope_lilmac))
+                .variant(
+                        ModItems.GUN_CHARGE_THROWER.get(),
+                        ops -> ops.set(GunConfig.SCOPE_TEXTURE, XFactoryTool.scope));
+        var saw = mod(special, EnumModSpecial.SAW);
+        saw.guns(
+                        "sawed_off",
+                        new WeaponModSawedOff(),
+                        ModItems.GUN_MARESLEG,
+                        ModItems.GUN_DOUBLE_BARREL)
+                .variant(
+                        ModItems.GUN_MARESLEG.get(),
+                        ops ->
+                                ops.set(
+                                                GunConfig.ANIMATIONS,
+                                                XFactory12ga.LAMBDA_MARESLEG_SHORT_ANIMS)
+                                        .set(GunConfig.DRAW_DURATION, 5));
+        saw.guns("no_shield", new WeaponModPanzerschreckSawedOff(), ModItems.GUN_PANZERSCHRECK);
+        saw.guns("no_stock", new WeapnModG3SawedOff(), ModItems.GUN_G3, ModItems.GUN_G3_ZEBRA);
+        mod(special, EnumModSpecial.GREASEGUN)
+                .guns(new WeaponModGreasegun(), ModItems.GUN_GREASEGUN);
+        mod(special, EnumModSpecial.SLOWDOWN)
+                .guns(new WeaponModSlowdown(), ModItems.GUN_MINIGUN, ModItems.GUN_MINIGUN_DUAL);
+        var speedup = mod(special, EnumModSpecial.SPEEDUP);
+        speedup.guns(
+                "minigun",
+                new WeaponModMinigunSpeedup(),
+                ModItems.GUN_MINIGUN,
+                ModItems.GUN_MINIGUN_DUAL);
+        speedup.guns(
+                "shredder",
+                new WeaponModShredderSpeedup(),
+                ModItems.GUN_AUTOSHOTGUN,
+                ModItems.GUN_AUTOSHOTGUN_SHREDDER,
+                ModItems.GUN_MK108);
+        mod(special, EnumModSpecial.CHOKE)
+                .guns(
+                        new WeaponModChoke(),
+                        ModItems.GUN_PEPPERBOX,
+                        ModItems.GUN_MARESLEG,
+                        ModItems.GUN_DOUBLE_BARREL,
+                        ModItems.GUN_LIBERATOR,
+                        ModItems.GUN_SPAS12,
+                        ModItems.GUN_AUTOSHOTGUN_SEXY,
+                        ModItems.GUN_AUTOSHOTGUN_HERETIC);
+        mod(special, EnumModSpecial.FURNITURE_GREEN)
+                .guns(new WeaponModPolymerFurniture(), ModItems.GUN_G3);
+        mod(special, EnumModSpecial.FURNITURE_BLACK)
+                .guns(new WeaponModPolymerFurniture(), ModItems.GUN_G3);
+        var bayonet = mod(special, EnumModSpecial.BAYONET);
+        bayonet.guns("mas36", new WeaponModMASBayonet(), ModItems.GUN_MAS36);
+        bayonet.guns("carbine", new WeaponModCarbineBayonet(), ModItems.GUN_CARBINE);
+        mod(special, EnumModSpecial.STACK_MAG)
+                .guns(
+                        new WeaponModStackMag(),
+                        ModItems.GUN_GREASEGUN,
+                        ModItems.GUN_UZI,
+                        ModItems.GUN_UZI_AKIMBO,
+                        ModItems.GUN_ABERRATOR,
+                        ModItems.GUN_ABERRATOR_EOTT);
+        mod(special, EnumModSpecial.SKIN_SATURNITE)
+                .guns(new WeaponModUziSaturnite(), ModItems.GUN_UZI, ModItems.GUN_UZI_AKIMBO);
+        mod(special, EnumModSpecial.LAS_SHOTGUN)
+                .guns(new WeaponModLasShotgun(), ModItems.GUN_LASRIFLE);
+        mod(special, EnumModSpecial.LAS_CAPACITOR)
+                .guns(new WeaponModLasCapacitor(), ModItems.GUN_LASRIFLE);
+        mod(special, EnumModSpecial.LAS_AUTO).guns(new WeaponModLasAuto(), ModItems.GUN_LASRIFLE);
+        mod(special, EnumModSpecial.NICKEL)
+                .guns(new WeaponModNickel(Slot.COIN1), ModItems.GUN_N_I_4_N_I);
+        mod(special, EnumModSpecial.DOUBLOONS)
+                .guns(new WeaponModNickel(Slot.COIN2), ModItems.GUN_N_I_4_N_I);
+        mod(special, EnumModSpecial.DRILL_HSS)
+                .guns(new WeaponModDrill(1.25F, 3F, 0.15F, 1D, -1, 3), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.DRILL_WEAPONSTEEL)
+                .guns(new WeaponModDrill(1.5F, 5F, 0.2F, 1D, 2, 3), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.DRILL_TCALLOY)
+                .guns(new WeaponModDrill(2F, 7.5F, 0.2F, 2D, 3, 4), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.DRILL_SATURNITE)
+                .guns(new WeaponModDrill(3F, 10F, 0.25F, 2D, 3, 5), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.ENGINE_DIESEL)
+                .guns(new WeaponModEngine(WeaponModEngine.ENGINE_DIESEL, 15), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.ENGINE_AVIATION)
+                .guns(new WeaponModEngine(WeaponModEngine.ENGINE_AVIATION, 10), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.ENGINE_ELECTRIC)
+                .guns(new WeaponModEngine(WeaponModEngine.ENGINE_ELECTRIC, 15), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.ENGINE_TURBO)
+                .guns(new WeaponModEngine(WeaponModEngine.ENGINE_TURBO, 5), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.MAGNET)
+                .guns(new WeaponModDrillFortune(Slot.MAGNET, 2), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.SIFTER)
+                .guns(new WeaponModDrillFortune(Slot.SIFTER, 1), ModItems.GUN_DRILL);
+        mod(special, EnumModSpecial.CANISTERS).guns(new WeaponModCanisters(), ModItems.GUN_DRILL);
 
         var p9 =
                 new BulletConfig[] {
@@ -407,249 +402,283 @@ public class XWeaponModManager {
                     XFactory50.bmg50_du,
                     XFactory50.bmg50_he
                 };
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.P9)
-                .addMod(ModItems.GUN_HENRY.get(), new WeaponModCaliber(300, 28, 10F, p9))
-                .addMod(ModItems.GUN_STAR_F.get(), new WeaponModCaliber(301, 12, 15F, p9))
-                .addMod(ModItems.GUN_STAR_F_AKIMBO.get(), new WeaponModCaliber(302, 12, 15F, p9));
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.P45)
-                .addMod(ModItems.GUN_HENRY.get(), new WeaponModCaliber(310, 28, 10F, p45))
-                .addMod(ModItems.GUN_GREASEGUN.get(), new WeaponModCaliber(311, 24, 3F, p45))
-                .addMod(ModItems.GUN_UZI.get(), new WeaponModCaliber(312, 24, 3F, p45))
-                .addMod(ModItems.GUN_UZI_AKIMBO.get(), new WeaponModCaliber(313, 24, 3F, p45))
-                .addMod(ModItems.GUN_LAG.get(), new WeaponModCaliber(314, 15, 25F, p45));
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.P22)
-                .addMod(ModItems.GUN_HENRY.get(), new WeaponModCaliber(320, 28, 10F, p22))
-                .addMod(ModItems.GUN_UZI.get(), new WeaponModCaliber(321, 40, 3F, p22))
-                .addMod(ModItems.GUN_UZI_AKIMBO.get(), new WeaponModCaliber(322, 40, 3F, p22));
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.M357)
-                .addMod(ModItems.GUN_HENRY.get(), new WeaponModCaliber(330, 20, 10F, m357))
-                .addMod(ModItems.GUN_LAG.get(), new WeaponModCaliber(331, 15, 25F, m357));
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.M44)
-                .addMod(ModItems.GUN_LAG.get(), new WeaponModCaliber(340, 13, 25F, m44));
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.R556)
-                .addMod(ModItems.GUN_HENRY.get(), new WeaponModCaliber(350, 10, 10F, r556))
-                .addMod(ModItems.GUN_CARBINE.get(), new WeaponModCaliber(351, 20, 15F, r556))
-                .addMod(
-                        items(ModItems.GUN_MINIGUN, ModItems.GUN_MINIGUN_DUAL),
-                        new WeaponModCaliber(352, 0, 6F, r556));
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.R762)
-                .addMod(ModItems.GUN_HENRY.get(), new WeaponModCaliber(360, 8, 10F, r762))
-                .addMod(ModItems.GUN_G3.get(), new WeaponModCaliber(361, 24, 5F, r762));
-        def(ModItems.WEAPON_MOD_CALIBER, EnumModCaliber.BMG50)
-                .addMod(ModItems.GUN_HENRY.get(), new WeaponModCaliber(370, 5, 10F, bmg50))
-                .addMod(
-                        items(ModItems.GUN_MINIGUN, ModItems.GUN_MINIGUN_DUAL),
-                        new WeaponModCaliber(371, 0, 6F, bmg50));
+        var caliber = ModItems.WEAPON_MOD_CALIBER;
+        var p9Mod = mod(caliber, EnumModCaliber.P9);
+        p9Mod.guns("henry", new WeaponModCaliber(28, 10F, p9), ModItems.GUN_HENRY);
+        p9Mod.guns("star_f", new WeaponModCaliber(12, 15F, p9), ModItems.GUN_STAR_F);
+        p9Mod.guns("star_f_akimbo", new WeaponModCaliber(12, 15F, p9), ModItems.GUN_STAR_F_AKIMBO);
+        var p45Mod = mod(caliber, EnumModCaliber.P45);
+        p45Mod.guns("henry", new WeaponModCaliber(28, 10F, p45), ModItems.GUN_HENRY);
+        p45Mod.guns("greasegun", new WeaponModCaliber(24, 3F, p45), ModItems.GUN_GREASEGUN);
+        p45Mod.guns("uzi", new WeaponModCaliber(24, 3F, p45), ModItems.GUN_UZI);
+        p45Mod.guns("uzi_akimbo", new WeaponModCaliber(24, 3F, p45), ModItems.GUN_UZI_AKIMBO);
+        p45Mod.guns("lag", new WeaponModCaliber(15, 25F, p45), ModItems.GUN_LAG);
+        var p22Mod = mod(caliber, EnumModCaliber.P22);
+        p22Mod.guns("henry", new WeaponModCaliber(28, 10F, p22), ModItems.GUN_HENRY);
+        p22Mod.guns("uzi", new WeaponModCaliber(40, 3F, p22), ModItems.GUN_UZI);
+        p22Mod.guns("uzi_akimbo", new WeaponModCaliber(40, 3F, p22), ModItems.GUN_UZI_AKIMBO);
+        var m357Mod = mod(caliber, EnumModCaliber.M357);
+        m357Mod.guns("henry", new WeaponModCaliber(20, 10F, m357), ModItems.GUN_HENRY);
+        m357Mod.guns("lag", new WeaponModCaliber(15, 25F, m357), ModItems.GUN_LAG);
+        mod(caliber, EnumModCaliber.M44)
+                .guns("lag", new WeaponModCaliber(13, 25F, m44), ModItems.GUN_LAG);
+        var r556Mod = mod(caliber, EnumModCaliber.R556);
+        r556Mod.guns("henry", new WeaponModCaliber(10, 10F, r556), ModItems.GUN_HENRY);
+        r556Mod.guns("carbine", new WeaponModCaliber(20, 15F, r556), ModItems.GUN_CARBINE);
+        r556Mod.guns(
+                "minigun",
+                new WeaponModCaliber(0, 6F, r556),
+                ModItems.GUN_MINIGUN,
+                ModItems.GUN_MINIGUN_DUAL);
+        var r762Mod = mod(caliber, EnumModCaliber.R762);
+        r762Mod.guns("henry", new WeaponModCaliber(8, 10F, r762), ModItems.GUN_HENRY);
+        r762Mod.guns("g3", new WeaponModCaliber(24, 5F, r762), ModItems.GUN_G3);
+        var bmg50Mod = mod(caliber, EnumModCaliber.BMG50);
+        bmg50Mod.guns("henry", new WeaponModCaliber(5, 10F, bmg50), ModItems.GUN_HENRY);
+        bmg50Mod.guns(
+                "minigun",
+                new WeaponModCaliber(0, 6F, bmg50),
+                ModItems.GUN_MINIGUN,
+                ModItems.GUN_MINIGUN_DUAL);
+
+        List<Runnable> variants;
+        synchronized (XWeaponModManager.class) {
+            variants = addonVariants;
+            addonVariants = null;
+        }
+        for (var variant : variants) variant.run();
     }
 
-    private static <E extends Enum<E>> WeaponModDefinition def(ItemFamily<E, ?> family, E type) {
-        return new WeaponModDefinition(() -> family.stack(type), family.get(type));
+    public static synchronized void variant(
+            RegistryHandle<Declaration> id,
+            Supplier<? extends GunBaseNTItem> gun,
+            Consumer<Operations> adjust) {
+        if (addonVariants == null)
+            throw new IllegalStateException(
+                    "weapon mod variant " + id.id() + " declared after common setup");
+        addonVariants.add(
+                () -> {
+                    var declaration = id.get();
+                    var target = gun.get();
+                    BY_ITEM.get(declaration.item).bind(target, declaration);
+                    declaration.variant(target, adjust);
+                });
     }
 
-    @SafeVarargs
-    private static Item[] items(RegistryHandle<? extends Item>... handles) {
-        Item[] items = new Item[handles.length];
-        for (int i = 0; i < handles.length; i++) items[i] = handles[i].get();
-        return items;
+    private static <E extends Enum<E>> ModItem mod(ItemFamily<E, ?> family, E type) {
+        var mod = new ModItem(family.handle(type), () -> family.stack(type));
+        BY_ITEM.put(mod.item, mod);
+        return mod;
+    }
+
+    public static List<Identifier> installed(ItemStack stack, int cfg) {
+        return InstalledWeaponMods.of(stack, cfg).ids();
+    }
+
+    static int binding(Item gun, Identifier id) {
+        var declaration = BY_ID.get(id);
+        return declaration == null ? -1 : declaration.bindings.getInt(gun);
+    }
+
+    public static Collection<Declaration> declarations() {
+        return Collections.unmodifiableCollection(BY_ID.values());
+    }
+
+    public static Set<Item> modItems() {
+        return Collections.unmodifiableSet(BY_ITEM.keySet());
+    }
+
+    public static @Nullable Declaration declarationFor(Item gun, Item modItem) {
+        var mod = BY_ITEM.get(modItem);
+        if (mod == null) return null;
+        var bound = mod.guns.get(gun);
+        return bound != null ? bound : mod.anyGun;
+    }
+
+    public static Map<Item, Declaration> boundGuns(Item modItem) {
+        return Collections.unmodifiableMap(BY_ITEM.get(modItem).guns);
+    }
+
+    public static @Nullable Declaration anyGun(Item modItem) {
+        return BY_ITEM.get(modItem).anyGun;
     }
 
     public static ItemStack[] getUpgradeItems(ItemStack stack, int cfg) {
-        int[] modIds = ItemGunBaseNT.getValueIntArray(stack, KEY_MOD_LIST + cfg);
-        if (modIds.length == 0) return new ItemStack[0];
-        ItemStack[] mods = new ItemStack[modIds.length];
-        for (int i = 0; i < mods.length; i++) {
-            IWeaponMod mod = idToMod.get(modIds[i]);
-            if (mod != null) {
-                Supplier<ItemStack> supplier = modToStack.get(mod);
-                mods[i] = supplier != null ? supplier.get() : null;
-            }
+        var ids = installed(stack, cfg);
+        var items = new ItemStack[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            var declaration = BY_ID.get(ids.get(i));
+            if (declaration != null) items[i] = declaration.stack();
         }
-        return mods;
+        return items;
     }
 
-    public static boolean hasUpgrade(ItemStack stack, int cfg, int id) {
-        int[] modIds = ItemGunBaseNT.getValueIntArray(stack, KEY_MOD_LIST + cfg);
-        for (int i = 0; i < modIds.length; i++) {
-            if (modIds[i] == id) return true;
-        }
-        return false;
-    }
-
-    public static void changedMagState() {
-        changedMagState = true;
-    }
-
-    private static void saveMagState(ItemStack stack, int cfg) {
-        IMagazine<?> mag =
-                ((ItemGunBaseNT) stack.getItem())
-                        .getConfig(stack, cfg)
-                        .getReceivers(stack)[0]
-                        .getMagazine(stack);
-        if (mag == null) return;
-        prevMagType = mag.getType(stack, null);
-        prevMagCount = mag.getAmount(stack, null);
-    }
-
-    private static void restoreMagState(ItemStack stack, int cfg) {
-        if (!changedMagState) return;
-        changedMagState = false;
-
-        IMagazine<?> mag =
-                ((ItemGunBaseNT) stack.getItem())
-                        .getConfig(stack, cfg)
-                        .getReceivers(stack)[0]
-                        .getMagazine(stack);
-        if (mag == null) return;
-        if (mag.getType(stack, null) == prevMagType) {
-            mag.setAmount(stack, Mth.clamp(prevMagCount, 0, mag.getCapacity(stack)));
-        } else {
-            mag.setAmount(stack, 0);
-        }
-    }
-
-    public static void install(ItemStack stack, int cfg, ItemStack... mods) {
-        install(null, stack, cfg, mods);
-    }
-
-    public static void install(ServerLevel level, ItemStack stack, int cfg, ItemStack... mods) {
-        saveMagState(stack, cfg);
-        uninstallMods(level, stack, cfg);
-
-        List<IWeaponMod> toInstall = new ArrayList<>();
-        Item gun = stack.getItem();
-
-        for (ItemStack mod : mods) {
-            if (mod == null || mod.isEmpty()) continue;
-            WeaponModDefinition def = stackToMod.get(mod.getItem());
-            if (def != null) {
-                IWeaponMod forGun = def.modByGun.get(gun);
-                if (forGun != null) {
-                    toInstall.add(forGun);
-                } else {
-                    forGun = def.modByGun.get(null);
-                    if (forGun != null) toInstall.add(forGun);
-                }
-            }
-        }
-        if (toInstall.isEmpty()) {
-            restoreMagState(stack, cfg);
-            return;
-        }
-        toInstall.sort(modSorter);
-        int[] modIds = new int[toInstall.size()];
-        for (int i = 0; i < modIds.length; i++) {
-            IWeaponMod mod = toInstall.get(i);
-            modIds[i] = idToMod.inverse().get(mod);
-            Supplier<ItemStack> supplier = modToStack.get(mod);
-            onInstallStack(level, stack, supplier != null ? supplier.get() : ItemStack.EMPTY, cfg);
-        }
-        ItemGunBaseNT.setValueIntArray(stack, KEY_MOD_LIST + cfg, modIds);
-        restoreMagState(stack, cfg);
-    }
-
-    public static void uninstall(ItemStack stack, int cfg) {
-        uninstall(null, stack, cfg);
-    }
-
-    public static void uninstall(ServerLevel level, ItemStack stack, int cfg) {
-        if (stack.isEmpty()) return;
-        saveMagState(stack, cfg);
-        uninstallMods(level, stack, cfg);
-        restoreMagState(stack, cfg);
-    }
-
-    private static void uninstallMods(ServerLevel level, ItemStack stack, int cfg) {
-        for (ItemStack mod : getUpgradeItems(stack, cfg)) {
-            XWeaponModManager.onUninstallStack(level, stack, mod, cfg);
-        }
-        ItemGunBaseNT.removeValue(stack, KEY_MOD_LIST + cfg);
-    }
-
-    public static void onInstallStack(ItemStack gun, ItemStack mod, int cfg) {
-        onInstallStack(null, gun, mod, cfg);
-    }
-
-    public static void onInstallStack(ServerLevel level, ItemStack gun, ItemStack mod, int cfg) {
-        IWeaponMod newMod = modFromStack(gun, mod, cfg);
-        if (newMod == null) return;
-        if (level == null) newMod.onInstall(gun, mod, cfg);
-        else newMod.onInstall(level, gun, mod, cfg);
-    }
-
-    public static void onUninstallStack(ItemStack gun, ItemStack mod, int cfg) {
-        onUninstallStack(null, gun, mod, cfg);
-    }
-
-    public static void onUninstallStack(ServerLevel level, ItemStack gun, ItemStack mod, int cfg) {
-        IWeaponMod newMod = modFromStack(gun, mod, cfg);
-        if (newMod == null) return;
-        if (level == null) newMod.onUninstall(gun, mod, cfg);
-        else newMod.onUninstall(level, gun, mod, cfg);
-    }
-
-    public static IWeaponMod modFromStack(ItemStack gun, ItemStack mod, int cfg) {
-        if (gun == null || gun.isEmpty() || mod == null || mod.isEmpty()) return null;
-        WeaponModDefinition def = stackToMod.get(mod.getItem());
-        if (def == null) return null;
-        IWeaponMod newMod = def.modByGun.get(gun.getItem());
-        if (newMod == null) newMod = def.modByGun.get(null);
-        return newMod;
+    public static boolean hasUpgrade(ItemStack stack, int cfg, RegistryHandle<Declaration> mod) {
+        return installed(stack, cfg).contains(mod.id());
     }
 
     public static boolean isApplicable(ItemStack gun, ItemStack mod, int cfg, boolean checkMutex) {
-        IWeaponMod newMod = modFromStack(gun, mod, cfg);
-        if (newMod == null) return false;
-
+        var declaration = declarationFor(gun.getItem(), mod.getItem());
+        if (declaration == null) return false;
         if (checkMutex)
-            for (int i : ItemGunBaseNT.getValueIntArray(gun, KEY_MOD_LIST + cfg)) {
-                IWeaponMod iMod = idToMod.get(i);
-                if (iMod != null)
-                    for (String mutex0 : newMod.getSlots())
-                        for (String mutex1 : iMod.getSlots()) {
-                            if (mutex0.equals(mutex1)) return false;
-                        }
+            for (var id : installed(gun, cfg)) {
+                var other = BY_ID.get(id);
+                if (other != null && other.modifier.sharesSlot(declaration.modifier)) return false;
             }
-
         return true;
     }
 
-    public static <T> T eval(T base, ItemStack stack, String key, Object parent, int cfg) {
-        if (stack == null || stack.isEmpty()) return base;
-
-        for (int i : ItemGunBaseNT.getValueIntArray(stack, KEY_MOD_LIST + cfg)) {
-            IWeaponMod mod = idToMod.get(i);
-            if (mod != null) base = mod.eval(base, stack, key, parent);
+    public static void install(ServerLevel level, ItemStack stack, int cfg, ItemStack... mods) {
+        var loaded = Loaded.of(stack, cfg);
+        boolean revalidate = removeAll(level, stack, cfg);
+        var gun = stack.getItem();
+        var chosen = new ArrayList<Declaration>(mods.length);
+        for (var mod : mods) {
+            var declaration = declarationFor(gun, mod.getItem());
+            if (declaration != null) chosen.add(declaration);
         }
-
-        return base;
+        if (!chosen.isEmpty()) {
+            chosen.sort(INSTALL_ORDER);
+            var ids = new ArrayList<Identifier>(chosen.size());
+            for (int i = 0; i < chosen.size(); i++) {
+                var declaration = chosen.get(i);
+                ids.add(declaration.id);
+                declaration.modifier.onInstall(level, stack);
+                revalidate |= declaration.modifier.revalidatesMagazine();
+            }
+            GunBaseNTItem.setValue(stack, KEY_MOD_LIST + cfg, MOD_LIST_CODEC, ids);
+        }
+        if (revalidate && loaded != null) loaded.restore(stack, cfg);
     }
 
-    public static class WeaponModDefinition {
-        public HashMap<Item, IWeaponMod> modByGun = new HashMap<>();
-        public Supplier<ItemStack> stack;
+    public static void uninstall(ServerLevel level, ItemStack stack, int cfg) {
+        var loaded = Loaded.of(stack, cfg);
+        if (removeAll(level, stack, cfg) && loaded != null) loaded.restore(stack, cfg);
+    }
 
-        public WeaponModDefinition(Supplier<ItemStack> stack, Item key) {
+    private static boolean removeAll(ServerLevel level, ItemStack stack, int cfg) {
+        boolean revalidate = false;
+        for (var id : installed(stack, cfg)) {
+            var declaration = BY_ID.get(id);
+            if (declaration == null) continue;
+            declaration.modifier.onUninstall(level, stack);
+            revalidate |= declaration.modifier.revalidatesMagazine();
+        }
+        GunBaseNTItem.removeValue(stack, KEY_MOD_LIST + cfg);
+        return revalidate;
+    }
+
+    private static @Nullable Magazine<?> magazine(ItemStack stack, int cfg) {
+        return ((GunBaseNTItem) stack.getItem())
+                .getConfig(stack, cfg)
+                .getReceivers(stack)
+                .get(0)
+                .getMagazine(stack);
+    }
+
+    public static final class Declaration {
+        public final Identifier id;
+        public final WeaponModBase modifier;
+        public final Item item;
+        private final Supplier<ItemStack> stack;
+        private final Reference2IntOpenHashMap<Item> bindings = new Reference2IntOpenHashMap<>();
+
+        private Declaration(Identifier id, WeaponModBase modifier, ModItem mod) {
+            this.id = id;
+            this.modifier = modifier;
+            this.item = mod.item;
+            this.stack = mod.stack;
+            bindings.defaultReturnValue(declare());
+        }
+
+        public ItemStack stack() {
+            return stack.get();
+        }
+
+        private int declare() {
+            int binding = nextBinding++;
+            modifier.operations(new Operations(binding));
+            return binding;
+        }
+
+        private Declaration variant(Item gun, Consumer<Operations> adjust) {
+            int binding = declare();
+            adjust.accept(new Operations(binding));
+            bindings.put(gun, binding);
+            return this;
+        }
+    }
+
+    private static final class ModItem {
+        final RegistryHandle<? extends Item> handle;
+        final Item item;
+        final Supplier<ItemStack> stack;
+        final Map<Item, Declaration> guns = new LinkedHashMap<>();
+        @Nullable Declaration anyGun;
+
+        ModItem(RegistryHandle<? extends Item> handle, Supplier<ItemStack> stack) {
+            this.handle = handle;
+            this.item = handle.get();
             this.stack = stack;
-            stackToMod.put(key, this);
         }
 
-        public WeaponModDefinition addMod(Item gun, IWeaponMod mod) {
-            if (gun instanceof ItemGunBaseNT weapon && !weapon.recognizedMods.contains(stack))
-                weapon.recognizedMods.add(stack);
-            modByGun.put(gun, mod);
-            modToStack.put(mod, stack);
-            return this;
+        private Declaration declare(Identifier id, WeaponModBase modifier) {
+            var declaration = new Declaration(id, modifier, this);
+            BY_ID.put(id, declaration);
+            return declaration;
         }
 
-        public WeaponModDefinition addMod(Item[] guns, IWeaponMod mod) {
-            for (Item gun : guns) addMod(gun, mod);
-            return this;
+        void anyGun(WeaponModBase modifier) {
+            anyGun = declare(handle.id(), modifier);
         }
 
-        public WeaponModDefinition addDefault(IWeaponMod mod) {
-            modByGun.put(null, mod);
-            modToStack.put(mod, stack);
-            return this;
+        @SafeVarargs
+        final Declaration guns(
+                WeaponModBase modifier, RegistryHandle<? extends GunBaseNTItem>... guns) {
+            return guns(modifier, List.of(guns));
+        }
+
+        Declaration guns(
+                WeaponModBase modifier, List<RegistryHandle<? extends GunBaseNTItem>> guns) {
+            return guns(handle.id(), modifier, guns);
+        }
+
+        @SafeVarargs
+        final Declaration guns(
+                String variant,
+                WeaponModBase modifier,
+                RegistryHandle<? extends GunBaseNTItem>... guns) {
+            return guns(handle.id().withSuffix("/" + variant), modifier, List.of(guns));
+        }
+
+        private Declaration guns(
+                Identifier id,
+                WeaponModBase modifier,
+                List<RegistryHandle<? extends GunBaseNTItem>> guns) {
+            var declaration = declare(id, modifier);
+            for (var gun : guns) bind(gun.get(), declaration);
+            return declaration;
+        }
+
+        void bind(GunBaseNTItem gun, Declaration declaration) {
+            this.guns.put(gun, declaration);
+            if (!gun.recognizedMods.contains(stack)) gun.recognizedMods.add(stack);
+        }
+    }
+
+    private record Loaded(Object type, int count) {
+        static @Nullable Loaded of(ItemStack stack, int cfg) {
+            var mag = magazine(stack, cfg);
+            return mag == null
+                    ? null
+                    : new Loaded(mag.getType(stack, null), mag.getAmount(stack, null));
+        }
+
+        void restore(ItemStack stack, int cfg) {
+            var mag = magazine(stack, cfg);
+            if (mag.getType(stack, null) == type)
+                mag.setAmount(stack, Mth.clamp(count, 0, mag.getCapacity(stack)));
+            else mag.setAmount(stack, 0);
         }
     }
 }

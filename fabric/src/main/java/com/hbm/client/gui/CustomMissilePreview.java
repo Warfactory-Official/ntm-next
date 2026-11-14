@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.gui;
 
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.missile.EntityMissileCustom;
+import com.hbm.entity.missile.CustomMissile;
 import com.hbm.handler.MissileStruct;
-import com.hbm.items.weapon.ItemCustomMissilePart;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -22,14 +38,14 @@ final class CustomMissilePreview {
     private static final float SIZE = 5 * 18F, MIN_HEIGHT = 6F;
     private static final int HALF_W = 33, HALF_H = 94;
 
-    private @Nullable EntityMissileCustom entity;
+    private @Nullable CustomMissile entity;
 
-    void draw(ScreenInfoContainer<?> screen, GuiGraphicsExtractor graphics, MissileStruct parts) {
+    void draw(InfoContainerScreen<?> screen, GuiGraphicsExtractor graphics, MissileStruct parts) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return;
 
         if (entity == null) {
-            entity = new EntityMissileCustom(ModEntities.MISSILE_CUSTOM.get(), minecraft.level);
+            entity = new CustomMissile(ModEntities.MISSILE_CUSTOM.get(), minecraft.level);
             entity.setId(-1);
         }
         entity.setParts(
@@ -63,7 +79,7 @@ final class CustomMissilePreview {
                 HALF_H * 2);
     }
 
-    private static ItemStack stack(@Nullable ItemCustomMissilePart part) {
+    private static ItemStack stack(@Nullable CustomMissilePartItem part) {
         return part == null ? ItemStack.EMPTY : new ItemStack(part);
     }
 }

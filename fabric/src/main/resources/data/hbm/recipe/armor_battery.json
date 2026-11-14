@@ -1,7 +1,13 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "C": "hbm:battery_pack_capacitor_gold",
+    "C": {
+      "fabric:type": "hbm:matchers",
+      "base": "hbm:battery_pack_capacitor_gold",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
+    },
     "P": "#c:plates/steel",
     "W": "#hbm:wires_dense/mingrade"
   },

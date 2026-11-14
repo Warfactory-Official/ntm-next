@@ -1,8 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.platform;
 
+import com.hbm.api.energymk2.EnergyProbe;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.item.ContainerStorage;
@@ -28,7 +45,7 @@ public final class FabricTrEnergyBridge {
 
     public static BlockLookupCache<EnergyStorage> createCache(
             ServerLevel level, BlockPos pos, @Nullable Direction side) {
-        return new FabricCaps.ApiCache<>(
+        return new Caps.ApiCache<>(
                 level, pos, side, BlockApiCache.create(EnergyStorage.SIDED, level, pos));
     }
 
@@ -47,6 +64,25 @@ public final class FabricTrEnergyBridge {
         try (Transaction tx = Transaction.openOuter()) {
             return store.extract(Integer.MAX_VALUE, tx);
         }
+    }
+
+    public static void probeEnergy(EnergyStorage store, EnergyProbe result) {
+        long input;
+        long output;
+        int directions = 0;
+        try (Transaction transaction = Transaction.openOuter()) {
+            try (Transaction probe = transaction.openNested()) {
+                input = store.insert(Integer.MAX_VALUE, probe);
+                if (input > 0) directions |= EnergyProbe.RECEIVE;
+                if (store.extract(Integer.MAX_VALUE, probe) > 0) directions |= EnergyProbe.SEND;
+            }
+            try (Transaction probe = transaction.openNested()) {
+                output = store.extract(Integer.MAX_VALUE, probe);
+                if (output > 0) directions |= EnergyProbe.SEND;
+                if (store.insert(Integer.MAX_VALUE, probe) > 0) directions |= EnergyProbe.RECEIVE;
+            }
+        }
+        result.energyProbe(input, output, directions);
     }
 
     public static long transfer(

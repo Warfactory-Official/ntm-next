@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.recipes;
 
@@ -45,17 +61,22 @@ public class ShredderRecipe extends GenericRecipe {
         var outputs = recipe.outputTemplates();
         List<Weighted<Optional<ItemStackTemplate>>> entries =
                 outputs.size() == 1 ? outputs.getFirst().unwrap() : List.of();
-        boolean fixed =
-                entries.size() == 1
-                        && entries.getFirst().value().isPresent()
-                        && entries.getFirst().weight() > 0;
-        boolean chance =
-                entries.size() == 2
-                        && entries.get(0).value().isPresent() != entries.get(1).value().isPresent();
-        if (!fixed && !chance) {
-            return DataResult.error(
-                    () -> "shredder needs one fixed or chance output, without alternatives");
+        ItemStackTemplate identity = null;
+        for (Weighted<Optional<ItemStackTemplate>> entry : entries) {
+            if (entry.weight() <= 0)
+                return DataResult.error(() -> "shredder output weights must be positive");
+            if (entry.value().isEmpty()) continue;
+            ItemStackTemplate stack = entry.value().get();
+            if (identity != null
+                    && (!identity.item().equals(stack.item())
+                            || !identity.components().equals(stack.components()))) {
+                return DataResult.error(
+                        () -> "shredder output choices must share their item and components");
+            }
+            identity = stack;
         }
+        if (identity == null)
+            return DataResult.error(() -> "shredder needs one nonempty output slot");
         return DataResult.success(recipe);
     }
 
@@ -65,8 +86,8 @@ public class ShredderRecipe extends GenericRecipe {
 
     public ItemStack output() {
         if (outputItems() == null || outputItems().length == 0) return ItemStack.EMPTY;
-        ItemStack single = Outputs.single(outputItems()[0]);
-        return single == null ? ItemStack.EMPTY : single;
+        ItemStack maximum = Outputs.maximum(outputItems()[0]);
+        return maximum == null ? ItemStack.EMPTY : maximum;
     }
 
     public ItemStack roll() {

@@ -1,16 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.fusion;
 
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
+import com.hbm.blockentity.machine.fusion.FusionNeutronBlockEntity;
+import com.hbm.compat.computercraft.FluidKeys;
 import com.hbm.compat.computercraft.SnapshotPeripheral;
-import com.hbm.inventory.fluid.NTMFluids;
 import dan200.computercraft.api.lua.LuaFunction;
-import java.util.Locale;
 import net.minecraft.world.item.ItemStack;
 
-public final class FusionBreederPeripheral extends SnapshotPeripheral<BlockEntityFusionBreeder> {
+public final class FusionBreederPeripheral extends SnapshotPeripheral<FusionNeutronBlockEntity> {
 
     private static final int NEUTRON = 0;
     private static final int PROGRESS = 1;
@@ -25,30 +40,22 @@ public final class FusionBreederPeripheral extends SnapshotPeripheral<BlockEntit
     private static final int INPUT_NAME = 2;
     private static final int OUTPUT_NAME = 3;
 
-    public FusionBreederPeripheral(BlockEntityFusionBreeder machine) {
+    public FusionBreederPeripheral(FusionNeutronBlockEntity machine) {
         super(machine, "ntm_fusion_breeder", 8, 4);
     }
 
     @Override
-    protected void capture(BlockEntityFusionBreeder machine) {
+    protected void capture(FusionNeutronBlockEntity machine) {
         put(NEUTRON, machine.neutronEnergySync);
-        put(PROGRESS, machine.progress / BlockEntityFusionBreeder.CAPACITY);
+        put(PROGRESS, machine.progress / FusionNeutronBlockEntity.CAPACITY);
         put(FILL_0, machine.tanks[0].getFill());
         put(MAX_0, machine.tanks[0].getMaxFill());
         put(FILL_1, machine.tanks[1].getFill());
         put(MAX_1, machine.tanks[1].getMaxFill());
-        putRef(
-                NAME_0,
-                "hbmfluid."
-                        + NTMFluids.legacyName(machine.tanks[0].getTankType())
-                                .toLowerCase(Locale.US));
-        putRef(
-                NAME_1,
-                "hbmfluid."
-                        + NTMFluids.legacyName(machine.tanks[1].getTankType())
-                                .toLowerCase(Locale.US));
-        ItemStack input = machine.getItem(BlockEntityFusionBreeder.SLOT_INPUT);
-        ItemStack output = machine.getItem(BlockEntityFusionBreeder.SLOT_OUTPUT);
+        putRef(NAME_0, FluidKeys.of(machine.tanks[0].getTankType()));
+        putRef(NAME_1, FluidKeys.of(machine.tanks[1].getTankType()));
+        ItemStack input = machine.getItem(FusionNeutronBlockEntity.SLOT_INPUT);
+        ItemStack output = machine.getItem(FusionNeutronBlockEntity.SLOT_OUTPUT);
         putRef(INPUT_NAME, input.isEmpty() ? "" : input.getItem().getDescriptionId());
         put(INPUT_SIZE, input.isEmpty() ? 0 : input.getCount());
         putRef(OUTPUT_NAME, output.isEmpty() ? "" : output.getItem().getDescriptionId());
@@ -56,17 +63,17 @@ public final class FusionBreederPeripheral extends SnapshotPeripheral<BlockEntit
     }
 
     @LuaFunction
-    public final Object[] getNeutronEnergy() {
-        return read(s -> new Object[] {s.doubleAt(NEUTRON)});
+    public Object[] getNeutronEnergy() {
+        return new Object[] {doubleAt(NEUTRON)};
     }
 
     @LuaFunction
-    public final Object[] getProgress() {
-        return read(s -> new Object[] {s.doubleAt(PROGRESS)});
+    public Object[] getProgress() {
+        return new Object[] {doubleAt(PROGRESS)};
     }
 
     @LuaFunction
-    public final Object[] getFluid() {
+    public Object[] getFluid() {
         return read(
                 s ->
                         new Object[] {
@@ -80,7 +87,7 @@ public final class FusionBreederPeripheral extends SnapshotPeripheral<BlockEntit
     }
 
     @LuaFunction
-    public final Object[] getCrafting() {
+    public Object[] getCrafting() {
         return read(
                 s ->
                         new Object[] {
@@ -92,7 +99,7 @@ public final class FusionBreederPeripheral extends SnapshotPeripheral<BlockEntit
     }
 
     @LuaFunction
-    public final Object[] getInfo() {
+    public Object[] getInfo() {
         return read(
                 s ->
                         new Object[] {

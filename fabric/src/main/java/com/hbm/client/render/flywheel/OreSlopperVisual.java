@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineOreSlopper;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.client.render.RenderOreSlopper;
+import com.hbm.blockentity.machine.OreSlopperBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.render.OreSlopperRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -22,16 +38,18 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
 
-public final class OreSlopperVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineOreSlopper>
-        implements ShaderLightVisual {
+public final class OreSlopperVisual extends AbstractBoundedBlockEntityVisual<OreSlopperBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int SLIDER = 0,
             HYDRAULICS = 1,
             BUCKET = 2,
@@ -70,11 +88,9 @@ public final class OreSlopperVisual
     private final PoseStack samplePoses = new PoseStack();
 
     public OreSlopperVisual(
-            VisualizationContext context,
-            BlockEntityMachineOreSlopper blockEntity,
-            float partialTick) {
+            VisualizationContext context, OreSlopperBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        fixedYaw = Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 0);
+        fixedYaw = Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 0);
         bodyBounds =
                 LightBounds.of(
                         MODEL,
@@ -94,26 +110,26 @@ public final class OreSlopperVisual
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockEntityMachineOreSlopper be) {
-        return be.animation == BlockEntityMachineOreSlopper.SlopperAnimation.LIFTING
-                && !WorldItem.draws(RenderOreSlopper.sample(), ItemDisplayContext.NONE);
+    public static boolean vanillaNeeded(OreSlopperBlockEntity be) {
+        return be.animation == OreSlopperBlockEntity.SlopperAnimation.LIFTING
+                && !WorldItem.draws(OreSlopperRenderer.sample(), ItemDisplayContext.NONE);
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
         updateSample(context.partialTick());
     }
 
     private void updateSample(float partialTick) {
-        boolean lifting =
-                blockEntity.animation == BlockEntityMachineOreSlopper.SlopperAnimation.LIFTING;
-        sample.set(lifting ? RenderOreSlopper.sample() : ItemStack.EMPTY, ItemDisplayContext.NONE);
+        boolean lifting = blockEntity.animation == OreSlopperBlockEntity.SlopperAnimation.LIFTING;
+        sample.set(
+                lifting ? OreSlopperRenderer.sample() : ItemStack.EMPTY, ItemDisplayContext.NONE);
         if (!lifting) return;
         samplePoses.setIdentity();
         samplePoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
         samplePoses.mulPose(localPoses[BUCKET]);
-        RenderOreSlopper.samplePose(samplePoses);
+        OreSlopperRenderer.samplePose(samplePoses);
         sample.write(samplePoses.last().pose(), partialTick);
     }
 
@@ -132,7 +148,7 @@ public final class OreSlopperVisual
         PoseStackBuilder pose = poseBuilder;
         pose.poses.setIdentity();
         pose.poses.translate(.5D, 0D, .5D);
-        pose.poses.mulPose(Axis.YP.rotationDegrees(fixedYaw));
+        pose.poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(fixedYaw));
         pose.poses.pushPose();
         pose.poses.translate(0D, 0D, slide * -3D);
         pose.capture(SLIDER);
@@ -196,7 +212,7 @@ public final class OreSlopperVisual
         private void rotate(double x, double y, double z, float angle, Axis axis, int part) {
             poses.pushPose();
             poses.translate(x, y, z);
-            poses.mulPose(axis.rotationDegrees(angle));
+            poses.mulPose((Quaternionfc) axis.rotationDegrees(angle));
             poses.translate(-x, -y, -z);
             capture(part);
             poses.popPose();

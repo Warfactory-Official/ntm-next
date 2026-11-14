@@ -1,12 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.handler;
 
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorusStruct;
+import com.hbm.blockentity.machine.fusion.FusionTorusAssemblyBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.Materials;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.Autogen;
 import java.util.ArrayList;
@@ -72,7 +102,7 @@ public final class ConstructionCatalog {
     private static Entry watz() {
         List<List<ItemStack>> pile = new ArrayList<>();
         slot(pile, ModBlocks.WATZ_END, 48);
-        ItemLike bolt = Autogen.require(MaterialShapes.BOLT, Mats.MAT_DURA);
+        ItemLike bolt = Autogen.require(MaterialShape.BOLT, Materials.DURA_STEEL);
         slot(pile, bolt, 64);
         slot(pile, bolt, 64);
         slot(pile, bolt, 64);
@@ -87,15 +117,17 @@ public final class ConstructionCatalog {
         List<List<ItemStack>> pile = new ArrayList<>();
         slot(pile, ModBlocks.ICF_COMPONENT, 50);
         slot(pile, ModBlocks.ICF_COMPONENT_STRUCTURE, 240);
-        slot(pile, Autogen.require(MaterialShapes.BOLT, Mats.MAT_DURA), 960);
-        slot(pile, Autogen.require(MaterialShapes.CASTPLATE, Mats.MAT_STEEL), 240);
+        slot(pile, Autogen.require(MaterialShape.BOLT, Materials.DURA_STEEL), 960);
+        slot(pile, Autogen.require(MaterialShape.CAST_PLATE, Materials.STEEL), 240);
         slot(pile, ModBlocks.ICF_COMPONENT_VESSEL, 117);
         pile.add(
                 List.of(
                         new ItemStack(
-                                Autogen.require(MaterialShapes.CASTPLATE, Mats.MAT_BBRONZE), 117),
+                                Autogen.require(MaterialShape.CAST_PLATE, Materials.BISMUTH_BRONZE),
+                                117),
                         new ItemStack(
-                                Autogen.require(MaterialShapes.CASTPLATE, Mats.MAT_ABRONZE), 117)));
+                                Autogen.require(MaterialShape.CAST_PLATE, Materials.ARSENIC_BRONZE),
+                                117)));
         slot(pile, ModItems.BLOWTORCH, 1);
         slot(pile, ModItems.BOLTGUN, 1);
         return new Entry(
@@ -106,7 +138,7 @@ public final class ConstructionCatalog {
 
     private static Entry fusionTorus() {
         Map<Block, Integer> shell = new LinkedHashMap<>();
-        BlockEntityFusionTorusStruct.forEachRequirement(
+        FusionTorusAssemblyBlockEntity.forEachRequirement(
                 (block, dx, dy, dz) -> {
                     if (dx == 0 && dy == 0 && dz == 0) return;
                     shell.merge(block, 1, Integer::sum);
@@ -115,7 +147,7 @@ public final class ConstructionCatalog {
 
         List<List<ItemStack>> pile = new ArrayList<>();
         split(pile, ModBlocks.FUSION_COMPONENT, walls);
-        split(pile, Autogen.require(MaterialShapes.CASTPLATE, Mats.MAT_STEEL), walls);
+        split(pile, Autogen.require(MaterialShape.CAST_PLATE, Materials.STEEL), walls);
         split(
                 pile,
                 ModBlocks.FUSION_COMPONENT_BLANKET,

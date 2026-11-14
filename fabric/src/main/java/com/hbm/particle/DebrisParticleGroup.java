@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
@@ -18,8 +34,9 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionfc;
 
-public class DebrisParticleGroup extends ParticleGroup<ParticleDebris> {
+public class DebrisParticleGroup extends ParticleGroup<DebrisParticle> {
 
     public DebrisParticleGroup(ParticleEngine engine) {
         super(engine);
@@ -39,7 +56,7 @@ public class DebrisParticleGroup extends ParticleGroup<ParticleDebris> {
         List<Instance> out = new ArrayList<>(this.particles.size());
         Vec3 cam = camera.position();
 
-        for (ParticleDebris fx : this.particles) {
+        for (DebrisParticle fx : this.particles) {
             if (!fx.hasGeometry() || fx.isInstanced()) continue;
             DebrisChunk chunk = fx.chunk();
             out.add(
@@ -80,8 +97,8 @@ public class DebrisParticleGroup extends ParticleGroup<ParticleDebris> {
             for (Instance in : instances) {
                 pose.pushPose();
                 pose.translate(in.relX, in.relY, in.relZ);
-                pose.mulPose(Axis.YP.rotationDegrees(in.pitch));
-                pose.mulPose(Axis.ZP.rotationDegrees(in.yaw));
+                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(in.pitch));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(in.yaw));
                 pose.translate(-in.sizeX / 2D, -in.sizeY / 2D, -in.sizeZ / 2D);
 
                 for (int i = 0; i < layers.length; i++) {

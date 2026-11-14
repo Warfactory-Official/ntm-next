@@ -4,10 +4,13 @@
     "B": "#c:ingots/bismuth",
     "M": "hbm:ingot_meteorite",
     "P": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:starmetal_axe",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     "T": "#c:bolts/tungsten"

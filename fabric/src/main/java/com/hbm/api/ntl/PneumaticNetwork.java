@@ -1,29 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.api.ntl;
 
-import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
-import com.hbm.blockentity.network.pneumatic.BlockEntityPneumaticStorageBase;
-import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTube;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.tags.HbmItemTags;
+import com.hbm.blockentity.machine.TemplateCrafterBlockEntity;
+import com.hbm.blockentity.network.pneumatic.PneumaticStorageBankBlockEntity;
+import com.hbm.blockentity.network.pneumatic.PneumaticTubeBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.platform.Platform;
 import com.hbm.uninos.graph.EdgeFaces;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.uninos.graph.NodeNetwork;
-import com.hbm.util.BobMathUtil;
 import com.hbm.util.ForeignItems;
 import com.hbm.util.InventoryUtil;
+import com.hbm.util.NtmMath;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenCustomHashMap;
 import java.util.*;
-import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
-import net.fabricmc.fabric.api.transfer.v1.item.ItemStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -75,15 +88,15 @@ public final class PneumaticNetwork {
             ServerLevel level, long nodeKey, LevelChunk cellChunk, int face) {
         if (face != EdgeFaces.SELF) return LevelNodeGraph.ABSENT;
         BlockPos pos = BlockPos.of(nodeKey);
-        if (!(cellChunk.getBlockEntity(pos) instanceof BlockEntityPneumoTube tube))
+        if (!(cellChunk.getBlockEntity(pos) instanceof PneumaticTubeBlockEntity tube))
             return LevelNodeGraph.ABSENT;
-        if (tube.ejectionDir == null) return LevelNodeGraph.ABSENT;
-        BlockPos target = pos.relative(tube.ejectionDir);
-        if (BlockMultiblockCore.readableChunk(level, target.getX(), target.getZ(), cellChunk)
+        if (tube.outletFace == null) return LevelNodeGraph.ABSENT;
+        BlockPos target = pos.relative(tube.outletFace);
+        if (MultiblockCoreBlock.readableChunk(level, target.getX(), target.getZ(), cellChunk)
                 == null) {
             return LevelNodeGraph.chunkOf(target.asLong());
         }
-        return ForeignItems.present(level, target, tube.ejectionDir.getOpposite())
+        return ForeignItems.present(level, target, tube.outletFace.getOpposite())
                 ? LevelNodeGraph.PRESENT
                 : LevelNodeGraph.ABSENT;
     }
@@ -103,25 +116,26 @@ public final class PneumaticNetwork {
             if (ef == null || (ef.activeMask & (1 << EdgeFaces.SELF)) == 0) continue;
             BlockPos node = BlockPos.of(member.posKey);
             LevelChunk nodeChunk =
-                    BlockMultiblockCore.readableChunk(level, node.getX(), node.getZ());
+                    MultiblockCoreBlock.readableChunk(level, node.getX(), node.getZ());
             if (nodeChunk == null
-                    || !(nodeChunk.getBlockEntity(node) instanceof BlockEntityPneumoTube tube))
+                    || !(nodeChunk.getBlockEntity(node) instanceof PneumaticTubeBlockEntity tube))
                 continue;
-            if (tube.ejectionDir == null) continue;
-            BlockPos at = node.relative(tube.ejectionDir);
-            if (presentAt(level, at, tube.ejectionDir.getOpposite())) {
-                out.add(new Destination(at, tube.ejectionDir, tube));
+            if (tube.outletFace == null) continue;
+            BlockPos at = node.relative(tube.outletFace);
+            if (presentAt(level, at, tube.outletFace.getOpposite())) {
+                out.add(new Destination(at, tube.outletFace, tube));
             }
         }
         return out;
     }
 
     public static boolean presentAt(ServerLevel level, BlockPos pos, @Nullable Direction face) {
-        if (BlockMultiblockCore.readableChunk(level, pos.getX(), pos.getZ()) == null) return false;
+        if (MultiblockCoreBlock.readableChunk(level, pos.getX(), pos.getZ()) == null) return false;
         return ForeignItems.present(level, pos, face);
     }
 
-    private static boolean passesEndpoint(BlockEntityPneumoTube endpoint, List<ItemStack> offered) {
+    private static boolean passesEndpoint(
+            PneumaticTubeBlockEntity endpoint, List<ItemStack> offered) {
         for (ItemStack stack : offered) if (passes(endpoint, stack)) return true;
         return false;
     }
@@ -148,22 +162,22 @@ public final class PneumaticNetwork {
 
     public static Comparator<Destination> nearestFirst(BlockPos origin) {
         return Comparator.comparingDouble((Destination d) -> d.pos().distSqr(origin))
-                .thenComparingInt(d -> BlockEntityPneumoTube.getIdentifier(d.pos()));
+                .thenComparingInt(d -> PneumaticTubeBlockEntity.locationKey(d.pos()));
     }
 
-    private static boolean passes(BlockEntityPneumoTube tube, ItemStack stack) {
-        return tube.matchesFilter(stack) == tube.whitelist;
+    private static boolean passes(PneumaticTubeBlockEntity tube, ItemStack stack) {
+        return tube.filterMatches(stack) == tube.matchOnly;
     }
 
-    public List<BlockEntityPneumaticStorageBase> drives(ServerLevel level, BlockPos viewer) {
+    public List<PneumaticStorageBankBlockEntity> drives(ServerLevel level, BlockPos viewer) {
         if (network == null) return List.of();
-        List<BlockEntityPneumaticStorageBase> out = new ArrayList<>();
+        List<PneumaticStorageBankBlockEntity> out = new ArrayList<>();
         for (GraphNode<PneumaticData> node : network.nodes) {
             BlockPos pos = BlockPos.of(node.posKey);
-            LevelChunk chunk = BlockMultiblockCore.readableChunk(level, pos.getX(), pos.getZ());
+            LevelChunk chunk = MultiblockCoreBlock.readableChunk(level, pos.getX(), pos.getZ());
             if (chunk != null
-                    && chunk.getBlockEntity(pos) instanceof BlockEntityPneumaticStorageBase drive
-                    && drive.isAvailable()
+                    && chunk.getBlockEntity(pos) instanceof PneumaticStorageBankBlockEntity drive
+                    && drive.hasAir()
                     && drive.reaches(viewer)) {
                 out.add(drive);
             }
@@ -174,9 +188,9 @@ public final class PneumaticNetwork {
     public Object2LongMap<ItemStack> contents(ServerLevel level, BlockPos viewer) {
         Object2LongOpenCustomHashMap<ItemStack> out =
                 new Object2LongOpenCustomHashMap<>(TYPE_AND_COMPONENTS);
-        for (BlockEntityPneumaticStorageBase drive : drives(level, viewer)) {
-            for (BlockEntityPneumaticStorageBase.Holding held : drive.index().values()) {
-                out.addTo(held.display, held.total);
+        for (PneumaticStorageBankBlockEntity drive : drives(level, viewer)) {
+            for (PneumaticStorageBankBlockEntity.Stock held : drive.stocks().values()) {
+                out.addTo(held.display, held.amount);
             }
         }
         return out;
@@ -185,30 +199,24 @@ public final class PneumaticNetwork {
     public long take(ServerLevel level, BlockPos viewer, ItemStack type, long amount) {
         if (type.isEmpty() || amount <= 0) return 0L;
         long left = amount;
-        for (BlockEntityPneumaticStorageBase drive : drives(level, viewer)) {
-            left = drive.take(type, left);
+        for (PneumaticStorageBankBlockEntity drive : drives(level, viewer)) {
+            left = drive.withdraw(type, left);
             if (left <= 0) break;
         }
         return amount - left;
     }
 
     public long give(ServerLevel level, BlockPos viewer, ItemStack stack, long amount) {
-        if (stack.isEmpty()
-                || amount <= 0
-                || !(stack.getItem().canFitInsideContainerItems()
-                        && !stack.is(HbmItemTags.NO_CONTAINER_NESTING)
-                        && !stack.has(DataComponents.CONTAINER)
-                        && !stack.has(DataComponents.BUNDLE_CONTENTS)
-                        && ContainerItemContext.withConstant(stack).find(ItemStorage.ITEM) == null))
+        if (stack.isEmpty() || amount <= 0 || !Platform.canFitInsideContainerItems(stack))
             return 0L;
-        List<BlockEntityPneumaticStorageBase> reachable = drives(level, viewer);
+        List<PneumaticStorageBankBlockEntity> reachable = drives(level, viewer);
         long left = amount;
-        for (BlockEntityPneumaticStorageBase drive : reachable) {
-            left = drive.giveExisting(stack, left);
+        for (PneumaticStorageBankBlockEntity drive : reachable) {
+            left = drive.fillExisting(stack, left);
             if (left <= 0) return amount;
         }
-        for (BlockEntityPneumaticStorageBase drive : reachable) {
-            left = drive.giveFresh(stack, left);
+        for (PneumaticStorageBankBlockEntity drive : reachable) {
+            left = drive.fillVacant(stack, left);
             if (left <= 0) break;
         }
         return amount - left;
@@ -218,7 +226,7 @@ public final class PneumaticNetwork {
             ServerLevel level,
             BlockPos sourcePos,
             Direction sourceFace,
-            BlockEntityPneumoTube tube,
+            PneumaticTubeBlockEntity tube,
             int sendOrder,
             int receiveOrder,
             int maxRange,
@@ -265,12 +273,12 @@ public final class PneumaticNetwork {
             ServerLevel level,
             BlockPos sourcePos,
             Direction sourceFace,
-            BlockEntityPneumoTube tube,
+            PneumaticTubeBlockEntity tube,
             Destination candidate,
             List<ItemStack> offered) {
         int budget = ITEMS_PER_TRANSFER;
         int hardCap =
-                level.getBlockEntity(candidate.pos()) instanceof BlockEntityMachineAutocrafter
+                level.getBlockEntity(candidate.pos()) instanceof TemplateCrafterBlockEntity
                         ? 1
                         : ITEMS_PER_TRANSFER;
         boolean moved = false;
@@ -278,7 +286,7 @@ public final class PneumaticNetwork {
         for (ItemStack stack : offered) {
             if (candidate.tube() != tube && !passes(candidate.tube(), stack)) continue;
             int proportional = Mth.clamp(64 / stack.getMaxStackSize(), 1, 64);
-            int wanted = BobMathUtil.min(stack.getCount(), budget / proportional, hardCap);
+            int wanted = NtmMath.min(stack.getCount(), budget / proportional, hardCap);
             if (wanted <= 0) continue;
 
             Direction destFace = candidate.pipeDir().getOpposite();
@@ -294,5 +302,5 @@ public final class PneumaticNetwork {
         return moved;
     }
 
-    public record Destination(BlockPos pos, Direction pipeDir, BlockEntityPneumoTube tube) {}
+    public record Destination(BlockPos pos, Direction pipeDir, PneumaticTubeBlockEntity tube) {}
 }

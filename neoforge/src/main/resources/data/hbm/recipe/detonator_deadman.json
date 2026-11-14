@@ -3,11 +3,14 @@
   "ingredients": [
     "hbm:detonator",
     {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:defuser",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:defuser"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "hbm:ducttape"
   ],

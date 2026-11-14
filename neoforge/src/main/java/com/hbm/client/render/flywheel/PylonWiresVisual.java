@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.network.BlockEntityPylonBase;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.network.PylonBaseBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.config.RenderConfig;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.ChunkUtil;
@@ -16,6 +32,7 @@ import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.AffineUvTransformedInstance;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
 import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.ArrayList;
@@ -32,7 +49,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class PylonWiresVisual extends HbmBlockEntityVisual<BlockEntityPylonBase>
+public final class PylonWiresVisual extends AbstractBoundedBlockEntityVisual<PylonBaseBlockEntity>
         implements SimpleTickableVisual, ShaderLightVisual {
     private static final double GIRTH = .03125D, MAX_SAG = 2.5D;
     private static final int SEGMENTS = 10;
@@ -53,14 +70,14 @@ public final class PylonWiresVisual extends HbmBlockEntityVisual<BlockEntityPylo
     private @Nullable MeshPart model;
     private int used;
     private long[] lastConnections = new long[0];
-    private @Nullable BlockEntityPylonBase[] lastPeers = new BlockEntityPylonBase[0];
+    private @Nullable PylonBaseBlockEntity[] lastPeers = new PylonBaseBlockEntity[0];
     private @Nullable BlockState[] lastPeerStates = new BlockState[0];
     private int lastColor;
     private boolean lastHang;
     private boolean built;
 
     public PylonWiresVisual(
-            VisualizationContext context, BlockEntityPylonBase blockEntity, float partialTick) {
+            VisualizationContext context, PylonBaseBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         updateMovingParts(partialTick);
     }
@@ -77,17 +94,17 @@ public final class PylonWiresVisual extends HbmBlockEntityVisual<BlockEntityPylo
         return MeshPart.create(WIRE_MESH, material);
     }
 
-    private static boolean crossed(BlockEntityPylonBase first, BlockEntityPylonBase second) {
+    private static boolean crossed(PylonBaseBlockEntity first, PylonBaseBlockEntity second) {
         Direction a = facingOf(first);
         Direction b = facingOf(second);
         return (a == Direction.EAST && b == Direction.NORTH)
                 || (a == Direction.NORTH && b == Direction.EAST);
     }
 
-    private static @Nullable Direction facingOf(BlockEntityPylonBase pylon) {
+    private static @Nullable Direction facingOf(PylonBaseBlockEntity pylon) {
         BlockState state = pylon.getBlockState();
-        return state.hasProperty(BlockMultiblockCore.FACING)
-                ? state.getValue(BlockMultiblockCore.FACING)
+        return state.hasProperty(MultiblockCoreBlock.FACING)
+                ? state.getValue(MultiblockCoreBlock.FACING)
                 : null;
     }
 
@@ -100,12 +117,12 @@ public final class PylonWiresVisual extends HbmBlockEntityVisual<BlockEntityPylo
         if (!inputsChanged() && built) return;
         built = true;
         path.clear();
-        Vec3[] mine = blockEntity.mounts();
+        Vec3[] mine = blockEntity.wireMounts();
         for (int c = 0; c < lastConnections.length; c++) {
-            BlockEntityPylonBase other = lastPeers[c];
+            PylonBaseBlockEntity other = lastPeers[c];
             if (other == null) continue;
             BlockPos peer = BlockPos.of(lastConnections[c]);
-            Vec3[] theirs = other.mounts();
+            Vec3[] theirs = other.wireMounts();
             int count = Math.min(mine.length, theirs.length);
             int shift = count == 4 && crossed(blockEntity, other) ? 2 : 0;
             for (int i = 0; i < count; i++) {
@@ -144,22 +161,22 @@ public final class PylonWiresVisual extends HbmBlockEntityVisual<BlockEntityPylo
     }
 
     private boolean inputsChanged() {
-        long[] connections = blockEntity.connections;
+        long[] connections = blockEntity.linkedPositions();
         boolean changed =
-                blockEntity.color != lastColor
+                blockEntity.tintRgb() != lastColor
                         || RenderConfig.cableHang != lastHang
                         || !Arrays.equals(connections, lastConnections);
         if (changed) {
             lastConnections = connections.clone();
-            lastColor = blockEntity.color;
+            lastColor = blockEntity.tintRgb();
             lastHang = RenderConfig.cableHang;
-            lastPeers = new BlockEntityPylonBase[connections.length];
+            lastPeers = new PylonBaseBlockEntity[connections.length];
             lastPeerStates = new BlockState[connections.length];
         }
         for (int i = 0; i < connections.length; i++) {
-            BlockEntityPylonBase peer =
+            PylonBaseBlockEntity peer =
                     ChunkUtil.blockEntityIfLoaded(level, BlockPos.of(connections[i]))
-                                    instanceof BlockEntityPylonBase other
+                                    instanceof PylonBaseBlockEntity other
                             ? other
                             : null;
             @Nullable BlockState state = peer == null ? null : peer.getBlockState();
@@ -232,13 +249,13 @@ public final class PylonWiresVisual extends HbmBlockEntityVisual<BlockEntityPylo
 
     @Override
     protected AABB getRenderBoundingBox() {
-        double reach = blockEntity.maxWireLength() + 1D;
+        double reach = blockEntity.wireReach() + 1D;
         return new AABB(
                 pos.getX() - reach,
                 pos.getY() - reach,
                 pos.getZ() - reach,
                 pos.getX() + reach + 1D,
-                pos.getY() + blockEntity.familyLift() + 1D,
+                pos.getY() + blockEntity.peerMountCeiling() + 1D,
                 pos.getZ() + reach + 1D);
     }
 

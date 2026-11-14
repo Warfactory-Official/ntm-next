@@ -1,10 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.entity.item;
 
-import com.hbm.interfaces.injected.IChunkExtension;
+import com.hbm.interfaces.injected.ChunkExtension;
 import com.hbm.packet.ChunkTrackerIndex;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMaps;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -36,6 +55,23 @@ public final class PendingFallers {
 
     public static void defer(LevelChunk chunk, BlockPos pos, BlockState state) {
         assert chunk.getPos().x() == (pos.getX() >> 4) && chunk.getPos().z() == (pos.getZ() >> 4);
+        append(chunk, pos.asLong(), state);
+        chunk.markUnsaved();
+    }
+
+    public static void appendAll(ChunkExtension chunk, Long2ObjectMap<BlockState> fallers) {
+        if (fallers.isEmpty()) return;
+        var present = new LongOpenHashSet();
+        long[] positions = chunk.hbm$pendingFallerPositions();
+        for (int i = 0, size = chunk.hbm$pendingFallerSize(); i < size; i++)
+            present.add(positions[i]);
+        for (var entry : Long2ObjectMaps.fastIterable(fallers)) {
+            if (present.add(entry.getLongKey()))
+                append(chunk, entry.getLongKey(), entry.getValue());
+        }
+    }
+
+    private static void append(ChunkExtension chunk, long pos, BlockState state) {
         int size = chunk.hbm$pendingFallerSize();
         long[] positions = chunk.hbm$pendingFallerPositions();
         BlockState[] states = chunk.hbm$pendingFallerStates();
@@ -46,32 +82,33 @@ public final class PendingFallers {
             positions = Arrays.copyOf(positions, size << 1);
             states = Arrays.copyOf(states, size << 1);
         }
-        positions[size] = pos.asLong();
+        positions[size] = pos;
         states[size] = state;
         chunk.hbm$setPendingFallers(positions, states, size + 1);
-        chunk.markUnsaved();
     }
 
     public static void promote(ServerLevel level, LevelChunk chunk) {
-        int size = chunk.hbm$pendingFallerSize();
+        int size = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$pendingFallerSize();
         if (size == 0) return;
-        long[] positions = chunk.hbm$pendingFallerPositions();
-        BlockState[] states = chunk.hbm$pendingFallerStates();
-        EntityFallingBlockBatch batch = null;
+        long[] positions =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$pendingFallerPositions();
+        BlockState[] states =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$pendingFallerStates();
+        FallingBlockBatchEntity batch = null;
         for (int i = 0; i < size; i++) {
-            if (EntityFallingBlockBatch.eligible(states[i])) {
-                if (batch != null && batch.fallerCount() == EntityFallingBlockBatch.MAX_CHILDREN) {
+            if (FallingBlockBatchEntity.eligible(states[i])) {
+                if (batch != null && batch.fallerCount() == FallingBlockBatchEntity.MAX_CHILDREN) {
                     if (!level.addFreshEntity(batch)) {
                         throw new IllegalStateException(
                                 "Could not promote fallout faller batch at " + chunk.getPos());
                     }
                     batch = null;
                 }
-                if (batch == null) batch = EntityFallingBlockBatch.create(level, chunk);
+                if (batch == null) batch = FallingBlockBatchEntity.create(level, chunk);
                 batch.add(BlockPos.of(positions[i]), states[i]);
             } else {
-                EntityFallingBlockNT falling =
-                        EntityFallingBlockNT.fall(level, BlockPos.of(positions[i]), states[i]);
+                FallingBlockNTEntity falling =
+                        FallingBlockNTEntity.fall(level, BlockPos.of(positions[i]), states[i]);
                 falling.dropItem = false;
             }
         }
@@ -79,7 +116,7 @@ public final class PendingFallers {
             throw new IllegalStateException(
                     "Could not promote fallout faller batch at " + chunk.getPos());
         }
-        chunk.hbm$setPendingFallers(null, null, 0);
+        ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$setPendingFallers(null, null, 0);
         chunk.markUnsaved();
     }
 
@@ -94,7 +131,7 @@ public final class PendingFallers {
         return list;
     }
 
-    public static void load(ListTag list, IChunkExtension chunk) {
+    public static void load(ListTag list, ChunkExtension chunk) {
         int size = list.size();
         if (size == 0) return;
         long[] positions = new long[size];

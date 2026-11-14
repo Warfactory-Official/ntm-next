@@ -1,323 +1,334 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.mods;
 
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.items.ModItems;
-import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
-import com.hbm.items.weapon.sedna.factory.*;
-import com.hbm.items.weapon.sedna.mags.*;
-import com.hbm.particle.SpentCasing;
-import com.hbm.particle.helper.CasingCreator;
+import com.hbm.items.weapon.sedna.BulletConfig;
+import com.hbm.items.weapon.sedna.Crosshair;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
+import com.hbm.items.weapon.sedna.GunConfig;
+import com.hbm.items.weapon.sedna.Receiver;
+import com.hbm.items.weapon.sedna.cue.GunAnimationTimeline;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
+import com.hbm.items.weapon.sedna.factory.Lego;
+import com.hbm.items.weapon.sedna.factory.XFactory12ga;
+import com.hbm.items.weapon.sedna.factory.XFactory44;
+import com.hbm.items.weapon.sedna.factory.XFactory556mm;
+import com.hbm.items.weapon.sedna.factory.XFactory762mm;
+import com.hbm.items.weapon.sedna.factory.XFactoryDrill;
+import com.hbm.items.weapon.sedna.factory.XFactoryRocket;
+import com.hbm.items.weapon.sedna.mags.Magazine;
+import com.hbm.items.weapon.sedna.mags.MagazineBelt;
+import com.hbm.items.weapon.sedna.mags.MagazineElectricEngine;
+import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
+import com.hbm.items.weapon.sedna.mags.MagazineLiquidEngine;
+import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
+import com.hbm.lib.ModDamageTypes;
+import com.hbm.lib.ModifiedDamageSource;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.DamageClass;
-import com.hbm.util.EntityDamageUtil;
-import java.util.ArrayList;
-import java.util.Collections;
+import com.hbm.sound.WorldSounds;
+import com.hbm.util.EntityTargeting;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
+
+final class DerivedMagazines {
+    private DerivedMagazines() {}
+
+    static MagazineSingleReload single(int index, int capacity, List<BulletConfig> bullets) {
+        var mag = new MagazineSingleReload(index, capacity);
+        mag.acceptedBullets = bullets;
+        return mag;
+    }
+
+    static MagazineFullReload full(int index, int capacity, List<BulletConfig> bullets) {
+        var mag = new MagazineFullReload(index, capacity);
+        mag.acceptedBullets = bullets;
+        return mag;
+    }
+
+    static MagazineBelt belt(List<BulletConfig> bullets) {
+        var mag = new MagazineBelt();
+        mag.acceptedBullets = bullets;
+        return mag;
+    }
+}
 
 final class WeaponModChoke extends WeaponModBase {
-    WeaponModChoke(int id) {
-        super(id, "BARREL");
+    WeaponModChoke() {
+        super(0, Slot.BARREL);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return key == Receiver.F_SPREADAMMO ? cast((Float) base * 0.5F, base) : base;
+    protected void operations(Operations ops) {
+        ops.scale(Receiver.SPREAD_AMMO, 0.5F);
     }
 }
 
 final class WeaponModGenericDamage extends WeaponModBase {
-    WeaponModGenericDamage(int id) {
-        super(id, "GENERIC_DAMAGE");
-        setPriority(PRIORITY_MULTIPLICATIVE);
+    WeaponModGenericDamage() {
+        super(PRIORITY_MULTIPLICATIVE, Slot.GENERIC_DAMAGE);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return parent instanceof Receiver && key == Receiver.F_BASEDAMAGE && base instanceof Float
-                ? cast((Float) base * 1.15F, base)
-                : base;
+    protected void operations(Operations ops) {
+        ops.scale(Receiver.BASE_DAMAGE, 1.15F);
     }
 }
 
 final class WeaponModGenericDurability extends WeaponModBase {
-    WeaponModGenericDurability(int id) {
-        super(id, "GENERIC_DURABILITY");
-        setPriority(PRIORITY_MULTIPLICATIVE);
+    WeaponModGenericDurability() {
+        super(PRIORITY_MULTIPLICATIVE, Slot.GENERIC_DURABILITY);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return parent instanceof GunConfig && key == GunConfig.F_DURABILITY && base instanceof Float
-                ? cast((Float) base * 2F, base)
-                : base;
+    protected void operations(Operations ops) {
+        ops.scale(GunConfig.DURABILITY, 2F);
     }
 }
 
 final class WeaponModLasAuto extends WeaponModBase {
-    WeaponModLasAuto(int id) {
-        super(id, "RECEIVER");
-        setPriority(PRIORITY_SET);
+    WeaponModLasAuto() {
+        super(PRIORITY_SET, Slot.RECEIVER);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.F_BASEDAMAGE) return cast((Float) base * 0.66F, base);
-        if (key == Receiver.B_REFIREONHOLD) return cast(true, base);
-        if (key == Receiver.I_DELAYAFTERFIRE) return cast(5, base);
-        if (key == GunConfig.O_SCOPETEXTURE) return cast(null, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.scale(Receiver.BASE_DAMAGE, 0.66F)
+                .set(Receiver.REFIRE_ON_HOLD, true)
+                .set(Receiver.DELAY_AFTER_FIRE, 5)
+                .set(GunConfig.SCOPE_TEXTURE, null);
     }
 }
 
 final class WeaponModLasCapacitor extends WeaponModBase {
-    WeaponModLasCapacitor(int id) {
-        super(id, "UNDERBARREL");
-        setPriority(PRIORITY_MULTIPLICATIVE);
+    WeaponModLasCapacitor() {
+        super(PRIORITY_MULTIPLICATIVE, Slot.UNDERBARREL);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.F_BASEDAMAGE) return cast((Float) base * 1.05F, base);
-        if (key == Receiver.O_MAGAZINE) {
-            MagazineFullReload original = (MagazineFullReload) base;
-            WeaponModStackMag.DUMMY_FULL.acceptedBullets = original.acceptedBullets;
-            WeaponModStackMag.DUMMY_FULL.capacity = original.capacity * 3 / 2;
-            WeaponModStackMag.DUMMY_FULL.index = original.index;
-            return cast(WeaponModStackMag.DUMMY_FULL, base);
-        }
-        return base;
+    protected void operations(Operations ops) {
+        ops.scale(Receiver.BASE_DAMAGE, 1.05F)
+                .map(
+                        Receiver.MAGAZINE,
+                        mag ->
+                                mag instanceof MagazineFullReload full
+                                        ? DerivedMagazines.full(
+                                                full.index,
+                                                full.capacity * 3 / 2,
+                                                full.acceptedBullets)
+                                        : mag);
     }
 }
 
 final class WeaponModLasShotgun extends WeaponModBase {
-    WeaponModLasShotgun(int id) {
-        super(id, "BARREL");
-        setPriority(PRIORITY_MULTIPLICATIVE);
+    WeaponModLasShotgun() {
+        super(PRIORITY_MULTIPLICATIVE, Slot.BARREL);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.F_BASEDAMAGE) return cast((Float) base * 0.35F, base);
-        if (key == Receiver.F_SPLITPROJECTILES) return cast((Float) base * 3F, base);
-        if (key == Receiver.F_SPREADINNATE) return cast((Float) base + 3F, base);
-        if (key == Receiver.F_SPREADHIPFIRE) return cast(0F, base);
-        if (key == GunConfig.O_CROSSHAIR) return cast(Crosshair.L_CIRCLE, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.scale(Receiver.BASE_DAMAGE, 0.35F)
+                .scale(Receiver.SPLIT_PROJECTILES, 3F)
+                .add(Receiver.SPREAD_INNATE, 3F)
+                .set(Receiver.SPREAD_HIPFIRE, 0F)
+                .set(GunConfig.CROSSHAIR, Crosshair.L_CIRCLE);
     }
 }
 
 final class WeaponModMinigunSpeedup extends WeaponModBase {
-    WeaponModMinigunSpeedup(int id) {
-        super(id, "SPEED");
+    WeaponModMinigunSpeedup() {
+        super(0, Slot.SPEED);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.I_ROUNDSPERCYCLE) return cast((Integer) base * 3, base);
-        if (key == Receiver.F_SPREADINNATE) return cast((Float) base * 1.5F, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.map(Receiver.ROUNDS_PER_CYCLE, v -> v * 3).scale(Receiver.SPREAD_INNATE, 1.5F);
     }
 }
 
 final class WeaponModOverride extends WeaponModBase {
     private final float baseDamage;
 
-    WeaponModOverride(int id, float baseDamage, String... slots) {
-        super(id, slots);
+    WeaponModOverride(float baseDamage) {
+        super(PRIORITY_SET, Slot.OVERRIDE);
         this.baseDamage = baseDamage;
-        setPriority(PRIORITY_SET);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return key == Receiver.F_BASEDAMAGE ? cast(baseDamage, base) : base;
+    protected void operations(Operations ops) {
+        ops.set(Receiver.BASE_DAMAGE, baseDamage);
     }
 }
 
 final class WeaponModPolymerFurniture extends WeaponModBase {
     static final BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_G3 =
-            (stack, ctx) -> {
+            (_, ctx) -> {
                 Player player = ctx.getPlayer();
                 if (player != null)
-                    ItemGunBaseNT.setupRecoil(
+                    GunBaseNTItem.setupRecoil(
                             (float) (player.getRandom().nextGaussian() * 0.125),
                             (float) (player.getRandom().nextGaussian() * 0.125));
             };
 
-    WeaponModPolymerFurniture(int id) {
-        super(id, "FURNITURE");
+    WeaponModPolymerFurniture() {
+        super(0, Slot.FURNITURE);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return key == Receiver.CON_ONRECOIL ? cast(LAMBDA_RECOIL_G3, base) : base;
+    protected void operations(Operations ops) {
+        ops.set(Receiver.ON_RECOIL, LAMBDA_RECOIL_G3);
     }
 }
 
 final class WeaponModSawedOff extends WeaponModBase {
-    WeaponModSawedOff(int id) {
-        super(id, "BARREL");
+    WeaponModSawedOff() {
+        super(0, Slot.BARREL);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.F_SPREADINNATE) return cast(Math.max(0.025F, (Float) base), base);
-        if (key == Receiver.F_SPREADAMMO) return cast((Float) base * 1.5F, base);
-        if (key == Receiver.F_BASEDAMAGE) return cast((Float) base * 1.35F, base);
-        if (gun.is(ModItems.GUN_MARESLEG.get())) {
-            if (key == GunConfig.FUN_ANIMNATIONS)
-                return cast(XFactory12ga.LAMBDA_MARESLEG_SHORT_ANIMS, base);
-            if (key == GunConfig.I_DRAWDURATION) return cast(5, base);
-        }
-        return base;
+    protected void operations(Operations ops) {
+        ops.map(Receiver.SPREAD_INNATE, v -> Math.max(0.025F, v))
+                .scale(Receiver.SPREAD_AMMO, 1.5F)
+                .scale(Receiver.BASE_DAMAGE, 1.35F);
     }
 }
 
 final class WeaponModScope extends WeaponModBase {
-    WeaponModScope(int id) {
-        super(id, "SCOPE");
+    WeaponModScope() {
+        super(0, Slot.SCOPE);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == GunConfig.O_SCOPETEXTURE) {
-            if (gun.is(ModItems.GUN_HEAVY_REVOLVER.get()))
-                return cast(XFactory44.scope_lilmac, base);
-            if (((ItemGunBaseNT) gun.getItem()).quality == WeaponQuality.UTILITY)
-                return cast(XFactoryTool.scope, base);
-            return cast(XFactory556mm.scope, base);
-        }
-        if (key == GunConfig.B_HIDECROSSHAIR) return cast(true, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.set(GunConfig.SCOPE_TEXTURE, XFactory556mm.scope).set(GunConfig.HIDE_CROSSHAIR, true);
     }
 }
 
 final class WeaponModShredderSpeedup extends WeaponModBase {
-    WeaponModShredderSpeedup(int id) {
-        super(id, "SPEED");
+    WeaponModShredderSpeedup() {
+        super(0, Slot.SPEED);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.I_DELAYAFTERFIRE || key == Receiver.I_DELAYAFTERDRYFIRE)
-            return cast((Integer) base / 2, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.map(Receiver.DELAY_AFTER_FIRE, v -> v / 2)
+                .map(Receiver.DELAY_AFTER_DRY_FIRE, v -> v / 2);
     }
 }
 
 final class WeaponModSlowdown extends WeaponModBase {
-    WeaponModSlowdown(int id) {
-        super(id, "SPEED");
+    WeaponModSlowdown() {
+        super(0, Slot.SPEED);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.I_DELAYAFTERFIRE) return cast((Integer) base * 2, base);
-        if (key == Receiver.F_SPREADINNATE) return cast(0F, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.map(Receiver.DELAY_AFTER_FIRE, v -> v * 2).set(Receiver.SPREAD_INNATE, 0F);
     }
 }
 
 final class WeaponModTestDamage extends WeaponModBase {
-    WeaponModTestDamage(int id, String... slots) {
-        super(id, slots);
-        setPriority(PRIORITY_MULT_FINAL);
+    WeaponModTestDamage() {
+        super(PRIORITY_MULT_FINAL, Slot.DAMAGE);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return parent instanceof Receiver && key == Receiver.F_BASEDAMAGE && base instanceof Float
-                ? cast((Float) base * 1.5F, base)
-                : base;
+    protected void operations(Operations ops) {
+        ops.scale(Receiver.BASE_DAMAGE, 1.5F);
     }
 }
 
 final class WeaponModTestFirerate extends WeaponModBase {
-    WeaponModTestFirerate(int id, String... slots) {
-        super(id, slots);
-        setPriority(PRIORITY_MULT_FINAL);
+    WeaponModTestFirerate() {
+        super(PRIORITY_MULT_FINAL, Slot.FIRERATE);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return parent instanceof Receiver
-                        && key == Receiver.I_DELAYAFTERFIRE
-                        && base instanceof Integer
-                ? cast(Math.max((Integer) base / 2, 1), base)
-                : base;
+    protected void operations(Operations ops) {
+        ops.map(Receiver.DELAY_AFTER_FIRE, v -> Math.max(v / 2, 1));
     }
 }
 
 final class WeaponModTestMulti extends WeaponModBase {
-    WeaponModTestMulti(int id, String... slots) {
-        super(id, slots);
-        setPriority(PRIORITY_MULT_FINAL);
+    WeaponModTestMulti() {
+        super(PRIORITY_MULT_FINAL, Slot.MULTI);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return parent instanceof Receiver
-                        && key == Receiver.I_ROUNDSPERCYCLE
-                        && base instanceof Integer
-                ? cast((Integer) base * 3, base)
-                : base;
+    protected void operations(Operations ops) {
+        ops.map(Receiver.ROUNDS_PER_CYCLE, v -> v * 3);
     }
 }
 
 final class WeaponModUziSaturnite extends WeaponModBase {
-    WeaponModUziSaturnite(int id) {
-        super(id, "FURNITURE");
-        setPriority(PRIORITY_ADDITIVE);
+    WeaponModUziSaturnite() {
+        super(PRIORITY_ADDITIVE, Slot.FURNITURE);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == GunConfig.F_DURABILITY) return cast((Float) base * 5F, base);
-        if (key == Receiver.F_BASEDAMAGE) return cast((Float) base + 3F, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.scale(GunConfig.DURABILITY, 5F).add(Receiver.BASE_DAMAGE, 3F);
     }
 }
 
 final class WeaponModNickel extends WeaponModBase {
-    WeaponModNickel(int id, String name) {
-        super(id, name);
-        setPriority(PRIORITY_SET);
+    WeaponModNickel(Slot slot) {
+        super(PRIORITY_SET, slot);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return base;
-    }
+    protected void operations(Operations ops) {}
 }
 
 final class WeapnModG3SawedOff extends WeaponModBase {
@@ -327,88 +338,49 @@ final class WeapnModG3SawedOff extends WeaponModBase {
                     return new BusAnimation()
                             .addBus(
                                     "EQUIP",
-                                    new BusAnimationSequence()
-                                            .addPos(45, 0, 0, 0)
-                                            .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                    new AnimationSequence()
+                                            .to(45, 0, 0, 0)
+                                            .to(0, 0, 0, 250, IType.SIN_FULL));
                 return XFactory556mm.LAMBDA_G3_ANIMS.apply(stack, type);
             };
 
-    WeapnModG3SawedOff(int id) {
-        super(id, "SHIELD");
+    WeapnModG3SawedOff() {
+        super(0, Slot.SHIELD);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == GunConfig.I_DRAWDURATION) return cast(5, base);
-        if (key == GunConfig.FUN_ANIMNATIONS) return cast(LAMBDA_G3_ANIMS, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.set(GunConfig.DRAW_DURATION, 5).set(GunConfig.ANIMATIONS, LAMBDA_G3_ANIMS);
     }
 }
 
 final class WeaponModGreasegun extends WeaponModBase {
-    static final BiConsumer<ItemStack, LambdaContext> ORCHESTRA_GREASEGUN =
-            (stack, ctx) -> {
-                LivingEntity entity = ctx.entity();
-                if (entity.level().isClientSide()) return;
-                GunAnimation type = ItemGunBaseNT.getLastAnim(stack, ctx.configIndex());
-                int timer = ItemGunBaseNT.getAnimTimer(stack, ctx.configIndex());
-                boolean aiming = ItemGunBaseNT.getIsAiming(stack);
-                if (type == GunAnimation.CYCLE) {
-                    if (timer == 1) {
-                        SpentCasing casing =
-                                ctx.config()
-                                        .getReceivers(stack)[0]
-                                        .getMagazine(stack)
-                                        .getCasing(stack, ctx.inventory());
-                        if (casing != null)
-                            CasingCreator.composeEffect(
-                                    entity.level(),
-                                    entity,
-                                    0.55,
-                                    aiming ? 0 : -0.125,
-                                    aiming ? 0 : -0.25D,
-                                    0,
-                                    0.18,
-                                    -0.12,
-                                    0.01,
-                                    -7.5F + (float) entity.getRandom().nextGaussian() * 5F,
-                                    12F + (float) entity.getRandom().nextGaussian() * 5F,
-                                    casing.getName());
-                    }
-                    return;
-                }
-                Orchestras.ORCHESTRA_GREASEGUN.accept(stack, ctx);
-            };
-
-    WeaponModGreasegun(int id) {
-        super(id, "FURNITURE");
-        setPriority(PRIORITY_ADDITIVE);
+    WeaponModGreasegun() {
+        super(PRIORITY_ADDITIVE, Slot.FURNITURE);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == GunConfig.F_DURABILITY) return cast((Float) base * 3F, base);
-        if (key == Receiver.F_BASEDAMAGE) return cast((Float) base + 2F, base);
-        if (key == Receiver.F_SPREADINNATE) return cast(0F, base);
-        if (key == Receiver.I_DELAYAFTERFIRE) return cast((Integer) base / 2, base);
-        if (key == GunConfig.CON_ORCHESTRA) return cast(ORCHESTRA_GREASEGUN, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.scale(GunConfig.DURABILITY, 3F)
+                .add(Receiver.BASE_DAMAGE, 2F)
+                .set(Receiver.SPREAD_INNATE, 0F)
+                .map(Receiver.DELAY_AFTER_FIRE, v -> v / 2)
+                .set(GunConfig.ORCHESTRA, GunAnimationActions.GREASEGUN_CLEAN);
     }
 }
 
 final class WeaponModLiberatorSpeedloader extends WeaponModBase {
-    static final MagazineFullReload MAG = new MagazineFullReload(0, 4);
     static final BiFunction<ItemStack, GunAnimation, BusAnimation> LAMBDA_LIBERATOR_ANIMS =
             (stack, type) -> {
                 switch (type) {
                     case RELOAD -> {
                         return new BusAnimation()
-                                .addBus("LATCH", new BusAnimationSequence().addPos(15, 0, 0, 100))
+                                .addBus("LATCH", new AnimationSequence().to(15, 0, 0, 100))
                                 .addBus(
                                         "BREAK",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 100)
-                                                .addPos(60, 0, 0, 350, IType.SIN_DOWN))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 100)
+                                                .to(60, 0, 0, 350, IType.SIN_DOWN))
                                 .addBus("SHELL1", reloadShell())
                                 .addBus("SHELL2", reloadShell())
                                 .addBus("SHELL3", reloadShell())
@@ -418,214 +390,161 @@ final class WeaponModLiberatorSpeedloader extends WeaponModBase {
                         return new BusAnimation()
                                 .addBus(
                                         "LATCH",
-                                        new BusAnimationSequence()
-                                                .addPos(15, 0, 0, 0)
-                                                .addPos(15, 0, 0, 250)
-                                                .addPos(0, 0, 0, 50))
+                                        new AnimationSequence()
+                                                .to(15, 0, 0, 0)
+                                                .to(15, 0, 0, 250)
+                                                .to(0, 0, 0, 50))
                                 .addBus(
                                         "BREAK",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 0)
-                                                .addPos(0, 0, 0, 250, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 0)
+                                                .to(0, 0, 0, 250, IType.SIN_UP));
                     }
                     case JAMMED -> {
                         return new BusAnimation()
                                 .addBus(
                                         "LATCH",
-                                        new BusAnimationSequence()
-                                                .addPos(15, 0, 0, 0)
-                                                .addPos(15, 0, 0, 250)
-                                                .addPos(0, 0, 0, 50)
-                                                .addPos(0, 0, 0, 550)
-                                                .addPos(15, 0, 0, 100)
-                                                .addPos(15, 0, 0, 600)
-                                                .addPos(0, 0, 0, 50))
+                                        new AnimationSequence()
+                                                .to(15, 0, 0, 0)
+                                                .to(15, 0, 0, 250)
+                                                .to(0, 0, 0, 50)
+                                                .to(0, 0, 0, 550)
+                                                .to(15, 0, 0, 100)
+                                                .to(15, 0, 0, 600)
+                                                .to(0, 0, 0, 50))
                                 .addBus(
                                         "BREAK",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 0)
-                                                .addPos(0, 0, 0, 250, IType.SIN_UP)
-                                                .addPos(0, 0, 0, 600)
-                                                .addPos(45, 0, 0, 250, IType.SIN_DOWN)
-                                                .addPos(45, 0, 0, 300)
-                                                .addPos(0, 0, 0, 150, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 0)
+                                                .to(0, 0, 0, 250, IType.SIN_UP)
+                                                .to(0, 0, 0, 600)
+                                                .to(45, 0, 0, 250, IType.SIN_DOWN)
+                                                .to(45, 0, 0, 300)
+                                                .to(0, 0, 0, 150, IType.SIN_UP));
                     }
                 }
                 return XFactory12ga.LAMBDA_LIBERATOR_ANIMS.apply(stack, type);
             };
 
-    WeaponModLiberatorSpeedloader(int id) {
-        super(id, "SPEEDLOADER");
+    WeaponModLiberatorSpeedloader() {
+        super(0, Slot.SPEEDLOADER);
     }
 
-    private static BusAnimationSequence reloadShell() {
-        return new BusAnimationSequence()
-                .addPos(2, -4, -2, 0)
-                .addPos(2, -4, -2, 400)
-                .addPos(0, 0, -2, 450, IType.SIN_FULL)
-                .addPos(0, 0, 0, 50, IType.SIN_UP);
+    private static AnimationSequence reloadShell() {
+        return new AnimationSequence()
+                .to(2, -4, -2, 0)
+                .to(2, -4, -2, 400)
+                .to(0, 0, -2, 450, IType.SIN_FULL)
+                .to(0, 0, 0, 50, IType.SIN_UP);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == GunConfig.FUN_ANIMNATIONS) return cast(LAMBDA_LIBERATOR_ANIMS, base);
-        if (parent instanceof Receiver
-                && base instanceof IMagazine<?>
-                && key == Receiver.O_MAGAZINE) {
-            MagazineSingleReload original = (MagazineSingleReload) base;
-            if (MAG.acceptedBullets.isEmpty()) MAG.acceptedBullets.addAll(original.acceptedBullets);
-            return cast(MAG, base);
-        }
-        return base;
+    protected void operations(Operations ops) {
+        ops.set(GunConfig.ANIMATIONS, LAMBDA_LIBERATOR_ANIMS)
+                .map(
+                        Receiver.MAGAZINE,
+                        mag ->
+                                mag instanceof MagazineSingleReload single
+                                        ? DerivedMagazines.full(0, 4, single.acceptedBullets)
+                                        : mag);
     }
 }
 
 final class WeaponModCaliber extends WeaponModBase {
-    static final MagazineSingleReload DUMMY_SINGLE = new MagazineSingleReload(0, 0);
-    static final MagazineFullReload DUMMY_FULL = new MagazineFullReload(0, 0);
-    static final MagazineBelt DUMMY_BELT = new MagazineBelt();
-    private final List<BulletConfig> cfg = new ArrayList<>();
-    private final int count;
     private final float baseDamage;
+    private final List<BulletConfig> cfg;
+    private final int count;
 
-    WeaponModCaliber(int id, int count, float baseDamage, BulletConfig... cfg) {
-        super(id, "CALIBER");
-        setPriority(PRIORITY_SET);
-        Collections.addAll(this.cfg, cfg);
+    WeaponModCaliber(int count, float baseDamage, BulletConfig... bullets) {
+        super(PRIORITY_SET, Slot.CALIBER);
+        this.cfg = List.of(bullets);
         this.count = count;
         this.baseDamage = baseDamage;
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.O_MAGAZINE) {
-            if (base instanceof MagazineSingleReload original) {
-                DUMMY_SINGLE.acceptedBullets = cfg;
-                DUMMY_SINGLE.capacity = count;
-                DUMMY_SINGLE.index = original.index;
-                return cast(DUMMY_SINGLE, base);
-            }
-            if (base instanceof MagazineFullReload original) {
-                DUMMY_FULL.acceptedBullets = cfg;
-                DUMMY_FULL.capacity = count;
-                DUMMY_FULL.index = original.index;
-                return cast(DUMMY_FULL, base);
-            }
-            if (base instanceof MagazineBelt) {
-                DUMMY_BELT.acceptedBullets = cfg;
-                return cast(DUMMY_BELT, base);
-            }
-        }
-        return key == Receiver.F_BASEDAMAGE ? cast(baseDamage, base) : base;
+    protected void operations(Operations ops) {
+        ops.map(
+                        Receiver.MAGAZINE,
+                        mag ->
+                                switch (mag) {
+                                    case MagazineSingleReload single ->
+                                            DerivedMagazines.single(single.index, count, cfg);
+                                    case MagazineFullReload full ->
+                                            DerivedMagazines.full(full.index, count, cfg);
+                                    case MagazineBelt _ ->
+                                            DerivedMagazines.belt(cfg);
+                                    default -> mag;
+                                })
+                .set(Receiver.BASE_DAMAGE, baseDamage);
     }
 
     @Override
-    public void onInstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
-    }
-
-    @Override
-    public void onUninstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
+    protected boolean revalidatesMagazine() {
+        return true;
     }
 }
 
 final class WeaponModCanisters extends WeaponModBase {
-    private static final MagazineElectricEngine DUMMY_ELECTRIC = new MagazineElectricEngine(0, 0);
-
-    WeaponModCanisters(int id) {
-        super(id, "CANISTERS");
-        setPriority(PRIORITY_MULT_FINAL);
+    WeaponModCanisters() {
+        super(PRIORITY_MULT_FINAL, Slot.CANISTERS);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.O_MAGAZINE) {
-            if (base instanceof MagazineLiquidEngine original) {
-                return cast(
-                        new MagazineLiquidEngine(
-                                original.index, original.capacity * 3, original::accepted),
-                        base);
-            }
-            if (base instanceof MagazineElectricEngine original) {
-                DUMMY_ELECTRIC.capacity = original.capacity * 3;
-                DUMMY_ELECTRIC.index = original.index;
-                return cast(DUMMY_ELECTRIC, base);
-            }
-        }
-        return base;
+    protected void operations(Operations ops) {
+        ops.map(
+                Receiver.MAGAZINE,
+                mag ->
+                        switch (mag) {
+                            case MagazineLiquidEngine liquid ->
+                                    new MagazineLiquidEngine(
+                                            liquid.index, liquid.capacity * 3, liquid::accepted);
+                            case MagazineElectricEngine electric ->
+                                    new MagazineElectricEngine(
+                                            electric.index, electric.capacity * 3);
+                            default -> mag;
+                        });
     }
 
     @Override
-    public void onInstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
-    }
-
-    @Override
-    public void onUninstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
+    protected boolean revalidatesMagazine() {
+        return true;
     }
 }
 
 final class WeaponModDrill extends WeaponModBase {
-    private float damage = 1F, dt = -1F, pierce = -1F;
-    private double reach = 1D;
-    private int aoe = -1, harvest = -1;
+    private final float damage, dt, pierce;
+    private final double reach;
+    private final int aoe;
+    private final int harvest;
 
-    WeaponModDrill(int id) {
-        super(id, "DRILL");
-        setPriority(PRIORITY_SET);
-    }
-
-    WeaponModDrill damage(float v) {
-        damage = v;
-        return this;
-    }
-
-    WeaponModDrill reach(double v) {
-        reach = v;
-        return this;
-    }
-
-    WeaponModDrill dt(float v) {
-        dt = v;
-        return this;
-    }
-
-    WeaponModDrill pierce(float v) {
-        pierce = v;
-        return this;
-    }
-
-    WeaponModDrill aoe(int v) {
-        aoe = v;
-        return this;
-    }
-
-    WeaponModDrill harvest(int v) {
-        harvest = v;
-        return this;
+    WeaponModDrill(float damage, float dt, float pierce, double reach, int aoe, int harvest) {
+        super(PRIORITY_SET, Slot.DRILL);
+        this.damage = damage;
+        this.dt = dt;
+        this.pierce = pierce;
+        this.reach = reach;
+        this.aoe = aoe;
+        this.harvest = harvest;
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key.equals(Receiver.F_BASEDAMAGE)) return cast((Float) base * damage, base);
-        if (key.equals(XFactoryDrill.D_REACH)) return cast((Double) base * reach, base);
-        if (key.equals(XFactoryDrill.F_DTNEG) && dt >= 0) return cast(dt, base);
-        if (key.equals(XFactoryDrill.F_PIERCE) && pierce >= 0) return cast(pierce, base);
-        if (key.equals(XFactoryDrill.I_AOE) && aoe >= 0) return cast(aoe, base);
-        if (key.equals(XFactoryDrill.I_HARVEST) && harvest >= 0) return cast(harvest, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.scale(Receiver.BASE_DAMAGE, damage)
+                .scale(XFactoryDrill.REACH, reach)
+                .set(XFactoryDrill.DT_NEGATION, dt)
+                .set(XFactoryDrill.PIERCE, pierce)
+                .set(XFactoryDrill.HARVEST, harvest);
+        if (aoe >= 0) ops.set(XFactoryDrill.AOE, aoe);
     }
 }
 
 final class WeaponModDrillFortune extends WeaponModBase {
     private final int addFortune;
 
-    WeaponModDrillFortune(int id, String slot, int fortune) {
-        super(id, slot);
-        setPriority(PRIORITY_ADDITIVE);
-        addFortune = fortune;
+    WeaponModDrillFortune(Slot slot, int addFortune) {
+        super(PRIORITY_ADDITIVE, slot);
+        this.addFortune = addFortune;
     }
 
     private static void adjustFortune(ServerLevel level, ItemStack gun, int delta) {
@@ -641,7 +560,7 @@ final class WeaponModDrillFortune extends WeaponModBase {
                 DataComponents.ENCHANTMENTS,
                 ItemEnchantments.EMPTY,
                 old -> {
-                    ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(old);
+                    var mutable = new ItemEnchantments.Mutable(old);
                     if (result > 0) mutable.set(fortune, result);
                     else mutable.removeIf(holder -> holder.is(Enchantments.FORTUNE));
                     return mutable.toImmutable();
@@ -649,28 +568,16 @@ final class WeaponModDrillFortune extends WeaponModBase {
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        return base;
-    }
+    protected void operations(Operations ops) {}
 
     @Override
-    public void onInstall(ServerLevel level, ItemStack gun, ItemStack mod, int index) {
+    protected void onInstall(ServerLevel level, ItemStack gun) {
         adjustFortune(level, gun, addFortune);
     }
 
     @Override
-    public void onUninstall(ServerLevel level, ItemStack gun, ItemStack mod, int index) {
+    protected void onUninstall(ServerLevel level, ItemStack gun) {
         adjustFortune(level, gun, -addFortune);
-    }
-
-    @Override
-    public void onInstall(ItemStack gun, ItemStack mod, int index) {
-        throw new IllegalStateException("Drill fortune upgrades require a ServerLevel");
-    }
-
-    @Override
-    public void onUninstall(ItemStack gun, ItemStack mod, int index) {
-        throw new IllegalStateException("Drill fortune upgrades require a ServerLevel");
     }
 }
 
@@ -690,77 +597,54 @@ final class WeaponModEngine extends WeaponModBase {
     static final MagazineLiquidEngine ENGINE_TURBO =
             new MagazineLiquidEngine(
                     0, 4_000, () -> new Fluid[] {NTMFluids.KEROSENE_REFORM, NTMFluids.REFORMATE});
-    private IMagazine<?> mag;
-    private int delay;
+    private final Magazine<?> mag;
+    private final int delay;
 
-    WeaponModEngine(int id) {
-        super(id, "ENGINE");
-        setPriority(PRIORITY_SET);
-    }
-
-    WeaponModEngine mag(IMagazine<?> v) {
-        mag = v;
-        return this;
-    }
-
-    WeaponModEngine delay(int v) {
-        delay = v;
-        return this;
+    WeaponModEngine(Magazine<?> mag, int delay) {
+        super(PRIORITY_SET, Slot.ENGINE);
+        this.mag = mag;
+        this.delay = delay;
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.O_MAGAZINE && mag != null) return cast(mag, base);
-        if (key == Receiver.I_DELAYAFTERFIRE) return cast(delay, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.set(Receiver.MAGAZINE, mag).set(Receiver.DELAY_AFTER_FIRE, delay);
     }
 
     @Override
-    public void onInstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
-    }
-
-    @Override
-    public void onUninstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
+    protected boolean revalidatesMagazine() {
+        return true;
     }
 }
 
 final class WeaponModStackMag extends WeaponModBase {
-    static final MagazineSingleReload DUMMY_SINGLE = new MagazineSingleReload(0, 0);
-    static final MagazineFullReload DUMMY_FULL = new MagazineFullReload(0, 0);
-
-    WeaponModStackMag(int id) {
-        super(id, "MAG");
+    WeaponModStackMag() {
+        super(0, Slot.MAG);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.O_MAGAZINE) {
-            if (base instanceof MagazineSingleReload original) {
-                DUMMY_SINGLE.acceptedBullets = original.acceptedBullets;
-                DUMMY_SINGLE.capacity = original.capacity * 3 / 2;
-                DUMMY_SINGLE.index = original.index;
-                return cast(DUMMY_SINGLE, base);
-            }
-            if (base instanceof MagazineFullReload original) {
-                DUMMY_FULL.acceptedBullets = original.acceptedBullets;
-                DUMMY_FULL.capacity = original.capacity * 3 / 2;
-                DUMMY_FULL.index = original.index;
-                return cast(DUMMY_FULL, base);
-            }
-        }
-        return base;
+    protected void operations(Operations ops) {
+        ops.map(
+                Receiver.MAGAZINE,
+                mag ->
+                        switch (mag) {
+                            case MagazineSingleReload single ->
+                                    DerivedMagazines.single(
+                                            single.index,
+                                            single.capacity * 3 / 2,
+                                            single.acceptedBullets);
+                            case MagazineFullReload full ->
+                                    DerivedMagazines.full(
+                                            full.index,
+                                            full.capacity * 3 / 2,
+                                            full.acceptedBullets);
+                            default -> mag;
+                        });
     }
 
     @Override
-    public void onInstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
-    }
-
-    @Override
-    public void onUninstall(ItemStack gun, ItemStack mod, int index) {
-        XWeaponModManager.changedMagState();
+    protected boolean revalidatesMagazine() {
+        return true;
     }
 }
 
@@ -771,50 +655,55 @@ final class WeaponModPanzerschreckSawedOff extends WeaponModBase {
                     return new BusAnimation()
                             .addBus(
                                     "EQUIP",
-                                    new BusAnimationSequence()
-                                            .addPos(60, 0, 0, 0)
-                                            .addPos(0, 0, 0, 250, IType.SIN_DOWN));
+                                    new AnimationSequence()
+                                            .to(60, 0, 0, 0)
+                                            .to(0, 0, 0, 250, IType.SIN_DOWN));
                 return XFactoryRocket.LAMBDA_PANZERSCHRECK_ANIMS.apply(stack, type);
             };
     static final BiConsumer<ItemStack, LambdaContext> LAMBDA_FIRE =
             (stack, ctx) -> {
                 Lego.LAMBDA_STANDARD_FIRE.accept(stack, ctx);
                 if (ctx.entity() != null) {
-                    HbmLivingProps.getData(ctx.entity()).fire += 100;
-                    EntityDamageUtil.attackEntityFromNT(
-                            ctx.entity(),
-                            BulletConfig.getDamage(ctx.entity(), ctx.entity(), DamageClass.FIRE),
-                            4F,
-                            true,
-                            false,
-                            0F,
-                            0F,
-                            0F);
+                    LivingHazards.getOrCreate(ctx.entity()).fire += 100;
+                    if (ctx.entity().level() instanceof ServerLevel server) {
+                        ctx.entity()
+                                .hurtServer(
+                                        server,
+                                        ModifiedDamageSource.of(
+                                                BulletConfig.getDamage(
+                                                        ctx.entity(),
+                                                        ctx.entity(),
+                                                        ModDamageTypes.FIRE),
+                                                true,
+                                                0F,
+                                                0F,
+                                                0F),
+                                        4F);
+                    }
                 }
             };
 
-    WeaponModPanzerschreckSawedOff(int id) {
-        super(id, "SHIELD");
+    WeaponModPanzerschreckSawedOff() {
+        super(0, Slot.SHIELD);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == GunConfig.I_DRAWDURATION) return cast(5, base);
-        if (key == Receiver.CON_ONFIRE) return cast(LAMBDA_FIRE, base);
-        if (key == GunConfig.FUN_ANIMNATIONS) return cast(LAMBDA_PANZERSCHRECK_ANIMS, base);
-        return base;
+    protected void operations(Operations ops) {
+        ops.set(GunConfig.DRAW_DURATION, 5)
+                .set(Receiver.ON_FIRE, LAMBDA_FIRE)
+                .set(GunConfig.ANIMATIONS, LAMBDA_PANZERSCHRECK_ANIMS);
     }
 }
 
 abstract class WeaponModBayonet extends WeaponModBase {
-    WeaponModBayonet(int id) {
-        super(id, "BAYONET");
+    WeaponModBayonet() {
+        super(0, Slot.BAYONET);
     }
 
     private static void stab(Player player, LivingEntity entity) {
-        HitResult hit = EntityDamageUtil.getMouseOver(player, 3D);
+        var hit = EntityTargeting.getMouseOver(player, 3D);
         if (hit instanceof EntityHitResult entityHit) {
-            Entity victim = entityHit.getEntity();
+            var victim = entityHit.getEntity();
             victim.hurtServer(
                     (ServerLevel) entity.level(), player.damageSources().playerAttack(player), 15F);
             victim.setDeltaMovement(victim.getDeltaMovement().multiply(2D, 1D, 2D));
@@ -828,45 +717,42 @@ abstract class WeaponModBayonet extends WeaponModBase {
                     1F,
                     0.9F + entity.getRandom().nextFloat() * 0.2F);
         } else if (hit instanceof BlockHitResult blockHit) {
-            BlockState state = entity.level().getBlockState(blockHit.getBlockPos());
-            entity.level()
-                    .playSound(
-                            null,
-                            blockHit.getLocation().x,
-                            blockHit.getLocation().y,
-                            blockHit.getLocation().z,
-                            state.getSoundType().getStepSound(),
-                            SoundSource.BLOCKS,
-                            2F,
-                            0.9F + entity.getRandom().nextFloat() * 0.2F);
+            var state = entity.level().getBlockState(blockHit.getBlockPos());
+            WorldSounds.play(
+                    entity.level(),
+                    null,
+                    blockHit.getLocation().x,
+                    blockHit.getLocation().y,
+                    blockHit.getLocation().z,
+                    state.getSoundType().getStepSound(),
+                    SoundSource.BLOCKS,
+                    2F,
+                    0.9F + entity.getRandom().nextFloat() * 0.2F);
         }
     }
 
     abstract BiFunction<ItemStack, GunAnimation, BusAnimation> animation();
 
-    abstract BiConsumer<ItemStack, LambdaContext> normalOrchestra();
+    abstract GunAnimationTimeline normalOrchestra();
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == GunConfig.FUN_ANIMNATIONS) return cast(animation(), base);
-        if (key == GunConfig.I_INSPECTDURATION) return cast(30, base);
-        if (key == GunConfig.CON_ONPRESSSECONDARY) return cast(XFactory44.SMACK_A_FUCKER, base);
-        if (key == GunConfig.CON_ORCHESTRA) return cast(orchestra(), base);
-        if (key == GunConfig.I_INSPECTCANCEL) return cast(false, base);
-        return base;
-    }
-
-    private BiConsumer<ItemStack, LambdaContext> orchestra() {
-        return (stack, ctx) -> {
-            LivingEntity entity = ctx.entity();
-            if (entity.level().isClientSide()) return;
-            if (ItemGunBaseNT.getLastAnim(stack, ctx.configIndex()) == GunAnimation.INSPECT) {
-                if (ItemGunBaseNT.getAnimTimer(stack, ctx.configIndex()) == 15
-                        && ctx.getPlayer() != null) stab(ctx.getPlayer(), entity);
-                return;
-            }
-            normalOrchestra().accept(stack, ctx);
-        };
+    protected void operations(Operations ops) {
+        var orchestra =
+                normalOrchestra()
+                        .with(
+                                t ->
+                                        t.replace(GunAnimation.INSPECT)
+                                                .at(
+                                                        15,
+                                                        (_, ctx) -> {
+                                                            if (ctx.getPlayer() != null)
+                                                                stab(ctx.getPlayer(), ctx.entity());
+                                                        }));
+        ops.set(GunConfig.ANIMATIONS, animation())
+                .set(GunConfig.INSPECT_DURATION, 30)
+                .set(GunConfig.PRESS_SECONDARY, XFactory44.SMACK_A_FUCKER)
+                .set(GunConfig.ORCHESTRA, orchestra)
+                .set(GunConfig.INSPECT_CANCEL, false);
     }
 }
 
@@ -877,25 +763,21 @@ final class WeaponModCarbineBayonet extends WeaponModBayonet {
                 return XFactory762mm.LAMBDA_CARBINE_ANIMS.apply(stack, type);
             };
 
-    WeaponModCarbineBayonet(int id) {
-        super(id);
-    }
-
     static BusAnimation stabAnimation() {
         return new BusAnimation()
                 .addBus(
                         "STAB",
-                        new BusAnimationSequence()
-                                .addPos(0, 1, -2, 250, IType.SIN_DOWN)
-                                .hold(250)
-                                .addPos(0, 1, 5, 250, IType.SIN_UP)
-                                .hold(250)
-                                .addPos(0, 0, 0, 500, IType.SIN_FULL));
+                        new AnimationSequence()
+                                .to(0, 1, -2, 250, IType.SIN_DOWN)
+                                .stay(250)
+                                .to(0, 1, 5, 250, IType.SIN_UP)
+                                .stay(250)
+                                .to(0, 0, 0, 500, IType.SIN_FULL));
     }
 
     @Override
-    BiConsumer<ItemStack, LambdaContext> normalOrchestra() {
-        return Orchestras.ORCHESTRA_CARBINE;
+    GunAnimationTimeline normalOrchestra() {
+        return GunAnimationActions.CARBINE;
     }
 
     @Override
@@ -911,13 +793,9 @@ final class WeaponModMASBayonet extends WeaponModBayonet {
                 return XFactory762mm.LAMBDA_MAS36_ANIMS.apply(stack, type);
             };
 
-    WeaponModMASBayonet(int id) {
-        super(id);
-    }
-
     @Override
-    BiConsumer<ItemStack, LambdaContext> normalOrchestra() {
-        return Orchestras.ORCHESTRA_MAS36;
+    GunAnimationTimeline normalOrchestra() {
+        return GunAnimationActions.MAS36;
     }
 
     @Override
@@ -927,19 +805,12 @@ final class WeaponModMASBayonet extends WeaponModBayonet {
 }
 
 final class WeaponModSilencer extends WeaponModBase {
-    WeaponModSilencer(int id) {
-        super(id, "SILENCER");
+    WeaponModSilencer() {
+        super(0, Slot.SILENCER);
     }
 
     @Override
-    public <T> T eval(T base, ItemStack gun, String key, Object parent) {
-        if (key == Receiver.S_FIRESOUND) {
-            Supplier<SoundEvent> sound =
-                    gun.is(ModItems.GUN_AMAT.get())
-                            ? ModSounds.GUN_AMAT_SILENCER::get
-                            : ModSounds.GUN_RIFLE_SILENCER::get;
-            return cast(sound, base);
-        }
-        return base;
+    protected void operations(Operations ops) {
+        ops.set(Receiver.FIRE_SOUND, ModSounds.GUN_RIFLE_SILENCER);
     }
 }

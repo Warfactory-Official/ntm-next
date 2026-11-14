@@ -1,12 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items.machine;
 
 import com.hbm.api.fluidmk2.FluidPipeGraph;
 import com.hbm.api.fluidmk2.PipeData;
-import com.hbm.blocks.network.FluidDuctBlockBase;
+import com.hbm.blocks.network.FluidDuctBlock;
 import com.hbm.blocks.network.FluidPipeBlock;
+import com.hbm.inventory.container.HeldItemMenu;
+import com.hbm.inventory.container.ModMenus;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.StackRemainderItem;
@@ -33,7 +51,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 public class FluidIdentifierItem extends StackRemainderItem {
-    public static Consumer<Player> OPEN_SELECTOR = p -> {};
 
     public FluidIdentifierItem(Item.Properties props) {
         super(props);
@@ -54,7 +71,7 @@ public class FluidIdentifierItem extends StackRemainderItem {
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
-        if (!(state.getBlock() instanceof FluidDuctBlockBase duct) || !duct.retypable())
+        if (!(state.getBlock() instanceof FluidDuctBlock duct) || !duct.retypable())
             return InteractionResult.PASS;
         if (level.isClientSide()) return InteractionResult.SUCCESS;
 
@@ -98,7 +115,11 @@ public class FluidIdentifierItem extends StackRemainderItem {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (player.isShiftKeyDown()) {
             if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
-            if (level.isClientSide()) OPEN_SELECTOR.accept(player);
+            HeldItemMenu.open(
+                    player,
+                    hand,
+                    ModMenus.FLUID_IDENTIFIER,
+                    Component.translatable("item.hbm.fluid_identifier_multi"));
             return InteractionResult.SUCCESS;
         }
         if (!level.isClientSide()) {

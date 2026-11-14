@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.generic;
 
@@ -22,25 +38,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public class BlockTallPlant extends DoublePlantBlock implements BonemealableBlock {
-
     public static final MapCodec<BlockTallPlant> CODEC =
             RecordCodecBuilder.mapCodec(
-                    i ->
-                            i.group(
+                    instance ->
+                            instance.group(
                                             propertiesCodec(),
                                             Variant.CODEC
                                                     .fieldOf("variant")
-                                                    .forGetter(plant -> plant.variant))
-                                    .apply(i, BlockTallPlant::new));
+                                                    .forGetter(block -> block.variant))
+                                    .apply(instance, BlockTallPlant::new));
 
     private final Variant variant;
 
-    public BlockTallPlant(BlockBehaviour.Properties properties, Variant variant) {
+    public BlockTallPlant(Properties properties, Variant variant) {
         super(properties);
         this.variant = variant;
     }
@@ -55,14 +69,8 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.is(Blocks.GRASS_BLOCK)
-                || state.is(Blocks.DIRT)
-                || state.is(Blocks.COARSE_DIRT)
-                || state.is(Blocks.PODZOL)
-                || state.is(Blocks.FARMLAND)
-                || state.is(ModBlocks.DIRT_DEAD.get())
-                || state.is(ModBlocks.DIRT_OILY.get());
+    protected boolean mayPlaceOn(BlockState soil, BlockGetter level, BlockPos pos) {
+        return PlantGrowth.supports(soil);
     }
 
     @Override
@@ -71,42 +79,37 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
             LevelReader level,
             ScheduledTickAccess ticks,
             BlockPos pos,
-            Direction directionToNeighbour,
-            BlockPos neighbourPos,
-            BlockState neighbourState,
+            Direction direction,
+            BlockPos neighborPos,
+            BlockState neighborState,
             RandomSource random) {
         if (state.getValue(HALF) == DoubleBlockHalf.LOWER
-                && directionToNeighbour == Direction.UP
-                && !neighbourState.is(this)
-                && state.canSurvive(level, pos)) {
-            BlockState flower = variant.flower().defaultBlockState();
-            if (flower.canSurvive(level, pos)) return flower;
+                && direction == Direction.UP
+                && !(neighborState.is(this)
+                        && neighborState.getValue(HALF) == DoubleBlockHalf.UPPER)) {
+            var flower = variant.flower().defaultBlockState();
+            if (flower.canSurvive(level, pos)) {
+                return flower;
+            }
         }
         return super.updateShape(
-                state,
-                level,
-                ticks,
-                pos,
-                directionToNeighbour,
-                neighbourPos,
-                neighbourState,
-                random);
+                state, level, ticks, pos, direction, neighborPos, neighborState, random);
     }
 
     @Override
     public BlockState playerWillDestroy(
             Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide()
-                && state.getValue(HALF) == DoubleBlockHalf.LOWER
-                && !player.preventsBlockDrops()) {
-            BlockPos above = pos.above();
-            BlockState crown = level.getBlockState(above);
-            if (crown.is(this) && crown.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                && !player.preventsBlockDrops()
+                && state.getValue(HALF) == DoubleBlockHalf.LOWER) {
+            var upperPos = pos.above();
+            var upper = level.getBlockState(upperPos);
+            if (upper.is(this) && upper.getValue(HALF) == DoubleBlockHalf.UPPER) {
                 level.setBlock(
-                        above,
+                        upperPos,
                         Blocks.AIR.defaultBlockState(),
-                        Block.UPDATE_ALL | Block.UPDATE_SUPPRESS_DROPS);
-                dropResources(crown, level, above, null, player, player.getMainHandItem());
+                        UPDATE_ALL | UPDATE_SUPPRESS_DROPS);
+                dropResources(upper, level, upperPos, null, player, player.getMainHandItem());
             }
         }
         return super.playerWillDestroy(level, pos, state, player);
@@ -114,18 +117,19 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
 
     @Override
     protected boolean isRandomlyTicking(BlockState state) {
-        return state.getValue(HALF) == DoubleBlockHalf.LOWER && super.isRandomlyTicking(state);
+        return state.getValue(HALF) == DoubleBlockHalf.LOWER;
     }
 
     @Override
     protected void randomTick(
             BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!variant.needsOil && deadGround(level, pos)) {
-            level.setBlock(
-                    pos,
-                    ModBlocks.PLANT_DEAD_BIGFLOWER.get().defaultBlockState(),
-                    Block.UPDATE_ALL);
-            return;
+        if (variant == Variant.WEED) {
+            var soil = level.getBlockState(pos.below());
+            if (soil.is(ModBlocks.DIRT_DEAD.get()) || soil.is(ModBlocks.DIRT_OILY.get())) {
+                level.setBlockAndUpdate(
+                        pos, ModBlocks.PLANT_DEAD_BIGFLOWER.get().defaultBlockState());
+                return;
+            }
         }
         if (isValidBonemealTarget(level, pos, state)
                 && isBonemealSuccess(level, random, pos, state)
@@ -136,10 +140,18 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
 
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        if (!variant.grows) return false;
-        BlockPos soil = lower(state, pos).below();
-        if (!hasWaterBeside(level, soil)) return false;
-        return variant != Variant.CD3 || deadGroundAt(level, soil);
+        if (variant != Variant.CD2 && variant != Variant.CD3) {
+            return false;
+        }
+        var lowerPos = state.getValue(HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos;
+        if (!PlantGrowth.hasWaterAtSoilSides(level, lowerPos)) {
+            return false;
+        }
+        if (variant == Variant.CD2) {
+            return true;
+        }
+        var soil = level.getBlockState(lowerPos.below());
+        return soil.is(ModBlocks.DIRT_DEAD.get()) || soil.is(ModBlocks.DIRT_OILY.get());
     }
 
     @Override
@@ -151,53 +163,24 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
     @Override
     public void performBonemeal(
             ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        if (!variant.grows) return;
-        BlockPos lower = lower(state, pos);
-        placeAt(
+        var lowerPos = state.getValue(HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos;
+        DoublePlantBlock.placeAt(
                 level,
                 variant.next().defaultBlockState(),
-                lower,
-                Block.UPDATE_ALL | Block.UPDATE_KNOWN_SHAPE);
+                lowerPos,
+                UPDATE_ALL | UPDATE_KNOWN_SHAPE);
         if (variant == Variant.CD3) {
-            level.setBlock(lower.below(), Blocks.DIRT.defaultBlockState(), Block.UPDATE_ALL);
+            level.setBlockAndUpdate(lowerPos.below(), Blocks.DIRT.defaultBlockState());
         }
-    }
-
-    private static BlockPos lower(BlockState state, BlockPos pos) {
-        return state.getValue(HALF) == DoubleBlockHalf.LOWER ? pos : pos.below();
-    }
-
-    private boolean deadGround(LevelReader level, BlockPos pos) {
-        return deadGroundAt(level, pos.below());
-    }
-
-    private static boolean deadGroundAt(LevelReader level, BlockPos pos) {
-        BlockState ground = level.getBlockState(pos);
-        return ground.is(ModBlocks.DIRT_DEAD.get()) || ground.is(ModBlocks.DIRT_OILY.get());
-    }
-
-    private static boolean hasWaterBeside(LevelReader level, BlockPos pos) {
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            if (level.getBlockState(pos.relative(direction)).is(Blocks.WATER)) return true;
-        }
-        return false;
     }
 
     public enum Variant implements StringRepresentable {
-        WEED(false, false),
-        CD2(true, true),
-        CD3(true, true),
-        CD4(false, true);
+        WEED,
+        CD2,
+        CD3,
+        CD4;
 
         public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
-
-        private final boolean grows;
-        private final boolean needsOil;
-
-        Variant(boolean grows, boolean needsOil) {
-            this.grows = grows;
-            this.needsOil = needsOil;
-        }
 
         public Block flower() {
             return this == WEED

@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.api.fluidmk2.FluidPipeTintData;
-import com.hbm.blockentity.network.BlockEntityPipeAnchor;
+import com.hbm.blockentity.network.PipeAnchorBlockEntity;
 import com.hbm.blocks.network.FluidPipeAnchorBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
@@ -14,6 +30,7 @@ import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
 import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +45,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class PipeAnchorVisual extends HbmBlockEntityVisual<BlockEntityPipeAnchor>
+public final class PipeAnchorVisual
+        extends AbstractDynamicExtentBlockEntityVisual<PipeAnchorBlockEntity>
         implements SimpleTickableVisual, ShaderLightVisual {
     private static final int PIPE = ResourceManager.pipe_anchor.partId("Pipe");
     private static final int RING = ResourceManager.pipe_anchor.partId("Ring");
@@ -58,12 +76,12 @@ public final class PipeAnchorVisual extends HbmBlockEntityVisual<BlockEntityPipe
     private @Nullable AABB lastLightBounds;
     private long[] lastConnections = new long[0];
     private Fluid lastFluid = Fluids.EMPTY;
-    private @Nullable BlockEntityPipeAnchor[] lastPeers = new BlockEntityPipeAnchor[0];
+    private @Nullable PipeAnchorBlockEntity[] lastPeers = new PipeAnchorBlockEntity[0];
     private @Nullable Fluid[] lastPeerFluids = new Fluid[0];
     private boolean built;
 
     public PipeAnchorVisual(
-            VisualizationContext context, BlockEntityPipeAnchor blockEntity, float partialTick) {
+            VisualizationContext context, PipeAnchorBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         Direction facing = blockState.getValue(FluidPipeAnchorBlock.FACING);
         Matrix4f bodyLocal =
@@ -124,6 +142,7 @@ public final class PipeAnchorVisual extends HbmBlockEntityVisual<BlockEntityPipe
         renderBounds = LightBounds.sectionBounds(bounds, renderBounds);
         lastLightBounds = LightBounds.sections(lightSections, bounds, lastLightBounds);
         refreshVisibleBounds();
+        visibleBoundsApplied();
     }
 
     private boolean inputsChanged() {
@@ -133,16 +152,16 @@ public final class PipeAnchorVisual extends HbmBlockEntityVisual<BlockEntityPipe
         if (changed) {
             lastConnections = connections.clone();
             lastFluid = blockEntity.fluid;
-            lastPeers = new BlockEntityPipeAnchor[connections.length];
+            lastPeers = new PipeAnchorBlockEntity[connections.length];
             lastPeerFluids = new Fluid[connections.length];
         }
         var level = blockEntity.getLevel();
         for (int i = 0; i < connections.length; i++) {
-            BlockEntityPipeAnchor peer =
+            PipeAnchorBlockEntity peer =
                     level != null
                                     && ChunkUtil.blockEntityIfLoaded(
                                                     level, BlockPos.of(connections[i]))
-                                            instanceof BlockEntityPipeAnchor other
+                                            instanceof PipeAnchorBlockEntity other
                             ? other
                             : null;
             @Nullable Fluid fluid = peer == null ? null : peer.fluid;
@@ -160,7 +179,7 @@ public final class PipeAnchorVisual extends HbmBlockEntityVisual<BlockEntityPipe
         if (blockEntity.fluid == Fluids.EMPTY && blockEntity.connections.length == 0) return;
         int color = lighten(ARGB.transparent(FluidPipeTintData.colorFor(blockEntity.fluid)), .25D);
         for (int i = 0; i < lastConnections.length; i++) {
-            BlockEntityPipeAnchor other = lastPeers[i];
+            PipeAnchorBlockEntity other = lastPeers[i];
             if (other == null || lastPeerFluids[i] != lastFluid) continue;
             BlockPos otherPos = BlockPos.of(lastConnections[i]);
             if (!dominant(pos, otherPos)) continue;

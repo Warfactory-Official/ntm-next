@@ -1,20 +1,54 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
-import com.hbm.items.ItemAmmoEnums;
+import com.hbm.items.AmmoTypes;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.GunState;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.GunState;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
+import com.hbm.items.weapon.sedna.factory.XFactoryNPC;
+import com.hbm.items.weapon.sedna.factory.XFactoryPile;
+import com.hbm.items.weapon.sedna.factory.XFactoryWarhead;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
-import com.hbm.particle.SpentCasing.CasingType;
-import com.hbm.particle.SpentCasing;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.particle.casing.Casing;
+import com.hbm.particle.casing.CasingShape;
 import com.hbm.registration.Reg;
+import com.hbm.registration.Registrar;
 import com.hbm.sound.ModSounds;
 import java.util.Locale;
 import java.util.function.BiConsumer;
@@ -26,7 +60,7 @@ public class GunFactory {
     public static final BiConsumer<ItemStack, LambdaContext> LAMBDA_DEBUG_DECIDER =
             (stack, ctx) -> {
                 int index = ctx.configIndex();
-                GunState lastState = ItemGunBaseNT.getState(stack, index);
+                GunState lastState = GunBaseNTItem.getState(stack, index);
                 GunStateDecider.deciderStandardFinishDraw(stack, lastState, index);
                 GunStateDecider.deciderStandardClearJam(stack, lastState, index);
                 GunStateDecider.deciderStandardReload(stack, ctx, lastState, 0, index);
@@ -38,8 +72,8 @@ public class GunFactory {
                         0,
                         index,
                         () ->
-                                ItemGunBaseNT.getPrimary(stack, index)
-                                        && ItemGunBaseNT.getMode(stack, index) == 0);
+                                GunBaseNTItem.getPrimary(stack, index)
+                                        && GunBaseNTItem.getMode(stack, index) == 0);
                 GunStateDecider.deciderAutoRefire(
                         stack,
                         ctx,
@@ -47,16 +81,15 @@ public class GunFactory {
                         1,
                         index,
                         () ->
-                                ItemGunBaseNT.getSecondary(stack, index)
-                                        && ItemGunBaseNT.getMode(stack, index) == 0);
+                                GunBaseNTItem.getSecondary(stack, index)
+                                        && GunBaseNTItem.getMode(stack, index) == 0);
             };
     public static BulletConfig ammo_debug;
     public static BulletConfig ammo_debug_shot;
 
     public static void init() {
 
-        ModItems.AMMO_DEBUG =
-                NeoForgeRegistrar.registerItem("ammo_debug", Item::new, Item.Properties::new);
+        ModItems.AMMO_DEBUG = Registrar.registerItem("ammo_debug", Item::new, Item.Properties::new);
         ModItems.AMMO_STANDARD =
                 ModItems.dotted(
                         "ammo_standard",
@@ -65,9 +98,9 @@ public class GunFactory {
                         Item.Properties::new);
         ModItems.AMMO_SHELL =
                 Reg.family(
-                        ItemAmmoEnums.Ammo240Shell.class,
+                        AmmoTypes.Ammo240Shell.class,
                         type ->
-                                type == ItemAmmoEnums.Ammo240Shell.STOCK
+                                type == AmmoTypes.Ammo240Shell.STOCK
                                         ? "ammo_shell"
                                         : "ammo_shell_" + type.name().toLowerCase(Locale.ROOT),
                         (props, type) -> new Item(props),
@@ -104,40 +137,40 @@ public class GunFactory {
                         (props, type) -> new Item(props),
                         () -> new Item.Properties().stacksTo(1));
 
-        SpentCasing casing44 =
-                new SpentCasing(CasingType.STRAIGHT)
-                        .setScale(1.5F, 1.0F, 1.5F)
-                        .setColor(SpentCasing.COLOR_CASE_44);
+        Casing.Template casing44 =
+                Casing.template(CasingShape.STRAIGHT)
+                        .scale(1.5F, 1.0F, 1.5F)
+                        .tints(Casing.MAGNUM_44);
         ammo_debug =
                 new BulletConfig()
                         .setItem(ModItems.AMMO_DEBUG::get)
                         .setSpread(0.01F)
                         .setRicochetAngle(45)
-                        .setCasing(casing44.clone().register("DEBUG0"));
+                        .setCasing(casing44.copy().register("DEBUG0"));
         ammo_debug_shot =
                 new BulletConfig()
                         .setItem(ModItems.AMMO_DEBUG::get)
                         .setSpread(0.05F)
                         .setProjectiles(6)
                         .setRicochetAngle(45)
-                        .setCasing(casing44.clone().register("DEBUG1"));
+                        .setCasing(casing44.copy().register("DEBUG1"));
 
         ModItems.GUN_DEBUG =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_debug",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                         WeaponQuality.DEBUG,
                                         props,
-                                        new GunConfig()
+                                        GunConfig.builder()
                                                 .dura(600F)
                                                 .draw(15)
                                                 .inspect(23)
                                                 .crosshair(Crosshair.L_CLASSIC)
                                                 .smoke(Lego.LAMBDA_STANDARD_SMOKE)
-                                                .orchestra(Orchestras.DEBUG_ORCHESTRA)
+                                                .orchestra(GunAnimationActions.DEBUG)
                                                 .rec(
-                                                        new Receiver(0)
+                                                        Receiver.builder()
                                                                 .dmg(10F)
                                                                 .delay(14)
                                                                 .reload(46)
@@ -159,7 +192,7 @@ public class GunFactory {
                                                                         Lego
                                                                                 .LAMBDA_STANDARD_CAN_FIRE)
                                                                 .fire(Lego.LAMBDA_STANDARD_FIRE),
-                                                        new Receiver(1)
+                                                        Receiver.builder()
                                                                 .dmg(5F)
                                                                 .delay(14)
                                                                 .reload(46)

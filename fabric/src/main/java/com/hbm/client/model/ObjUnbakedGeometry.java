@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
@@ -8,6 +24,7 @@ import com.hbm.render.loader.HFRWavefrontObject;
 import com.mojang.blaze3d.platform.Transparency;
 import com.mojang.math.Quadrant;
 import com.mojang.math.Transformation;
+import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import java.util.*;
 import net.fabricmc.fabric.api.client.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.client.renderer.v1.mesh.MutableMesh;
@@ -16,9 +33,11 @@ import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.client.renderer.v1.model.MeshQuadCollection;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelDebugName;
+import net.minecraft.client.resources.model.ResolvedModel;
 import net.minecraft.client.resources.model.cuboid.CuboidFace;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
@@ -71,9 +90,9 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             Overrides overrides,
             boolean smooth,
             Map<String, float[]> uvScales) {
-        this.model = Meshes.load(objId);
-        this.groups = null;
-        this.boxes = List.of();
+        model = Meshes.load(objId);
+        groups = null;
+        boxes = List.of();
         this.skins = skins;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -107,18 +126,18 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                             spec.smooth(),
                             spec.color()));
         }
-        this.model = null;
+        model = null;
         this.groups = List.copyOf(loaded);
         this.boxes = List.copyOf(boxes);
-        this.skins = Map.of();
+        skins = Map.of();
         this.offsetX = offsetX;
         this.offsetY = offsetY;
         this.offsetZ = offsetZ;
-        this.overlay = false;
-        this.overlayTintIndex = -1;
-        this.translucentBase = false;
+        overlay = false;
+        overlayTintIndex = -1;
+        translucentBase = false;
         this.overrides = overrides;
-        this.smooth = true;
+        smooth = true;
         this.uvScales = uvScales;
     }
 
@@ -207,30 +226,58 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         TextureAtlasSprite sprite = material.sprite();
         Transparency baseTransparency =
                 translucentBase ? Transparency.TRANSLUCENT : spriteTransparency(material);
-        BakedQuad.MaterialInfo info = meshInfo(material, baseTransparency, -1, 0);
+        BakedQuad.MaterialInfo info =
+                meshInfo(material, baseTransparency, -1, 0, overrides.ambientOcclusion());
         BakedQuad.MaterialInfo solidInfo =
-                overrides.blackout() == null ? info : meshInfo(material, Transparency.NONE, -1, 0);
+                overrides.blackout() == null
+                        ? info
+                        : meshInfo(
+                                material, Transparency.NONE, -1, 0, overrides.ambientOcclusion());
         return bakeGroups(
                 model, parts, sprite, info, solidInfo, null, null, state, offsetX, offsetY, offsetZ,
                 smoothing, overrides, uv, uv);
     }
 
     private static BakedQuad.MaterialInfo meshInfo(
-            Material.Baked material, Transparency transparency, int tintIndex, int lightEmission) {
-        return QuadLighting.ownBlock(
-                BakedQuad.MaterialInfo.of(material, transparency, tintIndex, true, lightEmission));
+            Material.Baked material,
+            Transparency transparency,
+            int tintIndex,
+            int lightEmission,
+            boolean ambientOcclusion) {
+        var info =
+                BakedQuad.MaterialInfo.of(material, transparency, tintIndex, true, lightEmission);
+        return ambientOcclusion ? info : QuadLighting.ownBlock(info);
     }
 
     private static BakedQuad.MaterialInfo fullBright(BakedQuad.MaterialInfo info) {
+        final TextureAtlasSprite sprite = info.sprite();
+        final RenderType itemType = info.itemRenderType();
+        final int tint = info.tintIndex();
+        var result =
+                new BakedQuad.MaterialInfo(
+                        sprite, info.layer(), itemType, tint, info.shade(), FULL_BRIGHT);
+        ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (result))
+                .hbm$setLightOrigin(
+                        ((com.hbm.interfaces.injected.QuadLightOriginAccess)
+                                        (java.lang.Object) (info))
+                                .hbm$lightOrigin());
+        return result;
+    }
+
+    private static BakedQuad.MaterialInfo unshaded(BakedQuad.MaterialInfo info) {
         var result =
                 new BakedQuad.MaterialInfo(
                         info.sprite(),
                         info.layer(),
                         info.itemRenderType(),
                         info.tintIndex(),
-                        info.shade(),
-                        FULL_BRIGHT);
-        result.hbm$setLightOrigin(info.hbm$lightOrigin());
+                        false,
+                        info.lightEmission());
+        ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (result))
+                .hbm$setLightOrigin(
+                        ((com.hbm.interfaces.injected.QuadLightOriginAccess)
+                                        (java.lang.Object) (info))
+                                .hbm$lightOrigin());
         return result;
     }
 
@@ -254,7 +301,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         return bakeGroups(groups, boxQuads, offsetX, offsetY, offsetZ, Overrides.NONE);
     }
 
-    static QuadCollection bakeGroups(
+    public static QuadCollection bakeGroups(
             List<Group> groups,
             List<BoxQuad> boxQuads,
             float offsetX,
@@ -268,21 +315,34 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             Matrix4fc matrix = g.state().transformation().getMatrix();
             Matrix3f normalMatrix = matrix.normal(new Matrix3f());
             TextureAtlasSprite sprite = g.material().sprite();
-            BakedQuad.MaterialInfo lit = meshInfo(g.material(), g.transparency(), -1, 0);
+            BakedQuad.MaterialInfo lit =
+                    meshInfo(g.material(), g.transparency(), -1, 0, overrides.ambientOcclusion());
+            BakedQuad.MaterialInfo solid =
+                    overrides.blackout() == null
+                            ? lit
+                            : meshInfo(
+                                    g.material(),
+                                    Transparency.NONE,
+                                    -1,
+                                    0,
+                                    overrides.ambientOcclusion());
             for (GroupObject group : g.model().groups) {
                 if (g.parts() != null && !contains(g.parts(), group.name)) continue;
+                boolean blackout = overrides.isBlackout(group.name);
                 BakedQuad.MaterialInfo info =
-                        overrides.isEmissive(group.name) ? fullBright(lit) : lit;
+                        blackout ? solid : overrides.isEmissive(group.name) ? fullBright(lit) : lit;
+                if (!overrides.shade()) info = unshaded(info);
+                int color = blackout ? BLACK : g.color();
                 boolean tiled = overrides.isTiled(group.name);
                 boolean twoSided = overrides.isDoubleSided(group.name);
                 float[] q = g.smooth() ? group.quads(true) : group.flatShadedQuads();
                 for (int base = 0; base < q.length; base += GroupObject.QUAD) {
-                    float[][] cut = tiled ? tileFace(q, base) : null;
-                    int faces = cut == null ? 1 : cut.length;
+                    int cut = tiled ? tileFace(q, base, scratch) : -1;
+                    int faces = cut < 0 ? 1 : cut;
                     for (int f = 0; f < faces; f++) {
-                        float[] src = cut == null ? q : cut[f];
-                        int at = cut == null ? base : 0;
-                        float[] back = twoSided ? reversed(src, at) : null;
+                        float[] src = cut < 0 ? q : scratch.tiled.elements();
+                        int at = cut < 0 ? base : f * GroupObject.QUAD;
+                        float[] back = twoSided ? reversed(src, at, scratch) : null;
                         emitQuad(
                                 emitter,
                                 scratch,
@@ -297,7 +357,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                                 offsetZ,
                                 g.uScale(),
                                 g.vScale(),
-                                g.color());
+                                color);
                         if (back != null)
                             emitQuad(
                                     emitter,
@@ -313,13 +373,15 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                                     offsetZ,
                                     g.uScale(),
                                     g.vScale(),
-                                    g.color());
+                                    color);
                     }
                 }
             }
         }
         for (BoxQuad box : boxQuads) {
             emitter.fromBakedQuad(box.quad());
+            if (!overrides.shade())
+                emitter.diffuseShade(unshaded(box.quad().materialInfo()).shade());
             if (box.color() != WHITE)
                 emitter.color(box.color(), box.color(), box.color(), box.color());
             emitter.cullFace(box.cull());
@@ -369,16 +431,32 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             float[] uv,
             float[] overlayUv) {
         TextureAtlasSprite sprite = material.sprite();
-        BakedQuad.MaterialInfo info = meshInfo(material, Transparency.NONE, -1, 0);
+        BakedQuad.MaterialInfo info =
+                meshInfo(
+                        material,
+                        spriteTransparency(material),
+                        -1,
+                        0,
+                        overrides.ambientOcclusion());
+        BakedQuad.MaterialInfo solidInfo =
+                overrides.blackout() == null
+                        ? info
+                        : meshInfo(
+                                material, Transparency.NONE, -1, 0, overrides.ambientOcclusion());
         TextureAtlasSprite overlaySprite = overlayMaterial.sprite();
         BakedQuad.MaterialInfo overlayInfo =
-                meshInfo(overlayMaterial, Transparency.TRANSPARENT, overlayTintIndex, 0);
+                meshInfo(
+                        overlayMaterial,
+                        Transparency.TRANSPARENT,
+                        overlayTintIndex,
+                        0,
+                        overrides.ambientOcclusion());
         return bakeGroups(
                 model,
                 parts,
                 sprite,
                 info,
-                info,
+                solidInfo,
                 overlaySprite,
                 overlayInfo,
                 state,
@@ -411,6 +489,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         Matrix3f normalMatrix = matrix.normal(new Matrix3f());
         BakedQuad.MaterialInfo emissiveInfo =
                 overrides.emissive() == null ? info : fullBright(info);
+        if (!overrides.shade() && overlaySprite != null) overlayInfo = unshaded(overlayInfo);
 
         MutableMesh mesh = Renderer.get().mutableMesh();
         QuadEmitter emitter = mesh.emitter();
@@ -420,17 +499,18 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             boolean blackout = overrides.isBlackout(group.name);
             BakedQuad.MaterialInfo groupInfo =
                     blackout ? solidInfo : overrides.isEmissive(group.name) ? emissiveInfo : info;
+            if (!overrides.shade()) groupInfo = unshaded(groupInfo);
             int groupColor = blackout ? BLACK : WHITE;
             boolean tiled = overrides.isTiled(group.name);
             boolean twoSided = overrides.isDoubleSided(group.name);
             float[] q = smoothing ? group.quads(true) : group.flatShadedQuads();
             for (int base = 0; base < q.length; base += GroupObject.QUAD) {
-                float[][] cut = tiled ? tileFace(q, base) : null;
-                int faces = cut == null ? 1 : cut.length;
+                int cut = tiled ? tileFace(q, base, scratch) : -1;
+                int faces = cut < 0 ? 1 : cut;
                 for (int f = 0; f < faces; f++) {
-                    float[] src = cut == null ? q : cut[f];
-                    int at = cut == null ? base : 0;
-                    float[] back = twoSided ? reversed(src, at) : null;
+                    float[] src = cut < 0 ? q : scratch.tiled.elements();
+                    int at = cut < 0 ? base : f * GroupObject.QUAD;
+                    float[] back = twoSided ? reversed(src, at, scratch) : null;
                     emitQuad(
                             emitter,
                             scratch,
@@ -490,7 +570,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         return false;
     }
 
-    private static float @Nullable [][] tileFace(float[] q, int base) {
+    private static int tileFace(float[] q, int base, QuadScratch buffers) {
         float minU = Float.MAX_VALUE, maxU = -Float.MAX_VALUE;
         float minV = Float.MAX_VALUE, maxV = -Float.MAX_VALUE;
         for (int c = 0; c < 4; c++) {
@@ -502,7 +582,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         }
         int u0 = Mth.floor(minU + UV_EPS), u1 = Math.max(Mth.ceil(maxU - UV_EPS), u0 + 1);
         int v0 = Mth.floor(minV + UV_EPS), v1 = Math.max(Mth.ceil(maxV - UV_EPS), v0 + 1);
-        if (u0 == 0 && u1 == 1 && v0 == 0 && v1 == 1) return null;
+        if (u0 == 0 && u1 == 1 && v0 == 0 && v1 == 1) return -1;
         int cells = (u1 - u0) * (v1 - v0);
         if (cells > MAX_TILES) {
             throw new IllegalStateException(
@@ -520,9 +600,14 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                             + maxV
                             + "]");
         }
-        List<float[]> out = new ArrayList<>(cells);
-        float[] poly = new float[CLIP_MAX * GroupObject.STRIDE];
-        float[] scratch = new float[CLIP_MAX * GroupObject.STRIDE];
+        if (buffers.tiled == null) {
+            buffers.tiled = new FloatArrayList();
+            buffers.poly = new float[CLIP_MAX * GroupObject.STRIDE];
+            buffers.clip = new float[CLIP_MAX * GroupObject.STRIDE];
+        }
+        var out = buffers.tiled;
+        out.clear();
+        float[] poly = buffers.poly, scratch = buffers.clip;
         for (int cu = u0; cu < u1; cu++) {
             for (int cv = v0; cv < v1; cv++) {
                 System.arraycopy(q, base, poly, 0, GroupObject.QUAD);
@@ -536,16 +621,32 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                     poly[i * GroupObject.STRIDE + 4] -= cv;
                 }
                 for (int i = 1; i + 1 < n; i += 2) {
-                    float[] face = new float[GroupObject.QUAD];
-                    corner(face, 0, poly, 0);
-                    corner(face, 1, poly, i);
-                    corner(face, 2, poly, i + 1);
-                    corner(face, 3, poly, i + 2 < n ? i + 2 : i + 1);
-                    out.add(face);
+                    int at = out.size();
+                    out.size(at + GroupObject.QUAD);
+                    float[] face = out.elements();
+                    System.arraycopy(poly, 0, face, at, GroupObject.STRIDE);
+                    System.arraycopy(
+                            poly,
+                            i * GroupObject.STRIDE,
+                            face,
+                            at + GroupObject.STRIDE,
+                            GroupObject.STRIDE);
+                    System.arraycopy(
+                            poly,
+                            (i + 1) * GroupObject.STRIDE,
+                            face,
+                            at + 2 * GroupObject.STRIDE,
+                            GroupObject.STRIDE);
+                    System.arraycopy(
+                            poly,
+                            (i + 2 < n ? i + 2 : i + 1) * GroupObject.STRIDE,
+                            face,
+                            at + 3 * GroupObject.STRIDE,
+                            GroupObject.STRIDE);
                 }
             }
         }
-        return out.toArray(float[][]::new);
+        return out.size() / GroupObject.QUAD;
     }
 
     private static int clipUv(
@@ -572,13 +673,9 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         return m;
     }
 
-    private static void corner(float[] face, int to, float[] poly, int from) {
-        System.arraycopy(
-                poly, from * GroupObject.STRIDE, face, to * GroupObject.STRIDE, GroupObject.STRIDE);
-    }
-
-    private static float[] reversed(float[] q, int base) {
-        float[] face = new float[GroupObject.QUAD];
+    private static float[] reversed(float[] q, int base, QuadScratch scratch) {
+        if (scratch.back == null) scratch.back = new float[GroupObject.QUAD];
+        float[] face = scratch.back;
         for (int i = 0; i < 4; i++) {
             System.arraycopy(
                     q,
@@ -626,6 +723,14 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         }
     }
 
+    private static float local(float[] q, int base, int vertex, int axis, float scale, int texels) {
+        float value = q[vertex + axis] * scale;
+        for (int i = 0; i < 4; i++)
+            if (q[base + i * GroupObject.STRIDE + axis] != q[vertex + axis]) return value;
+        float half = .5F / texels;
+        return Math.clamp(value, half, scale - half);
+    }
+
     private static float[] spriteScale(TextureAtlasSprite sprite) {
         return new float[] {uScale(sprite), vScale(sprite)};
     }
@@ -644,6 +749,10 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
     }
 
     private static final class QuadScratch {
+        private float[] back;
+        private float[] poly;
+        private float[] clip;
+        private FloatArrayList tiled;
         final Vector3f[] positions = vertices();
         final Vector3f[] normals = vertices();
         final Vector3f faceNormal = new Vector3f();
@@ -665,30 +774,29 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             float uScale,
             float vScale,
             int color) {
-        assert info.lightEmission() == 0 || info.lightEmission() >= FULL_BRIGHT
-                : "Fabric carries emission as a boolean, so "
-                        + info.lightEmission()
-                        + " is dropped"
-                        + " rather than dimmed; carry it in the quad tag before authoring a partial emission";
         transformPositions(q, base, matrix, offsetX, offsetY, offsetZ, scratch.positions);
         Direction direction = direction(scratch.positions, scratch.faceNormal, scratch.edge);
         transformNormals(q, base, normalMatrix, direction, scratch.normals);
         for (int i = 0; i < 4; i++) {
             int v = base + i * GroupObject.STRIDE;
             emitter.pos(i, scratch.positions[i])
-                    .uv(i, sprite.getU(q[v + 3] * uScale), sprite.getV(q[v + 4] * vScale))
+                    .uv(
+                            i,
+                            sprite.getU(local(q, base, v, 3, uScale, sprite.contents().width())),
+                            sprite.getV(local(q, base, v, 4, vScale, sprite.contents().height())))
                     .normal(i, scratch.normals[i]);
         }
         if (color != WHITE) emitter.color(color, color, color, color);
+        emitter.diffuseShade(info.shade());
         emitter.nominalFace(direction)
-                .tag(info.hbm$lightOrigin())
+                .tag(QuadLighting.fabricTag(info))
                 .atlas(QuadAtlas.ofLocation(sprite.atlasLocation()))
                 .chunkLayer(info.layer())
                 .itemRenderType(info.itemRenderType())
                 .animated(sprite.contents().isAnimated())
                 .tintIndex(info.tintIndex())
-                .diffuseShade(info.shade())
-                .ambientOcclusion(TriState.FALSE)
+                .ambientOcclusion(
+                        QuadLighting.usesOwnBlock(info) ? TriState.FALSE : TriState.DEFAULT)
                 .emissive(info.lightEmission() >= FULL_BRIGHT)
                 .emit();
     }
@@ -696,7 +804,18 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
     @Override
     public QuadCollection bake(
             TextureSlots slots, ModelBaker baker, ModelState state, ModelDebugName name) {
-        if (groups != null) return bakeSpecs(slots, baker, state, name);
+        var overrides = this.overrides;
+        if (name instanceof ResolvedModel resolved) {
+            overrides =
+                    new Overrides(
+                            overrides.emissive(),
+                            overrides.tiled(),
+                            overrides.blackout(),
+                            overrides.doubleSided(),
+                            declaredAmbientOcclusion(resolved),
+                            overrides.shade());
+        }
+        if (groups != null) return bakeSpecs(slots, baker, state, name, overrides);
         if (skins.size() == 1) {
             Map.Entry<String, String[]> only = skins.entrySet().iterator().next();
             Material.Baked material = baker.materials().resolveSlot(slots, only.getKey(), name);
@@ -768,8 +887,20 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         return declared;
     }
 
+    private static boolean declaredAmbientOcclusion(ResolvedModel model) {
+        for (ResolvedModel at = model; at != null; at = at.parent()) {
+            Boolean declared = at.wrapped().ambientOcclusion();
+            if (declared != null) return declared;
+        }
+        return false;
+    }
+
     private QuadCollection bakeSpecs(
-            TextureSlots slots, ModelBaker baker, ModelState state, ModelDebugName name) {
+            TextureSlots slots,
+            ModelBaker baker,
+            ModelState state,
+            ModelDebugName name,
+            Overrides overrides) {
         Matrix4fc outer = state.transformation().getMatrix();
         float dx = offsetX;
         float dy = offsetY - 0.5F;
@@ -837,9 +968,28 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             String @Nullable [] emissive,
             String @Nullable [] tiled,
             String @Nullable [] blackout,
-            String @Nullable [] doubleSided) {
+            String @Nullable [] doubleSided,
+            boolean ambientOcclusion,
+            boolean shade) {
 
         public static final Overrides NONE = new Overrides(null, null, null, null);
+
+        public Overrides(
+                String @Nullable [] emissive,
+                String @Nullable [] tiled,
+                String @Nullable [] blackout,
+                String @Nullable [] doubleSided) {
+            this(emissive, tiled, blackout, doubleSided, false, true);
+        }
+
+        public Overrides(
+                String @Nullable [] emissive,
+                String @Nullable [] tiled,
+                String @Nullable [] blackout,
+                String @Nullable [] doubleSided,
+                boolean ambientOcclusion) {
+            this(emissive, tiled, blackout, doubleSided, ambientOcclusion, true);
+        }
 
         public boolean isEmissive(String group) {
             return emissive != null && contains(emissive, group);
@@ -892,7 +1042,7 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
         }
 
         boolean ambientOcclusion() {
-            return origin != QuadLighting.OWN_BLOCK;
+            return !QuadLighting.isOwnBlock(origin);
         }
     }
 

@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.slot;
 
 import com.hbm.advancement.HbmCriteria;
-import com.hbm.blockentity.BlockEntitySmeltingFurnace;
+import com.hbm.blockentity.SmeltingFurnaceBlockEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -22,11 +38,11 @@ import org.jspecify.annotations.Nullable;
 public class SlotSmelting extends FurnaceResultSlot {
 
     private final Player player;
-    private final @Nullable BlockEntitySmeltingFurnace furnace;
+    private final @Nullable SmeltingFurnaceBlockEntity furnace;
 
     private int takenCount;
 
-    public SlotSmelting(Player player, BlockEntitySmeltingFurnace furnace, int slot, int x, int y) {
+    public SlotSmelting(Player player, SmeltingFurnaceBlockEntity furnace, int slot, int x, int y) {
         this(player, furnace, furnace, slot, x, y);
     }
 
@@ -37,7 +53,7 @@ public class SlotSmelting extends FurnaceResultSlot {
     private SlotSmelting(
             Player player,
             Container container,
-            @Nullable BlockEntitySmeltingFurnace furnace,
+            @Nullable SmeltingFurnaceBlockEntity furnace,
             int slot,
             int x,
             int y) {

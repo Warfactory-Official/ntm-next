@@ -1,14 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.capability;
 
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.FluidFace;
-import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.api.fluidmk2.FluidHandler;
 import com.hbm.inventory.fluid.tank.FluidTankAccess;
+import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
@@ -24,15 +42,11 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
     private final Level level;
     private final BlockPos pos;
     private final Direction side;
-    private final IFluidHandlerMK2 machine;
+    private final FluidHandler machine;
     private final Journal journal;
 
     private MachineFluidHandler(
-            Level level,
-            BlockPos pos,
-            Direction side,
-            IFluidHandlerMK2 machine,
-            BlockEntity owner) {
+            Level level, BlockPos pos, Direction side, FluidHandler machine, BlockEntity owner) {
         this.level = level;
         this.pos = pos;
         this.side = side;
@@ -43,7 +57,7 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
     public static @Nullable MachineFluidHandler at(
             Level level, BlockPos pos, @Nullable Direction side) {
         if (side == null) return null;
-        IFluidHandlerMK2 machine = resolve(level, pos, side, null, true);
+        FluidHandler machine = resolve(level, pos, side, null, true);
         if (machine == null) machine = resolve(level, pos, side, null, false);
         if (machine == null || ForeignFluidStaging.tanksOf(machine).tankCount() == 0) return null;
         BlockEntity owner = ForeignFluidStaging.ownerOf(level, pos, side, machine);
@@ -51,13 +65,13 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
         return new MachineFluidHandler(level, pos.immutable(), side, machine, owner);
     }
 
-    private static @Nullable IFluidHandlerMK2 resolve(
+    private static @Nullable FluidHandler resolve(
             Level level, BlockPos pos, Direction side, @Nullable Fluid fluid, boolean receiver) {
         return level.getCapability(
                 receiver ? FluidCaps.RECEIVER : FluidCaps.PROVIDER, pos, FluidFace.of(side, fluid));
     }
 
-    private static Journal journalFor(BlockEntity owner, IFluidHandlerMK2 machine) {
+    private static Journal journalFor(BlockEntity owner, FluidHandler machine) {
         ForeignBridges bridges = ForeignBridges.of(owner);
         int tanks = FluidTankAccess.of(machine).tankCount();
         Journal journal =
@@ -82,7 +96,8 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
     public FluidResource getResource(int index) {
         FluidTankAccess tanks = tanks();
         if (index >= tanks.tankCount()) return FluidResource.EMPTY;
-        return FluidResource.of(journal.staging.resource(tanks, index));
+        return FluidResource.of(
+                journal.staging.resource(tanks, index), journal.staging.components(tanks, index));
     }
 
     @Override
@@ -94,7 +109,14 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
     @Override
     public long getCapacityAsLong(int index, FluidResource resource) {
         FluidTankAccess tanks = tanks();
-        return index >= tanks.tankCount() ? 0L : journal.staging.capacityMb(tanks, index);
+        if (index >= tanks.tankCount()) return 0L;
+        FluidTankNTM tank = tanks.tank(index);
+        DataComponentPatch components = resource.getComponentsPatch();
+        return components.isEmpty()
+                        || tank.accepts(resource.getFluid(), components)
+                        || tank.provides(resource.getFluid(), components)
+                ? journal.staging.capacityMb(tanks, index)
+                : 0L;
     }
 
     @Override
@@ -105,7 +127,8 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
                         resolve(level, pos, side, resource.getFluid(), true),
                         tanks,
                         index,
-                        resource.getFluid())
+                        resource.getFluid(),
+                        resource.getComponentsPatch())
                 > 0L;
     }
 
@@ -116,10 +139,12 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
         FluidTankAccess tanks = tanks();
         if (index >= tanks.tankCount()) return 0;
         Fluid fluid = resource.getFluid();
-        IFluidHandlerMK2 receiver = resolve(level, pos, side, fluid, true);
+        FluidHandler receiver = resolve(level, pos, side, fluid, true);
         if (receiver == null) return 0;
         journal.updateSnapshots(transaction);
-        return (int) journal.staging.stageInsert(receiver, tanks, index, fluid, amount);
+        return (int)
+                journal.staging.stageInsert(
+                        receiver, tanks, index, fluid, resource.getComponentsPatch(), amount);
     }
 
     @Override
@@ -129,17 +154,19 @@ public final class MachineFluidHandler implements ResourceHandler<FluidResource>
         FluidTankAccess tanks = tanks();
         if (index >= tanks.tankCount()) return 0;
         Fluid fluid = resource.getFluid();
-        IFluidHandlerMK2 provider = resolve(level, pos, side, fluid, false);
+        FluidHandler provider = resolve(level, pos, side, fluid, false);
         if (provider == null) return 0;
         journal.updateSnapshots(transaction);
-        return (int) journal.staging.stageExtract(provider, tanks, index, fluid, amount);
+        return (int)
+                journal.staging.stageExtract(
+                        provider, tanks, index, fluid, resource.getComponentsPatch(), amount);
     }
 
     private static final class Journal extends SnapshotJournal<ForeignFluidStaging.Saved> {
 
         private final ForeignFluidStaging staging;
 
-        Journal(IFluidHandlerMK2 machine, BlockEntity owner, int tanks) {
+        Journal(FluidHandler machine, BlockEntity owner, int tanks) {
             this.staging = new ForeignFluidStaging(machine, owner, tanks);
         }
 

@@ -14,7 +14,10 @@
       "ingredient": "hbm:weapon_mod_special_silencer"
     },
     "E": {
-      "ingredient": "hbm:gun_amat"
+      "ingredient": "hbm:gun_amat",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "F": {
       "ingredient": "hbm:weapon_mod_special_furniture_black"

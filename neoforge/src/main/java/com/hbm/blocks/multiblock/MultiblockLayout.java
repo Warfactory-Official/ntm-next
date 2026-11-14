@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.multiblock;
 
-import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -31,6 +47,39 @@ public record MultiblockLayout(
             int heightOffset,
             int[] previewBoxes,
             double[] previewExtras) {
+
+        public static int[] rotateDimensions(int[] dimensions, Direction facing) {
+            return switch (facing) {
+                case NORTH ->
+                        new int[] {
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[3],
+                            dimensions[2],
+                            dimensions[5],
+                            dimensions[4]
+                        };
+                case EAST ->
+                        new int[] {
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[5],
+                            dimensions[4],
+                            dimensions[2],
+                            dimensions[3]
+                        };
+                case WEST ->
+                        new int[] {
+                            dimensions[0],
+                            dimensions[1],
+                            dimensions[4],
+                            dimensions[5],
+                            dimensions[3],
+                            dimensions[2]
+                        };
+                default -> dimensions;
+            };
+        }
 
         CompoundTag write() {
             CompoundTag tag = new CompoundTag();
@@ -62,6 +111,12 @@ public record MultiblockLayout(
             double @Nullable [][] core,
             double @Nullable [][] silhouettes) {
 
+        public static final int OUTLINE_PROJECTION = 0;
+        public static final int COLLISION_PROJECTION = 1;
+        public static final int SUPPORT_PROJECTION = 2;
+        public static final int PROJECTION_COUNT = 3;
+        public static final int VARIANT_COUNT = 2 * PROJECTION_COUNT;
+
         public static final CellGeometry NONE =
                 new CellGeometry(
                         new String[0],
@@ -70,7 +125,7 @@ public record MultiblockLayout(
                         false,
                         new long[][] {NO_CELLS, NO_CELLS, NO_CELLS, NO_CELLS},
                         new int[4][0],
-                        new double[16][],
+                        new double[4 * VARIANT_COUNT][],
                         new double[4][]);
 
         public static @Nullable VoxelShape shape(double @Nullable [] boxes) {
@@ -119,7 +174,10 @@ public record MultiblockLayout(
             tag.put("keys", keyList);
             for (int t = 0; t < keys.length; t++) {
                 CompoundTag tuple = new CompoundTag();
-                for (int v = 0; v < 4; v++) tuple.putLongArray("b" + v, bits(tupleBoxes[t][v]));
+                for (int v = 0; v < VARIANT_COUNT; v++) {
+                    if (tupleBoxes[t][v] != null)
+                        tuple.putLongArray("b" + v, bits(tupleBoxes[t][v]));
+                }
                 if (climbs[t] != null) tuple.putLongArray("climb", bits(climbs[t]));
                 tag.put("tuple" + t, tuple);
             }
@@ -139,20 +197,21 @@ public record MultiblockLayout(
         static CellGeometry read(CompoundTag tag) {
             ListTag keyList = tag.getListOrEmpty("keys");
             String[] keys = new String[keyList.size()];
-            double[][][] tupleBoxes = new double[keys.length][4][];
+            double[][][] tupleBoxes = new double[keys.length][VARIANT_COUNT][];
             double[][] climbs = new double[keys.length][];
             for (int t = 0; t < keys.length; t++) {
                 keys[t] = keyList.getString(t).orElseThrow();
                 CompoundTag tuple = tag.getCompoundOrEmpty("tuple" + t);
-                for (int v = 0; v < 4; v++) tupleBoxes[t][v] = optionalDoubles(tuple, "b" + v);
+                for (int v = 0; v < VARIANT_COUNT; v++)
+                    tupleBoxes[t][v] = optionalDoubles(tuple, "b" + v);
                 climbs[t] = optionalDoubles(tuple, "climb");
             }
             long[][] cells = new long[4][];
             int[][] tuples = new int[4][];
-            double[][] core = new double[16][], silhouettes = new double[4][];
+            double[][] core = new double[4 * VARIANT_COUNT][], silhouettes = new double[4][];
             for (int f = 0; f < 4; f++) {
                 cells[f] = unpack(tag.getByteArray("cells" + f).orElseThrow());
-                tuples[f] = tag.getIntArray("tuples" + f).orElse(new int[0]);
+                tuples[f] = tag.getIntArray("tuples" + f).orElseGet(() -> new int[0]);
                 silhouettes[f] = optionalDoubles(tag, "silhouette" + f);
             }
             for (int i = 0; i < core.length; i++) core[i] = optionalDoubles(tag, "core" + i);
@@ -168,7 +227,8 @@ public record MultiblockLayout(
         }
 
         private static double @Nullable [] optionalDoubles(CompoundTag tag, String key) {
-            return tag.contains(key) ? doubles(tag.getLongArray(key).orElseThrow()) : null;
+            var values = tag.getLongArray(key).orElse(null);
+            return values == null ? null : doubles(values);
         }
     }
 
@@ -190,10 +250,6 @@ public record MultiblockLayout(
             int x = BlockPos.getX(offsets[i]),
                     y = BlockPos.getY(offsets[i]),
                     z = BlockPos.getZ(offsets[i]);
-            if (x != (byte) x || y != (byte) y || z != (byte) z) {
-                throw new IllegalStateException(
-                        "multiblock offset " + x + "," + y + "," + z + " exceeds a byte per axis");
-            }
             out[i * 3] = (byte) x;
             out[i * 3 + 1] = (byte) y;
             out[i * 3 + 2] = (byte) z;
@@ -224,23 +280,19 @@ public record MultiblockLayout(
         tag.putInt("caps", declaredCaps);
         tag.put("placement", placement.write());
         tag.put("geometry", geometry.write());
-        List<MultiblockMaskTable> distinct = new ArrayList<>();
+        MultiblockMaskTable[] distinct = new MultiblockMaskTable[tables.length];
+        int distinctCount = 0;
         int[] facing = new int[tables.length];
         for (int f = 0; f < tables.length; f++) {
-            int at = -1;
-            for (int i = 0; i < distinct.size(); i++) {
-                if (distinct.get(i) == tables[f]) at = i;
-            }
-            if (at < 0) {
-                at = distinct.size();
-                distinct.add(tables[f]);
-            }
+            int at = 0;
+            while (at < distinctCount && distinct[at] != tables[f]) at++;
+            if (at == distinctCount) distinct[distinctCount++] = tables[f];
             facing[f] = at;
             tag.putByteArray("offsets" + f, pack(offsets[f]));
             if (clearance[f].length > 0) tag.putByteArray("clearance" + f, pack(clearance[f]));
         }
         tag.putIntArray("facing", facing);
-        for (int i = 0; i < distinct.size(); i++) tag.put("table" + i, distinct.get(i).write());
+        for (int i = 0; i < distinctCount; i++) tag.put("table" + i, distinct[i].write());
         return tag;
     }
 

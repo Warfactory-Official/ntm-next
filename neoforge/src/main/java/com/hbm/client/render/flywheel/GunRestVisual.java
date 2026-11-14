@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.render.WeaponRenderTypes;
 import com.hbm.items.weapon.sedna.AkimboGhost;
 import com.hbm.main.ResourceManager;
-import com.hbm.render.item.weapon.sedna.ItemRenderWeaponBase;
 import com.hbm.render.item.weapon.sedna.RestBody;
+import com.hbm.render.item.weapon.sedna.WeaponItemRenderer;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.loader.UnitQuad;
 import com.hbm.util.GameTime;
@@ -30,7 +46,7 @@ import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 public final class GunRestVisual extends HbmItemVisual {
-    private final ItemRenderWeaponBase renderer;
+    private final WeaponItemRenderer renderer;
     private final boolean otherArm;
     private final List<Element> declared;
     private final List<Posing> posings = new ArrayList<>();
@@ -42,7 +58,7 @@ public final class GunRestVisual extends HbmItemVisual {
 
     public GunRestVisual(
             VisualizationContext ctx,
-            ItemRenderWeaponBase renderer,
+            WeaponItemRenderer renderer,
             ItemStack stack,
             boolean otherArm) {
         super(ctx);
@@ -52,7 +68,7 @@ public final class GunRestVisual extends HbmItemVisual {
         for (Element element : declared) posings.add(element.create(this));
     }
 
-    private static List<Element> declare(ItemRenderWeaponBase renderer, ItemStack stack) {
+    private static List<Element> declare(WeaponItemRenderer renderer, ItemStack stack) {
         List<Element> elements = new ArrayList<>();
         renderer.restBody(stack, new Declaration(elements, null));
         return elements;
@@ -65,7 +81,7 @@ public final class GunRestVisual extends HbmItemVisual {
 
     @Override
     protected void frame(Matrix4fc pose, int light, int overlay, float partialTick) {
-        ItemRenderWeaponBase.restFrame(frame.set(pose), otherArm);
+        WeaponItemRenderer.restFrame(frame.set(pose), otherArm);
         @Nullable Spin last = null;
         for (int i = 0; i < declared.size(); i++) {
             Element element = declared.get(i);
@@ -137,7 +153,7 @@ public final class GunRestVisual extends HbmItemVisual {
                             instance,
                             visual.place(base, pose),
                             color,
-                            fullBright ? ItemRenderWeaponBase.FULL_BRIGHT : light);
+                            fullBright ? WeaponItemRenderer.FULL_BRIGHT : light);
         }
     }
 

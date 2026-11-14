@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin;
 
@@ -14,6 +30,7 @@ import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import org.joml.Quaternionfc;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -36,7 +53,9 @@ public abstract class MixinLivingEntityRenderer {
             CameraRenderState camera,
             CallbackInfo ci) {
         if (state instanceof AvatarRenderState avatar
-                && (avatar.hbm$appearance() & PlayerAppearance.STEALTH) != 0) ci.cancel();
+                && (((com.hbm.interfaces.injected.PlayerAppearance) (avatar)).hbm$appearance()
+                                & PlayerAppearance.STEALTH)
+                        != 0) ci.cancel();
     }
 
     @Inject(
@@ -58,7 +77,7 @@ public abstract class MixinLivingEntityRenderer {
             CallbackInfo ci) {
         if (!(state instanceof RiderTiltRenderState rider) || rider.hbm$riderTilt() == 0F) return;
         poseStack.translate(0F, RiderTilt.PIVOT, 0F);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(rider.hbm$riderTilt()));
+        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(rider.hbm$riderTilt()));
         poseStack.translate(0F, -RiderTilt.PIVOT, 0F);
     }
 
@@ -71,6 +90,8 @@ public abstract class MixinLivingEntityRenderer {
             CallbackInfoReturnable<RenderType> cir) {
         if (!(state instanceof AvatarRenderState avatar)) return;
         if (avatar.isSpectator) return;
-        if ((avatar.hbm$appearance() & PlayerAppearance.MANLY) != 0) cir.setReturnValue(null);
+        if ((((com.hbm.interfaces.injected.PlayerAppearance) (avatar)).hbm$appearance()
+                        & PlayerAppearance.MANLY)
+                != 0) cir.setReturnValue(null);
     }
 }

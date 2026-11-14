@@ -1,17 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.effect.EntityCloudFleija;
-import com.hbm.entity.effect.EntityCloudFleijaRainbow;
-import com.hbm.entity.effect.EntityCloudSolinium;
-import com.hbm.entity.particle.EntityChlorineFX;
-import com.hbm.entity.particle.EntityCloudFX;
-import com.hbm.entity.particle.EntityOrangeFX;
-import com.hbm.entity.particle.EntityPinkCloudFX;
-import com.hbm.lib.Library;
+import com.hbm.entity.effect.CloudFleijaEntity;
+import com.hbm.entity.effect.CloudFleijaRainbowEntity;
+import com.hbm.entity.effect.CloudSoliniumEntity;
+import com.hbm.entity.particle.ChlorineFXEntity;
+import com.hbm.entity.particle.CloudFXEntity;
+import com.hbm.entity.particle.OrangeFXEntity;
+import com.hbm.entity.particle.PinkCloudFXEntity;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.FogShader;
 import dev.engine_room.flywheel.api.material.Material;
@@ -23,7 +39,7 @@ import dev.engine_room.flywheel.lib.visualization.SimpleEntityVisualizer;
 import net.minecraft.resources.Identifier;
 
 public final class EffectVisuals {
-    public static final FogShader FADE = new SimpleFogShader(Library.id("fog/fade.glsl"));
+    public static final FogShader FADE = new SimpleFogShader(RegistryUtil.id("fog/fade.glsl"));
 
     private EffectVisuals() {}
 
@@ -74,18 +90,18 @@ public final class EffectVisuals {
         SimpleEntityVisualizer.builder(ModEntities.CLOUD_FLEIJA.get())
                 .factory(
                         (ctx, entity, partialTick) ->
-                                new NukeCloudVisual<EntityCloudFleija>(
+                                new NukeCloudVisual<CloudFleijaEntity>(
                                         ctx,
                                         entity,
                                         partialTick,
                                         NukeCloudVisual.Kind.FLEIJA,
                                         cloud -> cloud.age,
-                                        EntityCloudFleija::getMaxAge))
+                                        CloudFleijaEntity::getMaxAge))
                 .apply();
         SimpleEntityVisualizer.builder(ModEntities.CLOUD_SOLINIUM.get())
                 .factory(
                         (ctx, entity, partialTick) ->
-                                new NukeCloudVisual<EntityCloudSolinium>(
+                                new NukeCloudVisual<CloudSoliniumEntity>(
                                         ctx,
                                         entity,
                                         partialTick,
@@ -96,7 +112,7 @@ public final class EffectVisuals {
         SimpleEntityVisualizer.builder(ModEntities.CLOUD_RAINBOW.get())
                 .factory(
                         (ctx, entity, partialTick) ->
-                                new NukeCloudVisual<EntityCloudFleijaRainbow>(
+                                new NukeCloudVisual<CloudFleijaRainbowEntity>(
                                         ctx,
                                         entity,
                                         partialTick,
@@ -111,46 +127,46 @@ public final class EffectVisuals {
         SimpleEntityVisualizer.builder(ModEntities.AGENT_ORANGE.get())
                 .factory(
                         (ctx, entity, partialTick) ->
-                                new MultiCloudVisual<EntityOrangeFX>(
+                                new MultiCloudVisual<OrangeFXEntity>(
                                         ctx,
                                         entity,
                                         partialTick,
                                         MultiCloudVisual.ORANGE,
-                                        EntityOrangeFX::particleAge,
-                                        EntityOrangeFX::maxAge))
+                                        OrangeFXEntity::particleAge,
+                                        OrangeFXEntity::maxAge))
                 .apply();
         SimpleEntityVisualizer.builder(ModEntities.CHLORINE_FX.get())
                 .factory(
                         (ctx, entity, partialTick) ->
-                                new MultiCloudVisual<EntityChlorineFX>(
+                                new MultiCloudVisual<ChlorineFXEntity>(
                                         ctx,
                                         entity,
                                         partialTick,
                                         MultiCloudVisual.CHLORINE,
-                                        EntityChlorineFX::particleAge,
-                                        EntityChlorineFX::maxAge))
+                                        ChlorineFXEntity::particleAge,
+                                        ChlorineFXEntity::maxAge))
                 .apply();
         SimpleEntityVisualizer.builder(ModEntities.CLOUD_FX.get())
                 .factory(
                         (ctx, entity, partialTick) ->
-                                new MultiCloudVisual<EntityCloudFX>(
+                                new MultiCloudVisual<CloudFXEntity>(
                                         ctx,
                                         entity,
                                         partialTick,
                                         MultiCloudVisual.CLOUD,
-                                        EntityCloudFX::particleAge,
-                                        EntityCloudFX::maxAge))
+                                        CloudFXEntity::particleAge,
+                                        CloudFXEntity::maxAge))
                 .apply();
         SimpleEntityVisualizer.builder(ModEntities.PINK_CLOUD_FX.get())
                 .factory(
                         (ctx, entity, partialTick) ->
-                                new MultiCloudVisual<EntityPinkCloudFX>(
+                                new MultiCloudVisual<PinkCloudFXEntity>(
                                         ctx,
                                         entity,
                                         partialTick,
                                         MultiCloudVisual.PINK,
-                                        EntityPinkCloudFX::particleAge,
-                                        EntityPinkCloudFX::maxAge))
+                                        PinkCloudFXEntity::particleAge,
+                                        PinkCloudFXEntity::maxAge))
                 .apply();
 
         SimpleEntityVisualizer.builder(ModEntities.EMP_BLAST.get())

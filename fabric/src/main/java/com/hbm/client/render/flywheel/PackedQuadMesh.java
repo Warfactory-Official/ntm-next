@@ -1,9 +1,24 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.animloader.AnimatedModel;
 import com.hbm.render.loader.GroupObject;
 import com.hbm.render.loader.HFRWavefrontObject;
 import dev.engine_room.flywheel.api.model.IndexSequence;
@@ -43,22 +58,8 @@ public final class PackedQuadMesh implements Mesh {
         return new PackedQuadMesh(group.quads(smooth), null, null);
     }
 
-    public static PackedQuadMesh of(AnimatedModel.Mesh node) {
-        float[] src = node.vertexData;
-        int tris = src.length / (3 * GroupObject.STRIDE);
-        float[] out = new float[tris * 4 * GroupObject.STRIDE];
-        for (int t = 0; t < tris; t++) {
-            int in = t * 3 * GroupObject.STRIDE;
-            int dst = t * 4 * GroupObject.STRIDE;
-            System.arraycopy(src, in, out, dst, 3 * GroupObject.STRIDE);
-            System.arraycopy(
-                    src,
-                    in + 2 * GroupObject.STRIDE,
-                    out,
-                    dst + 3 * GroupObject.STRIDE,
-                    GroupObject.STRIDE);
-        }
-        return new PackedQuadMesh(out, null, null);
+    public static PackedQuadMesh ofColored(GroupObject group, boolean smooth) {
+        return new PackedQuadMesh(group.quads(smooth), group.vertexColors(), null);
     }
 
     public static Builder builder(int quads) {

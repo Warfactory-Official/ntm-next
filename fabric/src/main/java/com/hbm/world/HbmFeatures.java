@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.hbm.world.feature.*;
 import com.hbm.world.placement.LightBlockingHeightPlacement;
@@ -14,7 +30,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public final class HbmFeatures {
-
     public static RegistryHandle<StratumFeature> STRATUM;
     public static RegistryHandle<Stratum3DFeature> STRATUM_3D;
     public static RegistryHandle<DepthDepositFeature> DEPTH_DEPOSIT;
@@ -54,63 +69,59 @@ public final class HbmFeatures {
         LightBlockingHeightPlacement.register();
         WorldConfigPlacement.register();
         OreHostPlacement.register();
-        STRATUM = FabricRegistrar.registerFeature("stratum", new StratumFeature());
-        STRATUM_3D = FabricRegistrar.registerFeature("stratum_3d", new Stratum3DFeature());
-        DEPTH_DEPOSIT = FabricRegistrar.registerFeature("depth_deposit", new DepthDepositFeature());
-        WINDOWED_ORE = FabricRegistrar.registerFeature("windowed_ore", new WindowedOreFeature());
-        COLTAN_DEPOSIT =
-                FabricRegistrar.registerFeature("coltan_deposit", new ColtanDepositFeature());
-        NETHER_SURFACE =
-                FabricRegistrar.registerFeature("nether_surface", new NetherSurfaceFeature());
-        BEDROCK_ORE = FabricRegistrar.registerFeature("bedrock_ore", new BedrockOreFeature());
-        ORE_CAVE = FabricRegistrar.registerFeature("ore_cave", new OreCaveFeature());
-        OIL_BUBBLE = FabricRegistrar.registerFeature("oil_bubble", new OilBubbleFeature());
+        STRATUM = Registrar.registerFeature("stratum", new StratumFeature());
+        STRATUM_3D = Registrar.registerFeature("stratum_3d", new Stratum3DFeature());
+        DEPTH_DEPOSIT = Registrar.registerFeature("depth_deposit", new DepthDepositFeature());
+        WINDOWED_ORE = Registrar.registerFeature("windowed_ore", new WindowedOreFeature());
+        COLTAN_DEPOSIT = Registrar.registerFeature("coltan_deposit", new ColtanDepositFeature());
+        NETHER_SURFACE = Registrar.registerFeature("nether_surface", new NetherSurfaceFeature());
+        BEDROCK_ORE = Registrar.registerFeature("bedrock_ore", new BedrockOreFeature());
+        ORE_CAVE = Registrar.registerFeature("ore_cave", new OreCaveFeature());
+        OIL_BUBBLE = Registrar.registerFeature("oil_bubble", new OilBubbleFeature());
         BEDROCK_OIL_DEPOSIT =
-                FabricRegistrar.registerFeature(
-                        "bedrock_oil_deposit", new BedrockOilDepositFeature());
-        METEORITE = FabricRegistrar.registerFeature("meteorite", new MeteoriteFeature());
-        GEYSER = FabricRegistrar.registerFeature("geyser", new GeyserFeature());
-        BIOME_CAVE = FabricRegistrar.registerFeature("biome_cave", new BiomeCaveFeature());
-        GLYPHID_HIVE = FabricRegistrar.registerFeature("glyphid_hive", new GlyphidHiveFeature());
-        DUD = FabricRegistrar.registerFeature("dud", new DudFeature());
-        LOCKED_SAFE = FabricRegistrar.registerFeature("locked_safe", new LockedSafeFeature());
+                Registrar.registerFeature("bedrock_oil_deposit", new BedrockOilDepositFeature());
+        METEORITE = Registrar.registerFeature("meteorite", new MeteoriteFeature());
+        GEYSER = Registrar.registerFeature("geyser", new GeyserFeature());
+        BIOME_CAVE = Registrar.registerFeature("biome_cave", new BiomeCaveFeature());
+        GLYPHID_HIVE = Registrar.registerFeature("glyphid_hive", new GlyphidHiveFeature());
+        DUD = Registrar.registerFeature("dud", new DudFeature());
+        LOCKED_SAFE = Registrar.registerFeature("locked_safe", new LockedSafeFeature());
         LANTERN_BEHEMOTH =
-                FabricRegistrar.registerFeature("lantern_behemoth", new LanternBehemothFeature());
-        BOSNIA_MINE = FabricRegistrar.registerFeature("bosnia_mine", new BosniaMineFeature());
-        PINK_LOG = FabricRegistrar.registerFeature("pink_log", new PinkLogFeature());
-        LIBRARY_DUNGEON =
-                FabricRegistrar.registerFeature("library_dungeon", new LibraryDungeonFeature());
-        BARREL = FabricRegistrar.registerFeature("barrel", new BarrelFeature());
-        ARCTIC_VAULT = FabricRegistrar.registerFeature("arctic_vault", new ArcticVaultFeature());
+                Registrar.registerFeature("lantern_behemoth", new LanternBehemothFeature());
+        BOSNIA_MINE = Registrar.registerFeature("bosnia_mine", new BosniaMineFeature());
+        PINK_LOG = Registrar.registerFeature("pink_log", new PinkLogFeature());
+        LIBRARY_DUNGEON = Registrar.registerFeature("library_dungeon", new LibraryDungeonFeature());
+        BARREL = Registrar.registerFeature("barrel", new BarrelFeature());
+        ARCTIC_VAULT = Registrar.registerFeature("arctic_vault", new ArcticVaultFeature());
         FOXGLOVE =
-                FabricRegistrar.registerFeature(
+                Registrar.registerFeature(
                         "foxglove",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_FOXGLOVE.get(), 16));
         NIGHTSHADE =
-                FabricRegistrar.registerFeature(
+                Registrar.registerFeature(
                         "nightshade",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_NIGHTSHADE.get(), 8));
         TOBACCO =
-                FabricRegistrar.registerFeature(
+                Registrar.registerFeature(
                         "tobacco",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_TOBACCO.get(), 8));
         WEED =
-                FabricRegistrar.registerFeature(
+                Registrar.registerFeature(
                         "weed",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_FLOWER_WEED.get(), 64));
         REEDS_RIVER =
-                FabricRegistrar.registerFeature(
+                Registrar.registerFeature(
                         "reeds_river",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_REEDS.get(), 4));
         REEDS_BEACH =
-                FabricRegistrar.registerFeature(
+                Registrar.registerFeature(
                         "reeds_beach",
                         new FlowerPatchFeature(() -> ModBlocks.PLANT_REEDS.get(), 8));
         JUNGLE_DUNGEON_MARKER =
-                FabricRegistrar.registerFeature(
+                Registrar.registerFeature(
                         "jungle_dungeon_marker", new JungleDungeonMarkerFeature());
-        CAPSULE = FabricRegistrar.registerFeature("capsule", new CapsuleFeature());
-        KEYHOLE = FabricRegistrar.registerFeature("keyhole", new KeyholeFeature());
+        CAPSULE = Registrar.registerFeature("capsule", new CapsuleFeature());
+        KEYHOLE = Registrar.registerFeature("keyhole", new KeyholeFeature());
     }
 
     public static Feature<StratumConfig> stratum() {

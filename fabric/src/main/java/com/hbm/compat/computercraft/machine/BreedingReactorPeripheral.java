@@ -1,40 +1,47 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.machine;
 
-import com.hbm.blockentity.machine.BlockEntityMachineReactorBreeding;
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.blockentity.machine.ReactorBreedingBlockEntity;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class BreedingReactorPeripheral
-        extends SnapshotPeripheral<BlockEntityMachineReactorBreeding> {
+        extends BlockEntityPeripheral<ReactorBreedingBlockEntity> {
 
-    private static final int FLUX = 0;
-    private static final int PROGRESS = 1;
-
-    public BreedingReactorPeripheral(BlockEntityMachineReactorBreeding machine) {
-        super(machine, "breeding_reactor", 2, 0);
-    }
-
-    @Override
-    protected void capture(BlockEntityMachineReactorBreeding machine) {
-        put(FLUX, machine.flux);
-        put(PROGRESS, machine.progress);
+    public BreedingReactorPeripheral(ReactorBreedingBlockEntity machine) {
+        super(machine, "breeding_reactor");
     }
 
     @LuaFunction
-    public final Object[] getFlux() {
-        return read(s -> new Object[] {s.intAt(FLUX)});
+    public Object[] getFlux() {
+        return new Object[] {(int) target.flux};
     }
 
     @LuaFunction
-    public final Object[] getProgress() {
-        return read(s -> new Object[] {(float) s.doubleAt(PROGRESS)});
+    public Object[] getProgress() {
+        return new Object[] {(float) (double) (target.progress)};
     }
 
     @LuaFunction
-    public final Object[] getInfo() {
-        return read(s -> new Object[] {s.intAt(FLUX), (float) s.doubleAt(PROGRESS)});
+    public Object[] getInfo() {
+        return new Object[] {(int) target.flux, (float) (double) (target.progress)};
     }
 }

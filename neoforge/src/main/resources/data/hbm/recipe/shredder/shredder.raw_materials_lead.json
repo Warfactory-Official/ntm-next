@@ -7,10 +7,20 @@
   ],
   "order": 71424,
   "output_items": [
-    {
-      "chance": 0.667,
-      "count": 2,
-      "id": "hbm:powder_lead"
-    }
+    [
+      {
+        "data": {
+          "id": "hbm:powder_lead"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:powder_lead"
+        },
+        "weight": 1
+      }
+    ]
   ]
 }

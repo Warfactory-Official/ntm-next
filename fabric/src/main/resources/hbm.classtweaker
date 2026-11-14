@@ -1,5 +1,11 @@
 classTweaker	v2	official
 
+transitive-extendable method net/minecraft/world/entity/LivingEntity getCurrentSwingDuration ()I
+
+transitive-accessible method net/minecraft/world/entity/projectile/Projectile hitTargetOrDeflectSelf (Lnet/minecraft/world/phys/HitResult;)Lnet/minecraft/world/entity/projectile/ProjectileDeflection;
+
+transitive-accessible method net/minecraft/world/damagesource/DamageSource <init> (Lnet/minecraft/core/Holder;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;)V
+
 transitive-accessible field net/minecraft/world/entity/player/Inventory items Lnet/minecraft/core/NonNullList;
 transitive-mutable field net/minecraft/world/entity/player/Inventory items Lnet/minecraft/core/NonNullList;
 
@@ -50,6 +56,7 @@ transitive-accessible field net/minecraft/server/network/ServerCommonPacketListe
 transitive-accessible field net/minecraft/world/level/chunk/PalettedContainer data Lnet/minecraft/world/level/chunk/PalettedContainer$Data;
 transitive-accessible class net/minecraft/world/level/chunk/PalettedContainer$Data
 transitive-accessible field net/minecraft/world/level/chunk/LevelChunkSection nonEmptyBlockCount S
+transitive-accessible field net/minecraft/world/level/chunk/LevelChunkSection biomes Lnet/minecraft/world/level/chunk/PalettedContainerRO;
 transitive-accessible field net/minecraft/world/level/Level soundSeedGenerator Lnet/minecraft/util/RandomSource;
 
 transitive-accessible field net/minecraft/world/level/levelgen/synth/SimplexNoise p [I
@@ -119,7 +126,6 @@ transitive-accessible field net/minecraft/world/level/storage/loot/LootPool$Buil
 
 transitive-accessible field net/minecraft/world/entity/monster/Creeper DATA_IS_IGNITED Lnet/minecraft/network/syncher/EntityDataAccessor;
 transitive-accessible field net/minecraft/world/entity/monster/Creeper DATA_IS_POWERED Lnet/minecraft/network/syncher/EntityDataAccessor;
-transitive-accessible field net/minecraft/world/entity/monster/Creeper swell I
 transitive-accessible field net/minecraft/world/entity/monster/Creeper maxSwell I
 
 transitive-accessible field net/minecraft/core/Direction VALUES [Lnet/minecraft/core/Direction;
@@ -138,14 +144,14 @@ transitive-accessible field net/minecraft/world/level/levelgen/structure/Structu
 transitive-accessible field net/minecraft/world/level/levelgen/structure/StructurePiece rotation Lnet/minecraft/world/level/block/Rotation;
 
 transitive-inject-interface	net/minecraft/server/MinecraftServer	com/hbm/interfaces/injected/UnstableFuseSchedule
-transitive-inject-interface	net/minecraft/client/multiplayer/ClientLevel	com/hbm/interfaces/injected/IClientLevelExtension
-transitive-inject-interface	net/minecraft/server/level/ServerLevel	com/hbm/interfaces/injected/IServerLevelExtension
-transitive-inject-interface	net/minecraft/world/level/chunk/ChunkAccess	com/hbm/interfaces/injected/IChunkExtension
-transitive-inject-interface	net/minecraft/world/level/chunk/storage/SerializableChunkData	com/hbm/interfaces/injected/IChunkExtension
+transitive-inject-interface	net/minecraft/client/multiplayer/ClientLevel	com/hbm/interfaces/injected/ClientLevelExtension
+transitive-inject-interface	net/minecraft/server/level/ServerLevel	com/hbm/interfaces/injected/ServerLevelExtension
+transitive-inject-interface	net/minecraft/world/level/chunk/ChunkAccess	com/hbm/interfaces/injected/ChunkExtension
+transitive-inject-interface	net/minecraft/world/level/chunk/storage/SerializableChunkData	com/hbm/interfaces/injected/ChunkExtension
 transitive-inject-interface	net/minecraft/world/entity/player/Player	com/hbm/interfaces/injected/PlayerAppearance
 transitive-inject-interface	net/minecraft/client/renderer/entity/state/AvatarRenderState	com/hbm/interfaces/injected/PlayerAppearance
 transitive-inject-interface	net/minecraft/world/level/block/piston/PistonMovingBlockEntity	com/hbm/interfaces/injected/MovedBlockEntityData
-transitive-inject-interface	net/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo	com/hbm/interfaces/injected/IQuadLightOrigin
+transitive-inject-interface	net/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo	com/hbm/interfaces/injected/QuadLightOriginAccess
 transitive-inject-interface	net/minecraft/server/level/ServerLevel	com/hbm/interfaces/injected/CapCacheHost
 transitive-inject-interface	net/minecraft/world/level/block/Block	com/hbm/interfaces/injected/BlockEntityLifecycle
 
@@ -198,5 +204,12 @@ accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise lowestFreq
 accessible field net/minecraft/world/level/levelgen/synth/ImprovedNoise p [B
 
 transitive-accessible field net/minecraft/client/renderer/fog/FogRenderer fogEnabled Z
+transitive-accessible field net/minecraft/client/renderer/fog/FogRenderer FOG_ENVIRONMENTS Ljava/util/List;
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen lastClickSlot Lnet/minecraft/world/inventory/Slot;
+transitive-accessible field net/minecraft/world/item/CreativeModeTab displayItemsGenerator Lnet/minecraft/world/item/CreativeModeTab$DisplayItemsGenerator;
+transitive-accessible field net/minecraft/client/renderer/blockentity/state/BlockEntityRenderState blockState Lnet/minecraft/world/level/block/state/BlockState;
+transitive-accessible method net/minecraft/world/level/levelgen/SurfaceRules$Context getBiome ()Lnet/minecraft/core/Holder;
 transitive-accessible method net/minecraft/world/item/BlockItem canPlace (Lnet/minecraft/world/item/context/BlockPlaceContext;Lnet/minecraft/world/level/block/state/BlockState;)Z
 transitive-accessible field net/minecraft/resources/RegistryLoadTask registry Lnet/minecraft/core/WritableRegistry;
+accessible field net/minecraft/core/Holder$Reference tags Ljava/util/Set;
+transitive-accessible field net/minecraft/world/level/block/state/BlockBehaviour UPDATE_SHAPE_ORDER [Lnet/minecraft/core/Direction;

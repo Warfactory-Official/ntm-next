@@ -1,10 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.packet;
 
+import com.hbm.packet.layout.UnitSyncLayout;
+import com.hbm.packet.threading.EncodedPayload;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.Arrays;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.VarLong;
 
 public final class SyncUnitState {
@@ -46,6 +67,7 @@ public final class SyncUnitState {
         if (reset) {
             if (units != allowed)
                 throw new IllegalArgumentException("Incomplete machine sync state");
+            if (current != null) current.release();
             current = null;
         } else if (current == null) {
             throw new IllegalStateException("Partial machine sync state has no base");
@@ -61,7 +83,10 @@ public final class SyncUnitState {
     private long update(long units, boolean event, SyncUnitSchema writer, long received) {
         if ((units & ~allowed) != 0)
             throw new IllegalArgumentException("Invalid machine sync unit");
-        long events = event ? schema.syncEventUnits() : 0;
+        long events = 0;
+        if (event) events = schema.syncEventUnits();
+        else if (writer != schema) events = units & schema.syncEventUnits();
+        boolean eventPublication = event || events != 0;
         units |= events;
         Snapshot previous = current;
         if (previous == null) units = allowed;
@@ -117,6 +142,7 @@ public final class SyncUnitState {
         }
         current =
                 new Snapshot(
+                        schema,
                         allowed,
                         previous == null ? revision : previous.epoch,
                         revision,
@@ -125,12 +151,20 @@ public final class SyncUnitState {
                         values,
                         lengths,
                         fragments,
-                        initialEffects);
+                        initialEffects,
+                        eventPublication);
+        if (previous != null) previous.release();
         return revision;
     }
 
     public Snapshot snapshot() {
         return current;
+    }
+
+    public void release() {
+        if (current != null) current.release();
+        current = null;
+        captured = false;
     }
 
     private static long readInline(ByteBuf input, int length) {
@@ -173,6 +207,7 @@ public final class SyncUnitState {
     }
 
     public static final class Snapshot {
+        private final Object owner;
         private final long allowed;
         private final long epoch;
         private final long revision;
@@ -182,8 +217,16 @@ public final class SyncUnitState {
         private final int[] lengths;
         private final byte[][] fragments;
         private final boolean initialEffects;
+        private final boolean event;
+        private Long2LongOpenHashMap unitSelectionCache;
+        private Long2ObjectOpenHashMap<EncodedPayload> frames;
+        private long framePosition;
+        private int frameBlockEntityType;
+        private boolean frameIdentity;
+        private int references = 1;
 
         private Snapshot(
+                Object owner,
                 long allowed,
                 long epoch,
                 long revision,
@@ -192,7 +235,9 @@ public final class SyncUnitState {
                 long[] values,
                 int[] lengths,
                 byte[][] fragments,
-                boolean initialEffects) {
+                boolean initialEffects,
+                boolean event) {
+            this.owner = owner;
             this.allowed = allowed;
             this.epoch = epoch;
             this.revision = revision;
@@ -202,10 +247,19 @@ public final class SyncUnitState {
             this.lengths = lengths;
             this.fragments = fragments;
             this.initialEffects = initialEffects;
+            this.event = event;
+        }
+
+        public boolean event() {
+            return event;
         }
 
         public long revision() {
             return revision;
+        }
+
+        public boolean ownedBy(Object owner) {
+            return this.owner == owner;
         }
 
         public long base(long requested) {
@@ -216,15 +270,19 @@ public final class SyncUnitState {
                     : requested;
         }
 
-        public long selectedUnits(long base) {
+        public synchronized long selectedUnits(long base) {
             if (base < epoch || base >= revision) return allowed;
             if (base == previousRevision) return changed;
+            if (unitSelectionCache != null && unitSelectionCache.containsKey(base))
+                return unitSelectionCache.get(base);
             long selected = 0;
             int index = 0;
             for (long remaining = allowed; remaining != 0; remaining &= remaining - 1) {
                 if (values[index * 2 + 1] > base) selected |= Long.lowestOneBit(remaining);
                 index++;
             }
+            if (unitSelectionCache == null) unitSelectionCache = new Long2LongOpenHashMap(4);
+            unitSelectionCache.put(base, selected);
             return selected;
         }
 
@@ -247,6 +305,54 @@ public final class SyncUnitState {
                 if (length <= Long.BYTES) writeInline(output, values[index * 2], length);
                 else output.writeBytes(fragments[index]);
             }
+        }
+
+        public synchronized EncodedPayload retainFrame(
+                long position, int blockEntityType, long base, long units) {
+            if (references == 0) throw new IllegalStateException("Released machine sync snapshot");
+            if (PacketWire.ccpPacketIdBytes() == null) {
+                return UnitSyncLayout.encode(
+                        BlockPos.of(position), blockEntityType, revision, base, this, units);
+            }
+            if (!frameIdentity) {
+                frameIdentity = true;
+                framePosition = position;
+                frameBlockEntityType = blockEntityType;
+            } else if (framePosition != position || frameBlockEntityType != blockEntityType) {
+                throw new IllegalArgumentException(
+                        "Machine sync snapshot reused for another block entity");
+            }
+            EncodedPayload frame = frames == null ? null : frames.get(base);
+            if (frame == null) {
+                frame =
+                        UnitSyncLayout.encode(
+                                BlockPos.of(position),
+                                blockEntityType,
+                                revision,
+                                base,
+                                this,
+                                units);
+                if (frames == null) frames = new Long2ObjectOpenHashMap<>(2);
+                frames.put(base, frame);
+            }
+            frame.retain();
+            return frame;
+        }
+
+        public synchronized void retain() {
+            if (references == 0 || references == Integer.MAX_VALUE) {
+                throw new IllegalStateException("Invalid machine sync snapshot retain");
+            }
+            references++;
+        }
+
+        public synchronized void release() {
+            if (references == 0)
+                throw new IllegalStateException("Machine sync snapshot already released");
+            if (--references != 0 || frames == null) return;
+            for (EncodedPayload frame : frames.values()) frame.release();
+            frames.clear();
+            frames = null;
         }
     }
 

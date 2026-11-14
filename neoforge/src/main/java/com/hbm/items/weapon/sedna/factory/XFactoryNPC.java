@@ -1,14 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.explosion.ExplosionNukeGeneric;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.explosion.NuclearShockwave;
 import com.hbm.items.weapon.sedna.BulletConfig;
+import com.hbm.items.weapon.sedna.factory.Lego;
+import com.hbm.lib.ModDamageTypes;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.BobMathUtil;
-import com.hbm.util.DamageClass;
+import com.hbm.sound.WorldSounds;
+import com.hbm.util.NtmMath;
 import java.util.List;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -48,7 +80,7 @@ public final class XFactoryNPC {
                         .setGrav(0D)
                         .setLife(100)
                         .setDoesPenetrate(true)
-                        .setupDamageClass(DamageClass.LASER)
+                        .setupDamageClass(ModDamageTypes.LASER)
                         .setOnImpact(
                                 (bullet, mop) -> {
                                     Lego.standardExplode(bullet, mop, 0.5F);
@@ -63,7 +95,7 @@ public final class XFactoryNPC {
                         .setLife(300)
                         .setRicochetCount(0)
                         .setOnRicochet(null)
-                        .setupDamageClass(DamageClass.FIRE)
+                        .setupDamageClass(ModDamageTypes.FIRE)
                         .setOnImpact(
                                 (bullet, mop) -> {
                                     Lego.standardExplode(bullet, mop, 2.5F);
@@ -88,7 +120,7 @@ public final class XFactoryNPC {
                         .setGrav(0D)
                         .setLife(100)
                         .setDoesPenetrate(true)
-                        .setupDamageClass(DamageClass.LASER)
+                        .setupDamageClass(ModDamageTypes.LASER)
                         .setOnImpact(
                                 (bullet, mop) -> {
                                     summonMeteor(bullet);
@@ -103,7 +135,7 @@ public final class XFactoryNPC {
                         .setLife(300)
                         .setRicochetCount(0)
                         .setOnRicochet(null)
-                        .setupDamageClass(DamageClass.EXPLOSIVE)
+                        .setupDamageClass(ModDamageTypes.EXPLOSIVE)
                         .setOnImpact(
                                 (bullet, mop) -> {
                                     Lego.standardExplode(bullet, mop, 5F);
@@ -119,12 +151,12 @@ public final class XFactoryNPC {
                         .setRicochetCount(0)
                         .setOnRicochet(null)
                         .setDoesPenetrate(false)
-                        .setupDamageClass(DamageClass.LASER)
+                        .setupDamageClass(ModDamageTypes.LASER)
                         .setOnUpdate(
                                 entity -> {
                                     if (entity.level().isClientSide()) return;
                                     if (entity.tickCount % 10 != 5) return;
-                                    rainBolts((EntityBulletBaseMK4) entity);
+                                    rainBolts((BulletBaseMK4Entity) entity);
                                 })
                         .setOnImpact(
                                 (bullet, mop) -> {
@@ -141,7 +173,7 @@ public final class XFactoryNPC {
                         .setRicochetCount(0)
                         .setOnRicochet(null)
                         .setDoesPenetrate(true)
-                        .setupDamageClass(DamageClass.LASER);
+                        .setupDamageClass(ModDamageTypes.LASER);
 
         worm_laser =
                 new BulletConfig()
@@ -152,7 +184,7 @@ public final class XFactoryNPC {
                         .setRicochetCount(0)
                         .setOnRicochet(null)
                         .setDoesPenetrate(true)
-                        .setupDamageClass(DamageClass.LASER);
+                        .setupDamageClass(ModDamageTypes.LASER);
 
         ufo_rocket =
                 new BulletConfig()
@@ -162,29 +194,30 @@ public final class XFactoryNPC {
                         .setLife(300)
                         .setRicochetAngle(10F)
                         .setRicochetCount(2)
-                        .setupDamageClass(DamageClass.EXPLOSIVE)
+                        .setupDamageClass(ModDamageTypes.EXPLOSIVE)
                         .setOnUpdate(
                                 entity -> {
                                     if (entity.level().isClientSide()) return;
-                                    EntityBulletBaseMK4 bullet = (EntityBulletBaseMK4) entity;
+                                    BulletBaseMK4Entity bullet = (BulletBaseMK4Entity) entity;
                                     if (bullet.lockonTarget == null
-                                            || !bullet.lockonTarget.isAlive()) {
+                                            || !bullet.lockonTarget.isAlive()
+                                            || bullet.lockonTarget.isSpectator()) {
                                         bullet.lockonTarget = chooseTarget(bullet);
                                     }
                                 })
                         .setOnImpact(
                                 (bullet, mop) -> {
-                                    bullet.level()
-                                            .playSound(
-                                                    null,
-                                                    bullet.getX(),
-                                                    bullet.getY(),
-                                                    bullet.getZ(),
-                                                    ModSounds.UFO_BLAST.get(),
-                                                    SoundSource.HOSTILE,
-                                                    5F,
-                                                    0.9F + bullet.getRandom().nextFloat() * 0.2F);
-                                    ExplosionNukeGeneric.dealDamage(
+                                    WorldSounds.play(
+                                            bullet.level(),
+                                            null,
+                                            bullet.getX(),
+                                            bullet.getY(),
+                                            bullet.getZ(),
+                                            ModSounds.UFO_BLAST.get(),
+                                            SoundSource.HOSTILE,
+                                            5F,
+                                            0.9F + bullet.getRandom().nextFloat() * 0.2F);
+                                    NuclearShockwave.sweep(
                                             bullet.level(),
                                             bullet.getX(),
                                             bullet.getY(),
@@ -195,7 +228,7 @@ public final class XFactoryNPC {
                                 });
     }
 
-    public static @Nullable EntityBulletBaseMK4 aimed(
+    public static @Nullable BulletBaseMK4Entity aimed(
             LivingEntity shooter, BulletConfig config, float damage, Entity target, float spread) {
 
         double posY = shooter.getEyeY() - 0.10000000149011612D;
@@ -206,7 +239,7 @@ public final class XFactoryNPC {
 
         if (hyp < 1.0E-7D) return null;
 
-        return new EntityBulletBaseMK4(
+        return new BulletBaseMK4Entity(
                 shooter.level(),
                 shooter,
                 config,
@@ -220,7 +253,7 @@ public final class XFactoryNPC {
                 dz);
     }
 
-    private static void rainBolts(EntityBulletBaseMK4 orb) {
+    private static void rainBolts(BulletBaseMK4Entity orb) {
 
         for (Player player :
                 orb.level().getEntitiesOfClass(Player.class, orb.getBoundingBox().inflate(50D))) {
@@ -232,8 +265,8 @@ public final class XFactoryNPC {
                                     player.getZ() - orb.getZ())
                             .normalize();
 
-            EntityBulletBaseMK4 bolt =
-                    new EntityBulletBaseMK4(
+            BulletBaseMK4Entity bolt =
+                    new BulletBaseMK4Entity(
                             orb.level(),
                             orb.getThrower(),
                             maskman_bolt,
@@ -249,11 +282,11 @@ public final class XFactoryNPC {
         }
     }
 
-    private static void summonMeteor(EntityBulletBaseMK4 tracer) {
+    private static void summonMeteor(BulletBaseMK4Entity tracer) {
 
         double y = tracer.getY() + 30 + tracer.getRandom().nextInt(10);
-        EntityBulletBaseMK4 meteor =
-                new EntityBulletBaseMK4(
+        BulletBaseMK4Entity meteor =
+                new BulletBaseMK4Entity(
                         tracer.level(),
                         tracer.getThrower(),
                         maskman_meteor,
@@ -268,10 +301,10 @@ public final class XFactoryNPC {
         tracer.level().addFreshEntity(meteor);
     }
 
-    private static Entity chooseTarget(EntityBulletBaseMK4 bullet) {
+    private static Entity chooseTarget(BulletBaseMK4Entity bullet) {
 
         double range = 100D;
-        Vec3 motion = bullet.getDeltaMovement();
+        Vec3 motion = bullet.getFlightDirection();
         List<LivingEntity> candidates =
                 bullet.level()
                         .getEntitiesOfClass(
@@ -301,7 +334,7 @@ public final class XFactoryNPC {
                             .getType()
                     != HitResult.Type.MISS) continue;
 
-            double angle = BobMathUtil.getCrossAngle(motion, eye.subtract(bullet.position()));
+            double angle = NtmMath.angleBetween(motion, eye.subtract(bullet.position()));
 
             if (angle < bestAngle) {
                 best = candidate;

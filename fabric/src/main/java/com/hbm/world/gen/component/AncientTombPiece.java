@@ -1,12 +1,43 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.world.gen.component;
 
-import com.hbm.lib.Library;
 import com.hbm.tags.HbmBlockTags;
+import com.hbm.util.RegistryUtil;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.WorldgenHash;
+import com.hbm.world.gen.LegacyWorldgenRotation;
 import com.hbm.world.gen.nbt.WeightedOption;
 import com.hbm.world.gen.nbt.WeightedSelector;
 import com.hbm.world.structure.HbmStructureTypes;
@@ -26,9 +57,8 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 public class AncientTombPiece extends NtmComponentPiece {
 
     private static final int PYRAMID_SIZE = 15;
-    private static final double TUNNEL_ANGLE_STEP = 2.0 * Math.PI / 32.0;
     private static final long CONCRETE_DOMAIN =
-            WorldgenHash.identifier(Library.id("structure/ancient_tomb_concrete"));
+            WorldgenHash.identifier(RegistryUtil.id("structure/ancient_tomb_concrete"));
 
     private final int originX, originZ, yOff;
     private final int[] spikeX, spikeZ, spikeY;
@@ -181,11 +211,10 @@ public class AncientTombPiece extends NtmComponentPiece {
         }
 
         int tunnelStart = 19;
+        int[] tunnel = tunnelOffsets(yOff + 2 - tunnelStart);
         int step = 0;
         for (int i = tunnelStart; i < yOff + 2; i++) {
-            double angle = step * TUNNEL_ANGLE_STEP;
-            int ix = (int) Math.floor(10.0 * Math.cos(angle));
-            int iz = (int) Math.floor(-10.0 * Math.sin(angle));
+            int ix = tunnel[step * 2], iz = tunnel[step * 2 + 1];
             int h = i < yOff ? 3 : 2;
             BlockState carve = i > 40 ? Blocks.AIR.defaultBlockState() : States.GAS_RADON_TOMB;
             fixedBox(
@@ -383,6 +412,22 @@ public class AncientTombPiece extends NtmComponentPiece {
                 States.GAS_RADON_TOMB,
                 States.GAS_RADON_TOMB);
         concreteBox(level, chunkBB, concreteSeed, x + 6, y + 2, z - 1, x + 7, y + 2, z + 1);
+    }
+
+    public static int[] tunnelOffsets(int length) {
+        int[] positions = new int[length * 2];
+        float step = (float) Math.toRadians(360F / 32F);
+        float cosine = LegacyWorldgenRotation.cosine(step),
+                sine = LegacyWorldgenRotation.sine(step);
+        double vx = 10, vz = 0;
+        for (int i = 0; i < length; i++) {
+            positions[i * 2] = (int) Math.floor(vx);
+            positions[i * 2 + 1] = (int) Math.floor(vz);
+            double nextX = vx * cosine + vz * sine;
+            vz = vz * cosine - vx * sine;
+            vx = nextX;
+        }
+        return positions;
     }
 
     private void claddingPass(

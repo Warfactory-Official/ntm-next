@@ -5,6 +5,7 @@
     {
       "neoforge:ingredient_type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "minecraft:water"
     },
     "#c:dyes/white"

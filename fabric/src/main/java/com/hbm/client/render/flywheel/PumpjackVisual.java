@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.oil.BlockEntityMachinePumpjack;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.oil.PumpjackBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
@@ -20,6 +36,8 @@ import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
@@ -28,8 +46,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-public final class PumpjackVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachinePumpjack>
-        implements ShaderLightVisual {
+public final class PumpjackVisual extends AbstractBoundedBlockEntityVisual<PumpjackBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int ROTOR = ResourceManager.pumpjack.partId("Rotor");
     private static final int HEAD = ResourceManager.pumpjack.partId("Head");
     private static final int CARRIAGE = ResourceManager.pumpjack.partId("Carriage");
@@ -87,20 +105,14 @@ public final class PumpjackVisual extends HbmDynamicBlockEntityVisual<BlockEntit
     private @Nullable AABB lastLightBounds;
     private final AABB rawBodyBounds;
     private float lastRotation = Float.NaN;
-    private final float[] backPos = new float[3];
-    private final float[] rotVec = new float[3];
-    private final float[] frontPos = new float[3];
-    private final float[] frontRad = new float[3];
     private final double[] lightBounds = new double[6];
 
     public PumpjackVisual(
-            VisualizationContext context,
-            BlockEntityMachinePumpjack blockEntity,
-            float partialTick) {
+            VisualizationContext context, PumpjackBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         basePose.translation(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 90)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 90)
                                 * Mth.DEG_TO_RAD);
         rawBodyBounds =
                 new AABB(pos)
@@ -127,21 +139,13 @@ public final class PumpjackVisual extends HbmDynamicBlockEntityVisual<BlockEntit
 
     public static void initModels() {}
 
-    private static void rotateAroundX(float[] vector, float radians) {
-        float c = Mth.cos(radians), s = Mth.sin(radians);
-        float y = vector[1] * c + vector[2] * s;
-        float z = vector[2] * c - vector[1] * s;
-        vector[1] = y;
-        vector[2] = z;
-    }
-
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
-        float rotation = Mth.lerp(partialTick, blockEntity.prevRot, blockEntity.rot);
+        float rotation = Mth.lerp(partialTick, blockEntity.prevAngle, blockEntity.angle);
         if (rotation == lastRotation) return;
         rotorPose
                 .set(basePose)
@@ -175,20 +179,16 @@ public final class PumpjackVisual extends HbmDynamicBlockEntityVisual<BlockEntit
     }
 
     private void writeLinkage(Matrix4f pose, float rotation) {
-        backPos[0] = 0F;
-        backPos[1] = 0F;
-        backPos[2] = -2F;
-        rotateAroundX(backPos, -(float) Math.sin(Math.toRadians(rotation)) * .25F);
-        rotVec[0] = 0F;
-        rotVec[1] = .5F;
-        rotVec[2] = 0F;
-        rotateAroundX(rotVec, -(float) Math.toRadians(rotation - 90F));
+        float backAngle = -(float) Math.sin(Math.toRadians(rotation)) * .25F;
+        double backY = -2D * Mth.sin(backAngle), backZ = -2D * Mth.cos(backAngle);
+        float rotorAngle = -(float) Math.toRadians(rotation - 90F);
+        double rotorY = .5D * Mth.cos(rotorAngle), rotorZ = -.5D * Mth.sin(rotorAngle);
         int gray = ARGB.colorFromFloat(1F, .5F, .5F, .5F);
         int index = 0;
         for (int side = -1; side <= 1; side += 2) {
             float xi = .53125F * side;
-            float y1 = 1.5F + rotVec[1], z1 = -5.5F + rotVec[2];
-            float y2 = 3.5F + backPos[1], z2 = -3.5F + backPos[2];
+            double y1 = 1.5F + rotorY, z1 = -5.5F + rotorZ;
+            double y2 = 3.5F + backY, z2 = -3.5F + backZ;
             index =
                     quad(
                             index,
@@ -214,22 +214,26 @@ public final class PumpjackVisual extends HbmDynamicBlockEntityVisual<BlockEntit
         float cutlet = 360F / 32F;
         for (int side = -1; side <= 1; side += 2) {
             float pRot = -(float) (Math.sin(Math.toRadians(rotation)) * .25D);
-            frontPos[0] = 0F;
-            frontPos[1] = 0F;
-            frontPos[2] = 1F;
-            rotateAroundX(frontPos, pRot);
+            float frontCos = Mth.cos(pRot), frontSin = Mth.sin(pRot);
+            double frontY = frontSin, frontZ = frontCos;
             float dist = .03125F;
-            frontRad[0] = 0F;
-            frontRad[1] = 0F;
-            frontRad[2] = 2.5F + dist;
-            rotateAroundX(frontRad, pRot);
-            rotateAroundX(frontRad, -(float) Math.toRadians(cutlet * -3F));
+            double radiusY = (2.5F + dist) * (double) frontSin;
+            double radiusZ = (2.5F + dist) * (double) frontCos;
+            float startAngle = -(float) Math.toRadians(cutlet * -3F);
+            float startCos = Mth.cos(startAngle), startSin = Mth.sin(startAngle);
+            double turnedY = radiusY * startCos + radiusZ * startSin;
+            radiusZ = radiusZ * startCos - radiusY * startSin;
+            radiusY = turnedY;
+            float stepAngle = -(float) Math.toRadians(cutlet);
+            float stepCos = Mth.cos(stepAngle), stepSin = Mth.sin(stepAngle);
             for (int j = 0; j < 4; j++) {
-                float sumY1 = frontPos[1] + frontRad[1];
-                float sumZ1 = frontRad[1] < 0F ? 3.5F + dist * .5F : frontPos[2] + frontRad[2];
-                rotateAroundX(frontRad, -(float) Math.toRadians(cutlet));
-                float sumY2 = frontPos[1] + frontRad[1];
-                float sumZ2 = frontRad[1] < 0F ? 3.5F + dist * .5F : frontPos[2] + frontRad[2];
+                double sumY1 = frontY + radiusY;
+                double sumZ1 = radiusY < 0F ? 3.5F + dist * .5F : frontZ + radiusZ;
+                turnedY = radiusY * stepCos + radiusZ * stepSin;
+                radiusZ = radiusZ * stepCos - radiusY * stepSin;
+                radiusY = turnedY;
+                double sumY2 = frontY + radiusY;
+                double sumZ2 = radiusY < 0F ? 3.5F + dist * .5F : frontZ + radiusZ;
                 float xL = (width - pd) * side, xR = (width + pd) * side;
                 index =
                         quad(
@@ -249,8 +253,8 @@ public final class PumpjackVisual extends HbmDynamicBlockEntityVisual<BlockEntit
                                 3.5F + sumY2,
                                 -3.5F + sumZ2);
             }
-            float sumY = frontPos[1] + frontRad[1];
-            float sumZ = frontRad[1] < 0F ? 3.5F + dist * .5F : frontPos[2] + frontRad[2];
+            double sumY = frontY + radiusY;
+            double sumZ = radiusY < 0F ? 3.5F + dist * .5F : frontZ + radiusZ;
             float xR = (width + pd) * side, xL = (width - pd) * side;
             index =
                     quad(
@@ -306,17 +310,43 @@ public final class PumpjackVisual extends HbmDynamicBlockEntityVisual<BlockEntit
                 p);
     }
 
-    private int quad(int index, Matrix4f pose, int color, float... points) {
-        writeTriangle(index++, pose, color, points, 0, 1, 2);
-        writeTriangle(index++, pose, color, points, 0, 2, 3);
+    private int quad(
+            int index,
+            Matrix4f pose,
+            int color,
+            double ax,
+            double ay,
+            double az,
+            double bx,
+            double by,
+            double bz,
+            double cx,
+            double cy,
+            double cz,
+            double dx,
+            double dy,
+            double dz) {
+        writeTriangle(index++, pose, color, ax, ay, az, bx, by, bz, cx, cy, cz);
+        writeTriangle(index++, pose, color, ax, ay, az, cx, cy, cz, dx, dy, dz);
         return index;
     }
 
     private void writeTriangle(
-            int index, Matrix4f pose, int color, float[] points, int a, int b, int c) {
-        p0.set(points[a * 3], points[a * 3 + 1], points[a * 3 + 2]);
-        p1.set(points[b * 3], points[b * 3 + 1], points[b * 3 + 2]);
-        p2.set(points[c * 3], points[c * 3 + 1], points[c * 3 + 2]);
+            int index,
+            Matrix4f pose,
+            int color,
+            double x0,
+            double y0,
+            double z0,
+            double x1,
+            double y1,
+            double z1,
+            double x2,
+            double y2,
+            double z2) {
+        p0.set((float) x0, (float) y0, (float) z0);
+        p1.set((float) x1, (float) y1, (float) z1);
+        p2.set((float) x2, (float) y2, (float) z2);
         float ax = p1.x - p0.x, ay = p1.y - p0.y, az = p1.z - p0.z;
         float bx = p2.x - p0.x, by = p2.y - p0.y, bz = p2.z - p0.z;
         float nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;

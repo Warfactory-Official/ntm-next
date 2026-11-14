@@ -1667,15 +1667,6 @@
       }
     ]
   },
-  "refinery_loop": {
-    "category": "block",
-    "sounds": [
-      {
-        "name": "hbm:block/refinery_loop",
-        "stream": false
-      }
-    ]
-  },
   "slicer": {
     "category": "neutral",
     "sounds": [

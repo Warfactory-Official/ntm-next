@@ -1,64 +1,81 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.animloader.AnimatedModel;
-import com.hbm.animloader.Animation;
-import com.hbm.animloader.AnimationWrapper;
-import com.hbm.blockentity.BlockEntityDoorGeneric;
-import com.hbm.blockentity.DoorDecl;
-import com.hbm.render.anim.HbmAnimations;
-import com.hbm.render.loader.GroupObject;
+import com.hbm.animloader.ArmaturePoseEvaluator;
+import com.hbm.animloader.ArmatureScene;
+import com.hbm.animloader.SampledClip;
+import com.hbm.animloader.TriangleSource;
+import com.hbm.blockentity.door.DoorBlockEntity;
+import com.hbm.blockentity.door.DoorType;
+import com.hbm.blockentity.door.DoorTypes;
+import com.hbm.main.ResourceManager;
+import com.hbm.render.anim.AnimationPlayback;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-public final class DoorState implements AnimatedModel.NodeVisitor {
+public final class DoorState implements ArmaturePoseEvaluator.GeometryVisitor {
     private static final int EXTENT_SAMPLES = 64;
-    private static final byte[] MOVING = {
-        BlockEntityDoorGeneric.STATE_OPENING, BlockEntityDoorGeneric.STATE_CLOSING
-    };
-    private static final byte[] RESTING = {
-        BlockEntityDoorGeneric.STATE_CLOSED, BlockEntityDoorGeneric.STATE_OPEN
-    };
+    private static final byte[] MOVING = {DoorBlockEntity.OPENING, DoorBlockEntity.SHUTTING};
+    private static final byte[] RESTING = {DoorBlockEntity.CLOSED, DoorBlockEntity.OPEN};
     public final DoorFrame frame = new DoorFrame();
-    private final AnimatedModel.Walk walk = new AnimatedModel.Walk();
-    private final float[] origin = new float[3];
-    private final float[] rotation = new float[3];
-    private final float[] translation = new float[3];
-    public DoorDecl decl;
+    private final ArmaturePoseEvaluator walk = new ArmaturePoseEvaluator();
+    private final Matrix4f armatureRoot = new Matrix4f();
+    public DoorType kind;
+    public DoorRenderDefinition look;
     public Direction facing;
     public int skinIndex;
     public float openTicks;
     public byte doorState;
     public long animStartTime;
-    public HbmAnimations.@Nullable Animation animation;
+    public @Nullable AnimationPlayback animation;
     public long animMillis;
-    private @Nullable AnimationWrapper wrapper;
     private @Nullable Identifier nodeTexture;
 
-    public static float[] extent(DoorDecl decl) {
+    static float[] extent(DoorType kind) {
+        if (kind == DoorTypes.TRANSITION_SEAL) {
+            float radius = ResourceManager.transition_seal().getRadius();
+            return new float[] {-radius, radius, radius + .5F};
+        }
         DoorState probe = new DoorState();
-        probe.decl = decl;
+        probe.kind = kind;
+        probe.look = kind.getRenderDefinition();
         float[] box = {Float.MAX_VALUE, -Float.MAX_VALUE, 0F};
-        long span = decl.timeToOpen() * 50L;
+        long span = kind.getOpeningTicks() * 50L;
 
         for (byte moving : MOVING) {
-            HbmAnimations.Animation anim = decl.getSEDNAAnim(moving, (byte) 0, 0L);
-            long window = Math.max(span, anim == null ? 0L : anim.animation.getDuration());
+            AnimationPlayback anim = probe.look.createPlayback(moving, 0L);
+            long window = Math.max(span, anim == null ? 0L : anim.clip().getDuration());
             probe.doorState = moving;
             probe.animation = anim;
             probe.animStartTime = 0L;
             for (int i = 0; i <= EXTENT_SAMPLES; i++) {
-                int step = moving == BlockEntityDoorGeneric.STATE_OPENING ? i : EXTENT_SAMPLES - i;
+                int step = moving == DoorBlockEntity.OPENING ? i : EXTENT_SAMPLES - i;
                 probe.animMillis = window * i / EXTENT_SAMPLES;
-                probe.openTicks = decl.timeToOpen() * step / (float) EXTENT_SAMPLES;
+                probe.openTicks = kind.getOpeningTicks() * step / (float) EXTENT_SAMPLES;
                 accumulate(probe.emit(), box);
             }
         }
@@ -66,7 +83,7 @@ public final class DoorState implements AnimatedModel.NodeVisitor {
             probe.doorState = resting;
             probe.animation = null;
             probe.animMillis = 0L;
-            probe.openTicks = resting == BlockEntityDoorGeneric.STATE_OPEN ? decl.timeToOpen() : 0F;
+            probe.openTicks = resting == DoorBlockEntity.OPEN ? kind.getOpeningTicks() : 0F;
             accumulate(probe.emit(), box);
         }
         return box[0] > box[1] ? new float[] {0F, 1F, 0.5F} : box;
@@ -97,7 +114,7 @@ public final class DoorState implements AnimatedModel.NodeVisitor {
     private static float @Nullable [] localBounds(DoorFrame.Part part) {
         HFRWavefrontObject model = part.model;
         if (model != null) return model.groups[part.group].bounds();
-        AnimatedModel.Mesh mesh = part.mesh;
+        TriangleSource mesh = part.mesh;
         if (mesh == null) return null;
 
         float[] box = {
@@ -108,99 +125,87 @@ public final class DoorState implements AnimatedModel.NodeVisitor {
             -Float.MAX_VALUE,
             -Float.MAX_VALUE
         };
-        for (int v = 0; v < mesh.vertexData.length; v += GroupObject.STRIDE) {
+        for (int v = 0; v < mesh.getCornerCount(); v++) {
             for (int a = 0; a < 3; a++) {
-                box[a] = Math.min(box[a], mesh.vertexData[v + a]);
-                box[a + 3] = Math.max(box[a + 3], mesh.vertexData[v + a]);
+                box[a] = Math.min(box[a], mesh.getComponent(v, a));
+                box[a + 3] = Math.max(box[a + 3], mesh.getComponent(v, a));
             }
         }
         return box[0] > box[3] ? null : box;
     }
 
-    public void sample(BlockEntityDoorGeneric door, float partialTicks) {
-        decl = door.getDoorType();
+    public void sample(DoorBlockEntity door, float partialTicks) {
+        kind = door.getDoorType();
+        look = kind.getRenderDefinition();
         skinIndex = door.getSkinIndex();
-        doorState = door.state;
-        animation = door.currentAnimation;
-        animStartTime = door.animStartTime;
-        facing = door.facing();
-        animMillis = door.getLevel().getGameTime() * 50L + (long) (partialTicks * 50F);
-        openTicks =
-                switch (door.state) {
-                    case BlockEntityDoorGeneric.STATE_OPENING ->
-                            Math.min(decl.timeToOpen(), door.openTicks + partialTicks);
-                    case BlockEntityDoorGeneric.STATE_CLOSING ->
-                            Math.max(0F, door.openTicks - partialTicks);
-                    default -> door.openTicks;
-                };
+        doorState = door.phase;
+        animation = door.playback;
+        animStartTime = door.transitionStart;
+        facing = door.getFacing();
+        animMillis = door.getAnimationTimeMillis();
+        openTicks = door.getOpenTicks(partialTicks);
     }
 
     public DoorFrame emit() {
         frame.rewind();
-        DoorRenderer sedna = decl.getSEDNARenderer();
-        if (sedna != null) {
-            frame.cull = sedna.culls();
-            frame.blended = sedna.blends();
-            sedna.emit(this, frame);
+        DoorMotion motion = look.getMotion();
+        if (motion != null) {
+            frame.cull = motion.backfaceCulled();
+            frame.blended = motion.blended();
+            motion.placeParts(this, frame);
             return frame;
         }
         frame.blended = true;
 
-        String[] dynamic = decl.getDynamicParts();
-        int[] dynamicIds = decl.getDynamicPartIds();
-        for (int i = 0; i < dynamic.length; i++) {
-            String part = dynamic[i];
-            decl.getOrigin(part, origin);
-            decl.getRotation(part, openTicks, rotation);
-            decl.getTranslation(part, openTicks, false, translation);
-
+        var hinge = kind.getHinge();
+        int hinged = look.getHingeIndex();
+        int[] ids = look.getMovingPartIds();
+        for (int i = 0; i < ids.length; i++) {
             DoorFrame.Part p =
                     frame.push()
-                            .obj(decl.getModel(), dynamicIds[i])
-                            .texture(decl.getTextureForPart(skinIndex, part));
-            p.pose.translation(origin[0], origin[1], origin[2]);
-            if (rotation[0] != 0F) p.pose.rotateX((float) Math.toRadians(rotation[0]));
-            if (rotation[1] != 0F) p.pose.rotateY((float) Math.toRadians(rotation[1]));
-            if (rotation[2] != 0F) p.pose.rotateZ((float) Math.toRadians(rotation[2]));
+                            .obj(look.getModel(), ids[i])
+                            .texture(look.getMovingTexture(skinIndex, i));
+            if (i != hinged) continue;
+            float swing = hinge.swingAt(openTicks);
+            p.pose.translation(hinge.originX(), hinge.originY(), hinge.originZ());
+            if (swing != 0F) p.pose.rotateX((float) Math.toRadians(swing));
             p.pose.translate(
-                    -origin[0] + translation[0],
-                    -origin[1] + translation[1],
-                    -origin[2] + translation[2]);
+                    0F - hinge.originX(),
+                    hinge.liftAt(openTicks) - hinge.originY(),
+                    0F - hinge.originZ());
         }
         return frame;
     }
 
-    public double[] bus(String name) {
-        return DoorRenderer.getRelevantTransformation(name, animation, animMillis);
+    public double bus(String name, int channel) {
+        AnimationPlayback playing = animation;
+        AnimationSequence bus = playing == null ? null : playing.clip().getBus(name);
+        return bus == null
+                ? AnimationSequence.rest(channel)
+                : bus.getValue(channel, (int) (animMillis - playing.start()));
     }
 
     public float facingYaw() {
         return Facing.yaw(facing, 90);
     }
 
-    public AnimationWrapper wrapper(Animation anim) {
-        if (wrapper == null)
-            wrapper =
-                    new AnimationWrapper(animStartTime, anim)
-                            .onEnd(AnimationWrapper.EndResult.STAY);
-        return wrapper;
-    }
-
     public void walkArmature(
-            AnimatedModel model,
-            long sysTime,
-            AnimationWrapper anim,
+            ArmatureScene model,
+            SampledClip clip,
+            long time,
+            long anchor,
+            boolean reverse,
             Identifier texture,
             float rootX,
             float rootY,
             float rootZ) {
         nodeTexture = texture;
-        walk.root().translation(rootX, rootY, rootZ);
-        model.walk(sysTime, anim, walk, this);
+        armatureRoot.translation(rootX, rootY, rootZ);
+        walk.visit(model, clip, time, anchor, reverse, armatureRoot, this);
     }
 
     @Override
-    public void node(AnimatedModel.Mesh mesh, Matrix4fc pose, boolean hidden) {
+    public void geometry(TriangleSource mesh, Matrix4f pose, boolean hidden) {
         DoorFrame.Part part = frame.push().node(mesh).texture(nodeTexture);
         part.pose.set(pose);
         part.hidden = hidden;

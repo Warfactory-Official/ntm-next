@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items.food;
 
@@ -13,32 +29,33 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties.Builder;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.level.Level;
 
 public final class ConsumableTreatments {
-    public static final net.minecraft.world.food.FoodProperties MEDICINE_FOOD =
-            new net.minecraft.world.food.FoodProperties.Builder()
-                    .nutrition(0)
-                    .saturationModifier(0F)
-                    .alwaysEdible()
-                    .build();
-    public static final net.minecraft.world.item.component.Consumable MEDICINE_CONSUMABLE =
-            net.minecraft.world.item.component.Consumable.builder().consumeSeconds(0.5F).build();
+    public static final FoodProperties MEDICINE_FOOD =
+            new Builder().nutrition(0).saturationModifier(0F).alwaysEdible().build();
+    public static final Consumable MEDICINE_CONSUMABLE =
+            Consumable.builder().consumeSeconds(0.5F).build();
     private static Reference2ObjectOpenHashMap<Item, ConsumableTreatment> treatments =
             new Reference2ObjectOpenHashMap<>(0);
-    private static Reference2ObjectOpenHashMap<Item, net.minecraft.util.RandomSource> randoms =
+    private static Reference2ObjectOpenHashMap<Item, RandomSource> randoms =
             new Reference2ObjectOpenHashMap<>(0);
 
     private ConsumableTreatments() {}
 
     public static void applyDataPack(RegistryAccess registries) {
         var next = new Reference2ObjectOpenHashMap<Item, ConsumableTreatment>();
-        var nextRandoms = new Reference2ObjectOpenHashMap<Item, net.minecraft.util.RandomSource>();
+        var nextRandoms = new Reference2ObjectOpenHashMap<Item, RandomSource>();
         Map<Item, Identifier> claims = new HashMap<>();
         for (var holder :
                 registries.lookupOrThrow(ConsumableTreatment.REGISTRY).listElements().toList()) {
@@ -53,7 +70,7 @@ public final class ConsumableTreatments {
                                     + " and "
                                     + holder.key().identifier());
                 next.put(target.value(), holder.value());
-                nextRandoms.put(target.value(), net.minecraft.util.RandomSource.create());
+                nextRandoms.put(target.value(), RandomSource.create());
             }
         }
         treatments = next;
@@ -85,10 +102,7 @@ public final class ConsumableTreatments {
     }
 
     public static void consumed(
-            ConsumableTreatment rule,
-            Item item,
-            Level level,
-            net.minecraft.world.entity.LivingEntity entity) {
+            ConsumableTreatment rule, Item item, Level level, LivingEntity entity) {
         if (rule != null
                 && rule.trigger() == ConsumableTreatment.Trigger.CONSUME
                 && level instanceof ServerLevel
@@ -108,7 +122,8 @@ public final class ConsumableTreatments {
                                         SoundSource.PLAYERS,
                                         1F,
                                         1F));
-        for (TreatmentAction action : rule.actions()) action.apply(player, randoms.get(item));
+        RandomSource random = randoms.get(item);
+        for (TreatmentAction step : rule.actions()) step.run(player, random);
     }
 
     public static void clear() {

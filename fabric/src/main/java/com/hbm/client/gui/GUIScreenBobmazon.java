@@ -1,17 +1,48 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.gui;
 
 import com.hbm.handler.BobmazonOffer;
-import com.hbm.lib.Library;
+import com.hbm.handler.BobmazonOffers;
+import com.hbm.inventory.container.HeldItemMenu;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toserver.BobmazonPurchasePayload;
+import com.hbm.packet.layout.BobmazonPurchaseLayout;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -19,11 +50,12 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Inventory;
 import org.jspecify.annotations.Nullable;
 
-public class GUIScreenBobmazon extends Screen {
+public class GUIScreenBobmazon extends MenuScreen<HeldItemMenu> {
 
-    private static final Identifier TEXTURE = Library.id("textures/gui/gui_bobmazon.png");
+    private static final Identifier TEXTURE = RegistryUtil.id("textures/gui/gui_bobmazon.png");
     private static final int X_SIZE = 217;
     private static final int Y_SIZE = 229;
     private static final int TEXT = 0xFF404040;
@@ -35,9 +67,9 @@ public class GUIScreenBobmazon extends Screen {
     private int guiTop;
     private int currentPage;
 
-    public GUIScreenBobmazon(List<BobmazonOffer> offers) {
-        super(Component.empty());
-        this.offers = offers;
+    public GUIScreenBobmazon(HeldItemMenu menu, Inventory inventory, Component title) {
+        super(menu, title);
+        this.offers = BobmazonOffers.forStack(menu.stack());
     }
 
     private int getPageCount() {
@@ -263,7 +295,7 @@ public class GUIScreenBobmazon extends Screen {
                     .getSoundManager()
                     .play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             if (type == 0) {
-                PacketWire.sendToServer(new BobmazonPurchasePayload(index));
+                PacketWire.sendToServer(BobmazonPurchaseLayout.encode(menu.containerId, index));
             } else if (type == 1) {
                 if (currentPage > 0) currentPage--;
                 updateButtons();

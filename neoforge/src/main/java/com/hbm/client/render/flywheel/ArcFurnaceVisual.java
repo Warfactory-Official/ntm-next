@@ -1,292 +1,307 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityCrucible.PourStream;
-import com.hbm.blockentity.machine.BlockEntityMachineArcFurnace;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.processing.ArcFurnaceBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.render.ArcFurnaceAnimationData;
 import com.hbm.main.ResourceManager;
-import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
-import dev.engine_room.flywheel.api.material.Material;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.function.Consumer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.LightCoordsUtil;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Vector4fc;
 
-public final class ArcFurnaceVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineArcFurnace>
-        implements ShaderLightVisual {
-    private static final int HOT = 0, COLD = 1, LID = 2;
-    private static final int RING = 3, FRESH = 6, USED = 9, SHORT = 12, CABLE = 15;
-    private static final int[] RING_GROUP = electrodeParts("Ring", "");
-    private static final int[] FRESH_GROUP = electrodeParts("Electrode", "");
-    private static final int[] USED_GROUP = electrodeParts("Electrode", "Hot");
-    private static final int[] SHORT_GROUP = electrodeParts("Electrode", "Short");
-    private static final int[] CABLE_GROUP = electrodeParts("Cable", "");
-    private static final float[] CABLE_OFFSET = {.5F, 0F, -.5F};
-    private static final float MAX_AGE = 20F;
-    private static final float LID_TRAVEL = 2F;
-    private static final Material BODY_MATERIAL =
-            MeshPart.litCutout(ResourceManager.arc_furnace_tex);
-    private static final Material HOT_MATERIAL =
-            SimpleMaterial.builderOf(Materials.CUTOUT)
-                    .texture(ResourceManager.arc_furnace_tex)
-                    .mipmap(false)
-                    .cutout(CutoutShaders.ONE_TENTH)
-                    .light(LightShaders.NONE)
-                    .ambientOcclusion(false)
-                    .cardinalLightingMode(CardinalLightingMode.OFF)
-                    .backfaceCulling(false)
-                    .build();
-    private static final MeshPart[] PARTS = buildParts();
-    private final TransformedInstance[] instances = new TransformedInstance[18];
-    private final AABB bodyBounds;
-    private final List<PourVisual> pours = new ArrayList<>();
+import static com.hbm.client.render.ArcFurnaceAnimationData.*;
+
+public final class ArcFurnaceVisual extends AbstractBoundedBlockEntityVisual<ArcFurnaceBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
+    private static volatile PreparedModels preparedModels;
+
+    private final PreparedModels models;
+    private final ChainInstance[] parts = new ChainInstance[PART_COUNT];
+    private final double[] samples = new double[SCALAR_COUNT];
+    private final float[] channels = new float[CHANNEL_COUNT];
+    private final float[] publishedChannels = new float[CHANNEL_COUNT];
+    private final ArrayList<PourVisual> pours = new ArrayList<>();
     private final Direction facing;
-    private final Matrix4f basePose = new Matrix4f();
-    private final Matrix4f hotPose = new Matrix4f();
-    private final Matrix4f lidPose = new Matrix4f();
-    private final Matrix4f[] cablePoses = {new Matrix4f(), new Matrix4f(), new Matrix4f()};
-    private final Matrix4f instancePose = new Matrix4f();
-    private final byte[] lastElectrodes = {Byte.MIN_VALUE, Byte.MIN_VALUE, Byte.MIN_VALUE};
-    private double lastLidLift = Double.NaN;
-    private int lastLiquidAmount = Integer.MIN_VALUE;
-    private double lastWobble = Double.NaN;
-    private boolean lastProgressing;
-    private boolean lastHasMaterial;
-    private boolean lastLiquidsEmpty;
+    private final AABB bounds;
+    private final float outletX;
+    private final float outletY;
+    private final float outletZ;
     private boolean initialized;
+    private int visibleParts;
+    private int lastAmount;
+    private int activePours;
+    private float sampledPhase;
+    private float sampledPartial;
+    private float sampledPreviousLift;
+    private float sampledCurrentLift;
+    private boolean sampledProgressing;
+
+    public static void initModels() {
+        var object = ResourceManager.arc_furnace;
+        boolean smoothing = object.smoothing();
+        var lit = MeshPart.litCutout(ResourceManager.arc_furnace_tex);
+        var hot =
+                SimpleMaterial.builderOf(Materials.CUTOUT)
+                        .texture(ResourceManager.arc_furnace_tex)
+                        .mipmap(false)
+                        .cutout(CutoutShaders.ONE_TENTH)
+                        .light(LightShaders.NONE)
+                        .ambientOcclusion(false)
+                        .cardinalLightingMode(CardinalLightingMode.OFF)
+                        .backfaceCulling(false)
+                        .build();
+        var partModels = new Model[PART_COUNT];
+        var sweeps = new Vector4fc[PART_COUNT];
+        var masks = new int[PART_COUNT];
+        var litParts = new int[PART_COUNT];
+        int litCount = 0;
+        int hotParts = 0;
+        for (int part = 0; part < PART_COUNT; part++) {
+            boolean isHot = part == HOT_CONTENTS || part >= USED_START && part < CABLE_START;
+            var group = object.groups[object.partId(ArcFurnaceAnimationData.group(part))];
+            var mesh = MeshPart.obj(group, smoothing, isHot ? hot : lit);
+            if (part == HOT_CONTENTS) {
+                mesh = FoundryTankVisual.molten(mesh);
+            }
+            partModels[part] = mesh.model();
+            sweeps[part] = ArcFurnaceAnimationData.sweep(part, partModels[part]);
+            masks[part] = ArcFurnaceAnimationData.channelMask(part);
+            if (isHot) {
+                hotParts |= 1 << part;
+            } else {
+                litParts[litCount++] = part;
+            }
+        }
+        preparedModels =
+                new PreparedModels(
+                        partModels,
+                        ArcFurnaceAnimationData.chains(),
+                        sweeps,
+                        masks,
+                        Arrays.copyOf(litParts, litCount),
+                        hotParts);
+    }
 
     public ArcFurnaceVisual(
-            VisualizationContext context,
-            BlockEntityMachineArcFurnace blockEntity,
-            float partialTick) {
+            VisualizationContext context, ArcFurnaceBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        facing = BlockMultiblockCore.coreFacing(blockEntity.getBlockState());
-        basePose.translation(.5F, 0F, .5F).rotateY(Facing.yaw(facing, 90) * Mth.DEG_TO_RAD);
-        bodyBounds =
-                LightBounds.of(ResourceManager.arc_furnace, "Furnace", basePose, pos)
-                        .minmax(
-                                LightBounds.of(
-                                        ResourceManager.arc_furnace,
-                                        "Lid",
-                                        new Matrix4f(basePose).translate(0F, LID_TRAVEL, 0F),
-                                        pos));
-        for (int i = 0; i < instances.length; i++) {
-            instances[i] =
+        models = preparedModels;
+        facing = MultiblockCoreBlock.coreFacing(blockState);
+        var localPose = ArcFurnaceAnimationData.rootPose(new Matrix4f(), facing);
+        var visualPose =
+                new Matrix4f()
+                        .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
+                        .mul(localPose);
+        for (int part = 0; part < PART_COUNT; part++) {
+            var instance =
                     instancerProvider()
-                            .instancer(InstanceTypes.TRANSFORMED, PARTS[i].model())
+                            .instancer(ChainInstance.TYPE, models.parts[part])
                             .createInstance();
-            instances[i].setVisible(false);
+            instance.chain(models.chains[part]);
+            instance.setTransform(visualPose);
+            instance.light((models.hotParts & 1 << part) != 0 ? LightCoordsUtil.FULL_BRIGHT : 0);
+            instance.setVisible(false);
+            instance.setChanged();
+            parts[part] = instance;
         }
-        updateMovingParts(partialTick);
-    }
-
-    public static void initModels() {}
-
-    private static MeshPart[] buildParts() {
-        var model = ResourceManager.arc_furnace;
-        var parts = new MeshPart[18];
-        parts[HOT] =
-                FoundryTankVisual.molten(
-                        MeshPart.obj(
-                                model.groups[model.partId("ContentsHot")],
-                                model.smoothing(),
-                                HOT_MATERIAL));
-        parts[COLD] =
-                MeshPart.obj(
-                        model.groups[model.partId("ContentsCold")],
-                        model.smoothing(),
-                        BODY_MATERIAL);
-        parts[LID] =
-                MeshPart.obj(model.groups[model.partId("Lid")], model.smoothing(), BODY_MATERIAL);
-        for (int i = 0; i < 3; i++) {
-            parts[RING + i] =
-                    MeshPart.obj(model.groups[RING_GROUP[i]], model.smoothing(), BODY_MATERIAL);
-            parts[FRESH + i] =
-                    MeshPart.obj(model.groups[FRESH_GROUP[i]], model.smoothing(), BODY_MATERIAL);
-            parts[USED + i] =
-                    MeshPart.obj(model.groups[USED_GROUP[i]], model.smoothing(), HOT_MATERIAL);
-            parts[SHORT + i] =
-                    MeshPart.obj(model.groups[SHORT_GROUP[i]], model.smoothing(), HOT_MATERIAL);
-            parts[CABLE + i] =
-                    MeshPart.obj(model.groups[CABLE_GROUP[i]], model.smoothing(), BODY_MATERIAL);
+        var limits = new double[6];
+        LightBounds.resetBounds(limits, ArcFurnaceAnimationData.visualMinimumBounds(pos));
+        LightBounds.includeLightBounds(
+                limits, LightBounds.of(ResourceManager.arc_furnace, HULL_GROUP, localPose, pos));
+        for (int part = 0; part < PART_COUNT; part++) {
+            LightBounds.includeLightBounds(limits, models.sweeps[part], localPose, pos);
         }
-        return parts;
-    }
-
-    private static int[] electrodeParts(String stem, String suffix) {
-        int[] ids = new int[3];
-        for (int i = 0; i < 3; i++)
-            ids[i] = ResourceManager.arc_furnace.partId(stem + (i + 1) + suffix);
-        return ids;
+        bounds = new AABB(limits[0], limits[1], limits[2], limits[3], limits[4], limits[5]);
+        outletX = (float) (ROOT_X + facing.getStepX() * OUTLET_REACH);
+        outletY = (float) OUTLET_Y;
+        outletZ = (float) (ROOT_Z + facing.getStepZ() * OUTLET_REACH);
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(DynamicVisual.Context context) {
         updateMovingParts(context.partialTick());
     }
 
-    public void updateMovingParts(float partialTick) {
-        float lidLift = Mth.lerp(partialTick, blockEntity.prevLid, blockEntity.lid);
-        boolean progressing = blockEntity.isProgressing;
-        boolean hasMaterial = blockEntity.hasMaterial;
-        boolean liquidsEmpty = blockEntity.liquids.isEmpty();
-        int liquidAmount = BlockEntityMachineArcFurnace.getStackAmount(blockEntity.liquids);
-        double wobble = level.getGameTime() + partialTick;
-        boolean electrodeChanged = !initialized;
-        for (int i = 0; i < 3; i++)
-            electrodeChanged |= blockEntity.electrodes[i] != lastElectrodes[i];
-        boolean contentsChanged =
-                !initialized
-                        || liquidAmount != lastLiquidAmount
-                        || hasMaterial != lastHasMaterial
-                        || liquidsEmpty != lastLiquidsEmpty;
-        boolean lidChanged =
-                !initialized
-                        || lidLift != lastLidLift
-                        || electrodeChanged
-                        || progressing != lastProgressing
-                        || progressing && wobble != lastWobble;
-        if (contentsChanged) {
-            lastLiquidAmount = liquidAmount;
-            lastHasMaterial = hasMaterial;
-            lastLiquidsEmpty = liquidsEmpty;
-            hotPose.set(basePose)
-                    .translate(
-                            0F,
-                            (float)
-                                    (-1.75D
-                                            + liquidAmount
-                                                    * 1.75D
-                                                    / (double)
-                                                            BlockEntityMachineArcFurnace
-                                                                    .MAX_LIQUID),
-                            0F);
-            write(HOT, !liquidsEmpty, hotPose, LightCoordsUtil.FULL_BRIGHT);
-            write(COLD, liquidsEmpty && hasMaterial, basePose, 0);
-        }
-        if (lidChanged) {
-            lastLidLift = lidLift;
-            lastProgressing = progressing;
-            lastWobble = wobble;
-            for (int i = 0; i < 3; i++) lastElectrodes[i] = blockEntity.electrodes[i];
-            lidPose.set(basePose).translate(0F, LID_TRAVEL * lidLift, 0F);
-            if (progressing) lidPose.translate(0F, 0F, (float) (Math.sin(wobble) * .005D));
-            for (int i = 0; i < 3; i++) {
-                float offset = CABLE_OFFSET[i];
-                cablePoses[i].set(lidPose).translate(0F, 5.5F, offset);
-                if (progressing)
-                    cablePoses[i].rotateX((float) (Math.sin(wobble / 2D) * 30D * Mth.DEG_TO_RAD));
-                cablePoses[i].translate(0F, -5.5F, -offset);
-            }
-            write(LID, true, lidPose, 0);
-            for (int i = 0; i < 3; i++) {
-                byte electrode = blockEntity.electrodes[i];
-                boolean present = electrode != BlockEntityMachineArcFurnace.ELECTRODE_NONE;
-                write(RING + i, present, lidPose, 0);
-                write(
-                        FRESH + i,
-                        electrode == BlockEntityMachineArcFurnace.ELECTRODE_FRESH,
-                        lidPose,
-                        0);
-                write(
-                        USED + i,
-                        electrode == BlockEntityMachineArcFurnace.ELECTRODE_USED,
-                        lidPose,
-                        LightCoordsUtil.FULL_BRIGHT);
-                write(
-                        SHORT + i,
-                        electrode == BlockEntityMachineArcFurnace.ELECTRODE_DEPLETED,
-                        lidPose,
-                        LightCoordsUtil.FULL_BRIGHT);
-                write(CABLE + i, present, cablePoses[i], 0);
-            }
-        }
-        initialized = true;
-
-        long now = level.getGameTime();
-        int slot = 0;
-        for (PourStream stream : blockEntity.streams) {
-            while (pours.size() <= slot)
-                pours.add(new PourVisual(visualizationContext, level, pos));
-            float age = (float) (now - stream.birth()) + partialTick;
-            pours.get(slot++)
-                    .update(
-                            stream.color(),
-                            facing,
-                            stream.len(),
-                            age,
-                            .625F,
-                            .625F,
-                            (float) (.5D + facing.getStepX() * 2.875D),
-                            1F,
-                            (float) (.5D + facing.getStepZ() * 2.875D));
-        }
-        while (slot < pours.size()) {
-            pours.get(slot++)
-                    .update(
-                            0,
-                            facing,
-                            0F,
-                            MAX_AGE,
-                            .625F,
-                            .625F,
-                            (float) (.5D + facing.getStepX() * 2.875D),
-                            1F,
-                            (float) (.5D + facing.getStepZ() * 2.875D));
-        }
+    @Override
+    public boolean doDistanceLimitThisFrame(DynamicVisual.Context context) {
+        return initialized && super.doDistanceLimitThisFrame(context);
     }
 
-    private void write(int index, boolean visible, Matrix4f pose, int light) {
-        TransformedInstance instance = instances[index];
-        instance.setVisible(visible);
-        if (!visible) return;
-        instancePose.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(pose);
-        instance.setTransform(instancePose).light(light).setChanged();
+    public void updateMovingParts(float partialTick) {
+        long gameTick = blockEntity.getLevel().getGameTime();
+        float previousLift = blockEntity.prevLid;
+        float currentLift = blockEntity.lid;
+        boolean progressing = blockEntity.isProgressing;
+        float phase = ArcFurnaceAnimationData.phase(gameTick, partialTick);
+        boolean evaluate =
+                !initialized
+                        || different(previousLift, sampledPreviousLift)
+                        || different(currentLift, sampledCurrentLift)
+                        || progressing != sampledProgressing
+                        || progressing && different(phase, sampledPhase)
+                        || previousLift != currentLift && different(partialTick, sampledPartial);
+        if (evaluate) {
+            ArcFurnaceAnimationData.evaluate(
+                    gameTick, partialTick, previousLift, currentLift, progressing, samples);
+            sampledPhase = phase;
+            sampledPartial = partialTick;
+            sampledPreviousLift = previousLift;
+            sampledCurrentLift = currentLift;
+            sampledProgressing = progressing;
+        }
+        boolean liquidsEmpty = blockEntity.liquids.isEmpty();
+        int amount = ArcFurnaceBlockEntity.getStackAmount(blockEntity.liquids);
+        if (evaluate || !initialized || amount != lastAmount) {
+            ArcFurnaceAnimationData.writeChannels(
+                    samples, amount, ArcFurnaceBlockEntity.MAX_LIQUID, channels);
+        }
+        int changedChannels = 0;
+        for (int channel = 0; channel < CHANNEL_COUNT; channel++) {
+            if (!initialized || different(channels[channel], publishedChannels[channel])) {
+                changedChannels |= 1 << channel;
+                publishedChannels[channel] = channels[channel];
+            }
+        }
+        int nextVisible = 1 << LID;
+        if (!liquidsEmpty) {
+            nextVisible |= 1 << HOT_CONTENTS;
+        } else if (blockEntity.hasMaterial) {
+            nextVisible |= 1 << COLD_CONTENTS;
+        }
+        for (int electrode = 0; electrode < ELECTRODE_COUNT; electrode++) {
+            int code = blockEntity.electrodes[electrode];
+            if (code != 0) {
+                nextVisible |= 1 << (RING_START + electrode);
+                nextVisible |= 1 << (CABLE_START + electrode);
+            }
+            switch (code) {
+                case 1 -> nextVisible |= 1 << (FRESH_START + electrode);
+                case 2 -> nextVisible |= 1 << (USED_START + electrode);
+                case 3 -> nextVisible |= 1 << (SHORT_START + electrode);
+                default -> {}
+            }
+        }
+        int changedVisibility = nextVisible ^ visibleParts;
+        if (!initialized || changedChannels != 0 || changedVisibility != 0) {
+            for (int part = 0; part < PART_COUNT; part++) {
+                int bit = 1 << part;
+                boolean visible = (nextVisible & bit) != 0;
+                boolean visibilityChanged = (changedVisibility & bit) != 0;
+                if (visibilityChanged) {
+                    parts[part].setVisible(visible);
+                }
+                int mask = models.channelMasks[part];
+                if (visible
+                        && mask != 0
+                        && (!initialized || visibilityChanged || (changedChannels & mask) != 0)) {
+                    parts[part].channels(channels, channels);
+                    parts[part].setChanged();
+                }
+            }
+        }
+        visibleParts = nextVisible;
+        lastAmount = amount;
+        updatePours(gameTick, partialTick);
+        initialized = true;
+    }
+
+    private void updatePours(long gameTick, float partialTick) {
+        int active = 0;
+        var streams = blockEntity.streams;
+        int count = streams.size();
+        for (int index = 0; index < count; index++) {
+            var stream = streams.get(index);
+            float age = (float) (gameTick - stream.birth()) + partialTick;
+            if (age < POUR_LIFETIME) {
+                if (active == pours.size()) {
+                    pours.add(new PourVisual(visualizationContext, level, pos));
+                }
+                pours.get(active)
+                        .update(
+                                stream.color(),
+                                facing,
+                                stream.len(),
+                                age,
+                                POUR_BASE,
+                                POUR_OFFSET,
+                                outletX,
+                                outletY,
+                                outletZ);
+                active++;
+            }
+        }
+        for (int index = active; index < activePours; index++) {
+            pours.get(index).hide();
+        }
+        activePours = active;
+    }
+
+    private static boolean different(float first, float second) {
+        return Float.floatToRawIntBits(first) != Float.floatToRawIntBits(second);
     }
 
     @Override
     protected AABB getRenderBoundingBox() {
-        return bodyBounds.minmax(
-                new AABB(
-                        pos.getX() - 4,
-                        pos.getY() - 6,
-                        pos.getZ() - 4,
-                        pos.getX() + 5,
-                        pos.getY() + 7,
-                        pos.getZ() + 5));
+        return bounds;
     }
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        consumer.accept(instances[COLD]);
-        consumer.accept(instances[LID]);
-        for (int i = 0; i < 3; i++) {
-            consumer.accept(instances[RING + i]);
-            consumer.accept(instances[FRESH + i]);
-            consumer.accept(instances[CABLE + i]);
+        for (int part : models.litParts) {
+            consumer.accept(parts[part]);
         }
     }
 
     @Override
     protected void _delete() {
-        for (TransformedInstance instance : instances) instance.delete();
-        for (PourVisual pour : pours) pour.delete();
+        for (var instance : parts) {
+            instance.delete();
+        }
+        for (int index = 0; index < pours.size(); index++) {
+            pours.get(index).delete();
+        }
     }
+
+    private record PreparedModels(
+            Model[] parts,
+            ChainInstance.Chain[] chains,
+            Vector4fc[] sweeps,
+            int[] channelMasks,
+            int[] litParts,
+            int hotParts) {}
 }

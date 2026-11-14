@@ -1,31 +1,48 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineLargeTurbine;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.LargeTurbineBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
+import dev.engine_room.flywheel.api.model.Model;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
 public final class LargeTurbineVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineLargeTurbine>
-        implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<LargeTurbineBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual {
     private static final Material BLADES_MATERIAL =
             SimpleMaterial.builderOf(Materials.CUTOUT_NO_CULL)
                     .texture(ResourceManager.turbofan_blades_tex)
@@ -40,53 +57,44 @@ public final class LargeTurbineVisual
                     ResourceManager.turbine.groups[ResourceManager.turbine.partId("Blades")],
                     false,
                     BLADES_MATERIAL);
+    private static final ChainInstance.Chain[] CHAINS = {
+        new ChainInstance.Chain()
+                .translate(0F, 1F, 0F)
+                .rotateZ(0, Mth.DEG_TO_RAD)
+                .translate(0F, -1F, 0F)
+                .end()
+    };
 
-    private final TransformedInstance blades;
+    private final ChainParts blades;
     private final AABB bodyBounds;
-    private final Matrix4f basePose = new Matrix4f();
-    private final Matrix4f bladePose = new Matrix4f();
-    private final Matrix4f instancePose = new Matrix4f();
-    private float lastRotor = Float.NaN;
 
     public LargeTurbineVisual(
-            VisualizationContext context,
-            BlockEntityMachineLargeTurbine blockEntity,
-            float partialTick) {
+            VisualizationContext context, LargeTurbineBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
+        Matrix4f basePose =
+                new Matrix4f()
+                        .translate(.5F, 0F, .5F)
+                        .rotateY(
+                                Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 180)
+                                        * Mth.DEG_TO_RAD)
+                        .translate(0F, 0F, -1F);
         blades =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, BLADES_PART.model())
-                        .createInstance();
-        basePose.identity()
-                .translate(.5F, 0F, .5F)
-                .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 180)
-                                * Mth.DEG_TO_RAD)
-                .translate(0F, 0F, -1F);
+                new ChainParts(
+                        context, visualPos, basePose, new Model[] {BLADES_PART.model()}, CHAINS, 1);
         bodyBounds = LightBounds.of(ResourceManager.turbine, "Body", basePose, pos);
-        writeFrame(partialTick);
+        update();
     }
 
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
-        writeFrame(context.partialTick());
+    public void tick(Context context) {
+        update();
     }
 
-    private void writeFrame(float partialTick) {
-        float rotor = Mth.lerp(partialTick, blockEntity.lastRotor, blockEntity.rotor);
-        if (rotor == lastRotor) return;
-        bladePose
-                .set(basePose)
-                .translate(0F, 1F, 0F)
-                .rotateZ(rotor * Mth.DEG_TO_RAD)
-                .translate(0F, -1F, 0F);
-        instancePose
-                .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
-                .mul(bladePose);
-        blades.setTransform(instancePose).light(0).setChanged();
-        lastRotor = rotor;
+    private void update() {
+        blades.set(0, blockEntity.lastRotor, blockEntity.rotor);
+        blades.write();
     }
 
     @Override
@@ -104,7 +112,7 @@ public final class LargeTurbineVisual
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        consumer.accept(blades);
+        blades.collectCrumblingInstances(consumer);
     }
 
     @Override

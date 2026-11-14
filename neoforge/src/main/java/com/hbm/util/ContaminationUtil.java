@@ -1,11 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.util;
 
 import com.hbm.config.RadiationConfig;
-import com.hbm.entity.mob.EntityDuck;
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.entity.mob.DuckEntity;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.handler.HazmatRegistry;
 import com.hbm.handler.radiation.RadiationSystemNT;
@@ -14,6 +44,7 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.potion.HbmPotion;
 import com.hbm.tags.HbmEntityTypeTags;
 import java.util.List;
+import java.util.function.Predicate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -45,7 +76,7 @@ public final class ContaminationUtil {
     public static double getRads(Entity e) {
         if (!(e instanceof LivingEntity living)) return 0D;
         if (isRadImmune(e)) return 0D;
-        return HbmLivingProps.getRadiation(living);
+        return LivingHazards.radiation(living);
     }
 
     public static float getNeutronRads(ItemStack stack) {
@@ -94,14 +125,14 @@ public final class ContaminationUtil {
     public static void applyDigammaData(LivingEntity entity, double f) {
         if (entity == null) return;
         if (entity.level().isClientSide()) return;
-        if (entity instanceof Ocelot || entity instanceof EntityDuck) return;
+        if (entity instanceof Ocelot || entity instanceof DuckEntity) return;
         if (entity instanceof Player player) {
             if (player.isSpectator() || player.isCreative()) return;
             if (player.tickCount < 200) return;
             if (ArmorUtil.checkForDigamma(player)) return;
         }
         if (entity.hasEffect(HbmPotion.stability())) return;
-        HbmLivingProps.incrementDigamma(entity, f);
+        LivingHazards.addDigamma(entity, f);
     }
 
     public static double calculateRadiationMod(LivingEntity entity) {
@@ -110,9 +141,9 @@ public final class ContaminationUtil {
     }
 
     public static double getPlayerRads(LivingEntity entity) {
-        double rads = HbmLivingProps.getRadBuf(entity);
+        double rads = LivingHazards.fieldLastSecond(entity);
         if (entity instanceof Player) {
-            rads += HbmLivingProps.getNeutron(entity) * 20D / RadiationConfig.hazardRate;
+            rads += LivingHazards.neutron(entity) * 20D / RadiationConfig.hazardRate;
         }
         return rads;
     }
@@ -122,14 +153,14 @@ public final class ContaminationUtil {
     }
 
     public static double getNoNeutronPlayerRads(LivingEntity entity) {
-        return HbmLivingProps.getRadBuf(entity) * calculateRadiationMod(entity);
+        return LivingHazards.fieldLastSecond(entity) * calculateRadiationMod(entity);
     }
 
     private static final double DOSIMETER_CEILING = 3.6D;
 
     public static void printGeigerData(Player player) {
         if (!(player.level() instanceof ServerLevel level)) return;
-        double eRad = HbmLivingProps.getRadiation(player);
+        double eRad = LivingHazards.radiation(player);
         double chunkRad = RadiationSystemNT.getRadForCoord(level, player.blockPosition());
         double radMod = calculateRadiationMod(player);
         double env = getPlayerRads(player);
@@ -162,7 +193,7 @@ public final class ContaminationUtil {
     }
 
     public static void printDosimeterData(Player player) {
-        double env = HbmLivingProps.getRadBuf(player);
+        double env = LivingHazards.fieldLastSecond(player);
         boolean limit = env > DOSIMETER_CEILING;
         if (limit) env = DOSIMETER_CEILING;
 
@@ -180,7 +211,7 @@ public final class ContaminationUtil {
     }
 
     public static void printDiagnosticData(Player player) {
-        double digamma = HbmLivingProps.getDigamma(player);
+        double digamma = LivingHazards.digamma(player);
         double halflife = (1D - Math.pow(0.5D, digamma)) * 100D;
 
         player.sendSystemMessage(
@@ -244,35 +275,16 @@ public final class ContaminationUtil {
         if (entity == null) return false;
         if (entity.level().isClientSide()) return false;
 
+        LivingHazards hazards = null;
         if (hazard == HazardType.RADIATION) {
-            HbmLivingProps.setRadEnv(entity, HbmLivingProps.getRadEnv(entity) + amount);
+            hazards = LivingHazards.getOrCreate(entity);
+            hazards.fieldThisSecond += amount;
         }
 
         if (entity instanceof Player player) {
-            if (player.isSpectator()) return false;
-            switch (cont) {
-                case FARADAY -> {
-                    if (ArmorUtil.checkForFaraday(player)) return false;
-                }
-                case HAZMAT -> {
-                    if (ArmorUtil.checkForHazmat(player)) return false;
-                }
-                case HAZMAT2 -> {
-                    if (ArmorUtil.checkForHaz2(player)) return false;
-                }
-                case DIGAMMA -> {
-                    if (ArmorUtil.checkForDigamma(player) || ArmorUtil.checkForDigamma2(player))
-                        return false;
-                }
-                case DIGAMMA2 -> {
-                    if (ArmorUtil.checkForDigamma2(player)) return false;
-                }
-                default -> {}
-            }
-            if (player.isCreative()
-                    && cont != ContaminationType.NONE
-                    && cont != ContaminationType.DIGAMMA2) {
-                if (hazard == HazardType.NEUTRON) HbmLivingProps.setNeutron(entity, amount);
+            if (player.isSpectator() || cont.protects(player)) return false;
+            if (cont.spares(player)) {
+                if (hazard == HazardType.NEUTRON) LivingHazards.setNeutron(entity, amount);
                 return false;
             }
             if (player.tickCount < 200) return false;
@@ -284,24 +296,12 @@ public final class ContaminationUtil {
         }
 
         switch (hazard) {
-            case RADIATION ->
-                    HbmLivingProps.incrementRadiation(
-                            entity,
-                            amount
-                                    * (cont == ContaminationType.RAD_BYPASS
-                                            ? 1D
-                                            : calculateRadiationMod(entity)));
-            case DIGAMMA -> HbmLivingProps.incrementDigamma(entity, amount);
+            case RADIATION -> hazards.addRadiation(amount * cont.radiationMod(entity));
+            case DIGAMMA -> LivingHazards.addDigamma(entity, amount);
             case NEUTRON -> {
-                HbmLivingProps.incrementRadiation(
-                        entity,
-                        amount
-                                * (cont == ContaminationType.RAD_BYPASS
-                                        ? 1D
-                                        : calculateRadiationMod(entity)));
-                HbmLivingProps.setNeutron(entity, amount);
+                LivingHazards.addRadiation(entity, amount * cont.radiationMod(entity));
+                LivingHazards.setNeutron(entity, amount);
             }
-            case MONOXIDE -> {}
         }
         return true;
     }
@@ -323,6 +323,7 @@ public final class ContaminationUtil {
         AABB aabb = new AABB(x - range, y - range, z - range, x + range, y + range, z + range);
         List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, aabb);
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        var reader = new SectionAccess.LoadingReader(level);
         for (LivingEntity e : entities) {
             if (isRadImmune(e)) continue;
             double dx = e.getX() - x;
@@ -338,7 +339,7 @@ public final class ContaminationUtil {
                 int iy = Mth.floor(y + dir.y * i);
                 int iz = Mth.floor(z + dir.z * i);
                 pos.set(ix, iy, iz);
-                res += level.getBlockState(pos).getBlock().getExplosionResistance();
+                res += reader.read(pos).getBlock().getExplosionResistance();
             }
             if (res < 1.0D) res = 1.0D;
             double dose = rad / res / (len * len);
@@ -347,20 +348,45 @@ public final class ContaminationUtil {
     }
 
     public enum HazardType {
-        MONOXIDE,
         RADIATION,
         NEUTRON,
         DIGAMMA
     }
 
     public enum ContaminationType {
-        FARADAY,
-        HAZMAT,
-        HAZMAT2,
-        DIGAMMA,
-        DIGAMMA2,
-        CREATIVE,
-        RAD_BYPASS,
-        NONE
+        FARADAY(ArmorUtil::checkForFaraday, true, false),
+        HAZMAT(ArmorUtil::checkForHazmat, true, false),
+        HAZMAT2(ArmorUtil::checkForHaz2, true, false),
+        DIGAMMA(
+                player -> ArmorUtil.checkForDigamma(player) || ArmorUtil.checkForDigamma2(player),
+                true,
+                false),
+        DIGAMMA2(ArmorUtil::checkForDigamma2, false, false),
+        CREATIVE(_ -> false, true, false),
+        RAD_BYPASS(_ -> false, true, true),
+        NONE(_ -> false, false, false);
+
+        private final Predicate<Player> protection;
+        private final boolean sparesCreative;
+        private final boolean bypassesArmor;
+
+        ContaminationType(
+                Predicate<Player> protection, boolean sparesCreative, boolean bypassesArmor) {
+            this.protection = protection;
+            this.sparesCreative = sparesCreative;
+            this.bypassesArmor = bypassesArmor;
+        }
+
+        public boolean protects(Player player) {
+            return protection.test(player);
+        }
+
+        public boolean spares(Player player) {
+            return sparesCreative && player.isCreative();
+        }
+
+        public double radiationMod(LivingEntity entity) {
+            return bypassesArmor ? 1D : calculateRadiationMod(entity);
+        }
     }
 }

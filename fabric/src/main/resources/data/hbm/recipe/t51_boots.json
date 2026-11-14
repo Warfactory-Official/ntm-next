@@ -1,13 +1,12 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:titanium_boots",
-      "components": {
-        "minecraft:damage": 0
-      }
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:titanium_boots",
     "P": "hbm:plate_armor_titanium"
   },
   "pattern": [

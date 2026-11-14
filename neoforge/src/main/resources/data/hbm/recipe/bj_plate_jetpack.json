@@ -1,17 +1,16 @@
 {
   "type": "hbm:crafting_shaped",
+  "input_state": {
+    "P": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "C": "hbm:crystal_phosphorus",
     "F": "hbm:fins_quad_titanium",
     "I": "hbm:mp_thruster_10_xenon",
     "N": "hbm:plate_armor_lunar",
-    "P": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:bj_plate"
-    },
+    "P": "hbm:bj_plate",
     "T": {
       "neoforge:ingredient_type": "neoforge:components",
       "components": {

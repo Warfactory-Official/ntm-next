@@ -1,59 +1,61 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.machine;
 
-import com.hbm.blockentity.machine.oil.BlockEntityMachineCoker;
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.blockentity.machine.oil.CokerBlockEntity;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import dan200.computercraft.api.lua.LuaFunction;
 
-public final class CokerPeripheral extends SnapshotPeripheral<BlockEntityMachineCoker> {
+public final class CokerPeripheral extends BlockEntityPeripheral<CokerBlockEntity> {
 
-    private static final int FILL_0 = 0;
-    private static final int FILL_1 = 1;
-    private static final int HEAT = 2;
-    private static final int TYPE_0 = 0;
-    private static final int TYPE_1 = 1;
-
-    public CokerPeripheral(BlockEntityMachineCoker machine) {
-        super(machine, "ntm_coker", 3, 2);
-    }
-
-    @Override
-    protected void capture(BlockEntityMachineCoker machine) {
-        put(FILL_0, machine.tanks[0].getFill());
-        put(FILL_1, machine.tanks[1].getFill());
-        put(HEAT, machine.heat);
-        putRef(TYPE_0, NTMFluids.legacyName(machine.tanks[0].getTankType()));
-        putRef(TYPE_1, NTMFluids.legacyName(machine.tanks[1].getTankType()));
+    public CokerPeripheral(CokerBlockEntity machine) {
+        super(machine, "ntm_coker");
     }
 
     @LuaFunction
-    public final Object[] getTypeStored() {
-        return read(s -> new Object[] {s.refAt(TYPE_0), s.refAt(TYPE_1)});
+    public Object[] getTypeStored() {
+        return new Object[] {
+            NTMFluids.legacyName(target.tanks[0].getTankType()),
+            NTMFluids.legacyName(target.tanks[1].getTankType())
+        };
     }
 
     @LuaFunction
-    public final Object[] getFluidStored() {
-        return read(s -> new Object[] {s.intAt(FILL_0), s.intAt(FILL_1)});
+    public Object[] getFluidStored() {
+        return new Object[] {(int) target.tanks[0].getFill(), (int) target.tanks[1].getFill()};
     }
 
     @LuaFunction
-    public final Object[] getHeat() {
-        return read(s -> new Object[] {s.intAt(HEAT)});
+    public Object[] getHeat() {
+        return new Object[] {(int) target.heat};
     }
 
     @LuaFunction
-    public final Object[] getInfo() {
-        return read(
-                s ->
-                        new Object[] {
-                            s.refAt(TYPE_0),
-                            s.refAt(TYPE_1),
-                            s.intAt(FILL_0),
-                            s.intAt(FILL_1),
-                            s.intAt(HEAT)
-                        });
+    public Object[] getInfo() {
+        return new Object[] {
+            NTMFluids.legacyName(target.tanks[0].getTankType()),
+            NTMFluids.legacyName(target.tanks[1].getTankType()),
+            (int) target.tanks[0].getFill(),
+            (int) target.tanks[1].getFill(),
+            (int) target.heat
+        };
     }
 }

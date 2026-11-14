@@ -1,13 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.world.feature;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.bomb.BlockTaint;
+import com.hbm.blocks.bomb.TaintBlock;
 import com.hbm.data.WorldData;
-import com.hbm.explosion.ExplosionLarge;
+import com.hbm.explosion.BlastDebris;
 import com.hbm.items.ModItems;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.registration.RegistryHandle;
@@ -126,8 +155,7 @@ public class Meteorite {
                 }
                 case 4 -> {
                     explode(level, pos, 15F, safe);
-                    ExplosionLarge.spawnRubble(
-                            level.getLevel(), pos.getX(), pos.getY(), pos.getZ(), 25);
+                    BlastDebris.rubble(level.getLevel(), pos.getX(), pos.getY(), pos.getZ(), 25);
                     return;
                 }
                 case 5 -> {
@@ -539,7 +567,7 @@ public class Meteorite {
         private static final BlockState TREASURE = bs(ModBlocks.BLOCK_METEOR_TREASURE);
         private static final BlockState TOXIC = bs(ModBlocks.TOXIC_BLOCK);
         private static final BlockState TAINT = bs(ModBlocks.TAINT);
-        private static final BlockState TAINT_AGE_9 = TAINT.setValue(BlockTaint.AGE, 9);
+        private static final BlockState TAINT_AGE_9 = TAINT.setValue(TaintBlock.AGE, 9);
         private static final BlockState ORE_IRON = bs(ModBlocks.ORE_METEOR_IRON);
         private static final BlockState ORE_COPPER = bs(ModBlocks.ORE_METEOR_COPPER);
         private static final BlockState ORE_ALUMINIUM = bs(ModBlocks.ORE_METEOR_ALUMINIUM);

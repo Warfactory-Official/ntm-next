@@ -1,24 +1,54 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.bomb.BlockDetonatable;
-import com.hbm.blocks.generic.BlockDecoCRT;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.entity.projectile.EntityBulletBeamBase;
-import com.hbm.items.EnumCasingType;
+import com.hbm.blocks.bomb.ProjectileHitHandler;
+import com.hbm.blocks.generic.DecoCRTBlock;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.entity.projectile.BulletBeamBaseEntity;
 import com.hbm.items.ModItems;
+import com.hbm.items.variant.CasingType;
+import com.hbm.items.weapon.sedna.DamageSourceSedna;
 import com.hbm.items.weapon.sedna.factory.ConfettiUtil;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.particle.SpentCasing;
+import com.hbm.lib.ModifiedDamageSource;
+import com.hbm.particle.casing.Casing;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.BobMathUtil;
-import com.hbm.util.DamageClass;
-import com.hbm.util.EntityDamageUtil;
+import com.hbm.sound.WorldSounds;
+import com.hbm.util.NtmMath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -27,8 +57,11 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -44,7 +77,7 @@ import net.minecraft.world.phys.Vec3;
 public class BulletConfig implements Cloneable {
 
     public static List<BulletConfig> configs = new ArrayList<>();
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_RICOCHET =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_RICOCHET =
             (bullet, mop) -> {
                 if (mop instanceof BlockHitResult blockHit) {
 
@@ -56,10 +89,10 @@ public class BulletConfig implements Cloneable {
                         bullet.setPos(mop.getLocation());
                         return;
                     }
-                    if (state.getBlock() instanceof BlockDetonatable det) {
+                    if (state.getBlock() instanceof ProjectileHitHandler det) {
                         det.onShot(bullet.level(), pos);
                     }
-                    if (state.getBlock() instanceof BlockDecoCRT
+                    if (state.getBlock() instanceof DecoCRTBlock
                             && !state.is(ModBlocks.DECO_CRT_BROKEN.get())) {
                         bullet.level()
                                 .setBlock(
@@ -68,16 +101,16 @@ public class BulletConfig implements Cloneable {
                                                 .get()
                                                 .defaultBlockState()
                                                 .setValue(
-                                                        BlockDecoCRT.ROTATION,
-                                                        state.getValue(BlockDecoCRT.ROTATION)),
+                                                        DecoCRTBlock.ROTATION,
+                                                        state.getValue(DecoCRTBlock.ROTATION)),
                                         3);
                     }
 
                     Direction dir = blockHit.getDirection();
                     Vec3 face = new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ());
-                    Vec3 vel = bullet.getDeltaMovement().normalize();
+                    Vec3 vel = bullet.getFlightDirection().normalize();
 
-                    double angle = Math.abs(BobMathUtil.getCrossAngle(vel, face) - 90);
+                    double angle = Math.abs(NtmMath.angleBetween(vel, face) - 90);
 
                     if (angle <= bullet.config.ricochetAngle) {
 
@@ -87,28 +120,28 @@ public class BulletConfig implements Cloneable {
                             bullet.discard();
                         }
 
-                        Vec3 motion = bullet.getDeltaMovement();
+                        Vec3 motion = bullet.getFlightDirection();
                         switch (dir.getAxis()) {
                             case Y:
-                                bullet.setDeltaMovement(motion.x, -motion.y, motion.z);
+                                bullet.setFlightDirection(motion.x, -motion.y, motion.z);
                                 break;
                             case Z:
-                                bullet.setDeltaMovement(motion.x, motion.y, -motion.z);
+                                bullet.setFlightDirection(motion.x, motion.y, -motion.z);
                                 break;
                             case X:
-                                bullet.setDeltaMovement(-motion.x, motion.y, motion.z);
+                                bullet.setFlightDirection(-motion.x, motion.y, motion.z);
                                 break;
                         }
-                        bullet.level()
-                                .playSound(
-                                        null,
-                                        bullet.getX(),
-                                        bullet.getY(),
-                                        bullet.getZ(),
-                                        ModSounds.WEAPON_RICOCHET.get(),
-                                        SoundSource.PLAYERS,
-                                        0.25F,
-                                        1.0F);
+                        WorldSounds.play(
+                                bullet.level(),
+                                null,
+                                bullet.getX(),
+                                bullet.getY(),
+                                bullet.getZ(),
+                                ModSounds.WEAPON_RICOCHET.get(),
+                                SoundSource.PLAYERS,
+                                0.25F,
+                                1.0F);
                         bullet.setPos(mop.getLocation());
                         bullet.sendTeleport();
 
@@ -118,7 +151,7 @@ public class BulletConfig implements Cloneable {
                     }
                 }
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_ENTITY_HIT =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_ENTITY_HIT =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit) {
                     Entity entity = entityHit.getEntity();
@@ -133,8 +166,10 @@ public class BulletConfig implements Cloneable {
                     float intendedDamage = bullet.damage;
 
                     if (!(entity instanceof LivingEntity)) {
-                        EntityDamageUtil.attackEntityFromIgnoreIFrame(
-                                entity, source, bullet.damage);
+                        entity.hurtServer(
+                                (ServerLevel) entity.level(),
+                                ModifiedDamageSource.bypassingCooldown(source),
+                                bullet.damage);
                         return;
                     } else if (bullet.config.headshotMult > 1F) {
 
@@ -142,7 +177,6 @@ public class BulletConfig implements Cloneable {
                         double head = living.getBbHeight() - living.getEyeHeight();
 
                         if (living.isAlive()
-                                && mop.getLocation() != null
                                 && mop.getLocation().y
                                         > (living.getY() + living.getBbHeight() - head * 2)) {
                             intendedDamage *= bullet.config.headshotMult;
@@ -152,15 +186,15 @@ public class BulletConfig implements Cloneable {
                     LivingEntity living = (LivingEntity) entity;
                     float prevHealth = living.getHealth();
 
-                    EntityDamageUtil.attackEntityFromNT(
-                            living,
-                            source,
-                            intendedDamage,
-                            true,
-                            true,
-                            bullet.config.knockbackMult,
-                            bullet.config.armorThresholdNegation,
-                            bullet.config.armorPiercingPercent);
+                    living.hurtServer(
+                            (ServerLevel) living.level(),
+                            ModifiedDamageSource.of(
+                                    source,
+                                    true,
+                                    bullet.config.knockbackMult,
+                                    bullet.config.armorThresholdNegation,
+                                    bullet.config.armorPiercingPercent),
+                            intendedDamage);
 
                     float newHealth = living.getHealth();
 
@@ -174,7 +208,7 @@ public class BulletConfig implements Cloneable {
                     if (!living.isAlive()) ConfettiUtil.decideConfetti(living, source);
                 }
             };
-    public static BiConsumer<EntityBulletBeamBase, HitResult> LAMBDA_STANDARD_BEAM_HIT =
+    public static BiConsumer<BulletBeamBaseEntity, HitResult> LAMBDA_STANDARD_BEAM_HIT =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit) {
                     Entity entity = entityHit.getEntity();
@@ -186,24 +220,26 @@ public class BulletConfig implements Cloneable {
                             getDamage(bullet, bullet.getThrower(), bullet.config.dmgClass);
 
                     if (!(entity instanceof LivingEntity living)) {
-                        EntityDamageUtil.attackEntityFromIgnoreIFrame(
-                                entity, source, bullet.damage);
+                        entity.hurtServer(
+                                (ServerLevel) entity.level(),
+                                ModifiedDamageSource.bypassingCooldown(source),
+                                bullet.damage);
                         return;
                     }
 
-                    EntityDamageUtil.attackEntityFromNT(
-                            living,
-                            source,
-                            bullet.damage,
-                            true,
-                            true,
-                            bullet.config.knockbackMult,
-                            bullet.config.armorThresholdNegation,
-                            bullet.config.armorPiercingPercent);
+                    living.hurtServer(
+                            (ServerLevel) living.level(),
+                            ModifiedDamageSource.of(
+                                    source,
+                                    true,
+                                    bullet.config.knockbackMult,
+                                    bullet.config.armorThresholdNegation,
+                                    bullet.config.armorPiercingPercent),
+                            bullet.damage);
                     if (!living.isAlive()) ConfettiUtil.decideConfetti(living, source);
                 }
             };
-    public static BiConsumer<EntityBulletBeamBase, HitResult> LAMBDA_BEAM_HIT =
+    public static BiConsumer<BulletBeamBaseEntity, HitResult> LAMBDA_BEAM_HIT =
             (beam, mop) -> {
                 if (mop instanceof EntityHitResult entityHit) {
                     Entity entity = entityHit.getEntity();
@@ -211,22 +247,25 @@ public class BulletConfig implements Cloneable {
                     if (entity instanceof LivingEntity && ((LivingEntity) entity).getHealth() <= 0)
                         return;
 
-                    DamageSource source = getDamage(beam, beam.thrower, beam.config.dmgClass);
+                    DamageSource source = getDamage(beam, beam.getThrower(), beam.config.dmgClass);
 
                     if (!(entity instanceof LivingEntity living)) {
-                        EntityDamageUtil.attackEntityFromIgnoreIFrame(entity, source, beam.damage);
+                        entity.hurtServer(
+                                (ServerLevel) entity.level(),
+                                ModifiedDamageSource.bypassingCooldown(source),
+                                beam.damage);
                         return;
                     }
 
-                    EntityDamageUtil.attackEntityFromNT(
-                            living,
-                            source,
-                            beam.damage,
-                            true,
-                            false,
-                            beam.config.knockbackMult,
-                            beam.config.armorThresholdNegation,
-                            beam.config.armorPiercingPercent);
+                    living.hurtServer(
+                            (ServerLevel) living.level(),
+                            ModifiedDamageSource.of(
+                                    source,
+                                    true,
+                                    beam.config.knockbackMult,
+                                    beam.config.armorThresholdNegation,
+                                    beam.config.armorPiercingPercent),
+                            beam.damage);
                 }
             };
     public int id;
@@ -245,14 +284,14 @@ public class BulletConfig implements Cloneable {
     public float armorPiercingPercent = 0.0F;
     public float knockbackMult = 0.1F;
     public float headshotMult = 1.25F;
-    public DamageClass dmgClass = DamageClass.PHYSICAL;
+    public ResourceKey<DamageType> dmgClass = ModDamageTypes.PHYSICAL;
     public float ricochetAngle = 5F;
     public int maxRicochetCount = 2;
     public boolean damageFalloffByPen = true;
     public Consumer<Entity> onUpdate;
-    public BiConsumer<EntityBulletBaseMK4, HitResult> onImpact;
-    public BiConsumer<EntityBulletBaseMK4, HitResult> onRicochet = LAMBDA_STANDARD_RICOCHET;
-    public BiConsumer<EntityBulletBaseMK4, HitResult> onEntityHit = LAMBDA_STANDARD_ENTITY_HIT;
+    public BiConsumer<BulletBaseMK4Entity, HitResult> onImpact;
+    public BiConsumer<BulletBaseMK4Entity, HitResult> onRicochet = LAMBDA_STANDARD_RICOCHET;
+    public BiConsumer<BulletBaseMK4Entity, HitResult> onEntityHit = LAMBDA_STANDARD_ENTITY_HIT;
     public double gravity = 0;
     public int expires = 30;
     public boolean impactsEntities = true;
@@ -261,8 +300,8 @@ public class BulletConfig implements Cloneable {
     public int selfDamageDelay = 2;
     public boolean blackPowder = false;
     public boolean renderRotations = true;
-    public SpentCasing casing;
-    public BiConsumer<EntityBulletBeamBase, HitResult> onImpactBeam;
+    public Casing casing;
+    public BiConsumer<BulletBeamBaseEntity, HitResult> onImpactBeam;
 
     public BulletConfig() {
         this.id = configs.size();
@@ -270,13 +309,13 @@ public class BulletConfig implements Cloneable {
     }
 
     public static DamageSource getDamage(
-            Entity projectile, LivingEntity shooter, DamageClass dmgClass) {
+            Entity projectile, LivingEntity shooter, ResourceKey<DamageType> dmgClass) {
         var type =
                 projectile
                         .level()
                         .registryAccess()
                         .lookupOrThrow(Registries.DAMAGE_TYPE)
-                        .getOrThrow(ModDamageTypes.forClass(dmgClass));
+                        .getOrThrow(dmgClass);
         if (shooter != null) return new DamageSourceSedna(type, projectile, shooter);
         return new DamageSourceSedna(type);
     }
@@ -316,7 +355,7 @@ public class BulletConfig implements Cloneable {
         return this;
     }
 
-    public BulletConfig setCasing(EnumCasingType item, int amount) {
+    public BulletConfig setCasing(CasingType item, int amount) {
         this.casingItem = () -> ModItems.CASING.stack(item);
         this.casingAmount = amount;
         return this;
@@ -378,7 +417,7 @@ public class BulletConfig implements Cloneable {
         return this;
     }
 
-    public BulletConfig setupDamageClass(DamageClass clazz) {
+    public BulletConfig setupDamageClass(ResourceKey<DamageType> clazz) {
         this.dmgClass = clazz;
         return this;
     }
@@ -438,7 +477,7 @@ public class BulletConfig implements Cloneable {
         return this;
     }
 
-    public BulletConfig setCasing(SpentCasing casing) {
+    public BulletConfig setCasing(Casing casing) {
         this.casing = casing;
         return this;
     }
@@ -448,22 +487,22 @@ public class BulletConfig implements Cloneable {
         return this;
     }
 
-    public BulletConfig setOnRicochet(BiConsumer<EntityBulletBaseMK4, HitResult> lambda) {
+    public BulletConfig setOnRicochet(BiConsumer<BulletBaseMK4Entity, HitResult> lambda) {
         this.onRicochet = lambda;
         return this;
     }
 
-    public BulletConfig setOnImpact(BiConsumer<EntityBulletBaseMK4, HitResult> lambda) {
+    public BulletConfig setOnImpact(BiConsumer<BulletBaseMK4Entity, HitResult> lambda) {
         this.onImpact = lambda;
         return this;
     }
 
-    public BulletConfig setOnEntityHit(BiConsumer<EntityBulletBaseMK4, HitResult> lambda) {
+    public BulletConfig setOnEntityHit(BiConsumer<BulletBaseMK4Entity, HitResult> lambda) {
         this.onEntityHit = lambda;
         return this;
     }
 
-    public BulletConfig setOnBeamImpact(BiConsumer<EntityBulletBeamBase, HitResult> lambda) {
+    public BulletConfig setOnBeamImpact(BiConsumer<BulletBeamBaseEntity, HitResult> lambda) {
         this.onImpactBeam = lambda;
         return this;
     }

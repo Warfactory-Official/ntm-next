@@ -3,7 +3,13 @@
   "key": {
     "D": "#hbm:ingots/any_plastic",
     "P": "#hbm:wires_dense/gold",
-    "S": "hbm:battery_pack_capacitor_gold"
+    "S": {
+      "fabric:type": "hbm:matchers",
+      "base": "hbm:battery_pack_capacitor_gold",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
+    }
   },
   "pattern": [
     "DSD",

@@ -1,26 +1,45 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControl;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlAuto;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
-import com.hbm.blockentity.machine.rbmk.RBMKConfig;
+import com.hbm.blockentity.machine.rbmk.RBMKControlAutoBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKControlBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKManualControlBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RbmkParams;
 import com.hbm.main.ResourceManager;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class RBMKControlRodVisual extends HbmDynamicBlockEntityVisual<BlockEntityRBMKControl>
-        implements ShaderLightVisual {
+public final class RBMKControlRodVisual
+        extends AbstractBoundedBlockEntityVisual<RBMKControlBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int LID = ResourceManager.rbmk_rods.partId("Lid");
     private static final int SKINS = 2 + 5;
     private static final MeshPart[] LIDS = buildLids();
@@ -35,10 +54,10 @@ public final class RBMKControlRodVisual extends HbmDynamicBlockEntityVisual<Bloc
     private int lastSelected = -1;
 
     public RBMKControlRodVisual(
-            VisualizationContext context, BlockEntityRBMKControl blockEntity, float partialTick) {
+            VisualizationContext context, RBMKControlBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        int segments = RBMKConfig.getColumnHeightRuleValue(blockEntity.getLevel());
-        columnHeight = RBMKConfig.getColumnHeight(blockEntity.getLevel());
+        int segments = RbmkParams.columnHeight();
+        columnHeight = RbmkParams.heightAboveCore();
         bodyBounds = new AABB(pos).expandTowards(0, segments + .125D, 0).inflate(1);
         updateMovingParts(partialTick);
     }
@@ -59,18 +78,18 @@ public final class RBMKControlRodVisual extends HbmDynamicBlockEntityVisual<Bloc
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
-        double level = Mth.lerp(partialTick, blockEntity.lastLevel, blockEntity.level);
+        double level = Mth.lerp(partialTick, blockEntity.lastExtraction, blockEntity.extraction);
         int selected =
-                blockEntity instanceof BlockEntityRBMKControlAuto
+                blockEntity instanceof RBMKControlAutoBlockEntity
                         ? 1
-                        : blockEntity instanceof BlockEntityRBMKControlManual manual
-                                        && manual.color != null
-                                ? 2 + manual.color.ordinal()
+                        : blockEntity instanceof RBMKManualControlBlockEntity manual
+                                        && manual.group != null
+                                ? 2 + manual.group.ordinal()
                                 : 0;
         boolean levelChanged = Double.doubleToLongBits(level) != Double.doubleToLongBits(lastLevel);
         boolean selectedChanged = selected != lastSelected;

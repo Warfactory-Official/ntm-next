@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.lib;
 
-import com.hbm.util.DamageClass;
+import com.hbm.util.RegistryUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
@@ -69,26 +85,20 @@ public final class ModDamageTypes {
 
     public static final ResourceKey<DamageType> BOLT = key("bolt");
     public static final TagKey<DamageType> IS_BOLT =
-            TagKey.create(Registries.DAMAGE_TYPE, Library.id("is_bolt"));
+            TagKey.create(Registries.DAMAGE_TYPE, RegistryUtil.id("is_bolt"));
+    public static final TagKey<DamageType> ENDERMEN_EVADE =
+            TagKey.create(Registries.DAMAGE_TYPE, RegistryUtil.id("endermen_evade"));
+    public static final TagKey<DamageType> ENDERMEN_CANNOT_EVADE =
+            TagKey.create(Registries.DAMAGE_TYPE, RegistryUtil.id("endermen_cannot_evade"));
     public static final ResourceKey<DamageType> SHOCKWAVE = key("shockwave");
+
+    public static final ResourceKey<DamageType> HEALTH_DRAIN = key("health_drain");
+    public static final ResourceKey<DamageType> BLOOD_LOSS = key("blood_loss");
+    public static final ResourceKey<DamageType> LETHAL_PROJECTILE = key("lethal_projectile");
 
     private ModDamageTypes() {}
 
     private static ResourceKey<DamageType> key(String id) {
-        return ResourceKey.create(Registries.DAMAGE_TYPE, Library.id(id));
-    }
-
-    public static ResourceKey<DamageType> forClass(DamageClass clazz) {
-        return switch (clazz) {
-            case PHYSICAL -> PHYSICAL;
-            case FIRE -> FIRE;
-            case EXPLOSIVE -> EXPLOSIVE;
-            case ELECTRIC -> ELECTRIC;
-            case PLASMA -> PLASMA;
-            case LASER -> LASER;
-            case MICROWAVE -> MICROWAVE;
-            case SUBATOMIC -> SUBATOMIC;
-            case OTHER -> OTHER;
-        };
+        return ResourceKey.create(Registries.DAMAGE_TYPE, RegistryUtil.id(id));
     }
 }

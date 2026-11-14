@@ -1,5 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.explosion;
 
@@ -7,9 +37,10 @@ import com.hbm.NuclearTech;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.BombConfig;
 import com.hbm.handler.threading.BombForkJoinPool;
-import com.hbm.interfaces.ServerThread;
 import com.hbm.util.BulkSectionUpdates;
+import com.hbm.util.ChunkRequests;
 import com.hbm.util.ChunkUtil;
+import com.hbm.util.SectionAccess;
 import com.hbm.util.SectionSnapshot;
 import it.unimi.dsi.fastutil.HashCommon;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -24,7 +55,6 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ChunkResult;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.ChunkPos;
@@ -38,7 +68,7 @@ import org.jspecify.annotations.Nullable;
 
 public final class ExplosionTom {
     public static final int LEGACY_TERRAIN = 63;
-    private static final int GROUND_REACH = 8;
+    public static final int GROUND_REACH = 8;
     private static final int SPREAD = 2;
     private static final float WASH_DISTANCE = 500F;
     private static final long COLUMN_SALT = 0x9E3779B97F4A7C15L;
@@ -52,7 +82,6 @@ public final class ExplosionTom {
     private final int radius;
     private final int radius2;
     private final int terrain;
-    private final int shift;
     private final long seed;
     private final BombForkJoinPool.IJobCancellable owner;
 
@@ -65,11 +94,9 @@ public final class ExplosionTom {
     private int firstOpen;
     private final LongOpenHashSet loaded = new LongOpenHashSet();
     private final LongOpenHashSet resubmit = new LongOpenHashSet();
-    private final LongOpenHashSet ticketed = new LongOpenHashSet();
-    private final LongArrayList awaitingHolder = new LongArrayList();
-    private final Long2ObjectOpenHashMap<CompletableFuture<ChunkResult<LevelChunk>>> inFlight =
-            new Long2ObjectOpenHashMap<>();
+    private @Nullable ChunkRequests chunkRequests;
     private final LongOpenHashSet published = new LongOpenHashSet();
+    private final LongOpenHashSet pendingResends = new LongOpenHashSet();
     private @Nullable ForkJoinPool pool;
     private @Nullable BulkSectionUpdates updates;
     private volatile @Nullable Throwable failure;
@@ -89,7 +116,6 @@ public final class ExplosionTom {
         this.radius = radius;
         this.radius2 = radius * radius;
         this.terrain = terrain;
-        this.shift = terrain - LEGACY_TERRAIN;
         this.seed = seed;
         this.owner = owner;
     }
@@ -115,29 +141,31 @@ public final class ExplosionTom {
         return heights[heights.length / 2];
     }
 
-    @ServerThread
     public boolean tick() {
+        return tick(System.nanoTime() + BombConfig.mk5 * 1_000_000L);
+    }
+
+    public boolean tick(long deadline) {
         if (closed) return true;
         if (updates == null) start();
-        long deadline = System.nanoTime() + BombConfig.mk5 * 1_000_000L;
-        request();
-        poll();
-        updates.drain(deadline);
-        if (published.size() < carved.size() || updates.hasPending()) return false;
+        int previous;
+        do {
+            previous = firstOpen;
+            request(deadline);
+            poll();
+            updates.drain(deadline);
+        } while (firstOpen != previous && System.nanoTime() < deadline);
+        if (published.size() < carved.size() || updates.hasPending() || !pendingResends.isEmpty())
+            return false;
         close();
         return true;
     }
 
-    @ServerThread
     public void close() {
         if (closed) return;
         closed = true;
         if (updates != null) updates.close();
-        for (LongIterator it = ticketed.iterator(); it.hasNext(); )
-            ChunkUtil.releaseChunkAsync(level, it.nextLong());
-        ticketed.clear();
-        inFlight.clear();
-        awaitingHolder.clear();
+        if (chunkRequests != null) chunkRequests.close();
         if (pool != null) {
             BombForkJoinPool.unregister(pool, level.dimension().identifier(), owner);
             BombForkJoinPool.release(pool);
@@ -150,6 +178,7 @@ public final class ExplosionTom {
         pool = BombForkJoinPool.acquire();
         BombForkJoinPool.register(pool, level.dimension().identifier(), owner);
         updates = new BulkSectionUpdates(level, pool, this::fail);
+        chunkRequests = new ChunkRequests(level, this::chunkReady, this::fail);
     }
 
     private void gather() {
@@ -210,44 +239,25 @@ public final class ExplosionTom {
         }
     }
 
-    private void request() {
-        int limit = Math.min(order.size(), firstOpen + span + 1);
+    private void request(long deadline) {
         int budget = BombConfig.chunksInFlight();
-        boolean added = false;
-        while (nextRequest < limit && inFlight.size() + awaitingHolder.size() < budget) {
-            long ck = order.getLong(nextRequest++);
-            if (ticketed.add(ck)) ChunkUtil.addBlastTicket(level, ck);
-            awaitingHolder.add(ck);
-            added = true;
+        int limit = Math.min(order.size(), firstOpen + span + 1 + budget);
+        int retainedLimit = budget + (span << 1) + 1;
+        while (nextRequest < limit
+                && chunkRequests.pendingCount() < budget
+                && chunkRequests.retainedCount() < retainedLimit
+                && System.nanoTime() < deadline) {
+            chunkRequests.request(order.getLong(nextRequest++));
         }
-        if (added) ChunkUtil.flushChunkTickets(level);
-        for (int i = awaitingHolder.size() - 1; i >= 0; i--) {
-            long ck = awaitingHolder.getLong(i);
-            CompletableFuture<ChunkResult<LevelChunk>> future =
-                    ChunkUtil.blastChunkFuture(level, ck);
-            if (future == null) continue;
-            awaitingHolder.removeLong(i);
-            inFlight.put(ck, future);
-        }
+        chunkRequests.pump(deadline, budget);
+    }
+
+    private void chunkReady(long ck) {
+        if (resubmit.remove(ck)) updates.submit(new CraterWork(ck));
+        else if (carved.contains(ck)) loaded.add(ck);
     }
 
     private void poll() {
-        ObjectIterator<Long2ObjectMap.Entry<CompletableFuture<ChunkResult<LevelChunk>>>> it =
-                inFlight.long2ObjectEntrySet().fastIterator();
-        while (it.hasNext()) {
-            Long2ObjectMap.Entry<CompletableFuture<ChunkResult<LevelChunk>>> entry = it.next();
-            if (!entry.getValue().isDone()) continue;
-            long ck = entry.getLongKey();
-            if (ChunkUtil.liveChunkNow(level, ck) == null) {
-                CompletableFuture<ChunkResult<LevelChunk>> current =
-                        ChunkUtil.blastChunkFuture(level, ck);
-                if (current != null) entry.setValue(current);
-                continue;
-            }
-            it.remove();
-            if (resubmit.remove(ck)) updates.submit(new CraterWork(ck));
-            else if (carved.contains(ck)) loaded.add(ck);
-        }
         while (nextSubmit < order.size()) {
             long ck = order.getLong(nextSubmit);
             if (!carved.contains(ck)) {
@@ -278,10 +288,7 @@ public final class ExplosionTom {
         for (int nx = -1; nx <= 1; nx++) {
             for (int nz = -1; nz <= 1; nz++) {
                 long held = ChunkPos.pack(cx + nx, cz + nz);
-                if (ticketed.contains(held) && settled(held)) {
-                    ticketed.remove(held);
-                    ChunkUtil.releaseChunkAsync(level, held);
-                }
+                if (chunkRequests.holds(held) && settled(held)) chunkRequests.release(held);
             }
         }
     }
@@ -292,7 +299,9 @@ public final class ExplosionTom {
         for (int nx = -1; nx <= 1; nx++) {
             for (int nz = -1; nz <= 1; nz++) {
                 long near = ChunkPos.pack(cx + nx, cz + nz);
-                if (carved.contains(near) && !published.contains(near)) return false;
+                if (carved.contains(near)
+                        && (!published.contains(near) || pendingResends.contains(near)))
+                    return false;
             }
         }
         return true;
@@ -316,21 +325,38 @@ public final class ExplosionTom {
                         });
     }
 
-    private long columnBits(int x, int z) {
-        return HashCommon.mix(seed ^ (BlockPos.asLong(x, 0, z) * COLUMN_SALT));
+    private long columnBits(int dx, int dz) {
+        return HashCommon.mix(seed ^ (BlockPos.asLong(dx, 0, dz) * COLUMN_SALT));
     }
 
-    private int floor(int x, int z) {
-        double planar = Math.sqrt(x * x + z * z);
+    private int floor(int dx, int dz) {
+        double planar = Math.sqrt(dx * dx + dz * dz);
         double cA =
                 (terrain - Math.pow(Math.E, -Math.pow(planar, 2) / 40000) * 13)
-                        + (int) (columnBits(x, z) & 1);
+                        + (int) (columnBits(dx, dz) & 1);
         double cB = cA + Math.pow(Math.E, -Math.pow(planar - 200, 2) / 400) * 13;
         return (int) (cB + Math.pow(Math.E, -Math.pow(planar - 500, 2) / 2000) * 37);
     }
 
+    private boolean needsWashing(long ck) {
+        if (radius <= WASH_DISTANCE - SPREAD * Math.sqrt(2)) return false;
+        int minX = (ChunkPos.getX(ck) << 4) - posX;
+        int minZ = (ChunkPos.getZ(ck) << 4) - posZ;
+        int maxX = minX + 15;
+        int maxZ = minZ + 15;
+        int nearX = Math.max(Math.max(minX, -maxX), 0);
+        int nearZ = Math.max(Math.max(minZ, -maxZ), 0);
+        int farX = Math.max(Math.abs(minX), Math.abs(maxX));
+        int farZ = Math.max(Math.abs(minZ), Math.abs(maxZ));
+        double margin = 2 * SPREAD * Math.sqrt(2);
+        return Math.hypot(nearX, nearZ) <= WASH_DISTANCE + margin
+                && Math.hypot(farX, farZ) >= WASH_DISTANCE - margin;
+    }
+
     private final class CraterWork extends BulkSectionUpdates.Work {
         private final long ck;
+        private final int minY = level.getMinY();
+        private final int maxY = level.getMaxY();
         private final Long2ObjectOpenHashMap<BlockState> oldStates = new Long2ObjectOpenHashMap<>();
         private final Long2ObjectOpenHashMap<BlockState> deferred = new Long2ObjectOpenHashMap<>();
         private final IntArrayList washing = new IntArrayList();
@@ -349,17 +375,36 @@ public final class ExplosionTom {
         protected void calculate(SectionSnapshot snapshot) {
             Long2ObjectOpenHashMap<BlockState> writes = TL_UPDATES.get();
             writes.clear();
-            LevelChunkSection[] sections = snapshot.sections;
-            int x0 = ChunkPos.getX(ck) << 4;
-            int z0 = ChunkPos.getZ(ck) << 4;
+            int chunkX = ChunkPos.getX(ck) << 4;
+            int chunkZ = ChunkPos.getZ(ck) << 4;
             for (int lx = 0; lx < 16; lx++) {
                 for (int lz = 0; lz < 16; lz++) {
-                    int x = x0 + lx - posX;
-                    int z = z0 + lz - posZ;
-                    if (radius2 - (x * x + z * z) > 0) {
-                        carveColumn(sections, writes, lx, lz, x, z);
-                    } else {
-                        haloColumn(sections, writes, lx, lz, x, z);
+                    int dx = chunkX + lx - posX;
+                    int dz = chunkZ + lz - posZ;
+                    if (radius2 - (dx * dx + dz * dz) > 0)
+                        carveColumn(snapshot.sections, writes, lx, lz, dx, dz);
+                    else haloColumn(snapshot.sections, writes, lx, lz, dx, dz);
+                }
+            }
+            if (needsWashing(ck)) {
+                int x0 = ChunkPos.getX(ck) << 4;
+                int z0 = ChunkPos.getZ(ck) << 4;
+                for (int lx = 0; lx < 16; lx++) {
+                    for (int lz = 0; lz < 16; lz++) {
+                        int x = x0 + lx - posX;
+                        int z = z0 + lz - posZ;
+                        if (radius2 - (x * x + z * z) <= 0) continue;
+                        float distance = (float) Math.sqrt((double) x * x + (double) z * z);
+                        int craterFloor = floor(x, z);
+                        int top = topBlock(snapshot.sections, lx, lz);
+                        if (distance < WASH_DISTANCE
+                                && distance >= WASH_DISTANCE - SPREAD * Math.sqrt(2)
+                                && top > Math.max(craterFloor, terrain + 1)) {
+                            washing.add(posX + x);
+                            washing.add(posZ + z);
+                            washing.add(Math.max(craterFloor, terrain + 1) + 1);
+                            washing.add(top);
+                        }
                     }
                 }
             }
@@ -372,49 +417,38 @@ public final class ExplosionTom {
                 Long2ObjectOpenHashMap<BlockState> writes,
                 int lx,
                 int lz,
-                int x,
-                int z) {
-            int bx = posX + x;
-            int bz = posZ + z;
-            float distance = (float) Math.sqrt((double) x * x + (double) z * z);
-            int craterFloor = floor(x, z);
+                int dx,
+                int dz) {
+            int bx = posX + dx;
+            int bz = posZ + dz;
+            float distance = (float) Math.sqrt((double) dx * dx + (double) dz * dz);
+            int craterFloor = floor(dx, dz);
             int height = LEGACY_TERRAIN - 14;
             int offset = 20;
+            int shift = terrain - LEGACY_TERRAIN;
             int threshold =
                     shift
                             + (int)
-                                    ((float) Math.sqrt(x * x + z * z)
+                                    ((float) Math.sqrt(dx * dx + dz * dz)
                                             * (float) (height + offset)
                                             / (float) radius)
-                            + (int) ((columnBits(x, z) >>> 1) & 1)
+                            + (int) ((columnBits(dx, dz) >>> 1) & 1)
                             - offset;
-            int bottom = Math.max(shift, level.getMinY());
+            int bottom = Math.max(shift, minY);
             int top = topBlock(sections, lx, lz);
             int y = Math.max(craterFloor, top);
             if (craterFloor < terrain + 1) y = Math.max(y, terrain + 1);
-            y = Math.min(y, level.getMaxY());
-
-            if (distance < WASH_DISTANCE
-                    && distance >= WASH_DISTANCE - SPREAD * Math.sqrt(2)
-                    && top > Math.max(craterFloor, terrain + 1)) {
-                washing.add(bx);
-                washing.add(bz);
-                washing.add(Math.max(craterFloor, terrain + 1) + 1);
-                washing.add(top);
-            }
-
+            y = Math.min(y, maxY);
             BlockState tektite = ModBlocks.TEKTITE.get().defaultBlockState();
             BlockState osmiridium = ModBlocks.ORE_TEKTITE_OSMIRIDIUM.get().defaultBlockState();
             BlockState lava = Blocks.LAVA.defaultBlockState();
             for (; y > threshold && y > bottom; y--) {
                 long pos = BlockPos.asLong(bx, y, bz);
-                if (y <= craterFloor) {
+                if (y <= craterFloor)
                     writes.put(pos, HashCommon.mix(seed ^ pos) % 200 == 0 ? osmiridium : tektite);
-                } else if (y > terrain + 1) {
+                else if (y > terrain + 1) {
                     if (distance < WASH_DISTANCE) writes.put(pos, AIR);
-                } else {
-                    writes.put(pos, lava);
-                }
+                } else writes.put(pos, lava);
             }
         }
 
@@ -423,27 +457,30 @@ public final class ExplosionTom {
                 Long2ObjectOpenHashMap<BlockState> writes,
                 int lx,
                 int lz,
-                int x,
-                int z) {
+                int dx,
+                int dz) {
             int lowest = Integer.MAX_VALUE;
-            for (int dx = -SPREAD; dx <= SPREAD; dx++) {
-                for (int dz = -SPREAD; dz <= SPREAD; dz++) {
-                    int nx = x + dx;
-                    int nz = z + dz;
-                    if (radius2 - (nx * nx + nz * nz) > 0) lowest = Math.min(lowest, floor(nx, nz));
+            for (int nx = -SPREAD; nx <= SPREAD; nx++) {
+                for (int nz = -SPREAD; nz <= SPREAD; nz++) {
+                    int ax = dx + nx;
+                    int az = dz + nz;
+                    if (radius2 - (ax * ax + az * az) > 0) lowest = Math.min(lowest, floor(ax, az));
                 }
             }
             if (lowest == Integer.MAX_VALUE) return;
-            int bx = posX + x;
-            int bz = posZ + z;
-            BlockState lava = Blocks.LAVA.defaultBlockState();
-            int from = Math.min(terrain + 1, level.getMaxY());
-            int to = Math.max(lowest, level.getMinY() - 1);
+            int bx = posX + dx;
+            int bz = posZ + dz;
+            int from = Math.min(terrain + 1, maxY);
+            int to = Math.max(lowest, minY - 1);
             for (int y = from; y > to; y--) {
                 if (read(sections, lx, y, lz).isAir() || drenched(sections, lx, y, lz)) {
-                    writes.put(BlockPos.asLong(bx, y, bz), lava);
+                    writes.put(BlockPos.asLong(bx, y, bz), Blocks.LAVA.defaultBlockState());
                 }
             }
+        }
+
+        private BlockState read(LevelChunkSection[] sections, int lx, int y, int lz) {
+            return SectionAccess.read(sections, minY >> 4, lx, y, lz);
         }
 
         private boolean drenched(LevelChunkSection[] sections, int lx, int y, int lz) {
@@ -454,23 +491,15 @@ public final class ExplosionTom {
             return false;
         }
 
-        private BlockState read(LevelChunkSection[] sections, int lx, int y, int lz) {
-            int index = level.getSectionIndex(y);
-            if (index < 0 || index >= sections.length) return AIR;
-            LevelChunkSection section = sections[index];
-            return section.hasOnlyAir() ? AIR : section.getBlockState(lx, y & 15, lz);
-        }
-
         private int topBlock(LevelChunkSection[] sections, int lx, int lz) {
             for (int index = sections.length - 1; index >= 0; index--) {
                 LevelChunkSection section = sections[index];
                 if (section.hasOnlyAir()) continue;
                 for (int ly = 15; ly >= 0; ly--) {
-                    if (!section.getBlockState(lx, ly, lz).isAir())
-                        return level.getMinY() + (index << 4) + ly;
+                    if (!section.getBlockState(lx, ly, lz).isAir()) return minY + (index << 4) + ly;
                 }
             }
-            return level.getMinY() - 1;
+            return minY - 1;
         }
 
         @Override
@@ -508,7 +537,23 @@ public final class ExplosionTom {
                 chunk.markUnsaved();
                 CompletableFuture<?> lighting =
                         ChunkUtil.updateLight(level, chunk, lightChanges, sectionMask);
-                ChunkUtil.broadcastWholesaleResend(level, ck, lighting);
+                pendingResends.add(ck);
+                ChunkUtil.broadcastWholesaleResend(level, ck, lighting)
+                        .whenComplete(
+                                (_, cause) -> {
+                                    var server = level.getServer();
+                                    server.schedule(
+                                            server.wrapRunnable(
+                                                    () -> {
+                                                        if (closed) return;
+                                                        if (cause != null) {
+                                                            fail(cause);
+                                                            return;
+                                                        }
+                                                        pendingResends.remove(ck);
+                                                        releaseSettled(ck);
+                                                    }));
+                                });
             }
             published.add(ck);
             releaseSettled(ck);
@@ -544,8 +589,8 @@ public final class ExplosionTom {
 
         @Override
         protected void missing() {
-            awaitingHolder.add(ck);
             resubmit.add(ck);
+            chunkRequests.request(ck);
         }
 
         @Override

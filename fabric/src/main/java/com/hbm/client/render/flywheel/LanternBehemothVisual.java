@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.BlockEntityLanternBehemoth;
-import com.hbm.blocks.generic.BlockLanternBehemoth;
+import com.hbm.blockentity.prop.BehemothLanternBlockEntity;
+import com.hbm.blocks.generic.LanternBehemothBlock;
 import com.hbm.main.ResourceManager;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
@@ -17,6 +33,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.LightCoordsUtil;
@@ -24,8 +42,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
 public final class LanternBehemothVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityLanternBehemoth>
-        implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<BehemothLanternBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Material BODY_MATERIAL =
             SimpleMaterial.builderOf(Materials.CUTOUT_NO_CULL)
                     .texture(ResourceManager.lantern_rusty_tex)
@@ -66,7 +84,7 @@ public final class LanternBehemothVisual
 
     public LanternBehemothVisual(
             VisualizationContext context,
-            BlockEntityLanternBehemoth blockEntity,
+            BehemothLanternBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
         lantern =
@@ -77,7 +95,7 @@ public final class LanternBehemothVisual
                 instancerProvider()
                         .instancer(InstanceTypes.TRANSFORMED, LIGHT_PART.model())
                         .createInstance();
-        broken = blockState.getValue(BlockLanternBehemoth.BROKEN);
+        broken = blockState.getValue(LanternBehemothBlock.BROKEN);
         Matrix4f bodyPose = new Matrix4f().translate(.5F, 0F, .5F);
         if (broken)
             bodyPose.rotateX((float) Math.toRadians(5F)).rotateZ((float) Math.toRadians(10F));
@@ -95,7 +113,7 @@ public final class LanternBehemothVisual
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 

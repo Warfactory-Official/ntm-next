@@ -1,0 +1,171 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
+package com.hbm.blocks.network;
+
+import com.hbm.api.energymk2.CableData;
+import com.hbm.blockentity.machine.storage.BatteryBlockEntity;
+import com.hbm.blockentity.machine.storage.ReddBlockEntity;
+import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.PersistentItemTooltipProvider;
+import com.hbm.blocks.TickingEntityBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.capability.CapabilityBlock;
+import com.hbm.capability.MachineCaps;
+import com.hbm.items.ModDataComponents;
+import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.util.NumberFormatter;
+import com.mojang.serialization.MapCodec;
+import java.math.BigInteger;
+import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jspecify.annotations.Nullable;
+
+public class REDDBatteryBlock extends MultiblockCoreBlock
+        implements TickingEntityBlock, CapabilityBlock, PersistentItemTooltipProvider {
+    public static final MapCodec<REDDBatteryBlock> CODEC = simpleCodec(REDDBatteryBlock::new);
+
+    public REDDBatteryBlock(Properties props) {
+        super(props);
+    }
+
+    public static BlockPos[] ports(BlockPos core, Direction facing) {
+        Direction across = facing.getClockWise();
+        BlockPos[] out = new BlockPos[6];
+        int i = 0;
+        for (int forward : new int[] {2, -2}) {
+            for (int side : new int[] {2, -2}) {
+                out[i++] = core.relative(facing, forward).relative(across, side);
+            }
+        }
+        out[i++] = core.relative(across, 4);
+        out[i] = core.relative(across, -4);
+        return out;
+    }
+
+    private static Direction[] portFaces(Direction facing) {
+        Direction across = facing.getClockWise();
+        return new Direction[] {
+            facing, facing, facing.getOpposite(), facing.getOpposite(), across, across.getOpposite()
+        };
+    }
+
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected InteractionResult useAtCore(
+            BlockState coreState, Level level, BlockPos core, Player player, BlockHitResult hit) {
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
+        if (player.isShiftKeyDown()) return InteractionResult.SUCCESS;
+        if (level.getBlockEntity(core) instanceof MenuProvider menu) {
+            openCoreMenu(player, core, menu);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean wantsNeighborUpdates() {
+        return true;
+    }
+
+    @Override
+    public void cellNeighborChanged(ServerLevel level, BlockPos core, BlockPos cell) {
+        if (level.getBlockEntity(core) instanceof BatteryBlockEntity battery) battery.refreshMode();
+    }
+
+    @Override
+    public MachineCaps caps() {
+        return MachineCaps.of(ModBlockEntities.BATTERY_REDD).powerIn().powerOut().items().fe();
+    }
+
+    public static void mintRing(LevelNodeGraph<CableData> graph, BlockPos core, Direction facing) {
+        visitRing(
+                core,
+                facing,
+                (cell, mask) -> graph.addNode(cell.asLong(), CableData.INSTANCE, mask));
+    }
+
+    public static void removeRing(
+            LevelNodeGraph<CableData> graph, BlockPos core, Direction facing) {
+        visitRing(core, facing, (cell, mask) -> graph.removeNode(cell.asLong()));
+    }
+
+    private static void visitRing(BlockPos core, Direction facing, RingVisitor visitor) {
+        Direction across = facing.getClockWise();
+        BlockPos[] ports = ports(core, facing);
+        Direction[] faces = portFaces(facing);
+
+        for (int t = -3; t <= 3; t++) {
+            visitor.cell(
+                    core.relative(across, t),
+                    (1 << across.ordinal())
+                            | (1 << across.getOpposite().ordinal())
+                            | (t == 2 || t == -2
+                                    ? (1 << facing.ordinal())
+                                            | (1 << facing.getOpposite().ordinal())
+                                    : 0));
+        }
+        for (int side : new int[] {2, -2}) {
+            for (int forward : new int[] {1, -1}) {
+                visitor.cell(
+                        core.relative(across, side).relative(facing, forward),
+                        (1 << facing.ordinal()) | (1 << facing.getOpposite().ordinal()));
+            }
+        }
+        for (int i = 0; i < ports.length; i++) {
+            visitor.cell(
+                    ports[i], (1 << faces[i].ordinal()) | (1 << faces[i].getOpposite().ordinal()));
+        }
+    }
+
+    @Override
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new ReddBlockEntity(pos, state);
+    }
+
+    private interface RingVisitor {
+        void cell(BlockPos pos, int mask);
+    }
+
+    @Override
+    public void appendPersistentInfo(ItemStack stack, Consumer<Component> adder) {
+        BigInteger charge = stack.get(ModDataComponents.REDD_CHARGE.get());
+        if (charge == null) return;
+        adder.accept(
+                Component.literal(NumberFormatter.formatGrouped(charge) + " HE")
+                        .withStyle(ChatFormatting.YELLOW));
+    }
+}

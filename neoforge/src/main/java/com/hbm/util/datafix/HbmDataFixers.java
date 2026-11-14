@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.util.datafix;
 
@@ -14,8 +30,11 @@ import net.minecraft.nbt.NbtOps;
 public final class HbmDataFixers {
 
     public static final String VERSION_KEY = "hbm_data_version";
-    public static final int CURRENT = 7;
+    public static final int CURRENT = 13;
     static final DSL.TypeReference CHUNK = () -> "hbm:chunk";
+    static final DSL.TypeReference ENTITY_CHUNK = () -> "hbm:entity_chunk";
+    static final DSL.TypeReference PLAYER = () -> "hbm:player";
+    static final DSL.TypeReference SEALED_ITEMS = () -> "hbm:sealed_items";
     private static final DataFixer FIXER = build();
 
     private HbmDataFixers() {}
@@ -38,15 +57,43 @@ public final class HbmDataFixers {
         builder.addFixer(new PadSizeNameFix(v6));
         Schema v7 = builder.addSchema(7, Schema::new);
         builder.addFixer(new CoreIndexPopulationFix(v7));
+        Schema v8 = builder.addSchema(8, Schema::new);
+        builder.addFixer(new FluidPumpBufferRemovalFix(v8));
+        Schema v9 = builder.addSchema(9, Schema::new);
+        builder.addFixer(new PileChannelCountFix(v9));
+        Schema v10 = builder.addSchema(10, Schema::new);
+        builder.addFixer(new RecipeProgressErrorIntroductionFix(v10));
+        Schema v11 = builder.addSchema(11, Schema::new);
+        builder.addFixer(new GunFluidKeyFix(v11));
+        Schema v12 = builder.addSchema(12, Schema::new);
+        builder.addFixer(new FalloutJournalIntroductionFix(v12));
+        Schema v13 = builder.addSchema(13, Schema::new);
+        builder.addFixer(new WeaponModKeyFix(v13));
         return builder.build().fixer();
     }
 
     public static CompoundTag upgradeChunk(CompoundTag tag) {
+        return upgrade(CHUNK, tag);
+    }
+
+    public static CompoundTag upgradeEntityChunk(CompoundTag tag) {
+        return upgrade(ENTITY_CHUNK, tag);
+    }
+
+    public static CompoundTag upgradePlayer(CompoundTag tag) {
+        return upgrade(PLAYER, tag);
+    }
+
+    public static CompoundTag upgradeSealedItems(CompoundTag tag) {
+        return upgrade(SEALED_ITEMS, tag);
+    }
+
+    private static CompoundTag upgrade(DSL.TypeReference type, CompoundTag tag) {
         int version = tag.getIntOr(VERSION_KEY, 0);
         if (version >= CURRENT) return tag;
-        CompoundTag fixed =
+        var fixed =
                 (CompoundTag)
-                        FIXER.update(CHUNK, new Dynamic<>(NbtOps.INSTANCE, tag), version, CURRENT)
+                        FIXER.update(type, new Dynamic<>(NbtOps.INSTANCE, tag), version, CURRENT)
                                 .getValue();
         fixed.putInt(VERSION_KEY, CURRENT);
         return fixed;

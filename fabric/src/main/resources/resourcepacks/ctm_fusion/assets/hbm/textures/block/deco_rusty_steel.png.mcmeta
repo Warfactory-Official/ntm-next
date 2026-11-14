@@ -2,17 +2,10 @@
   "fusion": {
     "type": "connecting",
     "connections": {
-      "type": "or",
-      "predicates": [
-        {
-          "type": "is_same_block"
-        },
-        {
-          "type": "match_block",
-          "blocks": [
-            "hbm:deco_steel"
-          ]
-        }
+      "type": "match_block",
+      "blocks": [
+        "hbm:deco_rusty_steel",
+        "hbm:deco_steel"
       ]
     },
     "layout": "full"

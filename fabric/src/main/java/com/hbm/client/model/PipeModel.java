@@ -1,10 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.lib.Library;
+import com.hbm.blocks.generic.DecoPipeBlock.Kind;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import com.mojang.math.Transformation;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +43,12 @@ import org.jspecify.annotations.Nullable;
 
 public record PipeModel(Kind kind) implements BlockModel<PipeModel.Mesh> {
 
-    public static final Identifier FRAME_BASE = Library.id("block/deco_pipe_frame_base");
+    public static final Identifier FRAME_BASE = RegistryUtil.id("block/deco_pipe_frame_base");
     public static final String TOP_SLOT = "top";
     public static final String SIDE_SLOT = "side";
     public static final String FRAME_SLOT = "frame";
     public static final String MESH_SLOT = "mesh";
-    private static final Identifier FRAME_OBJ = Library.id("models/blocks/pipe_frame.obj");
+    private static final Identifier FRAME_OBJ = RegistryUtil.id("models/blocks/pipe_frame.obj");
     private static final float OFFSET_Y = 0.5F;
     private static final String[] TOP = {"Top"};
     private static final String[] SIDE = {"Side"};
@@ -46,6 +63,9 @@ public record PipeModel(Kind kind) implements BlockModel<PipeModel.Mesh> {
                 new Matrix4f()
                         .rotateY((float) Math.toRadians(yDeg))
                         .rotateX((float) Math.toRadians(xDeg));
+        for (int c = 0; c < 3; c++) {
+            for (int r = 0; r < 3; r++) m.set(c, r, Math.round(m.get(c, r)));
+        }
         return Boxes.pose(new Transformation(m));
     }
 
@@ -95,21 +115,6 @@ public record PipeModel(Kind kind) implements BlockModel<PipeModel.Mesh> {
                 prepared.obj(),
                 prepared.frame(),
                 state.getValue(RotatedPillarBlock.AXIS));
-    }
-
-    public enum Kind {
-        PLAIN("models/blocks/pipe.obj", false),
-        RIM("models/blocks/pipe_rim.obj", false),
-        QUAD("models/blocks/pipe_quad.obj", false),
-        FRAMED("models/blocks/pipe_rim.obj", true);
-
-        public final Identifier obj;
-        public final boolean framed;
-
-        Kind(String path, boolean framed) {
-            this.obj = Library.id(path);
-            this.framed = framed;
-        }
     }
 
     public record Mesh(HFRWavefrontObject obj, @Nullable HFRWavefrontObject frame) {}

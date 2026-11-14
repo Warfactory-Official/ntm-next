@@ -1,19 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle.helper;
 
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.CasingEjectPayload;
-import com.hbm.packet.toclient.GunCasingEjectPayload;
+import com.hbm.packet.layout.CasingLayout;
+import com.hbm.packet.layout.GunCasingLayout;
+import com.hbm.packet.threading.ThreadedPayload;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class CasingCreator {
+
+    private static final double RANGE = 50D;
+    private static final float CROUCH_DROP = 0.075F;
+    private static final double FLIGHT_SAG = 0.04D;
 
     public static void composeEffect(
             Level level,
@@ -96,21 +118,19 @@ public class CasingCreator {
             double smokeLift,
             int nodeLife) {
         if (!(level instanceof ServerLevel server)) return;
-
-        Vec3 motion =
-                new Vec3(sideMotion, heightMotion, frontMotion)
-                        .xRot(-pitch / 180F * (float) Math.PI)
-                        .yRot(-yaw / 180F * (float) Math.PI);
-
-        double mX = motion.x + level.getRandom().nextGaussian() * motionVariance;
-        double mY = motion.y + level.getRandom().nextGaussian() * motionVariance;
-        double mZ = motion.z + level.getRandom().nextGaussian() * motionVariance;
-
-        PacketWire.sendToAllAround(
-                new CasingEjectPayload(
-                        x, y, z, mX, mY, mZ, yaw, pitch, mPitch, mYaw, casing, smoking, smokeLife,
-                        smokeLift, nodeLife),
-                new TargetPoint(server, x, y, z, 50));
+        var kick =
+                jitter(
+                        look(sideMotion, heightMotion, frontMotion, pitch, yaw),
+                        level.getRandom(),
+                        motionVariance);
+        broadcast(
+                server,
+                x,
+                y,
+                z,
+                CasingLayout.encode(
+                        x, y, z, kick.x, kick.y, kick.z, yaw, pitch, mPitch, mYaw, casing, smoking,
+                        smokeLife, smokeLift, nodeLife));
     }
 
     public static void composeEffect(
@@ -169,103 +189,61 @@ public class CasingCreator {
             int nodeLife,
             double legacyFrontOffset) {
         if (!(level instanceof ServerLevel server)) return;
-
-        if (player.isShiftKeyDown()) heightOffset -= 0.075F;
-
-        Vec3 offset =
-                new Vec3(sideOffset, heightOffset, frontOffset)
-                        .xRot(-player.getXRot() / 180F * (float) Math.PI)
-                        .yRot(-player.getYRot() / 180F * (float) Math.PI);
-
-        double x = player.getX() + offset.x;
-        double y = player.getY() + player.getEyeHeight() + offset.y;
-        double z = player.getZ() + offset.z;
-
-        Vec3 motion =
-                new Vec3(sideMotion, heightMotion, frontMotion)
-                        .xRot(-player.getXRot() / 180F * (float) Math.PI)
-                        .yRot(-player.getYRot() / 180F * (float) Math.PI);
-
-        double mX =
-                player.getDeltaMovement().x
-                        + motion.x
-                        + player.getRandom().nextGaussian() * motionVariance;
-        double mY =
-                player.getDeltaMovement().y
-                        + motion.y
-                        + player.getRandom().nextGaussian() * motionVariance;
-        double mZ =
-                player.getDeltaMovement().z
-                        + motion.z
-                        + player.getRandom().nextGaussian() * motionVariance;
-
-        if (player instanceof Player p && p.getAbilities().flying) mY -= 0.04D;
+        float pitch = player.getXRot();
+        float yaw = player.getYRot();
+        double height = player.isShiftKeyDown() ? heightOffset - CROUCH_DROP : heightOffset;
+        var eyes = new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
+        var at = eyes.add(look(sideOffset, height, frontOffset, pitch, yaw));
+        var kick =
+                jitter(
+                        player.getDeltaMovement()
+                                .add(look(sideMotion, heightMotion, frontMotion, pitch, yaw)),
+                        player.getRandom(),
+                        motionVariance);
+        double kickY =
+                player instanceof Player p && p.getAbilities().flying
+                        ? kick.y - FLIGHT_SAG
+                        : kick.y;
 
         if (legacyFrontOffset == frontOffset) {
-            PacketWire.sendToAllAround(
-                    new CasingEjectPayload(
-                            x,
-                            y,
-                            z,
-                            mX,
-                            mY,
-                            mZ,
-                            player.getYRot(),
-                            player.getXRot(),
-                            mPitch,
-                            mYaw,
-                            casing,
-                            smoking,
-                            smokeLife,
-                            smokeLift,
-                            nodeLife),
-                    new TargetPoint(server, x, y, z, 50));
-        } else {
-            Vec3 legacyOffset =
-                    new Vec3(sideOffset, heightOffset, legacyFrontOffset)
-                            .xRot(-player.getXRot() / 180F * (float) Math.PI)
-                            .yRot(-player.getYRot() / 180F * (float) Math.PI);
-            PacketWire.sendToAllAround(
-                    new GunCasingEjectPayload(
-                            x,
-                            y,
-                            z,
-                            mX,
-                            mY,
-                            mZ,
-                            player.getYRot(),
-                            player.getXRot(),
-                            mPitch,
-                            mYaw,
-                            casing,
-                            smoking,
-                            smokeLife,
-                            smokeLift,
-                            nodeLife,
-                            false),
-                    new TargetPoint(server, x, y, z, 50));
-            double legacyX = player.getX() + legacyOffset.x;
-            double legacyY = player.getY() + player.getEyeHeight() + legacyOffset.y;
-            double legacyZ = player.getZ() + legacyOffset.z;
-            PacketWire.sendToAllAround(
-                    new GunCasingEjectPayload(
-                            legacyX,
-                            legacyY,
-                            legacyZ,
-                            mX,
-                            mY,
-                            mZ,
-                            player.getYRot(),
-                            player.getXRot(),
-                            mPitch,
-                            mYaw,
-                            casing,
-                            smoking,
-                            smokeLife,
-                            smokeLift,
-                            nodeLife,
-                            true),
-                    new TargetPoint(server, legacyX, legacyY, legacyZ, 50));
+            broadcast(
+                    server,
+                    at.x,
+                    at.y,
+                    at.z,
+                    CasingLayout.encode(
+                            at.x, at.y, at.z, kick.x, kickY, kick.z, yaw, pitch, mPitch, mYaw,
+                            casing, smoking, smokeLife, smokeLift, nodeLife));
+            return;
         }
+        var legacyAt = eyes.add(look(sideOffset, height, legacyFrontOffset, pitch, yaw));
+        for (var legacy : new boolean[] {false, true}) {
+            var from = legacy ? legacyAt : at;
+            broadcast(
+                    server,
+                    from.x,
+                    from.y,
+                    from.z,
+                    GunCasingLayout.encode(
+                            from.x, from.y, from.z, kick.x, kickY, kick.z, yaw, pitch, mPitch, mYaw,
+                            casing, smoking, smokeLife, smokeLift, nodeLife, legacy));
+        }
+    }
+
+    private static Vec3 look(double side, double up, double front, float pitch, float yaw) {
+        return new Vec3(side, up, front)
+                .xRot(-pitch / 180F * (float) Math.PI)
+                .yRot(-yaw / 180F * (float) Math.PI);
+    }
+
+    private static Vec3 jitter(Vec3 motion, RandomSource random, double variance) {
+        double x = motion.x + random.nextGaussian() * variance;
+        double y = motion.y + random.nextGaussian() * variance;
+        return new Vec3(x, y, motion.z + random.nextGaussian() * variance);
+    }
+
+    private static void broadcast(
+            ServerLevel server, double x, double y, double z, ThreadedPayload payload) {
+        PacketWire.sendToAllAround(payload, new TargetPoint(server, x, y, z, RANGE));
     }
 }

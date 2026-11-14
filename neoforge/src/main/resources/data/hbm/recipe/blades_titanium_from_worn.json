@@ -1,7 +1,14 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "I": "hbm:blades_titanium",
+    "I": {
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:blades_titanium",
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost",
+        "minecraft:damage": {}
+      }
+    },
     "P": "#c:plates/titanium"
   },
   "pattern": [

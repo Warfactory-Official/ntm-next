@@ -6,10 +6,13 @@
     "F": "#c:bolts/dura_steel",
     "P": "hbm:volcanic_pickaxe",
     "S": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:blades_steel",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     }
   },

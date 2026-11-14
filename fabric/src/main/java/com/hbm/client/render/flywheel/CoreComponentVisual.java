@@ -1,21 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.BlockEntityMachineBase;
-import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
-import com.hbm.blockentity.machine.BlockEntityCoreInjector;
-import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
-import com.hbm.blocks.machine.CoreComponent;
+import com.hbm.blockentity.MachineBlockEntity;
+import com.hbm.blockentity.machine.dfc.DfcEmitterBlockEntity;
+import com.hbm.blockentity.machine.dfc.DfcInjectorBlockEntity;
+import com.hbm.blockentity.machine.dfc.DfcStabilizerBlockEntity;
+import com.hbm.blocks.machine.CoreComponentBlock;
 import com.hbm.client.model.Meshes;
 import com.hbm.inventory.fluid.NTMFluidProperties;
-import com.hbm.lib.Library;
 import com.hbm.render.loader.GroupObject;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.Fluid;
@@ -25,11 +43,12 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-public final class CoreComponentVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachineBase> {
+public final class CoreComponentVisual extends AbstractBoundedBlockEntityVisual<MachineBlockEntity>
+        implements CulledDynamicVisual {
     private static final HFRWavefrontObject EMITTER_BODY =
-            Meshes.load(Library.id("models/core_emitter.obj"));
+            Meshes.load(RegistryUtil.id("models/core_emitter.obj"));
     private static final HFRWavefrontObject INJECTOR_BODY =
-            Meshes.load(Library.id("models/core_injector.obj"));
+            Meshes.load(RegistryUtil.id("models/core_injector.obj"));
     private final BeamVisual[] beams;
     private final AABB rawBodyBounds;
     private final int maxRange;
@@ -43,18 +62,16 @@ public final class CoreComponentVisual extends HbmDynamicBlockEntityVisual<Block
     private boolean beamsHidden;
 
     public CoreComponentVisual(
-            VisualizationContext context, BlockEntityMachineBase blockEntity, float partialTick) {
+            VisualizationContext context, MachineBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        boolean emitter = blockEntity instanceof BlockEntityCoreEmitter;
-        boolean injector = blockEntity instanceof BlockEntityCoreInjector;
+        boolean emitter = blockEntity instanceof DfcEmitterBlockEntity;
+        boolean injector = blockEntity instanceof DfcInjectorBlockEntity;
         maxRange =
                 emitter
-                        ? BlockEntityCoreEmitter.RANGE
-                        : injector
-                                ? BlockEntityCoreInjector.RANGE
-                                : BlockEntityCoreStabilizer.RANGE;
+                        ? DfcEmitterBlockEntity.RANGE
+                        : injector ? DfcInjectorBlockEntity.RANGE : DfcStabilizerBlockEntity.RANGE;
         basePose.translate(.5F, 0F, .5F).rotateY((90F) * Mth.DEG_TO_RAD);
-        switch (blockState.getValue(CoreComponent.FACING)) {
+        switch (blockState.getValue(CoreComponentBlock.FACING)) {
             case DOWN -> basePose.translate(0F, .5F, -.5F).rotateX((90F) * Mth.DEG_TO_RAD);
             case UP -> basePose.translate(0F, .5F, .5F).rotateX((-90F) * Mth.DEG_TO_RAD);
             case NORTH -> basePose.rotateY((90F) * Mth.DEG_TO_RAD);
@@ -77,14 +94,14 @@ public final class CoreComponentVisual extends HbmDynamicBlockEntityVisual<Block
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
         long time = level.getGameTime();
         int phase = (int) time % 1000;
-        if (blockEntity instanceof BlockEntityCoreEmitter emitter) {
+        if (blockEntity instanceof DfcEmitterBlockEntity emitter) {
             if (emitter.beam <= 0) {
                 hide();
                 return;
@@ -122,7 +139,7 @@ public final class CoreComponentVisual extends HbmDynamicBlockEntityVisual<Block
                     .0625F,
                     0x401500,
                     0x401500);
-        } else if (blockEntity instanceof BlockEntityCoreInjector injector) {
+        } else if (blockEntity instanceof DfcInjectorBlockEntity injector) {
             for (int i = 0; i < 2; i++) {
                 var tank = injector.tanks[i];
                 if (injector.beam <= 0 || tank.getFill() <= 0) {
@@ -151,7 +168,7 @@ public final class CoreComponentVisual extends HbmDynamicBlockEntityVisual<Block
                         0x808080);
             }
         } else {
-            var stabilizer = (BlockEntityCoreStabilizer) blockEntity;
+            var stabilizer = (DfcStabilizerBlockEntity) blockEntity;
             if (stabilizer.beam <= 0) {
                 hide();
                 return;

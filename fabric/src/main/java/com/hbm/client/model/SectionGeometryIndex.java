@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.machine.LaunchpadSoyuz;
-import com.hbm.blocks.machine.LaunchpadSoyuzAnchorCell;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.machine.LaunchpadSoyuzAnchorCellBlock;
+import com.hbm.blocks.machine.LaunchpadSoyuzBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
@@ -28,6 +44,8 @@ import org.jspecify.annotations.Nullable;
 public final class SectionGeometryIndex {
     private final Long2IntOpenHashMap owners = new Long2IntOpenHashMap();
     private final Long2ObjectOpenHashMap<long[]> sections = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectOpenHashMap<SectionGeometry.Snapshot> snapshots =
+            new Long2ObjectOpenHashMap<>();
     private final Long2ObjectOpenHashMap<IntArrayList> chunkOwners = new Long2ObjectOpenHashMap<>();
     private final LongOpenHashSet loadedChunks = new LongOpenHashSet();
     private final LongOpenHashSet changedSections = new LongOpenHashSet();
@@ -83,15 +101,15 @@ public final class SectionGeometryIndex {
         int previous = owners.get(key);
         BlockPos geometryPos = pos;
         BlockState renderState = state;
-        if (state.getBlock() instanceof LaunchpadSoyuzAnchorCell) {
-            geometryPos = LaunchpadSoyuzAnchorCell.core(pos, state);
+        if (state.getBlock() instanceof LaunchpadSoyuzAnchorCellBlock) {
+            geometryPos = LaunchpadSoyuzAnchorCellBlock.core(pos, state);
             renderState =
                     ModBlocks.LAUNCHPAD_SOYUZ
                             .get()
                             .defaultBlockState()
                             .setValue(
-                                    BlockMultiblockCore.FACING,
-                                    state.getValue(BlockMultiblockCore.FACING));
+                                    MultiblockCoreBlock.FACING,
+                                    state.getValue(MultiblockCoreBlock.FACING));
         }
         var model = SectionedModel.forState(renderState);
         if (previous != -1 && states[previous] == state && models[previous] == model) return;
@@ -183,13 +201,13 @@ public final class SectionGeometryIndex {
     private boolean ownsSection(int id, long section) {
         BlockState state = states[id];
         int segment;
-        if (state.getBlock() instanceof LaunchpadSoyuz) segment = 0;
-        else if (state.getBlock() instanceof LaunchpadSoyuzAnchorCell)
-            segment = state.getValue(LaunchpadSoyuzAnchorCell.SEGMENT);
+        if (state.getBlock() instanceof LaunchpadSoyuzBlock) segment = 0;
+        else if (state.getBlock() instanceof LaunchpadSoyuzAnchorCellBlock)
+            segment = state.getValue(LaunchpadSoyuzAnchorCellBlock.SEGMENT);
         else return true;
-        return LaunchpadSoyuz.sectionOwner(
+        return LaunchpadSoyuzBlock.sectionOwner(
                         BlockPos.of(geometryPositions[id]),
-                        renderStates[id].getValue(BlockMultiblockCore.FACING),
+                        renderStates[id].getValue(MultiblockCoreBlock.FACING),
                         SectionPos.x(section),
                         SectionPos.z(section))
                 == segment;
@@ -278,6 +296,7 @@ public final class SectionGeometryIndex {
     }
 
     private void dirty(ClientLevel level, long section) {
+        snapshots.remove(section);
         changedSections.add(section);
         int x = SectionPos.x(section), y = SectionPos.y(section), z = SectionPos.z(section);
         level.setSectionRangeDirty(x, y, z, x, y, z);
@@ -307,7 +326,7 @@ public final class SectionGeometryIndex {
             if (!cells.maybeHas(
                     state ->
                             SectionedModel.forState(state) != null
-                                    || state.getBlock() instanceof LaunchpadSoyuzAnchorCell))
+                                    || state.getBlock() instanceof LaunchpadSoyuzAnchorCellBlock))
                 continue;
             int bottom = chunk.getSectionYFromSectionIndex(section) << 4;
             for (int y = 0; y < 16; y++) {
@@ -315,7 +334,7 @@ public final class SectionGeometryIndex {
                     for (int x = 0; x < 16; x++) {
                         BlockState state = cells.getBlockState(x, y, z);
                         if (SectionedModel.forState(state) == null
-                                && !(state.getBlock() instanceof LaunchpadSoyuzAnchorCell))
+                                && !(state.getBlock() instanceof LaunchpadSoyuzAnchorCellBlock))
                             continue;
                         pos.set(
                                 chunk.getPos().getMinBlockX() + x,
@@ -352,6 +371,7 @@ public final class SectionGeometryIndex {
         for (int id : owners.values()) SectionedModel.release(layouts[id]);
         owners.clear();
         sections.clear();
+        snapshots.clear();
         chunkOwners.clear();
         loadedChunks.clear();
         free.clear();
@@ -370,6 +390,8 @@ public final class SectionGeometryIndex {
 
     public SectionGeometry.@Nullable Snapshot capture(ClientLevel level, long section) {
         refresh(level);
+        var cached = snapshots.get(section);
+        if (cached != null) return cached;
         long[] row = sections.get(section);
         if (row == null) return null;
         compactContributions(row);
@@ -391,7 +413,9 @@ public final class SectionGeometryIndex {
                             pos.getZ() - (SectionPos.z(section) << 4),
                             prepared[id]));
         }
-        return new SectionGeometry.Snapshot(SectionPos.of(section).origin(), parts);
+        var snapshot = new SectionGeometry.Snapshot(SectionPos.of(section).origin(), parts);
+        snapshots.put(section, snapshot);
+        return snapshot;
     }
 
     public void emptySections(ClientLevel level, ChunkLoadingRenderState state) {

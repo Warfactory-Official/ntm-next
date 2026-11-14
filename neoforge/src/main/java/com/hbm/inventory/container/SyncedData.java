@@ -1,15 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.container;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,10 +31,9 @@ import org.jspecify.annotations.Nullable;
 
 public final class SyncedData implements ContainerData {
 
-    private static final String INDEX = "container-sync.idx";
+    private static final String[] NONE = {};
     private static final Map<Class<?>, Layout> LAYOUTS = new ConcurrentHashMap<>();
-    private static final Map<String, Map<String, List<String[]>>> INDEXES =
-            new ConcurrentHashMap<>();
+    private static final Map<Class<?>, String[]> DECLARED = new ConcurrentHashMap<>();
 
     private final Layout layout;
     private final @Nullable BlockEntity source;
@@ -34,6 +43,10 @@ public final class SyncedData implements ContainerData {
         this.layout = layout;
         this.source = source;
         this.received = source == null ? new int[layout.slots] : new int[0];
+    }
+
+    public static void fields(Class<?> owner, String... names) {
+        DECLARED.put(owner, names);
     }
 
     public static SyncedData of(BlockEntity be) {
@@ -66,7 +79,7 @@ public final class SyncedData implements ContainerData {
         if (entry == null) {
             throw new IllegalArgumentException(
                     layout.owner.getName()
-                            + " has no @ContainerSync field '"
+                            + " ships no menu field '"
                             + field
                             + "'; it declares "
                             + layout.entries.keySet());
@@ -95,6 +108,11 @@ public final class SyncedData implements ContainerData {
     }
 
     private static Layout buildLayout(Class<?> beType) {
+        try {
+            Class.forName(beType.getName(), true, beType.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
         List<Class<?>> chain = new ArrayList<>();
         for (Class<?> c = beType;
                 c != null && BlockEntity.class.isAssignableFrom(c);
@@ -104,9 +122,9 @@ public final class SyncedData implements ContainerData {
         Map<String, Entry> entries = new LinkedHashMap<>();
         int slot = 0;
         for (Class<?> owner : chain) {
-            for (String[] row : indexOf(owner).getOrDefault(owner.getName(), List.of())) {
-                Entry entry = new Entry(field(owner, row[0]), row[1], slot);
-                entries.put(row[0], entry);
+            for (String name : DECLARED.getOrDefault(owner, NONE)) {
+                Entry entry = new Entry(field(owner, name), slot);
+                entries.put(name, entry);
                 slot += entry.slots;
             }
         }
@@ -123,38 +141,8 @@ public final class SyncedData implements ContainerData {
             f.setAccessible(true);
             return f;
         } catch (NoSuchFieldException e) {
-            throw new IllegalStateException(
-                    "the container-sync index names "
-                            + owner.getName()
-                            + "."
-                            + name
-                            + ", which does not exist - the index is stale",
-                    e);
+            throw new IllegalStateException(e);
         }
-    }
-
-    private static Map<String, List<String[]>> indexOf(Class<?> owner) {
-        return INDEXES.computeIfAbsent(owner.getPackageName(), pkg -> read(owner));
-    }
-
-    private static Map<String, List<String[]>> read(Class<?> owner) {
-        Map<String, List<String[]>> built = new LinkedHashMap<>();
-        try (InputStream in = owner.getResourceAsStream(INDEX)) {
-            if (in == null) return built;
-            try (BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-                for (String line; (line = reader.readLine()) != null; ) {
-                    if (line.isBlank()) continue;
-                    String[] parts = line.split(" ");
-                    built.computeIfAbsent(parts[0], k -> new ArrayList<>())
-                            .add(new String[] {parts[1], parts[2]});
-                }
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(
-                    "cannot read the container-sync index of " + owner.getPackageName(), e);
-        }
-        return built;
     }
 
     private record Layout(Class<?> owner, Map<String, Entry> entries, int slots, Entry[] bySlot) {}
@@ -166,9 +154,10 @@ public final class SyncedData implements ContainerData {
         private final int slot;
         private final int slots;
 
-        Entry(Field field, String type, int slot) {
+        Entry(Field field, int slot) {
+            Class<?> declared = field.getType();
             this.field = field;
-            this.type = type;
+            this.type = declared.isEnum() ? "enum" : declared.getName();
             this.slot = slot;
             this.slots =
                     switch (type) {

@@ -1,24 +1,54 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.world.gen.util;
 
-import com.hbm.blockentity.BlockEntityLogicBlock;
-import com.hbm.blockentity.BlockEntitySkeletonHolder;
-import com.hbm.blockentity.bomb.BlockEntityCharge;
-import com.hbm.blockentity.machine.BlockEntityLockableBase;
+import com.hbm.blockentity.SkeletonHolderBlockEntity;
+import com.hbm.blockentity.bomb.ChargeBlockEntity;
+import com.hbm.blockentity.encounter.LogicBlockEntity;
+import com.hbm.blockentity.security.LockableBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.bomb.BlockChargeBase;
+import com.hbm.blocks.bomb.BaseChargeBlock;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.item.EntityFallingBlockNT;
-import com.hbm.entity.mob.EntityUndeadSoldier;
-import com.hbm.entity.mob.ai.EntityAIFireGun;
-import com.hbm.items.EnumSecretType;
+import com.hbm.entity.item.FallingBlockNTEntity;
+import com.hbm.entity.mob.UndeadSoldierEntity;
+import com.hbm.entity.mob.ai.FireGunGoal;
 import com.hbm.items.ModItems;
+import com.hbm.items.variant.SecretPartType;
 import com.hbm.items.weapon.sedna.factory.GunFactory;
-import com.hbm.lib.Library;
-import com.hbm.platform.NeoForgePlatform;
+import com.hbm.platform.Platform;
 import com.hbm.util.MobUtil;
+import com.hbm.util.RegistryUtil;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.WorldgenHash;
 import com.hbm.world.gen.WorldgenHeight;
@@ -51,13 +81,12 @@ import net.minecraft.world.phys.AABB;
 
 public final class LogicBlockActions {
 
-    public static final Map<String, Consumer<BlockEntityLogicBlock>> ACTIONS =
-            new LinkedHashMap<>();
+    public static final Map<String, Consumer<LogicBlockEntity>> ACTIONS = new LinkedHashMap<>();
 
     private static final long POWER_LOCK_PINS =
-            WorldgenHash.identifier(Library.id("logic/power_lock_pins"));
+            WorldgenHash.identifier(RegistryUtil.id("logic/power_lock_pins"));
     private static final long ABERRATOR_REWARD =
-            WorldgenHash.identifier(Library.id("logic/aberrator_reward"));
+            WorldgenHash.identifier(RegistryUtil.id("logic/aberrator_reward"));
 
     static {
         ACTIONS.put("FODDER_WAVE", LogicBlockActions::fodderWave);
@@ -76,7 +105,7 @@ public final class LogicBlockActions {
 
     private LogicBlockActions() {}
 
-    private static Consumer<BlockEntityLogicBlock> deadGuyCrane() {
+    private static Consumer<LogicBlockEntity> deadGuyCrane() {
         return tile -> {
             if (tile.phase != 1 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
@@ -96,27 +125,27 @@ public final class LogicBlockActions {
             Player player = players.getFirst();
 
             level.setBlockAndUpdate(pos, ModBlocks.SKELETON_HOLDER.get().defaultBlockState());
-            if (!(level.getBlockEntity(pos) instanceof BlockEntitySkeletonHolder skeleton)) return;
+            if (!(level.getBlockEntity(pos) instanceof SkeletonHolderBlockEntity skeleton)) return;
 
-            skeleton.item =
+            skeleton.hbm$syncSet$SkeletonHolderBlockEntity$item(
                     hasHangman(player)
                             ? new ItemStack(ModItems.CLAY_TABLET)
-                            : new ItemStack(ModItems.GUN_HANGMAN);
+                            : new ItemStack(ModItems.GUN_HANGMAN));
             skeleton.setChanged();
             BlockState state = level.getBlockState(pos);
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);
         };
     }
 
-    private static void deadGuyBaseTower(BlockEntityLogicBlock tile) {
+    private static void deadGuyBaseTower(LogicBlockEntity tile) {
         if (tile.phase != 1 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();
         level.setBlockAndUpdate(pos, ModBlocks.SKELETON_HOLDER.get().defaultBlockState());
-        if (!(level.getBlockEntity(pos) instanceof BlockEntitySkeletonHolder skeleton)) return;
+        if (!(level.getBlockEntity(pos) instanceof SkeletonHolderBlockEntity skeleton)) return;
 
         int roll = level.getRandom().nextInt(100);
-        skeleton.item =
+        skeleton.hbm$syncSet$SkeletonHolderBlockEntity$item(
                 roll < 44
                         ? new ItemStack(
                                 ModItems.AMMO_STANDARD.get(GunFactory.EnumAmmo.CT_MORTAR), 3)
@@ -130,8 +159,8 @@ public final class LogicBlockActions {
                                                         GunFactory.EnumAmmo.NUKE_STANDARD))
                                         : roll < 96
                                                 ? ModItems.ITEM_SECRET.stack(
-                                                        EnumSecretType.ABERRATOR)
-                                                : ModItems.ITEM_SECRET.stack(EnumSecretType.FOLLY);
+                                                        SecretPartType.ABERRATOR)
+                                                : ModItems.ITEM_SECRET.stack(SecretPartType.FOLLY));
         skeleton.setChanged();
         BlockState state = level.getBlockState(pos);
         level.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);
@@ -145,7 +174,7 @@ public final class LogicBlockActions {
         return false;
     }
 
-    private static void collapseRoofRad5(BlockEntityLogicBlock tile) {
+    private static void collapseRoofRad5(LogicBlockEntity tile) {
         if (tile.phase == 0 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos origin = tile.getBlockPos();
@@ -161,7 +190,7 @@ public final class LogicBlockActions {
                     BlockPos pos = origin.offset(x, y, z);
                     BlockState state = level.getBlockState(pos);
                     if (state.getBlock().getExplosionResistance() <= 70F) {
-                        EntityFallingBlockNT.fall(level, pos, state);
+                        FallingBlockNTEntity.fall(level, pos, state);
                     }
                 }
             }
@@ -169,7 +198,7 @@ public final class LogicBlockActions {
         level.setBlockAndUpdate(origin, Blocks.AIR.defaultBlockState());
     }
 
-    private static void powerLock(BlockEntityLogicBlock tile) {
+    private static void powerLock(LogicBlockEntity tile) {
         if (tile.phase != 0 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();
@@ -187,8 +216,8 @@ public final class LogicBlockActions {
 
         for (Direction direction : Direction.VALUES) {
             BlockEntity neighbor = level.getBlockEntity(pos.relative(direction));
-            if (neighbor instanceof BlockEntityLockableBase safe) {
-                safe.setPins(
+            if (neighbor instanceof LockableBlockEntity safe) {
+                safe.setPinCode(
                         NtmWorldgenFields.get(level).random(POWER_LOCK_PINS, pos).nextInt(999));
                 break;
             }
@@ -205,7 +234,7 @@ public final class LogicBlockActions {
                 pos.getZ() + 1 + radius);
     }
 
-    private static void bombCrane(BlockEntityLogicBlock tile) {
+    private static void bombCrane(LogicBlockEntity tile) {
         if (!(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();
@@ -213,30 +242,30 @@ public final class LogicBlockActions {
         if (tile.phase == 0) craneCharge(level, chargePos, 1200);
 
         if (tile.phase >= 1) {
-            if (level.getBlockEntity(chargePos) instanceof BlockEntityCharge charge) {
+            if (level.getBlockEntity(chargePos) instanceof ChargeBlockEntity charge) {
                 charge.arm(level);
             }
             level.setBlockAndUpdate(pos, hbmBlock("block_steel").defaultBlockState());
         }
     }
 
-    static BlockEntityCharge craneCharge(ServerLevel level, BlockPos chargePos, int timer) {
+    static ChargeBlockEntity craneCharge(ServerLevel level, BlockPos chargePos, int timer) {
         BlockState state =
                 ModBlocks.CHARGE_C4
                         .get()
                         .defaultBlockState()
-                        .setValue(BlockChargeBase.FACING, Direction.UP);
+                        .setValue(BaseChargeBlock.FACING, Direction.UP);
         boolean placed = level.getBlockState(chargePos) != state;
         if (placed) level.setBlockAndUpdate(chargePos, state);
-        BlockEntityCharge charge = (BlockEntityCharge) level.getBlockEntity(chargePos);
+        ChargeBlockEntity charge = (ChargeBlockEntity) level.getBlockEntity(chargePos);
         if (placed) {
-            charge.timer = timer;
+            charge.hbm$syncSet$ChargeBlockEntity$timer(timer);
             charge.changed();
         }
         return charge;
     }
 
-    private static void aberrator(BlockEntityLogicBlock tile) {
+    private static void aberrator(LogicBlockEntity tile) {
         if (!(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();
@@ -249,7 +278,7 @@ public final class LogicBlockActions {
                 double sin = Math.sin(Math.PI / 5D);
                 for (int i = 0; i < 10; i++) {
                     if (x > 8D) x += level.getRandom().nextInt(10) - 5;
-                    EntityUndeadSoldier soldier =
+                    UndeadSoldierEntity soldier =
                             ModEntities.UNDEAD_SOLDIER.get().create(level, EntitySpawnReason.EVENT);
                     if (soldier == null) break;
                     for (int retry = 0; retry < 7; retry++) {
@@ -261,7 +290,7 @@ public final class LogicBlockActions {
                         int sy = WorldgenHeight.lightBlocking(chunk, (int) sx, (int) sz);
                         soldier.snapTo(sx, sy, sz, i * 36F, 0F);
                         if (soldier.canSpawnAtCurrentPosition()) {
-                            NeoForgePlatform.finalizeSpawn(
+                            Platform.finalizeSpawn(
                                     soldier,
                                     level,
                                     level.getCurrentDifficultyAt(soldier.blockPosition()),
@@ -280,11 +309,11 @@ public final class LogicBlockActions {
         }
         if (tile.phase > 2) {
             BlockPos holderPos = pos.above(18);
-            if (level.getBlockEntity(holderPos) instanceof BlockEntitySkeletonHolder holder) {
-                holder.item =
+            if (level.getBlockEntity(holderPos) instanceof SkeletonHolderBlockEntity holder) {
+                holder.hbm$syncSet$SkeletonHolderBlockEntity$item(
                         NtmWorldgenFields.get(level).random(ABERRATOR_REWARD, pos).nextInt(5) == 0
-                                ? ModItems.ITEM_SECRET.stack(EnumSecretType.ABERRATOR)
-                                : new ItemStack(ModItems.CLAY_TABLET_1);
+                                ? ModItems.ITEM_SECRET.stack(SecretPartType.ABERRATOR)
+                                : new ItemStack(ModItems.CLAY_TABLET_1));
                 holder.setChanged();
                 BlockState state = level.getBlockState(holderPos);
                 level.sendBlockUpdated(holderPos, state, state, Block.UPDATE_CLIENTS);
@@ -295,14 +324,14 @@ public final class LogicBlockActions {
 
     private static Block hbmBlock(String path) {
         return BuiltInRegistries.BLOCK
-                .getOptional(Library.id(path))
+                .getOptional(RegistryUtil.id(path))
                 .orElseThrow(
                         () ->
                                 new IllegalStateException(
                                         "Logic action needs unregistered hbm:" + path));
     }
 
-    private static void skeletonGunTier(BlockEntityLogicBlock tile, int tier) {
+    private static void skeletonGunTier(LogicBlockEntity tile, int tier) {
         if (tile.phase != 1 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();
@@ -320,7 +349,7 @@ public final class LogicBlockActions {
                 MobUtil.equipArmorPool(skeleton, MobUtil.SLOT_POOL_MASKS, new Random());
                 MobUtil.equipArmorPool(skeleton, MobUtil.SLOT_POOL_RANGED, new Random());
             } else {
-                EntityAIFireGun gunTask = new EntityAIFireGun(skeleton);
+                FireGunGoal gunTask = new FireGunGoal(skeleton);
                 gunTask.minWait = 4;
                 gunTask.maxWait = 5;
                 gunTask.maxRange = tier == 2 ? 50D : 100D;
@@ -340,7 +369,7 @@ public final class LogicBlockActions {
         }
     }
 
-    private static void fodderWave(BlockEntityLogicBlock tile) {
+    private static void fodderWave(LogicBlockEntity tile) {
         if (tile.phase != 1 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();
@@ -366,7 +395,7 @@ public final class LogicBlockActions {
     }
 
     private static void zombies(
-            BlockEntityLogicBlock tile, Map<EquipmentSlot, List<MobUtil.WeightedItem>> pool) {
+            LogicBlockEntity tile, Map<EquipmentSlot, List<MobUtil.WeightedItem>> pool) {
         if (tile.phase != 1 || !(tile.getLevel() instanceof ServerLevel level)) return;
 
         BlockPos pos = tile.getBlockPos();

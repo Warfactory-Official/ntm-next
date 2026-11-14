@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8.7",
+  "package": "com.hbm.neoforge.mixin.replay",
+  "plugin": "com.hbm.mixin.compat.replay.ReplayTimingMixinPlugin",
+  "client": [
+    "MixinCustomPayload"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

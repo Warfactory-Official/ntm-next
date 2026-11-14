@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.recipes.loader;
 
@@ -8,60 +24,84 @@ import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
-import com.hbm.items.machine.ItemFluidIcon;
-import com.hbm.util.BobMathUtil;
+import com.hbm.items.machine.FluidIconItem;
 import com.hbm.util.DataCodecs;
+import com.hbm.util.NumberFormatter;
 import com.hbm.util.TooltipStyle;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 
-public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRecipe {
-    private @Nullable String name;
+public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, NamedRecipe {
     public CountIngredient[] inputItem;
     public FluidStackNTM[] inputFluid = FluidStackNTM.EMPTY;
     public FluidStackNTM[] outputFluid = FluidStackNTM.EMPTY;
     public int duration;
     public long power;
-    public String autoSwitchGroup = null;
+    public String autoSwitchGroup;
     public int order = Integer.MAX_VALUE;
     public List<String> conditions = List.of();
+
     protected String nameWrapper;
     protected WeightedList<Optional<ItemStackTemplate>>[] outputTemplate;
     protected Optional<ItemStackTemplate> iconTemplate = Optional.empty();
-    protected boolean writeIcon = false;
-    protected boolean iconFromFirstIngredient = false;
-    protected boolean customLocalization = false;
-    protected String[] authoredPools = null;
-    protected String[] blueprintPools = null;
-    protected String[] blueprintPools528 = null;
+    protected boolean writeIcon;
+    protected boolean iconFromFirstIngredient;
+    protected boolean customLocalization;
+    protected String[] authoredPools;
+    protected String[] blueprintPools;
+    protected String[] blueprintPools528;
     protected ResourceKey<Recipe<?>> id;
-    private volatile WeightedList<ItemStack>[] outputItem;
-    private volatile ItemStack icon;
+
+    private @Nullable String internalName;
+    private ItemStack explicitIcon = ItemStack.EMPTY;
+    private volatile WeightedList<ItemStack> @Nullable [] preparedOutputs;
+    private volatile ItemStack preparedIcon = ItemStack.EMPTY;
+    private volatile boolean materialized;
+    private volatile boolean awaitingInputDisplay;
+
+    private static final Codec<String> NAME_CODEC =
+            Codec.STRING.validate(
+                    value ->
+                            value.isEmpty()
+                                    ? DataResult.error(() -> "Recipe name must not be empty")
+                                    : DataResult.success(value));
 
     protected GenericRecipe(@Nullable String name) {
-        this.name = name;
+        internalName = name;
     }
+
+    public abstract GenericRecipes<?, ?> table();
 
     public static <T extends GenericRecipe> MapCodec<T> mapCodec(Function<String, T> factory) {
         return DataCodecs.recipe(baseCodec(factory, false));
@@ -74,69 +114,81 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
                         ? MapCodec.unit(List.of())
                         : CountIngredient.CODEC.listOf().optionalFieldOf("input_items", List.of());
         return RecordCodecBuilder.mapCodec(
-                i ->
-                        i.group(
-                                        ExtraCodecs.NON_EMPTY_STRING
+                instance ->
+                        instance.group(
+                                        NAME_CODEC
                                                 .optionalFieldOf("name")
                                                 .forGetter(GenericRecipe::authoredName),
-                                        inputs.forGetter(r -> nullSafe(r.inputItem)),
-                                        FluidStackNTM.CODEC
-                                                .listOf()
-                                                .optionalFieldOf("input_fluids", List.of())
-                                                .forGetter(r -> nullSafe(r.inputFluid)),
+                                        inputs.forGetter(
+                                                row ->
+                                                        row.inputItem == null
+                                                                ? List.of()
+                                                                : Arrays.asList(row.inputItem)),
+                                        FluidStackNTM.ARRAY_CODEC
+                                                .optionalFieldOf(
+                                                        "input_fluids", FluidStackNTM.EMPTY)
+                                                .forGetter(
+                                                        row ->
+                                                                row.inputFluid.length == 0
+                                                                        ? FluidStackNTM.EMPTY
+                                                                        : row.inputFluid),
                                         Outputs.TEMPLATE_CODEC
                                                 .listOf()
                                                 .optionalFieldOf("output_items", List.of())
                                                 .forGetter(GenericRecipe::outputTemplates),
-                                        FluidStackNTM.CODEC
-                                                .listOf()
-                                                .optionalFieldOf("output_fluids", List.of())
-                                                .forGetter(r -> nullSafe(r.outputFluid)),
+                                        FluidStackNTM.ARRAY_CODEC
+                                                .optionalFieldOf(
+                                                        "output_fluids", FluidStackNTM.EMPTY)
+                                                .forGetter(
+                                                        row ->
+                                                                row.outputFluid.length == 0
+                                                                        ? FluidStackNTM.EMPTY
+                                                                        : row.outputFluid),
                                         Codec.INT
                                                 .optionalFieldOf("duration", 0)
-                                                .forGetter(r -> r.duration),
+                                                .forGetter(row -> row.duration),
                                         Codec.LONG
                                                 .optionalFieldOf("power", 0L)
-                                                .forGetter(r -> r.power),
+                                                .forGetter(row -> row.power),
                                         ItemStackTemplate.MAP_CODEC
                                                 .codec()
                                                 .optionalFieldOf("icon")
                                                 .forGetter(GenericRecipe::iconTemplate),
                                         Codec.BOOL
                                                 .optionalFieldOf("icon_from_input", false)
-                                                .forGetter(r -> r.iconFromFirstIngredient),
+                                                .forGetter(row -> row.iconFromFirstIngredient),
                                         Codec.STRING
                                                 .optionalFieldOf("name_wrapper")
-                                                .forGetter(r -> Optional.ofNullable(r.nameWrapper)),
+                                                .forGetter(
+                                                        row ->
+                                                                Optional.ofNullable(
+                                                                        row.nameWrapper)),
                                         Codec.BOOL
                                                 .optionalFieldOf("custom_localization", false)
-                                                .forGetter(r -> r.customLocalization),
+                                                .forGetter(row -> row.customLocalization),
                                         Codec.STRING
                                                 .listOf()
                                                 .optionalFieldOf("blueprint_pools")
                                                 .forGetter(
-                                                        r ->
-                                                                Optional.ofNullable(r.authoredPools)
-                                                                        .map(Arrays::asList)),
+                                                        row -> optionalStrings(row.authoredPools)),
                                         Codec.STRING
                                                 .listOf()
                                                 .optionalFieldOf("blueprint_pools_528")
                                                 .forGetter(
-                                                        r ->
-                                                                Optional.ofNullable(
-                                                                                r.blueprintPools528)
-                                                                        .map(Arrays::asList)),
+                                                        row ->
+                                                                optionalStrings(
+                                                                        row.blueprintPools528)),
                                         Codec.STRING
                                                 .optionalFieldOf("auto_switch_group")
                                                 .forGetter(
-                                                        r ->
+                                                        row ->
                                                                 Optional.ofNullable(
-                                                                        r.autoSwitchGroup)),
+                                                                        row.autoSwitchGroup)),
                                         Codec.INT
                                                 .optionalFieldOf("order", Integer.MAX_VALUE)
-                                                .forGetter(r -> r.order))
+                                                .forGetter(row -> row.order))
                                 .apply(
-                                        i,
+                                        instance,
                                         (name,
                                                 inputItems,
                                                 inputFluids,
@@ -145,389 +197,286 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
                                                 duration,
                                                 power,
                                                 icon,
-                                                iconFromInput,
-                                                nameWrapper,
-                                                customLocalization,
+                                                inputIcon,
+                                                wrapper,
+                                                localized,
                                                 pools,
-                                                pools528,
+                                                specialPools,
                                                 group,
                                                 order) -> {
-                                            T recipe = factory.apply(name.orElse(null));
-                                            recipe.inputItem =
+                                            T row = factory.apply(name.orElse(null));
+                                            row.inputItem =
                                                     inputItems.toArray(CountIngredient[]::new);
-                                            recipe.inputFluid =
-                                                    inputFluids.toArray(FluidStackNTM[]::new);
-                                            recipe.outputTemplate = templateArray(outputItems);
-                                            recipe.outputFluid =
-                                                    outputFluids.toArray(FluidStackNTM[]::new);
-                                            recipe.duration = duration;
-                                            recipe.power = power;
-                                            recipe.iconTemplate = icon;
-                                            recipe.writeIcon = icon.isPresent();
-                                            recipe.iconFromFirstIngredient = iconFromInput;
-                                            recipe.nameWrapper = nameWrapper.orElse(null);
-                                            recipe.customLocalization = customLocalization;
-                                            recipe.authoredPools =
-                                                    pools.map(p -> p.toArray(String[]::new))
+                                            row.inputFluid = inputFluids;
+                                            row.outputTemplate = templateArray(outputItems);
+                                            row.outputFluid = outputFluids;
+                                            row.duration = duration;
+                                            row.power = power;
+                                            row.iconTemplate = icon;
+                                            row.writeIcon = icon.isPresent();
+                                            row.iconFromFirstIngredient = inputIcon;
+                                            row.nameWrapper = wrapper.orElse(null);
+                                            row.customLocalization = localized;
+                                            row.authoredPools =
+                                                    pools.map(
+                                                                    values ->
+                                                                            values.toArray(
+                                                                                    String[]::new))
                                                             .orElse(null);
-                                            recipe.blueprintPools528 =
-                                                    pools528.map(p -> p.toArray(String[]::new))
+                                            row.blueprintPools528 =
+                                                    specialPools
+                                                            .map(
+                                                                    values ->
+                                                                            values.toArray(
+                                                                                    String[]::new))
                                                             .orElse(null);
-                                            recipe.blueprintPools =
+                                            row.blueprintPools =
                                                     effectivePools(
-                                                            recipe.authoredPools,
-                                                            recipe.blueprintPools528,
+                                                            row.authoredPools,
+                                                            row.blueprintPools528,
                                                             RecipeConditions.test("enable_528"));
-                                            recipe.autoSwitchGroup = group.orElse(null);
-                                            recipe.order = order;
-                                            return recipe;
+                                            row.autoSwitchGroup = group.orElse(null);
+                                            row.order = order;
+                                            return row;
                                         }));
     }
 
     public static <T extends GenericRecipe, E> MapCodec<T> mapCodec(
             Function<String, T> factory,
             MapCodec<E> extras,
-            BiConsumer<T, E> apply,
-            Function<T, E> extract) {
+            BiConsumer<T, E> readExtras,
+            Function<T, E> writeExtras) {
         return DataCodecs.recipe(
                 Codec.mapPair(baseCodec(factory, false), extras)
                         .xmap(
                                 pair -> {
-                                    T recipe = pair.getFirst();
-                                    apply.accept(recipe, pair.getSecond());
-                                    return recipe;
+                                    T row = pair.getFirst();
+                                    readExtras.accept(row, pair.getSecond());
+                                    return row;
                                 },
-                                recipe -> Pair.of(recipe, extract.apply(recipe))));
+                                row -> Pair.of(row, writeExtras.apply(row))));
     }
 
     private static <T extends GenericRecipe> MapCodec<T> gridBaseCodec(
             Function<String, T> factory,
-            BiConsumer<T, int[]> applyCells,
-            Function<T, int[]> cells) {
+            BiConsumer<T, int[]> readCells,
+            Function<T, int[]> writeCells) {
         return Codec.mapPair(baseCodec(factory, true), FixedGrid.MAP_CODEC)
                 .xmap(
                         pair -> {
-                            T recipe = pair.getFirst();
-                            recipe.inputItem = pair.getSecond().inputs();
-                            applyCells.accept(recipe, pair.getSecond().cells());
-                            return recipe;
+                            T row = pair.getFirst();
+                            row.inputItem = pair.getSecond().inputs();
+                            readCells.accept(row, pair.getSecond().cells());
+                            return row;
                         },
-                        recipe ->
-                                Pair.of(
-                                        recipe,
-                                        new FixedGrid(recipe.inputItem, cells.apply(recipe))));
+                        row -> Pair.of(row, new FixedGrid(row.inputItem, writeCells.apply(row))));
     }
 
     public static <T extends GenericRecipe> MapCodec<T> gridCodec(
             Function<String, T> factory,
-            BiConsumer<T, int[]> applyCells,
-            Function<T, int[]> cells) {
-        return DataCodecs.recipe(gridBaseCodec(factory, applyCells, cells));
+            BiConsumer<T, int[]> readCells,
+            Function<T, int[]> writeCells) {
+        return DataCodecs.recipe(gridBaseCodec(factory, readCells, writeCells));
     }
 
     public static <T extends GenericRecipe, E> MapCodec<T> gridCodec(
             Function<String, T> factory,
-            BiConsumer<T, int[]> applyCells,
-            Function<T, int[]> cells,
+            BiConsumer<T, int[]> readCells,
+            Function<T, int[]> writeCells,
             MapCodec<E> extras,
-            BiConsumer<T, E> apply,
-            Function<T, E> extract) {
+            BiConsumer<T, E> readExtras,
+            Function<T, E> writeExtras) {
         return DataCodecs.recipe(
-                Codec.mapPair(gridBaseCodec(factory, applyCells, cells), extras)
+                Codec.mapPair(gridBaseCodec(factory, readCells, writeCells), extras)
                         .xmap(
                                 pair -> {
-                                    T recipe = pair.getFirst();
-                                    apply.accept(recipe, pair.getSecond());
-                                    return recipe;
+                                    T row = pair.getFirst();
+                                    readExtras.accept(row, pair.getSecond());
+                                    return row;
                                 },
-                                recipe -> Pair.of(recipe, extract.apply(recipe))));
+                                row -> Pair.of(row, writeExtras.apply(row))));
+    }
+
+    private Optional<String> authoredName() {
+        return id != null && Objects.equals(internalName, defaultName(id))
+                ? Optional.empty()
+                : Optional.ofNullable(internalName);
+    }
+
+    private static Optional<List<String>> optionalStrings(String @Nullable [] values) {
+        return values == null ? Optional.empty() : Optional.of(Arrays.asList(values));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static WeightedList<Optional<ItemStackTemplate>>[] templateArray(
+            List<WeightedList<Optional<ItemStackTemplate>>> values) {
+        return values.toArray(WeightedList[]::new);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static WeightedList<Optional<ItemStackTemplate>>[] templateArray(int size) {
+        return new WeightedList[size];
+    }
+
+    public static <T extends GenericRecipe> StreamCodec<RegistryFriendlyByteBuf, T> streamCodec(
+            Function<String, T> factory) {
+        return streamCodec(
+                factory,
+                new StreamCodec<RegistryFriendlyByteBuf, Boolean>() {
+                    @Override
+                    public Boolean decode(RegistryFriendlyByteBuf buffer) {
+                        return true;
+                    }
+
+                    @Override
+                    public void encode(RegistryFriendlyByteBuf buffer, Boolean value) {}
+                },
+                (_, _) -> {},
+                _ -> true);
     }
 
     public static <T extends GenericRecipe, E> StreamCodec<RegistryFriendlyByteBuf, T> streamCodec(
             Function<String, T> factory,
             StreamCodec<RegistryFriendlyByteBuf, E> extras,
-            BiConsumer<T, E> apply,
-            Function<T, E> extract) {
-        StreamCodec<RegistryFriendlyByteBuf, T> base = streamCodec(factory);
-        return StreamCodec.of(
-                (buf, recipe) -> {
-                    base.encode(buf, recipe);
-                    extras.encode(buf, extract.apply(recipe));
-                },
-                buf -> {
-                    T recipe = base.decode(buf);
-                    apply.accept(recipe, extras.decode(buf));
-                    return recipe;
-                });
-    }
-
-    public static <T extends GenericRecipe> StreamCodec<RegistryFriendlyByteBuf, T> streamCodec(
-            Function<String, T> factory) {
-        return StreamCodec.of(
-                (buf, recipe) -> {
-                    buf.writeUtf(recipe.getInternalName());
-                    buf.writeCollection(
-                            nullSafe(recipe.inputItem),
-                            (b, ci) ->
-                                    CountIngredient.STREAM_CODEC.encode(
-                                            (RegistryFriendlyByteBuf) b, ci));
-                    FluidStackNTM.ARRAY_STREAM_CODEC.encode(buf, nullSafeArray(recipe.inputFluid));
-                    buf.writeCollection(
-                            recipe.outputTemplates(),
-                            (b, out) ->
-                                    Outputs.TEMPLATE_STREAM_CODEC.encode(
-                                            (RegistryFriendlyByteBuf) b, out));
-                    FluidStackNTM.ARRAY_STREAM_CODEC.encode(buf, nullSafeArray(recipe.outputFluid));
-                    buf.writeVarInt(recipe.duration);
-                    buf.writeVarLong(recipe.power);
-                    buf.writeOptional(
-                            recipe.iconTemplate(),
-                            (b, template) ->
-                                    ItemStackTemplate.STREAM_CODEC.encode(
-                                            (RegistryFriendlyByteBuf) b, template));
-                    buf.writeBoolean(recipe.iconFromFirstIngredient);
-                    buf.writeOptional(
-                            Optional.ofNullable(recipe.nameWrapper), FriendlyByteBuf::writeUtf);
-                    buf.writeBoolean(recipe.customLocalization);
-                    buf.writeOptional(
-                            Optional.ofNullable(recipe.authoredPools),
-                            (b, pools) ->
-                                    b.writeCollection(
-                                            Arrays.asList(pools), FriendlyByteBuf::writeUtf));
-                    buf.writeOptional(
-                            Optional.ofNullable(recipe.blueprintPools528),
-                            (b, pools) ->
-                                    b.writeCollection(
-                                            Arrays.asList(pools), FriendlyByteBuf::writeUtf));
-                    buf.writeBoolean(
-                            recipe.blueprintPools528 != null
-                                    && recipe.blueprintPools == recipe.blueprintPools528);
-                    buf.writeOptional(
-                            Optional.ofNullable(recipe.autoSwitchGroup), FriendlyByteBuf::writeUtf);
-                    buf.writeVarInt(recipe.order);
-                },
-                buf -> {
-                    T recipe = factory.apply(buf.readUtf());
-                    recipe.inputItem =
-                            buf.readCollection(
-                                            ArrayList::new,
-                                            b ->
-                                                    CountIngredient.STREAM_CODEC.decode(
-                                                            (RegistryFriendlyByteBuf) b))
-                                    .toArray(CountIngredient[]::new);
-                    recipe.inputFluid = FluidStackNTM.ARRAY_STREAM_CODEC.decode(buf);
-                    recipe.outputTemplate =
-                            templateArray(
-                                    buf.readCollection(
-                                            ArrayList::new,
-                                            b ->
-                                                    Outputs.TEMPLATE_STREAM_CODEC.decode(
-                                                            (RegistryFriendlyByteBuf) b)));
-                    recipe.outputFluid = FluidStackNTM.ARRAY_STREAM_CODEC.decode(buf);
-                    recipe.duration = buf.readVarInt();
-                    recipe.power = buf.readVarLong();
-                    recipe.iconTemplate =
-                            buf.readOptional(
-                                    b ->
-                                            ItemStackTemplate.STREAM_CODEC.decode(
-                                                    (RegistryFriendlyByteBuf) b));
-                    recipe.writeIcon = recipe.iconTemplate.isPresent();
-                    recipe.iconFromFirstIngredient = buf.readBoolean();
-                    recipe.nameWrapper = buf.readOptional(FriendlyByteBuf::readUtf).orElse(null);
-                    recipe.customLocalization = buf.readBoolean();
-                    recipe.authoredPools =
-                            buf.readOptional(
-                                            b ->
-                                                    b.readCollection(
-                                                                    ArrayList::new,
-                                                                    FriendlyByteBuf::readUtf)
-                                                            .toArray(String[]::new))
-                                    .orElse(null);
-                    recipe.blueprintPools528 =
-                            buf.readOptional(
-                                            b ->
-                                                    b.readCollection(
-                                                                    ArrayList::new,
-                                                                    FriendlyByteBuf::readUtf)
-                                                            .toArray(String[]::new))
-                                    .orElse(null);
-                    recipe.blueprintPools =
-                            effectivePools(
-                                    recipe.authoredPools,
-                                    recipe.blueprintPools528,
-                                    buf.readBoolean());
-                    recipe.autoSwitchGroup =
-                            buf.readOptional(FriendlyByteBuf::readUtf).orElse(null);
-                    recipe.order = buf.readVarInt();
-                    return recipe;
-                });
-    }
-
-    private static <E> List<E> nullSafe(E[] array) {
-        return array == null ? List.of() : Arrays.asList(array);
-    }
-
-    private static FluidStackNTM[] nullSafeArray(FluidStackNTM[] array) {
-        return array == null ? FluidStackNTM.EMPTY : array;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static WeightedList<ItemStack>[] outputArray(int size) {
-        return (WeightedList<ItemStack>[]) new WeightedList<?>[size];
-    }
-
-    @SuppressWarnings("unchecked")
-    private static WeightedList<Optional<ItemStackTemplate>>[] templateArray(int size) {
-        return (WeightedList<Optional<ItemStackTemplate>>[]) new WeightedList<?>[size];
-    }
-
-    private static WeightedList<Optional<ItemStackTemplate>>[] templateArray(
-            List<WeightedList<Optional<ItemStackTemplate>>> outputs) {
-        return outputs.toArray(templateArray(0));
-    }
-
-    protected static List<Component> label(WeightedList<ItemStack> output) {
-        List<Weighted<ItemStack>> entries = output.unwrap();
-        List<Weighted<ItemStack>> real = new ArrayList<>(entries.size());
-        for (Weighted<ItemStack> w : entries) if (!w.value().isEmpty()) real.add(w);
-        if (real.isEmpty()) return List.of();
-
-        int total = 0;
-        for (Weighted<ItemStack> w : entries) total += w.weight();
-
-        if (real.size() == 1) {
-            Weighted<ItemStack> only = real.get(0);
-            ItemStack stack = only.value();
-            float chance = total == 0 ? 1.0F : (float) only.weight() / (float) total;
-            var line =
-                    Component.literal(stack.getCount() + "x ")
-                            .withStyle(ChatFormatting.GRAY)
-                            .append(stack.getHoverName());
-            if (chance < 1)
-                line.append(" (")
-                        .append(
-                                Component.translatable(
-                                        "unit.percent", (int) (chance * 1000) / 10.0F))
-                        .append(")");
-            return List.of(line);
-        }
-
-        List<Component> label = new ArrayList<>(real.size() + 1);
-        label.add(Component.translatable("gui.recipe.one_of"));
-        for (Weighted<ItemStack> w : real) {
-            ItemStack stack = w.value();
-            float chance = (float) w.weight() / (float) total;
-            label.add(
-                    Component.literal("  " + stack.getCount() + "x ")
-                            .withStyle(ChatFormatting.GRAY)
-                            .append(stack.getHoverName())
-                            .append(" (")
-                            .append(
-                                    Component.translatable(
-                                            "unit.percent", (int) (chance * 1000.0F) / 10.0F))
-                            .append(")"));
-        }
-        return label;
-    }
-
-    private static Component fluidLine(FluidStackNTM fluid) {
-        var line =
-                Component.translatable("unit.millibuckets", fluid.amount())
-                        .withStyle(ChatFormatting.BLUE)
-                        .append(" ")
-                        .append(NTMFluidProperties.getDisplayName(fluid.type()));
-        if (fluid.pressure() != 0)
-            line.append(" ")
-                    .append(Component.translatable("gui.recipe.atPressure"))
-                    .append(" ")
-                    .append(
-                            Component.translatable("unit.pressure", fluid.pressure())
-                                    .withStyle(ChatFormatting.RED));
-        return line;
-    }
-
-    public void materialize() {
-        if (outputTemplate != null) {
-            WeightedList<ItemStack>[] built = outputArray(outputTemplate.length);
-            for (int i = 0; i < outputTemplate.length; i++) {
-                WeightedList.Builder<ItemStack> slot = WeightedList.builder();
-                for (Weighted<Optional<ItemStackTemplate>> entry : outputTemplate[i].unwrap()) {
-                    slot.add(
-                            entry.value().map(ItemStackTemplate::create).orElse(ItemStack.EMPTY),
-                            entry.weight());
-                }
-                built[i] = slot.build();
+            BiConsumer<T, E> readExtras,
+            Function<T, E> writeExtras) {
+        return new StreamCodec<>() {
+            @Override
+            public T decode(RegistryFriendlyByteBuf buffer) {
+                var row = factory.apply(buffer.readUtf());
+                row.inputItem =
+                        readArray(buffer, CountIngredient.STREAM_CODEC, CountIngredient[]::new);
+                row.inputFluid = FluidStackNTM.ARRAY_STREAM_CODEC.decode(buffer);
+                row.outputTemplate =
+                        readArray(
+                                buffer,
+                                Outputs.TEMPLATE_STREAM_CODEC,
+                                GenericRecipe::templateArray);
+                row.outputFluid = FluidStackNTM.ARRAY_STREAM_CODEC.decode(buffer);
+                row.duration = buffer.readVarInt();
+                row.power = buffer.readVarLong();
+                row.iconTemplate =
+                        buffer.readBoolean()
+                                ? Optional.of(ItemStackTemplate.STREAM_CODEC.decode(buffer))
+                                : Optional.empty();
+                row.writeIcon = row.iconTemplate.isPresent();
+                row.iconFromFirstIngredient = buffer.readBoolean();
+                row.nameWrapper = readOptionalString(buffer);
+                row.customLocalization = buffer.readBoolean();
+                row.authoredPools = readOptionalStrings(buffer);
+                row.blueprintPools528 = readOptionalStrings(buffer);
+                row.blueprintPools =
+                        effectivePools(
+                                row.authoredPools, row.blueprintPools528, buffer.readBoolean());
+                row.autoSwitchGroup = readOptionalString(buffer);
+                row.order = buffer.readVarInt();
+                readExtras.accept(row, extras.decode(buffer));
+                return row;
             }
-            outputItem = built;
-        }
-        iconTemplate.ifPresent(itemStackTemplate -> icon = itemStackTemplate.create());
-    }
 
-    public WeightedList<ItemStack>[] outputItems() {
-        WeightedList<ItemStack>[] live = outputItem;
-        if (live == null && outputTemplate != null) {
-            materialize();
-            live = outputItem;
-        }
-        return live;
-    }
-
-    public List<WeightedList<Optional<ItemStackTemplate>>> outputTemplates() {
-        if (outputTemplate != null) return Arrays.asList(outputTemplate);
-        if (outputItem == null) return List.of();
-        List<WeightedList<Optional<ItemStackTemplate>>> out = new ArrayList<>(outputItem.length);
-        for (WeightedList<ItemStack> slot : outputItem) {
-            WeightedList.Builder<Optional<ItemStackTemplate>> builder = WeightedList.builder();
-            for (Weighted<ItemStack> entry : slot.unwrap()) {
-                ItemStack stack = entry.value();
-                builder.add(
-                        stack.isEmpty()
-                                ? Optional.empty()
-                                : Optional.of(ItemStackTemplate.fromStack(stack)),
-                        entry.weight());
+            @Override
+            public void encode(RegistryFriendlyByteBuf buffer, T row) {
+                buffer.writeUtf(row.getInternalName());
+                writeValues(
+                        buffer,
+                        row.inputItem == null ? List.of() : Arrays.asList(row.inputItem),
+                        CountIngredient.STREAM_CODEC);
+                FluidStackNTM.ARRAY_STREAM_CODEC.encode(buffer, row.inputFluid);
+                writeValues(buffer, row.outputTemplates(), Outputs.TEMPLATE_STREAM_CODEC);
+                FluidStackNTM.ARRAY_STREAM_CODEC.encode(buffer, row.outputFluid);
+                buffer.writeVarInt(row.duration);
+                buffer.writeVarLong(row.power);
+                var icon = row.iconTemplate();
+                buffer.writeBoolean(icon.isPresent());
+                icon.ifPresent(value -> ItemStackTemplate.STREAM_CODEC.encode(buffer, value));
+                buffer.writeBoolean(row.iconFromFirstIngredient);
+                writeOptionalString(buffer, row.nameWrapper);
+                buffer.writeBoolean(row.customLocalization);
+                writeOptionalStrings(buffer, row.authoredPools);
+                writeOptionalStrings(buffer, row.blueprintPools528);
+                buffer.writeBoolean(
+                        row.blueprintPools528 != null
+                                && row.blueprintPools == row.blueprintPools528);
+                writeOptionalString(buffer, row.autoSwitchGroup);
+                buffer.writeVarInt(row.order);
+                extras.encode(buffer, writeExtras.apply(row));
             }
-            out.add(builder.build());
+        };
+    }
+
+    private static <E> E[] readArray(
+            RegistryFriendlyByteBuf buffer,
+            StreamCodec<RegistryFriendlyByteBuf, E> codec,
+            IntFunction<E[]> factory) {
+        E[] values = factory.apply(buffer.readVarInt());
+        for (int i = 0; i < values.length; i++) {
+            values[i] = codec.decode(buffer);
         }
-        return out;
+        return values;
     }
 
-    public Optional<ItemStackTemplate> iconTemplate() {
-        if (iconTemplate.isPresent()) return iconTemplate;
-        return writeIcon && icon != null && !icon.isEmpty()
-                ? Optional.of(ItemStackTemplate.fromStack(icon))
-                : Optional.empty();
+    private static <E> void writeValues(
+            RegistryFriendlyByteBuf buffer,
+            List<E> values,
+            StreamCodec<RegistryFriendlyByteBuf, E> codec) {
+        buffer.writeVarInt(values.size());
+        for (var value : values) {
+            codec.encode(buffer, value);
+        }
     }
 
-    @SafeVarargs
-    public final GenericRecipe outputTemplates(
-            WeightedList<Optional<ItemStackTemplate>>... output) {
-        outputTemplate = output;
+    private static @Nullable String readOptionalString(RegistryFriendlyByteBuf buffer) {
+        return buffer.readBoolean() ? buffer.readUtf() : null;
+    }
+
+    private static void writeOptionalString(
+            RegistryFriendlyByteBuf buffer, @Nullable String value) {
+        buffer.writeBoolean(value != null);
+        if (value != null) {
+            buffer.writeUtf(value);
+        }
+    }
+
+    private static String @Nullable [] readOptionalStrings(RegistryFriendlyByteBuf buffer) {
+        if (!buffer.readBoolean()) {
+            return null;
+        }
+        var values = new String[buffer.readVarInt()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = buffer.readUtf();
+        }
+        return values;
+    }
+
+    private static void writeOptionalStrings(
+            RegistryFriendlyByteBuf buffer, String @Nullable [] values) {
+        buffer.writeBoolean(values != null);
+        if (values != null) {
+            buffer.writeVarInt(values.length);
+            for (var value : values) {
+                buffer.writeUtf(value);
+            }
+        }
+    }
+
+    public GenericRecipe setDuration(int value) {
+        duration = value;
         return this;
     }
 
-    public GenericRecipe outputTemplates(ItemStackTemplate... output) {
-        WeightedList<Optional<ItemStackTemplate>>[] slots = templateArray(output.length);
-        for (int i = 0; i < output.length; i++) slots[i] = WeightedList.of(Optional.of(output[i]));
-        outputTemplate = slots;
+    public GenericRecipe setPower(long value) {
+        power = value;
         return this;
     }
 
-    public GenericRecipe setDuration(int duration) {
-        this.duration = duration;
+    public GenericRecipe setup(int ticks, long energy) {
+        duration = ticks;
+        power = energy;
         return this;
     }
 
-    public GenericRecipe setPower(long power) {
-        this.power = power;
-        return this;
-    }
-
-    public GenericRecipe setup(int duration, long power) {
-        return setDuration(duration).setPower(power);
-    }
-
-    public GenericRecipe setupNamed(int duration, long power) {
-        return setDuration(duration).setPower(power).setNamed();
+    public GenericRecipe setupNamed(int ticks, long energy) {
+        return setup(ticks, energy).setNamed();
     }
 
     public GenericRecipe setNameWrapper(String wrapper) {
@@ -535,56 +484,121 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         return this;
     }
 
-    public GenericRecipe setIcon(Item item, int meta) {
-        return setIcon(new ItemStack(item));
-    }
-
     public GenericRecipe setNamed() {
         customLocalization = true;
         return this;
     }
 
-    public GenericRecipe setConditions(String... conditions) {
-        this.conditions = List.of(conditions);
+    public GenericRecipe setConditions(String... values) {
+        conditions = List.of(values);
         return this;
     }
 
-    public GenericRecipe setGroup(String autoSwitch) {
-        autoSwitchGroup = autoSwitch;
+    public GenericRecipe setGroup(String group) {
+        autoSwitchGroup = group;
         return this;
     }
 
-    public GenericRecipe inputItems(CountIngredient... input) {
-        inputItem = input;
+    public GenericRecipe inputItems(CountIngredient... values) {
+        inputItem = values;
+        materialized = false;
         return this;
     }
 
-    public GenericRecipe inputFluids(FluidStackNTM... input) {
-        inputFluid = input;
+    public GenericRecipe inputFluids(FluidStackNTM... values) {
+        inputFluid = values;
         return this;
     }
 
-    public GenericRecipe outputFluids(FluidStackNTM... output) {
-        outputFluid = output;
+    public GenericRecipe outputFluids(FluidStackNTM... values) {
+        outputFluid = values;
+        materialized = false;
         return this;
     }
 
     @SafeVarargs
-    public final GenericRecipe outputItems(WeightedList<ItemStack>... output) {
-        outputItem = output;
+    public final synchronized GenericRecipe outputItems(WeightedList<ItemStack>... values) {
+        outputTemplate = null;
+        preparedOutputs = values;
+        materialized = false;
         return this;
     }
 
-    public GenericRecipe outputItems(ItemStack... output) {
-        WeightedList<ItemStack>[] built = outputArray(output.length);
-        for (int i = 0; i < output.length; i++) built[i] = Outputs.fixed(output[i]);
-        outputItem = built;
+    @SuppressWarnings("unchecked")
+    public GenericRecipe outputItems(ItemStack... values) {
+        WeightedList<ItemStack>[] slots = new WeightedList[values.length];
+        for (int i = 0; i < values.length; i++) {
+            slots[i] = Outputs.fixed(values[i]);
+        }
+        return outputItems(slots);
+    }
+
+    @SafeVarargs
+    public final synchronized GenericRecipe outputTemplates(
+            WeightedList<Optional<ItemStackTemplate>>... values) {
+        outputTemplate = values;
+        preparedOutputs = null;
+        materialized = false;
         return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public GenericRecipe outputTemplates(ItemStackTemplate... values) {
+        WeightedList<Optional<ItemStackTemplate>>[] slots = new WeightedList[values.length];
+        for (int i = 0; i < values.length; i++) {
+            slots[i] = WeightedList.of(Optional.of(values[i]));
+        }
+        return outputTemplates(slots);
     }
 
     public GenericRecipe setIconToFirstIngredient() {
         iconFromFirstIngredient = true;
+        materialized = false;
         return this;
+    }
+
+    public synchronized GenericRecipe setIcon(ItemStackTemplate value) {
+        iconTemplate = Optional.of(value);
+        explicitIcon = ItemStack.EMPTY;
+        writeIcon = true;
+        materialized = false;
+        return this;
+    }
+
+    public synchronized GenericRecipe setIcon(ItemStack value) {
+        iconTemplate = Optional.empty();
+        explicitIcon = value;
+        writeIcon = true;
+        materialized = false;
+        return this;
+    }
+
+    public GenericRecipe setIcon(Item value) {
+        return setIcon(new ItemStack(value));
+    }
+
+    public GenericRecipe setIcon(Block value) {
+        return setIcon(new ItemStack(value));
+    }
+
+    public GenericRecipe setIcon(Item value, int ignored) {
+        return setIcon(new ItemStack(value));
+    }
+
+    public GenericRecipe setPools(String... values) {
+        authoredPools = values;
+        blueprintPools = values;
+        return this;
+    }
+
+    public GenericRecipe setPools528(String... values) {
+        blueprintPools528 = values;
+        return this;
+    }
+
+    public static String @Nullable [] effectivePools(
+            String @Nullable [] normal, String @Nullable [] special, boolean useSpecial) {
+        return special != null && useSpecial ? special : normal;
     }
 
     public boolean isPooled() {
@@ -595,126 +609,187 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         return blueprintPools;
     }
 
-    public GenericRecipe setPools(String... pools) {
-        authoredPools = pools;
-        blueprintPools = pools;
-        return this;
-    }
-
-    public GenericRecipe setPools528(String... pools) {
-        blueprintPools528 = pools;
-        return this;
-    }
-
-    public static String @Nullable [] effectivePools(
-            String @Nullable [] pools, String @Nullable [] pools528, boolean enable528) {
-        return pools528 != null && enable528 ? pools528 : pools;
-    }
-
-    public boolean isPartOfPool(String looking) {
-        if (!isPooled()) return false;
-        for (String p : blueprintPools) if (p.equals(looking)) return true;
+    public boolean isPartOfPool(String pool) {
+        if (blueprintPools != null) {
+            for (var value : blueprintPools) {
+                if (value.equals(pool)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
-    public ItemStack getIcon() {
-        ItemStack held = icon;
-        if (held == null && iconFromFirstIngredient && inputItem != null && inputItem.length > 0) {
-            List<ItemStack> first = inputItem[0].displayStacks();
-            if (!first.isEmpty()) icon = held = first.getFirst();
-        }
-        if (held == null) {
-            WeightedList<ItemStack>[] outputs = outputItems();
-            if (outputs != null && outputs.length > 0) {
-                List<Weighted<ItemStack>> entries = outputs[0].unwrap();
-                if (!entries.isEmpty()) icon = held = entries.get(0).value();
-            } else if (outputFluid.length > 0) {
-                icon = held = ItemFluidIcon.make(outputFluid[0]);
+    public synchronized void materialize() {
+        prepare();
+    }
+
+    public synchronized void refreshInputDisplay() {
+        if (!materialized) materialize();
+        else if (!writeIcon && iconFromFirstIngredient) preparedIcon = derivedIcon();
+    }
+
+    private void ensureMaterialized() {
+        if (!materialized) {
+            synchronized (this) {
+                if (!materialized) {
+                    prepare();
+                }
             }
         }
-        return held != null ? held : ItemStack.EMPTY;
     }
 
-    public GenericRecipe setIcon(ItemStackTemplate icon) {
-        iconTemplate = Optional.of(icon);
-        writeIcon = true;
-        return this;
+    @SuppressWarnings("unchecked")
+    private void prepare() {
+        materialized = false;
+        var outputs = preparedOutputs;
+        if (outputTemplate != null) {
+            outputs = new WeightedList[outputTemplate.length];
+            for (int i = 0; i < outputTemplate.length; i++) {
+                var alternatives = new ArrayList<Weighted<ItemStack>>();
+                for (var entry : outputTemplate[i].unwrap()) {
+                    alternatives.add(
+                            new Weighted<>(
+                                    entry.value()
+                                            .map(ItemStackTemplate::create)
+                                            .orElse(ItemStack.EMPTY),
+                                    entry.weight()));
+                }
+                outputs[i] = WeightedList.of(alternatives);
+            }
+        }
+
+        preparedOutputs = outputs;
+        awaitingInputDisplay = false;
+        var icon = explicitIcon;
+        if (writeIcon && iconTemplate.isPresent()) icon = iconTemplate.get().create();
+        preparedIcon = writeIcon ? icon : derivedIcon();
+        materialized = true;
     }
 
-    public GenericRecipe setIcon(ItemStack icon) {
-        this.icon = icon;
-        writeIcon = true;
-        return this;
+    private ItemStack derivedIcon() {
+        awaitingInputDisplay = false;
+        if (iconFromFirstIngredient && inputItem != null && inputItem.length > 0) {
+            var displays = inputItem[0].displayStacks();
+            if (!displays.isEmpty()) return displays.getFirst();
+            awaitingInputDisplay = true;
+        }
+        var outputs = preparedOutputs;
+        if (outputs != null && outputs.length > 0) {
+            var alternatives = outputs[0].unwrap();
+            return alternatives.isEmpty() ? ItemStack.EMPTY : alternatives.getFirst().value();
+        }
+        return outputFluid.length == 0 ? ItemStack.EMPTY : FluidIconItem.make(outputFluid[0]);
     }
 
-    public GenericRecipe setIcon(Item item) {
-        return setIcon(new ItemStack(item));
+    public WeightedList<ItemStack>[] outputItems() {
+        ensureMaterialized();
+        return preparedOutputs;
     }
 
-    public GenericRecipe setIcon(Block block) {
-        return setIcon(new ItemStack(block));
+    public List<WeightedList<Optional<ItemStackTemplate>>> outputTemplates() {
+        if (outputTemplate != null) {
+            return Arrays.asList(outputTemplate);
+        }
+        var outputs = preparedOutputs;
+        if (outputs == null) {
+            return List.of();
+        }
+        var templates = new ArrayList<WeightedList<Optional<ItemStackTemplate>>>(outputs.length);
+        for (var slot : outputs) {
+            var alternatives = new ArrayList<Weighted<Optional<ItemStackTemplate>>>();
+            for (var entry : slot.unwrap()) {
+                var stack = entry.value();
+                Optional<ItemStackTemplate> template =
+                        stack.isEmpty()
+                                ? Optional.empty()
+                                : Optional.of(ItemStackTemplate.fromStack(stack));
+                alternatives.add(new Weighted<>(template, entry.weight()));
+            }
+            templates.add(WeightedList.of(alternatives));
+        }
+        return templates;
+    }
+
+    public Optional<ItemStackTemplate> iconTemplate() {
+        if (!writeIcon || iconTemplate.isPresent()) {
+            return iconTemplate;
+        }
+        return Optional.of(ItemStackTemplate.fromStack(explicitIcon));
+    }
+
+    public ItemStack getIcon() {
+        ensureMaterialized();
+        if (awaitingInputDisplay) {
+            synchronized (this) {
+                if (awaitingInputDisplay) {
+                    var displays = inputItem[0].displayStacks();
+                    if (!displays.isEmpty()) {
+                        preparedIcon = displays.getFirst();
+                        awaitingInputDisplay = false;
+                    }
+                }
+            }
+        }
+        return preparedIcon;
     }
 
     @Override
     public String getInternalName() {
-        String held = name;
-        if (held == null)
-            throw new IllegalStateException("nameless recipe row read before bind: " + id);
-        return held;
+        return internalName;
     }
 
     public Component getLocalizedName() {
-        Component localized;
+        Component name;
         if (customLocalization) {
-            localized = Component.translatable(getInternalName());
+            name = Component.translatable(getInternalName());
         } else {
-            ItemStack ic = getIcon();
-            localized = ic.isEmpty() ? Component.literal(getInternalName()) : ic.getHoverName();
+            var icon = getIcon();
+            name = icon.isEmpty() ? Component.literal(getInternalName()) : icon.getHoverName();
         }
-        if (nameWrapper != null) localized = Component.translatable(nameWrapper, localized);
-        return localized;
+        return nameWrapper == null ? name : Component.translatable(nameWrapper, name);
     }
 
-    public boolean matchesSearch(String substring) {
+    public boolean matchesSearch(String search) {
         return getLocalizedName()
                 .getString()
-                .toLowerCase(Locale.US)
-                .contains(substring.toLowerCase(Locale.US));
+                .toLowerCase(Locale.ROOT)
+                .contains(search.toLowerCase(Locale.ROOT));
     }
 
     public List<Component> print() {
-        List<Component> list = new ArrayList<>();
-        header(list);
-        autoSwitch(list);
-        duration(list);
-        power(list);
-        input(list);
-        output(list);
-        return list;
+        var lines = new ArrayList<Component>();
+        header(lines);
+        autoSwitch(lines);
+        duration(lines);
+        power(lines);
+        input(lines);
+        output(lines);
+        return lines;
     }
 
-    protected void header(List<Component> list) {
-        list.add(getLocalizedName().copy().withStyle(ChatFormatting.YELLOW));
-        if (ModifierKeys.detailsHeld())
-            list.add(
+    protected void header(List<Component> lines) {
+        lines.add(getLocalizedName().copy().withStyle(ChatFormatting.YELLOW));
+        if (ModifierKeys.detailsHeld()) {
+            lines.add(
                     Component.translatable("gui.recipe.internal", getInternalName())
                             .withStyle(ChatFormatting.DARK_GRAY));
+        }
     }
 
-    protected void autoSwitch(List<Component> list) {
+    protected void autoSwitch(List<Component> lines) {
         if (autoSwitchGroup != null) {
-            for (Component line :
-                    TooltipStyle.lines(
-                            Component.translatable(
-                                    "autoswitch", Component.translatable(autoSwitchGroup)))) {
-                list.add(line.copy().withStyle(ChatFormatting.GOLD));
+            var text =
+                    Component.translatable("autoswitch", Component.translatable(autoSwitchGroup));
+            for (var line : TooltipStyle.lines(text)) {
+                lines.add(line.copy().withStyle(ChatFormatting.GOLD));
             }
         }
     }
 
-    protected void duration(List<Component> list) {
+    protected void duration(List<Component> lines) {
         if (duration > 0) {
-            list.add(
+            lines.add(
                     Component.translatable("gui.recipe.duration")
                             .append(": ")
                             .append(Component.translatable("unit.seconds", duration / 20.0D))
@@ -722,73 +797,144 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         }
     }
 
-    protected void power(List<Component> list) {
+    protected void power(List<Component> lines) {
         if (power > 0) {
-            list.add(
+            lines.add(
                     Component.translatable("gui.recipe.consumption")
                             .append(": ")
                             .append(
                                     Component.translatable(
                                             "unit.energy_per_tick",
-                                            BobMathUtil.getShortNumber(power)))
+                                            NumberFormatter.formatCompact(power)))
                             .withStyle(ChatFormatting.RED));
         }
     }
 
-    protected void input(List<Component> list) {
-        list.add(
+    protected void input(List<Component> lines) {
+        lines.add(
                 Component.translatable("gui.recipe.input")
                         .append(":")
                         .withStyle(ChatFormatting.BOLD));
-        if (inputItem != null)
-            for (CountIngredient ci : inputItem) {
-                ItemStack display = ci.extractForCyclingDisplay(20);
-                if (display.isEmpty()) continue;
-                list.add(
-                        Component.literal("  " + display.getCount() + "x ")
-                                .withStyle(ChatFormatting.GRAY)
-                                .append(display.getHoverName()));
+        if (inputItem != null) {
+            for (var ingredient : inputItem) {
+                var stack = ingredient.extractForCyclingDisplay(20);
+                if (!stack.isEmpty()) {
+                    lines.add(itemText(stack, "  "));
+                }
             }
-        for (FluidStackNTM fluid : inputFluid)
-            list.add(Component.literal("  ").append(fluidLine(fluid)));
+        }
+        for (var fluid : inputFluid) {
+            lines.add(Component.literal("  ").append(fluidText(fluid)));
+        }
     }
 
-    protected void output(List<Component> list) {
-        list.add(
+    protected void output(List<Component> lines) {
+        lines.add(
                 Component.translatable("gui.recipe.output")
                         .append(":")
                         .withStyle(ChatFormatting.BOLD));
-        WeightedList<ItemStack>[] outputs = outputItems();
-        if (outputs != null)
-            for (WeightedList<ItemStack> slot : outputs) {
-                for (Component line : label(slot)) list.add(Component.literal("  ").append(line));
+        var outputs = outputItems();
+        if (outputs != null) {
+            for (var slot : outputs) {
+                for (var line : label(slot)) {
+                    lines.add(Component.literal("  ").append(line));
+                }
             }
-        for (FluidStackNTM fluid : outputFluid)
-            list.add(Component.literal("  ").append(fluidLine(fluid)));
+        }
+        for (var fluid : outputFluid) {
+            lines.add(Component.literal("  ").append(fluidText(fluid)));
+        }
+    }
+
+    private static MutableComponent itemText(ItemStack stack, String indentation) {
+        return Component.literal(indentation + stack.getCount() + "x ")
+                .withStyle(ChatFormatting.GRAY)
+                .append(stack.getHoverName());
+    }
+
+    protected static List<Component> label(WeightedList<ItemStack> slot) {
+        var entries = slot.unwrap();
+        int total = 0;
+        int shown = 0;
+        for (var entry : entries) {
+            total += entry.weight();
+            if (!entry.value().isEmpty()) {
+                shown++;
+            }
+        }
+        if (shown == 0) {
+            return List.of();
+        }
+        var lines = new ArrayList<Component>();
+        if (shown > 1) {
+            lines.add(Component.translatable("gui.recipe.one_of"));
+        }
+        for (var entry : entries) {
+            if (entry.value().isEmpty()) {
+                continue;
+            }
+            float probability =
+                    total == 0 && entries.size() == 1 ? 1.0F : (float) entry.weight() / total;
+            var text = itemText(entry.value(), shown > 1 ? "  " : "");
+            if (shown > 1 || probability < 1.0F) {
+                float percent = (int) (probability * 1000) / 10.0F;
+                text.append(" (")
+                        .append(Component.translatable("unit.percent", percent))
+                        .append(")");
+            }
+            lines.add(text);
+        }
+        return lines;
+    }
+
+    private static Component fluidText(FluidStackNTM fluid) {
+        var text =
+                Component.translatable("unit.millibuckets", fluid.amount())
+                        .withStyle(ChatFormatting.BLUE)
+                        .append(" ")
+                        .append(NTMFluidProperties.getDisplayName(fluid.type()));
+        if (fluid.pressure() != 0) {
+            text.append(" ")
+                    .append(Component.translatable("gui.recipe.atPressure"))
+                    .append(" ")
+                    .append(
+                            Component.translatable("unit.pressure", fluid.pressure())
+                                    .withStyle(ChatFormatting.RED));
+        }
+        return text;
     }
 
     @Override
     public boolean matches(NtmRecipeInput input, Level level) {
-        if (inputItem == null || inputItem.length == 0) return true;
-        int[] ingredientForSlot = new int[input.size()];
-        Arrays.fill(ingredientForSlot, -1);
-        for (int ri = 0; ri < inputItem.length; ri++) {
-            if (!assign(ri, input, ingredientForSlot, new boolean[ingredientForSlot.length]))
+        if (inputItem == null || inputItem.length == 0) {
+            return true;
+        }
+        int[] assigned = new int[input.size()];
+        Arrays.fill(assigned, -1);
+        boolean[] visited = new boolean[input.size()];
+        for (int ingredient = 0; ingredient < inputItem.length; ingredient++) {
+            Arrays.fill(visited, false);
+            if (!assignSlot(ingredient, input, assigned, visited)) {
                 return false;
+            }
         }
         return true;
     }
 
-    private boolean assign(
-            int ri, NtmRecipeInput input, int[] ingredientForSlot, boolean[] visitedSlot) {
-        for (int si = 0; si < ingredientForSlot.length; si++) {
-            if (visitedSlot[si]) continue;
-            ItemStack stack = input.getItem(si);
-            if (stack.isEmpty() || !inputItem[ri].test(stack)) continue;
-            visitedSlot[si] = true;
-            int owner = ingredientForSlot[si];
-            if (owner == -1 || assign(owner, input, ingredientForSlot, visitedSlot)) {
-                ingredientForSlot[si] = ri;
+    private boolean assignSlot(
+            int ingredient, NtmRecipeInput input, int[] assigned, boolean[] visited) {
+        for (int slot = 0; slot < assigned.length; slot++) {
+            if (visited[slot]) {
+                continue;
+            }
+            var stack = input.getItem(slot);
+            if (stack.isEmpty() || !inputItem[ingredient].test(stack)) {
+                continue;
+            }
+            visited[slot] = true;
+            int previous = assigned[slot];
+            if (previous == -1 || assignSlot(previous, input, assigned, visited)) {
+                assigned[slot] = ingredient;
                 return true;
             }
         }
@@ -797,29 +943,26 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
 
     @Override
     public ItemStack assemble(NtmRecipeInput input) {
-        WeightedList<ItemStack>[] outputs = outputItems();
-        if (outputs == null || outputs.length == 0) return ItemStack.EMPTY;
-        return outputs[0].getRandom(GenericRecipes.RNG).orElse(ItemStack.EMPTY);
+        var outputs = outputItems();
+        return outputs == null || outputs.length == 0
+                ? ItemStack.EMPTY
+                : outputs[0].getRandom(GenericRecipes.RNG).orElse(ItemStack.EMPTY);
     }
 
     public @Nullable ResourceKey<Recipe<?>> recipeId() {
         return id;
     }
 
-    public void bind(ResourceKey<Recipe<?>> id) {
-        this.id = id;
-        if (name == null) name = defaultName(id);
+    public void bind(ResourceKey<Recipe<?>> key) {
+        id = key;
+        if (internalName == null) {
+            internalName = defaultName(key);
+        }
     }
 
-    public static String defaultName(ResourceKey<Recipe<?>> id) {
-        String path = id.identifier().getPath();
+    public static String defaultName(ResourceKey<Recipe<?>> key) {
+        var path = key.identifier().getPath();
         return path.substring(path.lastIndexOf('/') + 1);
-    }
-
-    private Optional<String> authoredName() {
-        return name == null || id != null && name.equals(defaultName(id))
-                ? Optional.empty()
-                : Optional.of(name);
     }
 
     @Override
@@ -842,33 +985,35 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
         return PlacementInfo.NOT_PLACEABLE;
     }
 
-    public boolean matchesInputFluids(FluidTankNTM[] inputTanks) {
-        for (int i = 0; i < Math.min(inputFluid.length, inputTanks.length); i++) {
-            if (!inputFluid[i].matches(inputTanks[i])) return false;
+    public boolean matchesInputFluids(FluidTankNTM[] tanks) {
+        for (int i = 0; i < Math.min(inputFluid.length, tanks.length); i++) {
+            if (!inputFluid[i].matches(tanks[i])) {
+                return false;
+            }
         }
         return true;
     }
 
-    public boolean outputFluidsFit(FluidTankNTM[] outputTanks) {
-        for (int i = 0; i < Math.min(outputFluid.length, outputTanks.length); i++) {
-            if (!outputFluid[i].fitsInto(outputTanks[i])) return false;
+    public boolean outputFluidsFit(FluidTankNTM[] tanks) {
+        for (int i = 0; i < Math.min(outputFluid.length, tanks.length); i++) {
+            if (!outputFluid[i].fitsInto(tanks[i])) {
+                return false;
+            }
         }
         return true;
     }
 
-    public void drainInputFluids(FluidTankNTM[] inputTanks) {
-        for (int i = 0; i < Math.min(inputFluid.length, inputTanks.length); i++) {
-            inputFluid[i].drainFrom(inputTanks[i]);
+    public void drainInputFluids(FluidTankNTM[] tanks) {
+        for (int i = 0; i < Math.min(inputFluid.length, tanks.length); i++) {
+            inputFluid[i].drainFrom(tanks[i]);
         }
     }
 
-    public void fillOutputFluids(FluidTankNTM[] outputTanks) {
-        for (int i = 0; i < Math.min(outputFluid.length, outputTanks.length); i++) {
-            outputFluid[i].fillInto(outputTanks[i]);
+    public void fillOutputFluids(FluidTankNTM[] tanks) {
+        for (int i = 0; i < Math.min(outputFluid.length, tanks.length); i++) {
+            outputFluid[i].fillInto(tanks[i]);
         }
     }
-
-    public abstract GenericRecipes<?, ?> table();
 
     @Override
     public RecipeType<? extends Recipe<NtmRecipeInput>> getType() {
@@ -882,6 +1027,6 @@ public abstract class GenericRecipe implements Recipe<NtmRecipeInput>, INamedRec
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return INamedRecipe.BOOK_CATEGORY;
+        return NamedRecipe.BOOK_CATEGORY;
     }
 }

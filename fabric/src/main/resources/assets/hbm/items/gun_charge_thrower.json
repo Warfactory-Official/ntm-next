@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ],
         "parts": [
@@ -20,7 +20,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ]
       },

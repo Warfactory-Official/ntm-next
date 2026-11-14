@@ -4,7 +4,8 @@
     {
       "type": "hbm:world_config",
       "switches": [
-        "overworld_ores"
+        "overworld_ores",
+        "coltan_deposit"
       ]
     },
     {

@@ -1,9 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
 import com.google.common.base.Suppliers;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -35,22 +52,26 @@ public class DynamicSpecialWrapper<T> implements ItemModel {
     private final PropertiesFor properties;
     private final Supplier<Vector3fc[]> extents;
     private final Map<ItemDisplayContext, Matrix4f> poses;
+    private final Matrix4fc transformation;
+    private final boolean identityTransformation;
 
     public DynamicSpecialWrapper(
             SpecialModelRenderer<T> renderer,
             ArgumentExtractor<T> argument,
             boolean animated,
             ModelRenderProperties properties,
-            Map<ItemDisplayContext, Matrix4f> poses) {
-        this(renderer, argument, null, animated, properties, poses);
+            Map<ItemDisplayContext, Matrix4f> poses,
+            Matrix4fc transformation) {
+        this(renderer, argument, null, animated, properties, poses, transformation);
     }
 
     public DynamicSpecialWrapper(
             SpecialModelRenderer<T> renderer,
             ArgumentExtractor<T> argument,
             boolean animated,
-            ModelRenderProperties properties) {
-        this(renderer, argument, null, animated, properties, Map.of());
+            ModelRenderProperties properties,
+            Matrix4fc transformation) {
+        this(renderer, argument, null, animated, properties, Map.of(), transformation);
     }
 
     public DynamicSpecialWrapper(
@@ -59,8 +80,16 @@ public class DynamicSpecialWrapper<T> implements ItemModel {
             @Nullable ArgumentPose<T> argumentPose,
             boolean animated,
             ModelRenderProperties properties,
-            Map<ItemDisplayContext, Matrix4f> poses) {
-        this(renderer, argument, argumentPose, animated, stack -> properties, poses);
+            Map<ItemDisplayContext, Matrix4f> poses,
+            Matrix4fc transformation) {
+        this(
+                renderer,
+                argument,
+                argumentPose,
+                animated,
+                stack -> properties,
+                poses,
+                transformation);
     }
 
     public DynamicSpecialWrapper(
@@ -69,13 +98,24 @@ public class DynamicSpecialWrapper<T> implements ItemModel {
             @Nullable ArgumentPose<T> argumentPose,
             boolean animated,
             PropertiesFor properties,
-            Map<ItemDisplayContext, Matrix4f> poses) {
+            Map<ItemDisplayContext, Matrix4f> poses,
+            Matrix4fc transformation) {
         this.renderer = renderer;
         this.argument = argument;
         this.argumentPose = argumentPose;
         this.animated = animated;
         this.properties = properties;
-        this.poses = poses;
+        this.transformation = new Matrix4f(transformation);
+        this.identityTransformation =
+                (this.transformation.properties() & Matrix4fc.PROPERTY_IDENTITY) != 0;
+        this.poses = new EnumMap<>(ItemDisplayContext.class);
+        poses.forEach(
+                (display, pose) ->
+                        this.poses.put(
+                                display,
+                                argumentPose == null
+                                        ? new Matrix4f(this.transformation).mul(pose)
+                                        : new Matrix4f(pose)));
         this.extents =
                 Suppliers.memoize(
                         () -> {
@@ -118,7 +158,10 @@ public class DynamicSpecialWrapper<T> implements ItemModel {
                 arg != null && argumentPose != null
                         ? argumentPose.apply(arg, displayContext, pose)
                         : pose;
-        if (local != null) layer.setLocalTransform(local);
+        if (argumentPose != null && !identityTransformation && local != null) {
+            local = new Matrix4f(transformation).mul(local);
+        }
+        layer.setLocalTransform(local != null ? local : transformation);
         layer.setupSpecialModel(renderer, arg);
         if (animated) output.setAnimated();
         if (arg != null) output.appendModelIdentityElement(arg);
@@ -136,7 +179,8 @@ public class DynamicSpecialWrapper<T> implements ItemModel {
 
     @FunctionalInterface
     public interface ArgumentPose<T> {
-        Matrix4fc apply(T argument, ItemDisplayContext context, Matrix4fc fallback);
+        @Nullable Matrix4fc apply(
+                T argument, ItemDisplayContext context, @Nullable Matrix4fc fallback);
     }
 
     @FunctionalInterface

@@ -1,5 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.modules;
 
@@ -15,7 +45,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import static com.hbm.inventory.OreDictManager.LIGNITE;
+import static com.hbm.inventory.material.MaterialTagRegistry.LIGNITE;
 
 public class ModuleBurnTime {
 
@@ -35,6 +65,7 @@ public class ModuleBurnTime {
 
     private final double[] modTime = new double[COUNT];
     private final double[] modHeat = new double[COUNT];
+    private List<String> description;
 
     public ModuleBurnTime() {
         for (int i = 0; i < COUNT; i++) {
@@ -58,7 +89,6 @@ public class ModuleBurnTime {
     }
 
     public int getBurnTime(Level level, ItemStack stack, double def) {
-        if (level == null || stack.isEmpty()) return 0;
         int base = FuelHandler.getBurnTime(level, stack);
         if (base <= 0) return 0;
         return (int) (base * getMod(stack, def));
@@ -78,6 +108,7 @@ public class ModuleBurnTime {
     }
 
     private double getMod(ItemStack stack, double[] mod, double def) {
+        if (stack.isEmpty()) return def;
         Item item = stack.getItem();
         if (item == ModItems.SOLID_FUEL.get()
                 || item == ModItems.SOLID_FUEL_PRESTO.get()
@@ -109,95 +140,91 @@ public class ModuleBurnTime {
     }
 
     public List<String> getDesc() {
-        List<String> list = new ArrayList<>();
-        list.add(ChatFormatting.GOLD + "Burn time bonuses:");
-        for (int i = 0; i < COUNT; i++) addIf(list, NAMES[i], modTime[i]);
-        if (list.size() == 1) list.clear();
+        if (description == null) {
+            var lines = new ArrayList<String>();
+            appendDescription(lines, modTime, ChatFormatting.GOLD + "Burn time bonuses:");
+            appendDescription(lines, modHeat, ChatFormatting.RED + "Burn heat bonuses:");
+            description = List.copyOf(lines);
+        }
+        return description;
+    }
 
-        List<String> heat = new ArrayList<>();
-        heat.add(ChatFormatting.RED + "Burn heat bonuses:");
-        for (int i = 0; i < COUNT; i++) addIf(heat, NAMES[i], modHeat[i]);
-        if (heat.size() > 1) list.addAll(heat);
-        return list;
+    private static void appendDescription(List<String> lines, double[] modifiers, String heading) {
+        int start = lines.size();
+        lines.add(heading);
+        for (int category = 0; category < COUNT; category++) {
+            addIf(lines, NAMES[category], modifiers[category]);
+        }
+        if (lines.size() == start + 1) lines.remove(start);
+    }
+
+    private ModuleBurnTime setMod(double[] modifiers, int category, double value) {
+        modifiers[category] = value;
+        description = null;
+        return this;
     }
 
     public ModuleBurnTime setLogTimeMod(double mod) {
-        this.modTime[MOD_LOG] = mod;
-        return this;
+        return setMod(modTime, MOD_LOG, mod);
     }
 
     public ModuleBurnTime setWoodTimeMod(double mod) {
-        this.modTime[MOD_WOOD] = mod;
-        return this;
+        return setMod(modTime, MOD_WOOD, mod);
     }
 
     public ModuleBurnTime setCoalTimeMod(double mod) {
-        this.modTime[MOD_COAL] = mod;
-        return this;
+        return setMod(modTime, MOD_COAL, mod);
     }
 
     public ModuleBurnTime setLigniteTimeMod(double mod) {
-        this.modTime[MOD_LIGNITE] = mod;
-        return this;
+        return setMod(modTime, MOD_LIGNITE, mod);
     }
 
     public ModuleBurnTime setCokeTimeMod(double mod) {
-        this.modTime[MOD_COKE] = mod;
-        return this;
+        return setMod(modTime, MOD_COKE, mod);
     }
 
     public ModuleBurnTime setSolidTimeMod(double mod) {
-        this.modTime[MOD_SOLID] = mod;
-        return this;
+        return setMod(modTime, MOD_SOLID, mod);
     }
 
     public ModuleBurnTime setRocketTimeMod(double mod) {
-        this.modTime[MOD_ROCKET] = mod;
-        return this;
+        return setMod(modTime, MOD_ROCKET, mod);
     }
 
     public ModuleBurnTime setBalefireTimeMod(double mod) {
-        this.modTime[MOD_BALEFIRE] = mod;
-        return this;
+        return setMod(modTime, MOD_BALEFIRE, mod);
     }
 
     public ModuleBurnTime setLogHeatMod(double mod) {
-        this.modHeat[MOD_LOG] = mod;
-        return this;
+        return setMod(modHeat, MOD_LOG, mod);
     }
 
     public ModuleBurnTime setWoodHeatMod(double mod) {
-        this.modHeat[MOD_WOOD] = mod;
-        return this;
+        return setMod(modHeat, MOD_WOOD, mod);
     }
 
     public ModuleBurnTime setCoalHeatMod(double mod) {
-        this.modHeat[MOD_COAL] = mod;
-        return this;
+        return setMod(modHeat, MOD_COAL, mod);
     }
 
     public ModuleBurnTime setLigniteHeatMod(double mod) {
-        this.modHeat[MOD_LIGNITE] = mod;
-        return this;
+        return setMod(modHeat, MOD_LIGNITE, mod);
     }
 
     public ModuleBurnTime setCokeHeatMod(double mod) {
-        this.modHeat[MOD_COKE] = mod;
-        return this;
+        return setMod(modHeat, MOD_COKE, mod);
     }
 
     public ModuleBurnTime setSolidHeatMod(double mod) {
-        this.modHeat[MOD_SOLID] = mod;
-        return this;
+        return setMod(modHeat, MOD_SOLID, mod);
     }
 
     public ModuleBurnTime setRocketHeatMod(double mod) {
-        this.modHeat[MOD_ROCKET] = mod;
-        return this;
+        return setMod(modHeat, MOD_ROCKET, mod);
     }
 
     public ModuleBurnTime setBalefireHeatMod(double mod) {
-        this.modHeat[MOD_BALEFIRE] = mod;
-        return this;
+        return setMod(modHeat, MOD_BALEFIRE, mod);
     }
 }

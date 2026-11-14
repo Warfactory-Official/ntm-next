@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.integration.ae2;
 
@@ -113,7 +129,10 @@ public final class AE2StorageQueries {
     }
 
     public static void addAll(KeyCounter out, KeyCounter source) {
-        Origins origins = ((CounterMetadata) (Object) source).hbm$listingOrigins();
+        Origins origins =
+                ((com.hbm.integration.ae2.AE2StorageQueries.CounterMetadata)
+                                (java.lang.Object) (source))
+                        .hbm$listingOrigins();
         if (origins == null || origins.used == 0) {
             out.addAll(source);
             return;
@@ -122,7 +141,10 @@ public final class AE2StorageQueries {
     }
 
     private static void addProjected(KeyCounter out, KeyCounter source, AEKey what, long amount) {
-        Origins origins = ((CounterMetadata) (Object) source).hbm$listingOrigins();
+        Origins origins =
+                ((com.hbm.integration.ae2.AE2StorageQueries.CounterMetadata)
+                                (java.lang.Object) (source))
+                        .hbm$listingOrigins();
         if (origins == null) {
             out.add(what, amount);
             return;
@@ -140,9 +162,13 @@ public final class AE2StorageQueries {
 
     private static void addOwned(KeyCounter out, BlockEntity owner, AEKey what, long amount) {
         if (owner.isRemoved() || amount == 0) return;
-        CounterMetadata metadata = (CounterMetadata) (Object) out;
-        Origins origins = metadata.hbm$listingOrigins();
-        if (origins == null) metadata.hbm$listingOrigins(origins = new Origins());
+        var origins =
+                ((com.hbm.integration.ae2.AE2StorageQueries.CounterMetadata)
+                                (java.lang.Object) (out))
+                        .hbm$listingOrigins();
+        if (origins == null)
+            ((com.hbm.integration.ae2.AE2StorageQueries.CounterMetadata) (java.lang.Object) (out))
+                    .hbm$listingOrigins(origins = new Origins());
         long added = origins.record(owner, what, amount);
         if (added != 0) out.add(what, added);
     }

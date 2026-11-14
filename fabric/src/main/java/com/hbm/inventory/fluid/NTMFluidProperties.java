@@ -1,10 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.fluid;
 
 import com.hbm.blocks.fluid.ClassicFluid;
 import com.hbm.inventory.fluid.trait.FluidTrait;
+import com.hbm.registration.Shared;
 import com.hbm.util.RegistryUtil;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
@@ -14,6 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -193,7 +211,7 @@ public final class NTMFluidProperties {
     }
 
     public static String nameKey(Identifier id) {
-        return Util.makeDescriptionId("block", id);
+        return Util.makeDescriptionId("block", Shared.resourceId(Registries.FLUID, id));
     }
 
     public static String clientName(@Nullable Fluid fluid) {
@@ -202,7 +220,7 @@ public final class NTMFluidProperties {
 
     private static String prettify(String path) {
         StringBuilder sb = new StringBuilder();
-        for (String part : path.toLowerCase(Locale.US).split("_")) {
+        for (String part : path.toLowerCase(Locale.ROOT).split("_")) {
             if (part.isEmpty()) continue;
             sb.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1)).append(' ');
         }

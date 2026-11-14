@@ -1,16 +1,15 @@
 {
   "type": "hbm:crafting_shapeless",
   "ingredients": [
-    {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:ajr_plate"
-    },
+    "hbm:ajr_plate",
     "#c:dyes/red",
     "#c:dyes/black"
   ],
+  "input_state": {
+    "0": {
+      "preserve": "result"
+    }
+  },
   "result": {
     "id": "hbm:ajro_plate"
   }

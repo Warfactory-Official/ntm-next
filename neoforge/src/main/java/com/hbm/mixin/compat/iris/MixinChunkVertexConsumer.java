@@ -1,10 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin.compat.iris;
 
-import com.hbm.interfaces.injected.ISectionGeometryNormal;
-import com.hbm.interfaces.injected.ISectionGeometryVertexConsumer;
+import com.hbm.interfaces.injected.SectionGeometryVertexConsumer;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.caffeinemc.mods.sodium.client.render.chunk.compile.buffers.ChunkVertexConsumer;
 import net.caffeinemc.mods.sodium.client.render.chunk.vertex.format.ChunkVertexEncoder;
@@ -20,7 +35,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ChunkVertexConsumer.class, remap = false)
-public abstract class MixinChunkVertexConsumer implements ISectionGeometryVertexConsumer {
+public abstract class MixinChunkVertexConsumer implements SectionGeometryVertexConsumer {
     @Unique
     private static final boolean hbm$irisVertexData =
             ChunkVertexExtension.class.isAssignableFrom(ChunkVertexEncoder.Vertex.class);
@@ -46,13 +61,15 @@ public abstract class MixinChunkVertexConsumer implements ISectionGeometryVertex
     @Inject(method = "setNormal", at = @At("HEAD"))
     private void hbm$normal(float x, float y, float z, CallbackInfoReturnable<VertexConsumer> cir) {
         if (hbm$sectionGeometry)
-            ((ISectionGeometryNormal) vertices[vertexIndex]).hbm$sectionNormal(x, y, z);
+            ((com.hbm.interfaces.injected.SectionGeometryNormalAccess) (vertices[vertexIndex]))
+                    .hbm$sectionNormal(x, y, z);
     }
 
     @Inject(method = "addVertex", at = @At("HEAD"))
     private void hbm$clearNormal(
             float x, float y, float z, CallbackInfoReturnable<VertexConsumer> cir) {
-        ((ISectionGeometryNormal) vertices[vertexIndex]).hbm$clearSectionNormal();
+        ((com.hbm.interfaces.injected.SectionGeometryNormalAccess) (vertices[vertexIndex]))
+                .hbm$clearSectionNormal();
     }
 
     @Inject(
@@ -65,7 +82,7 @@ public abstract class MixinChunkVertexConsumer implements ISectionGeometryVertex
     private void hbm$shaderAttributes(CallbackInfoReturnable<VertexConsumer> cir) {
         if (!hbm$sectionGeometry || !hbm$irisVertexData) return;
         for (var vertex : vertices) {
-            ((ChunkVertexExtension) vertex)
+            ((net.irisshaders.iris.vertices.sodium.terrain.ChunkVertexExtension) (vertex))
                     .iris$setData(hbm$emission, (byte) 0, hbm$blockId, hbm$x, hbm$y, hbm$z);
         }
     }
@@ -75,9 +92,11 @@ public abstract class MixinChunkVertexConsumer implements ISectionGeometryVertex
         if (!hbm$sectionGeometry) return;
         hbm$sectionGeometry = false;
         for (var vertex : vertices) {
-            ((ISectionGeometryNormal) vertex).hbm$clearSectionNormal();
+            ((com.hbm.interfaces.injected.SectionGeometryNormalAccess) (vertex))
+                    .hbm$clearSectionNormal();
             if (hbm$irisVertexData)
-                ((ChunkVertexExtension) vertex).iris$setData((byte) 0, (byte) 0, -1, 0, 0, 0);
+                ((net.irisshaders.iris.vertices.sodium.terrain.ChunkVertexExtension) (vertex))
+                        .iris$setData((byte) 0, (byte) 0, -1, 0, 0, 0);
         }
     }
 }

@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.inventory.fluid.EnumSymbol;
-import com.hbm.lib.Library;
+import com.hbm.inventory.fluid.HazardSymbol;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.material.Transparency;
@@ -35,7 +51,7 @@ public final class HazardDiamondVisual extends AbstractVisual {
     private static final int[] LIGHT = {0, 0, 0, 0};
     private static final Material MATERIAL =
             SimpleMaterial.builderOf(Materials.CUTOUT)
-                    .texture(Library.id("textures/models/misc/danger_diamond.png"))
+                    .texture(RegistryUtil.id("textures/models/misc/danger_diamond.png"))
                     .mipmap(false)
                     .cutout(CutoutShaders.ONE_TENTH)
                     .light(LightShaders.SMOOTH)
@@ -56,7 +72,7 @@ public final class HazardDiamondVisual extends AbstractVisual {
     private final UvTransformedInstance[][] labels;
     private final Matrix4f[] lastPoses;
     private final int[] lastHealth, lastFlame, lastReact;
-    private final EnumSymbol[] lastSymbols;
+    private final HazardSymbol[] lastSymbols;
     private final boolean[] visible;
     private final Matrix4f local = new Matrix4f();
     private final Matrix4f world = new Matrix4f();
@@ -70,7 +86,7 @@ public final class HazardDiamondVisual extends AbstractVisual {
         lastHealth = new int[count];
         lastFlame = new int[count];
         lastReact = new int[count];
-        lastSymbols = new EnumSymbol[count];
+        lastSymbols = new HazardSymbol[count];
         visible = new boolean[count];
         for (int i = 0; i < count; i++) lastPoses[i] = new Matrix4f();
         for (int i = 0; i < count; i++)
@@ -96,7 +112,7 @@ public final class HazardDiamondVisual extends AbstractVisual {
     }
 
     public void update(
-            int index, Matrix4fc base, int health, int flame, int react, EnumSymbol symbol) {
+            int index, Matrix4fc base, int health, int flame, int react, HazardSymbol symbol) {
         if (visible[index]
                 && lastHealth[index] == health
                 && lastFlame[index] == flame
@@ -162,7 +178,7 @@ public final class HazardDiamondVisual extends AbstractVisual {
                 digitRight(react),
                 5 * PIXEL,
                 33 * PIXEL);
-        if (symbol == EnumSymbol.NONE) {
+        if (symbol == HazardSymbol.NONE) {
             hide(row[4]);
         } else {
             float size = 59F / 2F * SCALE;
@@ -175,10 +191,10 @@ public final class HazardDiamondVisual extends AbstractVisual {
                     0F,
                     size,
                     size,
-                    symbol.x * PIXEL,
-                    (symbol.x + 59) * PIXEL,
-                    symbol.y * PIXEL,
-                    (symbol.y + 59) * PIXEL);
+                    symbol.cellX * PIXEL,
+                    (symbol.cellX + 59) * PIXEL,
+                    symbol.cellY * PIXEL,
+                    (symbol.cellY + 59) * PIXEL);
         }
     }
 

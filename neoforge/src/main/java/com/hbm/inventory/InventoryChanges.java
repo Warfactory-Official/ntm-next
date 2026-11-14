@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory;
 
 import com.hbm.handler.UnstableFuses;
 import com.hbm.hazard.HazardSystem;
-import com.hbm.platform.NeoForgeInventoryPlatform;
+import com.hbm.platform.InventoryPlatform;
 import java.util.ArrayList;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -144,7 +160,7 @@ public final class InventoryChanges {
     }
 
     public static void bindMenu(AbstractContainerMenu menu, ServerPlayer owner) {
-        SlotSource declared = NeoForgeInventoryPlatform.menuInventory(menu);
+        SlotSource declared = InventoryPlatform.menuInventory(menu);
         if (declared != null) {
             InventorySlotAccess.of(declared).bind(declared, owner);
             layoutChanged(declared);
@@ -166,7 +182,7 @@ public final class InventoryChanges {
     }
 
     public static void unbindMenu(AbstractContainerMenu menu) {
-        SlotSource declared = NeoForgeInventoryPlatform.menuInventory(menu);
+        SlotSource declared = InventoryPlatform.menuInventory(menu);
         if (declared != null) unbindSource(declared);
     }
 

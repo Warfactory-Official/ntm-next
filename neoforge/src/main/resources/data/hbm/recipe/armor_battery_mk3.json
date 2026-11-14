@@ -1,7 +1,13 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "C": "hbm:battery_pack_capacitor_tantalum",
+    "C": {
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:battery_pack_capacitor_tantalum",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
+    },
     "P": "#c:plates/gold",
     "W": "#hbm:wires_dense/mingrade"
   },

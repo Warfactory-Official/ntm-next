@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 206
+            "id": "hbm:weapon_mod_special_greasegun"
           }
         ],
         "parts": [
@@ -29,7 +29,7 @@
         ],
         "requires_mods": [
           {
-            "id": 206
+            "id": "hbm:weapon_mod_special_greasegun"
           }
         ],
         "texture": "hbm:textures/models/weapons/greasegun_clean.png"

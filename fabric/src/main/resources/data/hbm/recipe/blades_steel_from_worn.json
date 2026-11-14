@@ -1,7 +1,14 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "I": "hbm:blades_steel",
+    "I": {
+      "fabric:type": "hbm:matchers",
+      "base": "hbm:blades_steel",
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost",
+        "minecraft:damage": {}
+      }
+    },
     "P": "#c:plates/steel"
   },
   "pattern": [

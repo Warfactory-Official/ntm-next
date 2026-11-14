@@ -1,17 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.client.render.RenderCog;
+import com.hbm.client.render.CogRenderer;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.projectile.EntityArtilleryRocket;
-import com.hbm.entity.projectile.EntityArtilleryShell;
-import com.hbm.entity.projectile.EntityCog;
-import com.hbm.entity.projectile.EntityFallingNuke;
-import com.hbm.entity.projectile.EntitySawblade;
-import com.hbm.entity.projectile.EntityTorpedo;
-import com.hbm.items.weapon.ItemAmmoHIMARS.HIMARSRocketType;
+import com.hbm.entity.projectile.ArtilleryRocketEntity;
+import com.hbm.entity.projectile.ArtilleryShellEntity;
+import com.hbm.entity.projectile.CogEntity;
+import com.hbm.entity.projectile.FallingNukeEntity;
+import com.hbm.entity.projectile.SawbladeEntity;
+import com.hbm.entity.projectile.TorpedoEntity;
+import com.hbm.items.weapon.AmmoHIMARSItem.HIMARSRocketType;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.lib.visualization.SimpleEntityVisualizer;
@@ -30,7 +46,7 @@ public final class OrdnanceVisuals {
         ObjEntityVisual.register(
                 ModEntities.ARTILLERY_SHELL.get(),
                 () ->
-                        ObjEntityVisual.Spec.<EntityArtilleryShell>of(
+                        ObjEntityVisual.Spec.<ArtilleryShellEntity>of(
                                         ResourceManager.projectiles,
                                         ResourceManager.grenade_tex,
                                         "Grenade")
@@ -57,7 +73,7 @@ public final class OrdnanceVisuals {
         ObjEntityVisual.register(
                 ModEntities.TORPEDO.get(),
                 () ->
-                        ObjEntityVisual.Spec.<EntityTorpedo>of(
+                        ObjEntityVisual.Spec.<TorpedoEntity>of(
                                         ResourceManager.torpedo,
                                         ResourceManager.torpedo_tex,
                                         "Cylinder")
@@ -74,7 +90,7 @@ public final class OrdnanceVisuals {
         ObjEntityVisual.register(
                 ModEntities.FALLING_BOMB.get(),
                 () ->
-                        ObjEntityVisual.Spec.<EntityFallingNuke>of(
+                        ObjEntityVisual.Spec.<FallingNukeEntity>of(
                                         ResourceManager.lil_boy,
                                         ResourceManager.custom_nuke_tex,
                                         "Cylinder_Cylinder.002")
@@ -92,7 +108,7 @@ public final class OrdnanceVisuals {
         ObjEntityVisual.register(
                 ModEntities.STRAY_SAW.get(),
                 () ->
-                        ObjEntityVisual.Spec.<EntitySawblade>of(
+                        ObjEntityVisual.Spec.<SawbladeEntity>of(
                                         ResourceManager.sawmill,
                                         ResourceManager.sawmill_tex,
                                         "Blade")
@@ -101,7 +117,7 @@ public final class OrdnanceVisuals {
                                                 disc(
                                                         pose,
                                                         entity.getOrientation(),
-                                                        RenderCog.BLADE_SPIN_PERIOD)));
+                                                        CogRenderer.BLADE_SPIN_PERIOD)));
 
         SimpleEntityVisualizer.builder(ModEntities.BOMBLET_ZETA.get())
                 .factory(BombletZetaVisual::new)
@@ -120,7 +136,7 @@ public final class OrdnanceVisuals {
                                         ctx,
                                         entity,
                                         partialTick,
-                                        Models.COG[RenderCog.steel(entity) == 0 ? 0 : 1]))
+                                        Models.COG[CogRenderer.steel(entity) == 0 ? 0 : 1]))
                 .apply();
 
         SimpleEntityVisualizer.builder(ModEntities.HIMARS.get())
@@ -154,18 +170,18 @@ public final class OrdnanceVisuals {
                 .apply();
     }
 
-    private static ObjEntityVisual.Spec<EntityCog> cog(boolean steel) {
+    private static ObjEntityVisual.Spec<CogEntity> cog(boolean steel) {
         Identifier texture =
                 !steel ? ResourceManager.stirling_tex : ResourceManager.stirling_steel_tex;
-        return ObjEntityVisual.Spec.<EntityCog>of(ResourceManager.stirling, texture, "Cog")
+        return ObjEntityVisual.Spec.<CogEntity>of(ResourceManager.stirling, texture, "Cog")
                 .pose(
                         (pose, cog, partialTick) ->
-                                disc(pose, cog.getOrientation(), RenderCog.COG_SPIN_PERIOD));
+                                disc(pose, cog.getOrientation(), CogRenderer.COG_SPIN_PERIOD));
     }
 
-    private static ObjEntityVisual.Spec<EntityArtilleryRocket> himars(HIMARSRocketType rocket) {
+    private static ObjEntityVisual.Spec<ArtilleryRocketEntity> himars(HIMARSRocketType rocket) {
         String part = Math.floorMod(rocket.modelType, 2) == 1 ? "RocketSingle" : "RocketStandard";
-        return ObjEntityVisual.Spec.<EntityArtilleryRocket>of(
+        return ObjEntityVisual.Spec.<ArtilleryRocketEntity>of(
                         ResourceManager.turret_himars, rocket.texture, part)
                 .pose(
                         (pose, entity, partialTick) -> {
@@ -189,22 +205,23 @@ public final class OrdnanceVisuals {
             default -> {}
         }
         pose.translate(0F, 0F, -1F);
-        if (orientation < RenderCog.LANDED) {
-            pose.rotateZ(-(GameTime.now() % spinPeriod) / RenderCog.SPIN_DIVISOR * Mth.DEG_TO_RAD);
+        if (orientation < CogRenderer.LANDED) {
+            pose.rotateZ(
+                    -(GameTime.now() % spinPeriod) / CogRenderer.SPIN_DIVISOR * Mth.DEG_TO_RAD);
         }
         pose.translate(0F, -1.375F, 0F);
     }
 
     private static final class Models {
-        static final ObjEntityVisual.Prepared<EntityCog>[] COG =
+        static final ObjEntityVisual.Prepared<CogEntity>[] COG =
                 new ObjEntityVisual.Prepared[] {
                     ObjEntityVisual.prepare(cog(false)), ObjEntityVisual.prepare(cog(true))
                 };
-        static final ObjEntityVisual.Prepared<EntityArtilleryRocket>[] HIMARS = rockets();
+        static final ObjEntityVisual.Prepared<ArtilleryRocketEntity>[] HIMARS = rockets();
 
         static void init() {}
 
-        private static ObjEntityVisual.Prepared<EntityArtilleryRocket>[] rockets() {
+        private static ObjEntityVisual.Prepared<ArtilleryRocketEntity>[] rockets() {
             var types = HIMARSRocketType.values();
             var models = new ObjEntityVisual.Prepared[types.length];
             for (int i = 0; i < models.length; i++)

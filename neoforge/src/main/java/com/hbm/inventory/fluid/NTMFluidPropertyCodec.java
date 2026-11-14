@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.fluid;
 
@@ -20,8 +36,6 @@ import net.minecraft.world.level.material.Fluid;
 
 public final class NTMFluidPropertyCodec {
 
-    private static final Codec<EnumSymbol> SYMBOL =
-            Codec.STRING.xmap(EnumSymbol::valueOf, Enum::name);
     private static final MapCodec<Nfpa> NFPA =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -84,7 +98,8 @@ public final class NTMFluidPropertyCodec {
                                             FluidTraitCodecs.COLOR
                                                     .fieldOf("color")
                                                     .forGetter(NTMFluidProperty::color),
-                                            SYMBOL.fieldOf("symbol")
+                                            HazardSymbol.CODEC
+                                                    .fieldOf("symbol")
                                                     .forGetter(NTMFluidProperty::symbol),
                                             Codec.INT
                                                     .fieldOf("temperature")
@@ -108,7 +123,7 @@ public final class NTMFluidPropertyCodec {
     private NTMFluidPropertyCodec() {}
 
     private static Codec<FluidTrait> wrongBucket(String name, String hint, String expected) {
-        return MapCodec.unit(() -> (FluidTrait) null)
+        return MapCodec.<FluidTrait>unit(() -> null)
                 .codec()
                 .validate(
                         ignored ->
@@ -154,7 +169,7 @@ public final class NTMFluidPropertyCodec {
     private static NTMFluidProperty assemble(
             List<String> phases,
             int color,
-            EnumSymbol symbol,
+            HazardSymbol symbol,
             int temperature,
             Nfpa nfpa,
             List<String> flags,

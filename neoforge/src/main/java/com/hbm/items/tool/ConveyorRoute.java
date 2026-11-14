@@ -1,16 +1,48 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.tool;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.network.BaseConveyorBlock;
 import com.hbm.blocks.network.ConveyorBend;
 import com.hbm.blocks.network.ConveyorBendableBlock;
-import com.hbm.blocks.network.ConveyorBlockBase;
 import com.hbm.blocks.network.ConveyorChuteBlock;
 import com.hbm.blocks.network.ConveyorLiftBlock;
-import com.hbm.blocks.network.CraneBlockBase;
-import com.hbm.items.tool.ItemConveyorWand.ConveyorType;
+import com.hbm.blocks.network.CraneBlock;
+import com.hbm.items.tool.ConveyorPlacer;
+import com.hbm.items.tool.ConveyorWandItem.ConveyorType;
+import com.hbm.items.tool.ConveyorWandItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -46,13 +78,13 @@ public final class ConveyorRoute {
                 place(
                         build,
                         at,
-                        ItemConveyorWand.getConveyorBlock(type),
+                        ConveyorWandItem.getConveyorBlock(type),
                         player.getDirection(),
                         ConveyorBend.STRAIGHT);
             return 1;
         }
 
-        boolean hasVertical = ItemConveyorWand.hasSnakesAndLadders(type);
+        boolean hasVertical = ConveyorWandItem.hasSnakesAndLadders(type);
 
         BlockPos target = end.relative(targetDir);
         BlockPos cursor = anchor.relative(dir);
@@ -62,7 +94,7 @@ public final class ConveyorRoute {
         Block targetBlock = route.getBlockState(end).getBlock();
         boolean shouldTurnToTarget =
                 targetDir.getAxis().isHorizontal()
-                        || targetBlock instanceof CraneBlockBase
+                        || targetBlock instanceof CraneBlock
                         || targetBlock == ModBlocks.CONVEYOR_LIFT.get()
                         || targetBlock == ModBlocks.CONVEYOR_CHUTE.get();
 
@@ -126,7 +158,7 @@ public final class ConveyorRoute {
 
     private static void place(
             ConveyorPlacer build, BlockPos pos, Block block, Direction facing, ConveyorBend bend) {
-        BlockState state = block.defaultBlockState().setValue(ConveyorBlockBase.FACING, facing);
+        BlockState state = block.defaultBlockState().setValue(BaseConveyorBlock.FACING, facing);
 
         if (state.hasProperty(ConveyorBendableBlock.BEND))
             state = state.setValue(ConveyorBendableBlock.BEND, bend);
@@ -154,7 +186,7 @@ public final class ConveyorRoute {
     private static Block conveyorForDirection(ConveyorType type, Direction dir) {
         if (dir == Direction.UP) return ModBlocks.CONVEYOR_LIFT.get();
         if (dir == Direction.DOWN) return ModBlocks.CONVEYOR_CHUTE.get();
-        return ItemConveyorWand.getConveyorBlock(type);
+        return ConveyorWandItem.getConveyorBlock(type);
     }
 
     private static Direction facingFor(

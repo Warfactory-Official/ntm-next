@@ -1,16 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.fluid;
 
 import com.hbm.NuclearTech;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.registration.Shared;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -386,7 +404,15 @@ public final class NTMFluids {
     private static List<Fluid> displayOrder = List.of();
     private static List<Fluid> baseDisplayOrder = List.of();
 
-    private record Addition(String name, String after, @Nullable RegistryHandle<Fluid> handle) {}
+    private record Addition(
+            String name, String after, @Nullable RegistryHandle<Fluid> handle, String namespace) {
+        boolean idle() {
+            return handle instanceof Shared.Entry<Fluid> shared
+                    && !Shared.resourceId(Registries.FLUID, shared.id())
+                            .getNamespace()
+                            .equals(namespace);
+        }
+    }
 
     private static final List<Addition> ADDED = new ArrayList<>();
     private static final Map<Fluid, String> ADDON_NAMESPACE = new IdentityHashMap<>();
@@ -400,7 +426,7 @@ public final class NTMFluids {
             BY_NAME.put(name, alias.get());
             return;
         }
-        HANDLES.put(name, NeoForgeRegistrar.registerFluid(name.toLowerCase(Locale.US)));
+        HANDLES.put(name, Registrar.registerFluid(name.toLowerCase(Locale.ROOT)));
     }
 
     public static void register(String namespace, String name, String after) {
@@ -408,12 +434,27 @@ public final class NTMFluids {
                 new Addition(
                         name,
                         after,
-                        NeoForgeRegistrar.registerFluid(
-                                namespace + ":" + name.toLowerCase(Locale.US))));
+                        Registrar.registerFluid(namespace + ":" + name.toLowerCase(Locale.ROOT)),
+                        namespace));
+    }
+
+    public static void registerShared(String namespace, int priority, String name, String after) {
+        String path = name.toLowerCase(Locale.ROOT);
+        ADDED.add(
+                new Addition(
+                        name,
+                        after,
+                        Shared.request(
+                                Registries.FLUID,
+                                path,
+                                namespace,
+                                priority,
+                                owner -> Registrar.registerFluid(NuclearTech.MOD_ID + ":" + path)),
+                        namespace));
     }
 
     public static void move(String name, String after) {
-        ADDED.add(new Addition(name, after, null));
+        ADDED.add(new Addition(name, after, null, NuclearTech.MOD_ID));
     }
 
     public static String namespace(Fluid fluid) {
@@ -436,7 +477,7 @@ public final class NTMFluids {
     }
 
     public static String spritePath(Fluid fluid) {
-        return legacyName(fluid).toLowerCase(Locale.US);
+        return legacyName(fluid).toLowerCase(Locale.ROOT);
     }
 
     public static int legacyId(@Nullable Fluid fluid) {
@@ -468,7 +509,7 @@ public final class NTMFluids {
     public static void bake() {
         HANDLES.forEach((name, handle) -> BY_NAME.put(name, handle.get()));
         for (Addition addition : ADDED) {
-            if (addition.handle() == null) continue;
+            if (addition.handle() == null || addition.idle()) continue;
             Fluid fluid = addition.handle().get();
             Fluid bound = BY_NAME.putIfAbsent(addition.name(), fluid);
             if (bound != null && bound != fluid) {
@@ -480,7 +521,7 @@ public final class NTMFluids {
                                 + BuiltInRegistries.FLUID.getKey(bound)
                                 + " already holds");
             }
-            ADDON_NAMESPACE.put(fluid, addition.handle().id().getNamespace());
+            ADDON_NAMESPACE.put(fluid, addition.namespace());
             ADDON_BY_ID.add(fluid);
         }
         BY_NAME.forEach((name, fluid) -> NAME_OF.put(fluid, LEGACY_NAMES.getOrDefault(name, name)));
@@ -523,9 +564,10 @@ public final class NTMFluids {
     private static List<Fluid> resolveDisplayOrder() {
         Set<String> moved = new HashSet<>();
         for (Addition addition : ADDED) if (addition.handle() == null) moved.add(addition.name());
+        long active = ADDED.stream().filter(addition -> !addition.idle()).count();
         List<String> names = new ArrayList<>(DISPLAY_ORDER.length + ADDED.size());
         for (String name : DISPLAY_ORDER) if (!moved.contains(name)) place(name, names);
-        if (names.size() != DISPLAY_ORDER.length + ADDED.size() - moved.size()) {
+        if (names.size() != DISPLAY_ORDER.length + active - moved.size()) {
             throw new IllegalStateException(
                     "addon fluids anchored after names the display order never lists: "
                             + ADDED.stream()
@@ -546,7 +588,8 @@ public final class NTMFluids {
 
     private static void place(String name, List<String> names) {
         names.add(name);
-        for (Addition addition : ADDED)
-            if (addition.after().equals(name)) place(addition.name(), names);
+        for (Addition addition : ADDED) {
+            if (!addition.idle() && addition.after().equals(name)) place(addition.name(), names);
+        }
     }
 }

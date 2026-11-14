@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.loader;
 
-import com.hbm.interfaces.injected.IBufferBuilderExtension;
+import com.hbm.interfaces.injected.BufferBuilderExtension;
 import com.hbm.render.util.Vertices;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -26,10 +42,11 @@ public final class GroupObject {
     private final float[] quads;
     private final float[] faceNormals;
     private final float[] bounds;
+    private final int @Nullable [] vertexColors;
     private final Vector3f position = new Vector3f();
     private final Vector3f normal = new Vector3f();
-    private float[] flatQuads;
-    private float[] flatShadedQuads;
+    private volatile float[] flatQuads;
+    private volatile float[] flatShadedQuads;
     private float[] clipIn;
     private float[] clipOut;
     private float[] clipPos;
@@ -37,14 +54,32 @@ public final class GroupObject {
     private float[][] onePlane;
 
     public GroupObject(String name, float[] quads, float[] faceNormals) {
-        this(name, quads, faceNormals, computeBounds(quads));
+        this(name, quads, faceNormals, computeBounds(quads), null);
+    }
+
+    public GroupObject(
+            String name, float[] quads, float[] faceNormals, int @Nullable [] vertexColors) {
+        this(name, quads, faceNormals, computeBounds(quads), vertexColors);
     }
 
     GroupObject(String name, float[] quads, float[] faceNormals, float[] bounds) {
+        this(name, quads, faceNormals, bounds, null);
+    }
+
+    GroupObject(
+            String name,
+            float[] quads,
+            float[] faceNormals,
+            float[] bounds,
+            int @Nullable [] vertexColors) {
         this.name = name;
         this.quads = quads;
         this.faceNormals = faceNormals;
         this.bounds = bounds;
+        if (vertexColors != null && vertexColors.length != quads.length / STRIDE)
+            throw new IllegalArgumentException(
+                    "OBJ vertex-color stream length differs from geometry");
+        this.vertexColors = vertexColors;
     }
 
     public static GroupObject ofPosUv(String name, float[] posUv) {
@@ -114,7 +149,7 @@ public final class GroupObject {
     }
 
     GroupObject copy() {
-        return new GroupObject(name, quads, faceNormals, bounds);
+        return new GroupObject(name, quads, faceNormals, bounds, vertexColors);
     }
 
     public GroupObject refined() {
@@ -127,7 +162,7 @@ public final class GroupObject {
     }
 
     public GroupObject flatShaded() {
-        return new GroupObject(name, flatShadedQuads().clone(), faceNormals, bounds);
+        return new GroupObject(name, flatShadedQuads().clone(), faceNormals, bounds, vertexColors);
     }
 
     public float[] flatShadedQuads() {
@@ -152,6 +187,33 @@ public final class GroupObject {
 
     public float[] bounds() {
         return bounds;
+    }
+
+    public int @Nullable [] vertexColors() {
+        return vertexColors;
+    }
+
+    public void emitColored(
+            PoseStack.Pose pose, VertexConsumer buffer, int light, boolean smoothing) {
+        if (vertexColors == null) {
+            emit(pose, buffer, light, -1, smoothing);
+            return;
+        }
+        float[] vertices = quads(smoothing);
+        for (int at = 0, vertex = 0; at < vertices.length; at += STRIDE, vertex++)
+            Vertices.emit(
+                    buffer,
+                    pose,
+                    vertices[at],
+                    vertices[at + 1],
+                    vertices[at + 2],
+                    vertexColors[vertex],
+                    vertices[at + 3],
+                    vertices[at + 4],
+                    light,
+                    vertices[at + 5],
+                    vertices[at + 6],
+                    vertices[at + 7]);
     }
 
     public int faceCount() {
@@ -188,8 +250,8 @@ public final class GroupObject {
             PoseStack.Pose pose, VertexConsumer buffer, int[] light, int color, boolean smoothing) {
         float[] vertices = quads(smoothing);
         assert light.length == vertices.length / STRIDE;
-        IBufferBuilderExtension block =
-                buffer instanceof IBufferBuilderExtension fast && fast.hbm$beginBlock(light.length)
+        BufferBuilderExtension block =
+                buffer instanceof BufferBuilderExtension fast && fast.hbm$beginBlock(light.length)
                         ? fast
                         : null;
         for (int i = 0; i < vertices.length; i += STRIDE) {
@@ -272,7 +334,7 @@ public final class GroupObject {
             float vOff,
             boolean smoothing) {
         float[] d = quads(smoothing);
-        if (buffer instanceof IBufferBuilderExtension fast
+        if (buffer instanceof BufferBuilderExtension fast
                 && fast.hbm$putPart(
                         d,
                         STRIDE,
@@ -285,6 +347,11 @@ public final class GroupObject {
                         vScale,
                         uOff,
                         vOff)) return;
+        BufferBuilderExtension block =
+                buffer instanceof BufferBuilderExtension fast
+                                && fast.hbm$beginBlock(d.length / STRIDE)
+                        ? fast
+                        : null;
 
         Matrix4fc matrix = pose.pose();
         Vector3f p = position;
@@ -292,19 +359,34 @@ public final class GroupObject {
         for (int i = 0; i < d.length; i += STRIDE) {
             matrix.transformPosition(d[i], d[i + 1], d[i + 2], p);
             pose.transformNormal(d[i + 5], d[i + 6], d[i + 7], n);
-            buffer.addVertex(
-                    p.x,
-                    p.y,
-                    p.z,
-                    color,
-                    d[i + 3] * uScale + uOff,
-                    d[i + 4] * vScale + vOff,
-                    overlay,
-                    light,
-                    n.x,
-                    n.y,
-                    n.z);
+            if (block == null)
+                buffer.addVertex(
+                        p.x,
+                        p.y,
+                        p.z,
+                        color,
+                        d[i + 3] * uScale + uOff,
+                        d[i + 4] * vScale + vOff,
+                        overlay,
+                        light,
+                        n.x,
+                        n.y,
+                        n.z);
+            else
+                block.hbm$blockVertex(
+                        p.x,
+                        p.y,
+                        p.z,
+                        color,
+                        d[i + 3] * uScale + uOff,
+                        d[i + 4] * vScale + vOff,
+                        overlay,
+                        light,
+                        n.x,
+                        n.y,
+                        n.z);
         }
+        if (block != null) block.hbm$endBlock();
     }
 
     public void emitClipped(

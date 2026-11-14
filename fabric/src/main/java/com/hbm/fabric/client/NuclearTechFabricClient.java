@@ -1,11 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.fabric.client;
 
 import com.hbm.NuclearTech;
 import com.hbm.api.fluidmk2.FluidPipeTintData;
 import com.hbm.blocks.fluid.ClassicFluid;
+import com.hbm.client.ArmorBarHudRenderer;
 import com.hbm.client.ClientRegistry;
 import com.hbm.client.FarView;
 import com.hbm.client.ItemTooltipEvents;
@@ -18,6 +35,8 @@ import com.hbm.client.ctm.HbmCtmLoader;
 import com.hbm.client.gui.FluidTooltipFrame;
 import com.hbm.client.qmaw.QMAWClient;
 import com.hbm.command.ConfigCommand;
+import com.hbm.config.InteractionConfig;
+import com.hbm.config.ModeStatus;
 import com.hbm.data.DataGroups;
 import com.hbm.handler.BobmazonOffers;
 import com.hbm.handler.EquipmentProtections;
@@ -31,7 +50,9 @@ import com.hbm.inventory.recipes.ModRecipes;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.RecipeSource;
 import com.hbm.items.food.ConsumableTreatments;
-import com.hbm.packet.toserver.CrateOpenHeldPayload;
+import com.hbm.packet.BulkTransfers;
+import com.hbm.packet.PacketWire;
+import com.hbm.packet.layout.CrateOpenHeldLayout;
 import com.hbm.particle.HbmParticleGroups;
 import com.hbm.particle.HbmParticles;
 import com.hbm.registration.Reg;
@@ -57,6 +78,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallbac
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.SpriteSourceRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudStatusBarHeightRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.fabricmc.fabric.api.resource.v1.ResourceLoader;
 import net.fabricmc.fabric.api.resource.v1.pack.PackActivationType;
@@ -169,11 +191,14 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                         DataGroups.applyAll(listener.registryAccess());
                     }
                     GenericRecipes.invalidateIndexes();
-                    CrateOpenHeldPayload.report();
+                    PacketWire.sendToServer(
+                            CrateOpenHeldLayout.encode(InteractionConfig.crateOpensHeld));
                     FarView.joined();
                 });
         ClientPlayConnectionEvents.DISCONNECT.register(
                 (listener, client) -> {
+                    if (client.player != null) BulkTransfers.disconnected(client.player);
+                    ModeStatus.disconnected();
                     RadiationResistanceTooltip.disconnected();
                     if (!client.hasSingleplayerServer()) {
                         HazmatRegistry.clear();
@@ -243,6 +268,9 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
         HudElementRegistry.addLast(
                 ClientRegistry.LOOK_OVERLAY_ID,
                 (graphics, deltaTracker) -> ClientRegistry.renderLookOverlay(graphics));
+        HudElementRegistry.addFirst(
+                ClientRegistry.MODE_BADGES_ID,
+                (graphics, deltaTracker) -> ClientRegistry.renderModeBadges(graphics));
         HudElementRegistry.addLast(
                 ClientRegistry.RADIATION_HUD_ID,
                 (graphics, deltaTracker) -> ClientRegistry.renderRadiationHud(graphics));
@@ -319,9 +347,32 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                         (graphics, deltaTracker) -> {
                             if (!ClientRegistry.replacesVanillaVitals())
                                 original.extractRenderState(graphics, deltaTracker);
-                            else
-                                ClientRegistry.renderShieldBar(graphics, graphics.guiHeight() - 39);
                         });
+        HudElementRegistry.attachElementBefore(
+                VanillaHudElements.ARMOR_BAR,
+                ClientRegistry.SHIELD_BAR_ID,
+                (graphics, deltaTracker) -> {
+                    int height =
+                            ClientRegistry.replacesVanillaVitals()
+                                    ? 39
+                                    : HudStatusBarHeightRegistry.getHeight(
+                                            ClientRegistry.SHIELD_BAR_ID);
+                    ClientRegistry.renderShieldBar(graphics, graphics.guiHeight() - height);
+                });
+        HudStatusBarHeightRegistry.addLeft(
+                ClientRegistry.SHIELD_BAR_ID,
+                _ -> ClientRegistry.shieldShown() ? 10 : 0);
+        HudElementRegistry.attachElementAfter(
+                VanillaHudElements.ARMOR_BAR,
+                ClientRegistry.ARMOR_BARS_ID,
+                (graphics, deltaTracker) -> {
+                    if (ClientRegistry.armorBarsShown())
+                        ArmorBarHudRenderer.render(graphics, armorBarsLeftHeight());
+                });
+        HudStatusBarHeightRegistry.addLeft(
+                ClientRegistry.ARMOR_BARS_ID,
+                _ ->
+                        ClientRegistry.armorBarsShown() ? ArmorBarHudRenderer.height() : 0);
         ResourceLoader.get(PackType.CLIENT_RESOURCES)
                 .registerReloadListener(ObjMeshCache.ID, ObjMeshCache.INSTANCE);
         ResourceLoader.get(PackType.CLIENT_RESOURCES)
@@ -333,5 +384,9 @@ public final class NuclearTechFabricClient implements ClientModInitializer {
                         ClientRegistry.GUN_CLIENT_SETUP_ID,
                         (ResourceManagerReloadListener)
                                 resourceManager -> ClientRegistry.setupGunClient());
+    }
+
+    private static int armorBarsLeftHeight() {
+        return HudStatusBarHeightRegistry.getHeight(ClientRegistry.ARMOR_BARS_ID);
     }
 }

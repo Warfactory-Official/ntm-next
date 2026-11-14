@@ -1,0 +1,355 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
+
+package com.hbm.blockentity.machine.rbmk;
+
+import com.hbm.api.fluidmk2.FluidFlushOutputs;
+import com.hbm.api.fluidmk2.FluidPipeGraph;
+import com.hbm.api.fluidmk2.FluidTankHandler;
+import com.hbm.api.fluidmk2.FlushLanes;
+import com.hbm.api.fluidmk2.PipeData;
+import com.hbm.api.redstoneoverradio.RadioValueProvider;
+import com.hbm.blocks.ModBlockEntities;
+import com.hbm.data.MachineData;
+import com.hbm.entity.projectile.RBMKDebrisEntity;
+import com.hbm.handler.threading.TargetPoint;
+import com.hbm.inventory.container.RBMKBoilerMenu;
+import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import com.hbm.packet.PacketWire;
+import com.hbm.packet.SyncUnitSchema;
+import com.hbm.packet.layout.RbmkSteamLayout;
+import com.hbm.sound.ModSounds;
+import com.hbm.sound.WorldSounds;
+import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.graph.NodeNetwork;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
+
+import static com.hbm.api.redstoneoverradio.RadioCommandParser.VAL;
+
+public class RBMKBoilerBlockEntity extends RBMKBaseBlockEntity
+        implements FluidTankHandler, MenuProvider, SyncUnitSchema, RadioValueProvider {
+    public final FluidTankNTM feed = new FluidTankNTM(NTMFluids.WATER, 10000);
+    private final FluidTankNTM[] receiving;
+    private final FluidTankNTM[] sending;
+    public final FluidTankNTM steam = new FluidTankNTM(NTMFluids.STEAM, 1000000);
+    public int consumption;
+    public int output;
+    private int ventDelay;
+    private final FluidFlushOutputs flush = new FluidFlushOutputs();
+
+    public RBMKBoilerBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.RBMK_BOILER.get(), pos, state, 0);
+        receiving = new FluidTankNTM[] {feed};
+        sending = new FluidTankNTM[] {steam};
+    }
+
+    public static double getHeatFromSteam(@Nullable Fluid type) {
+        if (type == NTMFluids.STEAM) return 100D;
+        if (type == NTMFluids.HOTSTEAM) return 300D;
+        if (type == NTMFluids.SUPERHOTSTEAM) return 450D;
+        if (type == NTMFluids.ULTRAHOTSTEAM) return 600D;
+        return 0D;
+    }
+
+    public static double getFactorFromSteam(@Nullable Fluid type) {
+        if (type == NTMFluids.STEAM) return 1D;
+        if (type == NTMFluids.HOTSTEAM) return 10D;
+        if (type == NTMFluids.SUPERHOTSTEAM) return 100D;
+        if (type == NTMFluids.ULTRAHOTSTEAM) return 1000D;
+        return 0D;
+    }
+
+    @Override
+    public void tickServer() {
+        this.consumption = 0;
+        this.output = 0;
+        if (this.ventDelay > 0) this.ventDelay--;
+
+        double heatCap = getHeatFromSteam(steam.getTankType());
+        double heatProvided = this.heat - heatCap;
+
+        if (heatProvided > 0) {
+            double heatPerMbWater = MachineData.RBMK_BOILER_HEAT_CONSUMPTION.get();
+            double steamFactor = getFactorFromSteam(steam.getTankType());
+            int waterUsed;
+            int steamProduced;
+
+            if (steam.getTankType() == NTMFluids.ULTRAHOTSTEAM) {
+                steamProduced =
+                        (int) Math.floor((heatProvided / heatPerMbWater) * 100D / steamFactor);
+                waterUsed = (int) Math.floor(steamProduced / 100D * steamFactor);
+                if (feed.getFill() < waterUsed) {
+                    steamProduced = (int) Math.floor(feed.getFill() * 100D / steamFactor);
+                    waterUsed = (int) Math.floor(steamProduced / 100D * steamFactor);
+                }
+            } else {
+                waterUsed = (int) Math.floor(heatProvided / heatPerMbWater);
+                waterUsed = Math.min(waterUsed, feed.getFill());
+                steamProduced = (int) Math.floor((waterUsed * 100D) / steamFactor);
+            }
+
+            this.consumption = waterUsed;
+            this.output = steamProduced;
+
+            feed.setFill(feed.getFill() - waterUsed);
+            if (steam.getFill() + steamProduced > steam.getMaxFill()) {
+                steam.setFill(steam.getMaxFill());
+                if (this.ventDelay <= 0) {
+                    vent();
+                    this.ventDelay = 20 + level.getRandom().nextInt(10);
+                    WorldSounds.machine(
+                            level,
+                            null,
+                            worldPosition.getX(),
+                            worldPosition.getY() + RbmkParams.heightAboveCore(),
+                            worldPosition.getZ(),
+                            ModSounds.STEAM_ENGINE_OPERATE.get(),
+                            SoundSource.BLOCKS,
+                            2F,
+                            1F + level.getRandom().nextFloat() * 0.25F);
+                }
+            } else {
+                steam.setFill(steam.getFill() + steamProduced);
+            }
+
+            this.hbm$syncSet$RBMKBaseBlockEntity$heat(
+                    (double) (this.heat - (waterUsed * heatPerMbWater)));
+            if (waterUsed > 0 || steamProduced > 0) markChanged();
+        }
+
+        flush.provide((ServerLevel) level, this);
+        super.tickServer();
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        out.add(steam, COLUMN_OUTPUTS);
+    }
+
+    private void vent() {
+        ServerLevel server = (ServerLevel) level;
+        RandomSource rand = server.getRandom();
+        double px = worldPosition.getX() + 0.25D + rand.nextInt(2) * 0.5D;
+        double py = worldPosition.getY() + RbmkParams.heightAboveCore();
+        double pz = worldPosition.getZ() + 0.25D + rand.nextInt(2) * 0.5D;
+        PacketWire.sendToAllAround(
+                RbmkSteamLayout.encode(px, py, pz),
+                new TargetPoint(
+                        server,
+                        worldPosition.getX() + 0.5D,
+                        worldPosition.getY() + 1D,
+                        worldPosition.getZ() + 0.5D,
+                        100));
+    }
+
+    @Override
+    public void onMelt(int reduce) {
+        int count = 1 + level.getRandom().nextInt(2);
+        for (int i = 0; i < count; i++) spawnDebris(RBMKDebrisEntity.DebrisType.BLANK);
+        if (MachineData.RBMK_ENABLE_MELTDOWN_OVERPRESSURE.get()) {
+            ServerLevel server = (ServerLevel) level;
+            Fluid type = steam.getTankType();
+            LevelNodeGraph<PipeData> graph = FluidPipeGraph.get(server, type);
+            collectColumnOutputs(
+                    server,
+                    worldPosition,
+                    (at, side) -> {
+                        PipeData data = graph.dataAt(at.asLong());
+                        NodeNetwork<PipeData> net =
+                                data != null && data.fluid() == type
+                                        ? graph.networkAt(at.asLong())
+                                        : null;
+                        if (net != null) pipes.add(net);
+                    });
+        }
+        super.onMelt(reduce);
+    }
+
+    public void cyceCompressor() {
+        if (heat > 50 && feed.getFill() > 0) return;
+
+        Fluid type = steam.getTankType();
+        int fill = steam.getFill();
+        if (type == NTMFluids.STEAM) {
+            steam.setTankType(NTMFluids.HOTSTEAM);
+            steam.setFill(fill / 10);
+        } else if (type == NTMFluids.HOTSTEAM) {
+            steam.setTankType(NTMFluids.SUPERHOTSTEAM);
+            steam.setFill(fill / 10);
+        } else if (type == NTMFluids.SUPERHOTSTEAM) {
+            steam.setTankType(NTMFluids.ULTRAHOTSTEAM);
+            steam.setFill(fill / 10);
+        } else if (type == NTMFluids.ULTRAHOTSTEAM) {
+            steam.setTankType(NTMFluids.STEAM);
+            steam.setFill(Math.min((long) fill * 1000, steam.getMaxFill()));
+        }
+        markChanged();
+    }
+
+    public void cycleCompressor() {
+        cyceCompressor();
+    }
+
+    @Override
+    public RBMKColumnType getConsoleType() {
+        return RBMKColumnType.BOILER;
+    }
+
+    @Override
+    public ColumnSnapshot getConsoleData(ColumnSnapshot reuse) {
+        ColumnSnapshot.Boiler data = (ColumnSnapshot.Boiler) super.getConsoleData(reuse);
+        data.hbm$syncSet$Boiler$waterFill(feed.getFill());
+        data.hbm$syncSet$Boiler$waterCapacity(feed.getMaxFill());
+        data.hbm$syncSet$Boiler$steamFill(steam.getFill());
+        data.hbm$syncSet$Boiler$steamCapacity(steam.getMaxFill());
+        data.hbm$syncSet$Boiler$steamFluid(ColumnSnapshot.fluidId(steam.getTankType()));
+        return data;
+    }
+
+    @Override
+    public int tankCount() {
+        return 2;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> feed;
+            case 1 -> steam;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
+    }
+
+    @Override
+    public FluidTankNTM[] getReceivingTanks() {
+        return receiving;
+    }
+
+    @Override
+    public FluidTankNTM[] getSendingTanks() {
+        return sending;
+    }
+
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        input.child("feed").ifPresent(feed::deserialize);
+        input.child("steam").ifPresent(steam::deserialize);
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        feed.serialize(output.child("feed"));
+        steam.serialize(output.child("steam"));
+    }
+
+    @Override
+    public void writeDiagnostics(CompoundTag tag) {
+        super.writeDiagnostics(tag);
+        writeDiagnostics(tag, "feed", feed);
+        writeDiagnostics(tag, "steam", steam);
+    }
+
+    @Override
+    public String[] getFunctionInfo() {
+        return new String[] {VAL + "feed", VAL + "steam", VAL + "consumption"};
+    }
+
+    @Override
+    public @Nullable String getRadioValue(String name) {
+        if ((VAL + "feed").equals(name)) return "" + feed.getFill();
+        if ((VAL + "steam").equals(name)) return "" + steam.getFill();
+        if ((VAL + "consumption").equals(name)) return "" + consumption;
+        return null;
+    }
+
+    @Override
+    protected Component getDefaultName() {
+        return Component.translatable("container.rbmkBoiler");
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return getName();
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
+        return new RBMKBoilerMenu(id, inv, this);
+    }
+
+    @Override
+    public long syncUnitMask() {
+        return super.syncUnitMask() | 0x30L;
+    }
+
+    @Override
+    public void writeSyncUnit(int unit, ByteBuf output) {
+        switch (unit) {
+            case 4 -> this.steam.packetSerialize(output);
+            case 5 -> this.feed.packetSerialize(output);
+            default -> super.writeSyncUnit(unit, output);
+        }
+    }
+
+    @Override
+    public void readSyncUnit(int unit, ByteBuf input) {
+        switch (unit) {
+            case 4 -> this.steam.packetDeserialize(input);
+            case 5 -> this.feed.packetDeserialize(input);
+            default -> super.readSyncUnit(unit, input);
+        }
+    }
+
+    static {
+        com.hbm.packet.SyncBindings.field(RBMKBoilerBlockEntity.class, "feed", 3, 1L << 5);
+        com.hbm.packet.SyncBindings.field(RBMKBoilerBlockEntity.class, "steam", 3, 1L << 4);
+    }
+}

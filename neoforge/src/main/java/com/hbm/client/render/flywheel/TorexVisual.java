@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.particle.FogQuadMesh;
-import com.hbm.client.render.RenderTorex;
-import com.hbm.entity.effect.EntityNukeTorex.Cloudlet;
-import com.hbm.entity.effect.EntityNukeTorex;
-import com.hbm.lib.Library;
+import com.hbm.client.render.TorexRenderer;
+import com.hbm.entity.effect.NukeTorexEntity.Cloudlet;
+import com.hbm.entity.effect.NukeTorexEntity;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.instance.Instancer;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
@@ -33,9 +49,9 @@ import net.minecraft.util.LightCoordsUtil;
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 
-public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
+public final class TorexVisual extends HbmDynamicEntityVisual<NukeTorexEntity> {
     private static final Identifier CLOUDLET_TEX =
-            Library.id("textures/particle/particle_base.png");
+            RegistryUtil.id("textures/particle/particle_base.png");
     private static final Material MATERIAL =
             SimpleMaterial.builderOf(Materials.TRANSLUCENT_NO_DEPTH_WRITE)
                     .texture(CLOUDLET_TEX)
@@ -43,7 +59,7 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
                     .fog(FogShaders.NONE)
                     .build();
     private static final Model MODEL = new SingleMeshModel(FogQuadMesh.INSTANCE, MATERIAL);
-    private static final Identifier FLARE_TEX = Library.id("textures/particle/flare.png");
+    private static final Identifier FLARE_TEX = RegistryUtil.id("textures/particle/flare.png");
     private static final Material FLARE_MATERIAL =
             SimpleMaterial.builder()
                     .transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
@@ -79,12 +95,12 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
     private BillboardInstance[] pool = new BillboardInstance[0];
     private int created;
     private int live;
-    private boolean flareShown = true;
-    private boolean flashShown = true;
+    private boolean flareShown;
+    private boolean flashShown;
     private int extentTick = Integer.MIN_VALUE;
     private float extent;
 
-    public TorexVisual(VisualizationContext ctx, EntityNukeTorex entity, float partialTick) {
+    public TorexVisual(VisualizationContext ctx, NukeTorexEntity entity, float partialTick) {
         super(ctx, entity, partialTick);
 
         Instancer<BillboardInstance> flareInstancer =
@@ -97,6 +113,7 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
             BillboardInstance inst = flareInstancer.createInstance();
             inst.uvRegion(0F, 0F, 1F, 1F).overlay(OverlayTexture.NO_OVERLAY);
             inst.size(0F);
+            inst.setVisible(false);
             flare[i] = inst;
         }
 
@@ -106,8 +123,7 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
                         .createInstance();
         this.flash.overlay(OverlayTexture.NO_OVERLAY);
         this.flash.light(LightCoordsUtil.FULL_BRIGHT);
-
-        writeFrame(partialTick);
+        this.flash.setVisible(false);
     }
 
     public static void initModels() {}
@@ -140,7 +156,7 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
                                     + size);
         }
         float scale = (float) entity.getScaleVal();
-        if (entity.age() < scale * RenderTorex.flareBaseDuration + 1) {
+        if (entity.age() < scale * TorexRenderer.flareBaseDuration + 1) {
             double roller = entity.rollerSize;
             double spread = .5D * roller;
             for (int i = 0; i < FLARE_QUADS; i++) {
@@ -155,7 +171,7 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
                                         + 20D * roller);
             }
         }
-        if (entity.age() < scale * RenderTorex.flashBaseDuration)
+        if (entity.age() < scale * TorexRenderer.flashBaseDuration)
             reach =
                     Math.max(
                             reach,
@@ -183,7 +199,7 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
 
         for (int i = 0; i < n; i++) {
             Cloudlet c = cloudlets.get(i);
-            int shading = RenderTorex.cloudletShading(c, partialTick);
+            int shading = TorexRenderer.cloudletShading(c, partialTick);
             BillboardInstance inst = pool[i];
             if (i >= live) inst.setVisible(true);
             inst.position(
@@ -203,11 +219,15 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
 
     private void writeFlare(float partialTick, double ox, double oy, double oz) {
         float scale = (float) entity.getScaleVal();
-        float flareDuration = scale * RenderTorex.flareBaseDuration;
+        float flareDuration = scale * TorexRenderer.flareBaseDuration;
         if (entity.age() >= flareDuration + 1) {
             if (flareShown) for (BillboardInstance inst : flare) inst.setVisible(false);
             flareShown = false;
             return;
+        }
+        if (!flareShown) {
+            for (BillboardInstance inst : flare) inst.setVisible(true);
+            flareShown = true;
         }
         float roller = (float) entity.rollerSize;
         float size = 10F * roller;
@@ -234,11 +254,15 @@ public final class TorexVisual extends HbmDynamicEntityVisual<EntityNukeTorex> {
 
     private void writeFlash(float partialTick, double ox, double oy, double oz) {
         float scale = (float) entity.getScaleVal();
-        float flashDuration = scale * RenderTorex.flashBaseDuration;
+        float flashDuration = scale * TorexRenderer.flashBaseDuration;
         if (entity.age() >= flashDuration) {
             if (flashShown) flash.setVisible(false);
             flashShown = false;
             return;
+        }
+        if (!flashShown) {
+            flash.setVisible(true);
+            flashShown = true;
         }
         double intensityRaw = (entity.age() + partialTick) / flashDuration;
         double intensity = intensityRaw * Math.pow(Math.E, -intensityRaw) * 2.717391304D;

@@ -20,5 +20,8 @@
   "textures": {
     "all": "hbm:block/models/machines/cyclotron",
     "particle": "hbm:block/models/machines/cyclotron"
-  }
+  },
+  "tiled": [
+    "Body"
+  ]
 }

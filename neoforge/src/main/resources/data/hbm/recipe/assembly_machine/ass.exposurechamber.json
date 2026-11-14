@@ -36,7 +36,10 @@
       "ingredient": "hbm:circuit_bismoid"
     },
     {
-      "ingredient": "hbm:battery_pack_capacitor_tantalum"
+      "ingredient": "hbm:battery_pack_capacitor_tantalum",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
     },
     {
       "count": 16,

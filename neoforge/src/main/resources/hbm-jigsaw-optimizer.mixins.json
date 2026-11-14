@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8.7",
+  "package": "com.hbm.mixin.compat.jigsaw",
+  "plugin": "com.hbm.mixin.compat.jigsaw.JigsawOptimizerMixinPlugin",
+  "mixins": [
+    "MixinPlacer"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

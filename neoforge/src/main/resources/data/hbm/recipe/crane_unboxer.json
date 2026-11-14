@@ -3,11 +3,14 @@
   "key": {
     "C": "hbm:conveyor_wand_regular",
     "P": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "minecraft:shears",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "minecraft:shears"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "W": "#c:rods/wooden"
   },

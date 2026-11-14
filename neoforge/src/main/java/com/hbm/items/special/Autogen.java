@@ -1,15 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items.special;
 
 import com.hbm.NuclearTech;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialRegistry;
+import com.hbm.inventory.material.MaterialShape;
 import com.hbm.registration.Reg;
 import com.hbm.registration.RegistryHandle;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +37,8 @@ import org.jspecify.annotations.Nullable;
 public final class Autogen {
 
     private static final List<RegistryHandle<MaterialShapeItem>> ITEMS = new ArrayList<>();
-    private static final Map<MaterialShapes, Map<NTMMaterial, RegistryHandle<MaterialShapeItem>>>
-            INDEX = new IdentityHashMap<>();
+    private static final Map<MaterialShape, Map<Material, RegistryHandle<MaterialShapeItem>>>
+            INDEX = new EnumMap<>(MaterialShape.class);
 
     private Autogen() {}
 
@@ -31,13 +48,13 @@ public final class Autogen {
 
     public static void register(String namespace) {
         Reg.Namespace reg = Reg.in(namespace);
-        for (NTMMaterial mat : Mats.orderedList) {
-            for (MaterialShapes shape : mat.autogen) {
-                if (shape.autogenItemPrefix == null) continue;
-                Map<NTMMaterial, RegistryHandle<MaterialShapeItem>> byMaterial =
+        for (Material mat : MaterialRegistry.ordered()) {
+            for (MaterialShape shape : mat.autoShapes()) {
+                if (shape.itemPrefix() == null) continue;
+                Map<Material, RegistryHandle<MaterialShapeItem>> byMaterial =
                         INDEX.computeIfAbsent(shape, ignored -> new IdentityHashMap<>());
                 if (byMaterial.containsKey(mat)) continue;
-                String name = shape.autogenItemId(mat.tagPath).getPath();
+                String name = shape.autogenItemId(mat.name());
                 String layer = "item/" + AutogenIcons.sprite(shape, mat);
                 RegistryHandle<MaterialShapeItem> handle =
                         reg.item(
@@ -55,22 +72,22 @@ public final class Autogen {
         return ITEMS;
     }
 
-    public static MaterialShapeItem require(MaterialShapes shape, NTMMaterial mat) {
+    public static MaterialShapeItem require(MaterialShape shape, Material mat) {
         MaterialShapeItem item = find(shape, mat);
         if (item == null) {
-            throw new IllegalStateException(mat.tagPath + " autogens no " + shape.name());
+            throw new IllegalStateException(mat.name() + " autogens no " + shape.plural());
         }
         return item;
     }
 
-    public static @Nullable MaterialShapeItem find(MaterialShapes shape, NTMMaterial mat) {
+    public static @Nullable MaterialShapeItem find(MaterialShape shape, Material mat) {
         RegistryHandle<MaterialShapeItem> handle = handle(shape, mat);
         return handle == null ? null : handle.get();
     }
 
     public static @Nullable RegistryHandle<MaterialShapeItem> handle(
-            MaterialShapes shape, NTMMaterial mat) {
-        Map<NTMMaterial, RegistryHandle<MaterialShapeItem>> byMaterial = INDEX.get(shape);
+            MaterialShape shape, Material mat) {
+        Map<Material, RegistryHandle<MaterialShapeItem>> byMaterial = INDEX.get(shape);
         return byMaterial == null ? null : byMaterial.get(mat);
     }
 }

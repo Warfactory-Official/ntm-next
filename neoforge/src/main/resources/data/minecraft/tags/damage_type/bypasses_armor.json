@@ -36,6 +36,9 @@
     "hbm:tau",
     "hbm:euthanized",
     "hbm:bolt",
-    "hbm:shockwave"
+    "hbm:shockwave",
+    "hbm:health_drain",
+    "hbm:blood_loss",
+    "hbm:lethal_projectile"
   ]
 }

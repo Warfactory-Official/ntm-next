@@ -1,36 +1,68 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
 import com.hbm.client.ClientPlayerAccess;
-import com.hbm.entity.effect.EntityFireLingering;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.explosion.vanillant.ExplosionVNT;
+import com.hbm.entity.effect.FireLingeringEntity;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.explosion.vanillant.ComposableExplosion;
 import com.hbm.explosion.vanillant.standard.*;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
-import com.hbm.items.weapon.sedna.impl.ItemGunStinger;
+import com.hbm.items.weapon.sedna.impl.GunStingerItem;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
-import com.hbm.platform.FabricPlatform;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.lib.ModDamageTypes;
+import com.hbm.lib.ModifiedDamageSource;
+import com.hbm.platform.Platform;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.DamageClass;
-import com.hbm.util.EntityDamageUtil;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,105 +87,111 @@ public class XFactoryRocket {
 
     public static Consumer<Entity> LAMBDA_STANDARD_ACCELERATE =
             (entity) -> {
-                EntityBulletBaseMK4 bullet = (EntityBulletBaseMK4) entity;
-                if (bullet.accel < 7) bullet.accel += 0.4D;
+                BulletBaseMK4Entity bullet = (BulletBaseMK4Entity) entity;
+                if (bullet.accel < 7) bullet.setAcceleration(bullet.accel + 0.4D);
             };
     public static Consumer<Entity> LAMBDA_STEERING_ACCELERATE =
             (entity) -> {
-                EntityBulletBaseMK4 bullet = (EntityBulletBaseMK4) entity;
+                BulletBaseMK4Entity bullet = (BulletBaseMK4Entity) entity;
                 if (!(bullet.getThrower() instanceof Player player)) {
-                    if (bullet.accel < 7) bullet.accel += 0.4D;
+                    if (bullet.accel < 7) bullet.setAcceleration(bullet.accel + 0.4D);
                     return;
                 }
                 ItemStack held = player.getMainHandItem();
                 steeringAccelerate(
                         entity,
                         held.isEmpty()
-                                || !(held.getItem() instanceof ItemGunBaseNT)
-                                || !ItemGunBaseNT.getIsAiming(held));
+                                || !(held.getItem() instanceof GunBaseNTItem)
+                                || !GunBaseNTItem.getIsAiming(held));
             };
     public static Consumer<Entity> LAMBDA_NCR_ACCELERATE =
             (entity) -> {
                 steeringAccelerate(entity, false);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_EXPLODE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_EXPLODE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult && bullet.tickCount < 3) return;
                 Lego.standardExplode(bullet, mop, 5F);
                 bullet.discard();
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_EXPLODE_HEAT =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_EXPLODE_HEAT =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult && bullet.tickCount < 3) return;
                 Lego.standardExplode(bullet, mop, 3.5F);
                 bullet.discard();
                 if (mop instanceof EntityHitResult entityHit) {
                     if (entityHit.getEntity() instanceof LivingEntity living) {
-                        EntityDamageUtil.attackEntityFromNT(
-                                living,
-                                BulletConfig.getDamage(
-                                        bullet, bullet.getThrower(), DamageClass.EXPLOSIVE),
-                                bullet.damage * 3F,
-                                true,
-                                true,
-                                0.5F,
-                                5F,
-                                0.2F);
-                    } else {
-                        EntityDamageUtil.attackEntityFromIgnoreIFrame(
-                                entityHit.getEntity(),
-                                BulletConfig.getDamage(
-                                        bullet, bullet.getThrower(), DamageClass.EXPLOSIVE),
+                        living.hurtServer(
+                                (ServerLevel) living.level(),
+                                ModifiedDamageSource.of(
+                                        BulletConfig.getDamage(
+                                                bullet,
+                                                bullet.getThrower(),
+                                                ModDamageTypes.EXPLOSIVE),
+                                        true,
+                                        0.5F,
+                                        5F,
+                                        0.2F),
                                 bullet.damage * 3F);
+                    } else {
+                        entityHit
+                                .getEntity()
+                                .hurtServer(
+                                        (ServerLevel) entityHit.getEntity().level(),
+                                        ModifiedDamageSource.bypassingCooldown(
+                                                BulletConfig.getDamage(
+                                                        bullet,
+                                                        bullet.getThrower(),
+                                                        ModDamageTypes.EXPLOSIVE)),
+                                        bullet.damage * 3F);
                     }
                 }
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_EXPLODE_DEMO =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_EXPLODE_DEMO =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult && bullet.tickCount < 3) return;
-                ExplosionVNT vnt =
-                        new ExplosionVNT(
+                ComposableExplosion vnt =
+                        new ComposableExplosion(
                                 bullet.level(),
                                 mop.getLocation().x,
                                 mop.getLocation().y,
                                 mop.getLocation().z,
                                 5F,
                                 bullet.getThrower());
-                vnt.setBlockAllocator(new BlockAllocatorStandard());
-                vnt.setBlockProcessor(new BlockProcessorStandard());
-                vnt.setEntityProcessor(new EntityProcessorCrossSmooth(1, bullet.damage));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
-                vnt.setSFX(new ExplosionEffectWeapon(10, 2.5F, 1F));
+                vnt.blockSelector(new AttenuatedRayBlockSelector());
+                vnt.blockProcessor(CellDestruction.decay());
+                vnt.entityProcessor(new WeaponExplosionEntityProcessor(1, bullet.damage));
+                vnt.effects(new SmallExplosionEffect(10, 2.5F, 1F));
                 vnt.explode();
                 bullet.discard();
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_EXPLODE_INC =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_EXPLODE_INC =
             (bullet, mop) -> {
                 spawnFire(bullet, mop, false, 300);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_EXPLODE_PHOSPHORUS =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_EXPLODE_PHOSPHORUS =
             (bullet, mop) -> {
                 spawnFire(bullet, mop, true, 600);
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STINGER_SECONDARY_PRESS =
             (stack, ctx) -> {
-                ItemGunStinger.setIsLockingOn(stack, true);
+                GunStingerItem.setIsLockingOn(stack, true);
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_STINGER_SECONDARY_RELEASE =
             (stack, ctx) -> {
-                ItemGunStinger.setIsLockingOn(stack, false);
+                GunStingerItem.setIsLockingOn(stack, false);
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_MISSILE_LAUNCHER_PRIMARY_PRESS =
             (stack, ctx) -> {
-                if (ItemGunBaseNT.getIsAiming(stack)) {
-                    int target = ItemGunStinger.getLockonTarget(ctx.getPlayer(), 150D, 20D);
+                if (GunBaseNTItem.getIsAiming(stack)) {
+                    int target = GunStingerItem.getLockonTarget(ctx.getPlayer(), 150D, 20D);
                     if (target != -1) {
-                        ItemGunBaseNT.setLockonTarget(stack, target);
-                        ItemGunBaseNT.setIsLockedOn(stack, true);
+                        GunBaseNTItem.setLockonTarget(stack, target);
+                        GunBaseNTItem.setIsLockedOn(stack, true);
                     }
                 }
                 Lego.LAMBDA_STANDARD_CLICK_PRIMARY.accept(stack, ctx);
-                ItemGunBaseNT.setIsLockedOn(stack, false);
+                GunBaseNTItem.setIsLockedOn(stack, false);
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_ROCKET = (stack, ctx) -> {};
 
@@ -161,9 +199,10 @@ public class XFactoryRocket {
     public static BiFunction<ItemStack, GunAnimation, BusAnimation> LAMBDA_PANZERSCHRECK_ANIMS =
             (stack, type) -> {
                 boolean empty =
-                        ((ItemGunBaseNT) stack.getItem())
+                        ((GunBaseNTItem) stack.getItem())
                                         .getConfig(stack, 0)
-                                        .getReceivers(stack)[0]
+                                        .getReceivers(stack)
+                                        .get(0)
                                         .getMagazine(stack)
                                         .getAmount(
                                                 stack, ClientPlayerAccess.player().getInventory())
@@ -173,37 +212,37 @@ public class XFactoryRocket {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 0)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 0)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "RELOAD",
-                                        new BusAnimationSequence()
-                                                .addPos(90, 0, 0, 750, IType.SIN_FULL)
-                                                .addPos(90, 0, 0, 1000)
-                                                .addPos(0, 0, 0, 750, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(90, 0, 0, 750, IType.SIN_FULL)
+                                                .to(90, 0, 0, 1000)
+                                                .to(0, 0, 0, 750, IType.SIN_FULL))
                                 .addBus(
                                         "ROCKET",
-                                        new BusAnimationSequence()
-                                                .addPos(0, -3, -6, 0)
-                                                .addPos(0, -3, -6, 750)
-                                                .addPos(0, 0, -6.5, 500, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 350, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(0, -3, -6, 0)
+                                                .to(0, -3, -6, 750)
+                                                .to(0, 0, -6.5, 500, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 350, IType.SIN_UP));
                     case JAMMED:
                         empty = false;
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "RELOAD",
-                                        new BusAnimationSequence()
-                                                .addPos(90, 0, 0, 750, IType.SIN_FULL)
-                                                .addPos(90, 0, 0, 500)
-                                                .addPos(0, 0, 0, 750, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(90, 0, 0, 750, IType.SIN_FULL)
+                                                .to(90, 0, 0, 500)
+                                                .to(0, 0, 0, 750, IType.SIN_FULL))
                                 .addBus(
                                         "ROCKET",
-                                        new BusAnimationSequence().addPos(0, empty ? -3 : 0, 0, 0));
+                                        new AnimationSequence().to(0, empty ? -3 : 0, 0, 0));
                 }
                 return null;
             };
@@ -216,40 +255,38 @@ public class XFactoryRocket {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 0)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 0)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                     case CYCLE:
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, -0.5, 50)
-                                                .addPos(0, 0, 0, 50));
+                                        new AnimationSequence().to(0, 0, -0.5, 50).to(0, 0, 0, 50));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "RELOAD_ROTATE",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 60, 500, IType.SIN_FULL)
-                                                .addPos(0, 0, 60, 1500)
-                                                .addPos(0, 0, 0, 750, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 60, 500, IType.SIN_FULL)
+                                                .to(0, 0, 60, 1500)
+                                                .to(0, 0, 0, 750, IType.SIN_FULL))
                                 .addBus(
                                         "RELOAD_PUSH",
-                                        new BusAnimationSequence()
-                                                .addPos(-1, -1, 0, 0)
-                                                .addPos(-1, -1, 0, 500)
-                                                .addPos(-1, 0, 0, 350)
-                                                .addPos(0, 0, 0, 1000));
+                                        new AnimationSequence()
+                                                .to(-1, -1, 0, 0)
+                                                .to(-1, -1, 0, 500)
+                                                .to(-1, 0, 0, 350)
+                                                .to(0, 0, 0, 1000));
                     case JAMMED:
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "RELOAD_ROTATE",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 60, 750, IType.SIN_FULL)
-                                                .addPos(0, 0, 60, 500)
-                                                .addPos(0, 0, 0, 750, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 60, 750, IType.SIN_FULL)
+                                                .to(0, 0, 60, 500)
+                                                .to(0, 0, 0, 750, IType.SIN_FULL));
                 }
                 return null;
             };
@@ -262,67 +299,67 @@ public class XFactoryRocket {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 0)
-                                                .addPos(0, 0, 0, 1000, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 0)
+                                                .to(0, 0, 0, 1000, IType.SIN_DOWN));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "BARREL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 1.5, 150)
-                                                .addPos(0, 0, 1.5, 2100)
-                                                .addPos(0, 0, 0, 150))
+                                        new AnimationSequence()
+                                                .to(0, 0, 1.5, 150)
+                                                .to(0, 0, 1.5, 2100)
+                                                .to(0, 0, 0, 150))
                                 .addBus(
                                         "OPEN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 250)
-                                                .addPos(90, 0, 0, 500, IType.SIN_FULL)
-                                                .addPos(90, 0, 0, 1000)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 250)
+                                                .to(90, 0, 0, 500, IType.SIN_FULL)
+                                                .to(90, 0, 0, 1000)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL))
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 2250)
-                                                .addPos(-1, 0, 0, 150, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 150, IType.SIN_UP))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 2250)
+                                                .to(-1, 0, 0, 150, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 150, IType.SIN_UP))
                                 .addBus(
                                         "MISSILE",
-                                        new BusAnimationSequence()
-                                                .addPos(-10, 0, 0, 0)
-                                                .addPos(-10, 0, 0, 750)
-                                                .addPos(3, 0, 2, 0)
-                                                .addPos(0, 0, -6, 350, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 350, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(-10, 0, 0, 0)
+                                                .to(-10, 0, 0, 750)
+                                                .to(3, 0, 2, 0)
+                                                .to(0, 0, -6, 350, IType.SIN_FULL)
+                                                .to(0, 0, 0, 350, IType.SIN_UP));
                     case JAMMED:
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "BARREL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 1.5, 150)
-                                                .addPos(0, 0, 1.5, 1350)
-                                                .addPos(0, 0, 0, 150))
+                                        new AnimationSequence()
+                                                .to(0, 0, 1.5, 150)
+                                                .to(0, 0, 1.5, 1350)
+                                                .to(0, 0, 0, 150))
                                 .addBus(
                                         "OPEN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 250)
-                                                .addPos(90, 0, 0, 500, IType.SIN_FULL)
-                                                .addPos(90, 0, 0, 250)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 250)
+                                                .to(90, 0, 0, 500, IType.SIN_FULL)
+                                                .to(90, 0, 0, 250)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL))
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 1500)
-                                                .addPos(-1, 0, 0, 150, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 150, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 1500)
+                                                .to(-1, 0, 0, 150, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 150, IType.SIN_UP));
                 }
                 return null;
             };
 
     public static void steeringAccelerate(Entity entity, boolean noSteer) {
-        EntityBulletBaseMK4 bullet = (EntityBulletBaseMK4) entity;
-        if (bullet.accel < 4) bullet.accel += 0.4D;
+        BulletBaseMK4Entity bullet = (BulletBaseMK4Entity) entity;
+        if (bullet.accel < 4) bullet.setAcceleration(bullet.accel + 0.4D);
         if (!(bullet.getThrower() instanceof Player player)) return;
 
         if (new Vec3(
@@ -344,23 +381,23 @@ public class XFactoryRocket {
         if (vec.length() < 3) return;
         vec = vec.normalize();
 
-        double speed = bullet.getDeltaMovement().length();
-        bullet.setDeltaMovement(vec.x * speed, vec.y * speed, vec.z * speed);
+        double speed = bullet.getFlightDirection().length();
+        bullet.setFlightDirection(vec.x * speed, vec.y * speed, vec.z * speed);
     }
 
     public static void spawnFire(
-            EntityBulletBaseMK4 bullet, HitResult mop, boolean phosphorus, int duration) {
+            BulletBaseMK4Entity bullet, HitResult mop, boolean phosphorus, int duration) {
         if (mop instanceof EntityHitResult && bullet.tickCount < 3) return;
         Level world = bullet.level();
         Lego.standardExplode(bullet, mop, 3F);
-        EntityFireLingering fire =
-                new EntityFireLingering(world)
+        FireLingeringEntity fire =
+                new FireLingeringEntity(world)
                         .setArea(6, 2)
                         .setDuration(duration)
                         .setType(
                                 phosphorus
-                                        ? EntityFireLingering.TYPE_PHOSPHORUS
-                                        : EntityFireLingering.TYPE_DIESEL);
+                                        ? FireLingeringEntity.TYPE_PHOSPHORUS
+                                        : FireLingeringEntity.TYPE_DIESEL);
         fire.setPos(mop.getLocation());
         world.addFreshEntity(fire);
         bullet.discard();
@@ -373,8 +410,7 @@ public class XFactoryRocket {
                         for (Direction dir : Direction.VALUES) {
                             BlockPos neighbor = pos.relative(dir);
                             BlockState state = world.getBlockState(neighbor);
-                            if (FabricPlatform.isFlammable(
-                                    world, neighbor, state, dir.getOpposite())) {
+                            if (Platform.isFlammable(world, neighbor, state, dir.getOpposite())) {
                                 world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                                 break;
                             }
@@ -456,19 +492,19 @@ public class XFactoryRocket {
         }
 
         ModItems.GUN_PANZERSCHRECK =
-                FabricRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_panzerschreck",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.A_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(300)
                                                         .draw(7)
                                                         .inspect(40)
                                                         .crosshair(Crosshair.L_CIRCUMFLEX)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(25F)
                                                                         .delay(5)
                                                                         .reload(50)
@@ -495,25 +531,24 @@ public class XFactoryRocket {
                                                                                 LAMBDA_RECOIL_ROCKET))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_PANZERSCHRECK_ANIMS)
-                                                        .orchestra(
-                                                                Orchestras.ORCHESTRA_PANERSCHRECK))
+                                                        .orchestra(GunAnimationActions.LAUNCHER))
                                         .setDefaultAmmo(EnumAmmo.ROCKET_HE, 3),
                         Item.Properties::new);
 
         ModItems.GUN_STINGER =
-                FabricRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_stinger",
                         props ->
-                                new ItemGunStinger(
+                                new GunStingerItem(
                                                 WeaponQuality.SPECIAL,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(300)
                                                         .draw(7)
                                                         .inspect(40)
                                                         .crosshair(Crosshair.L_BOX_OUTLINE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(35F)
                                                                         .delay(5)
                                                                         .reload(50)
@@ -542,25 +577,25 @@ public class XFactoryRocket {
                                                         .ps(LAMBDA_STINGER_SECONDARY_PRESS)
                                                         .rs(LAMBDA_STINGER_SECONDARY_RELEASE)
                                                         .anim(LAMBDA_PANZERSCHRECK_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_STINGER))
+                                                        .orchestra(GunAnimationActions.STINGER))
                                         .setDefaultAmmo(EnumAmmo.ROCKET_HEAT, 3),
                         Item.Properties::new);
 
         ModItems.GUN_QUADRO =
-                FabricRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_quadro",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.A_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(400)
                                                         .draw(7)
                                                         .inspect(40)
                                                         .crosshair(Crosshair.L_CIRCUMFLEX)
                                                         .hideCrosshair(false)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(40F)
                                                                         .spreadHipfire(0F)
                                                                         .delay(10)
@@ -588,25 +623,25 @@ public class XFactoryRocket {
                                                                                 LAMBDA_RECOIL_ROCKET))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_QUADRO_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_QUADRO))
+                                                        .orchestra(GunAnimationActions.LAUNCHER))
                                         .setDefaultAmmo(EnumAmmo.ROCKET_HE, 4),
                         Item.Properties::new);
 
         ModItems.GUN_MISSILE_LAUNCHER =
-                FabricRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_missile_launcher",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.A_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(500)
                                                         .draw(20)
                                                         .inspect(40)
                                                         .crosshair(Crosshair.L_CIRCUMFLEX)
                                                         .hideCrosshair(false)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(50F)
                                                                         .spreadHipfire(0F)
                                                                         .delay(5)
@@ -636,8 +671,8 @@ public class XFactoryRocket {
                                                         .pp(LAMBDA_MISSILE_LAUNCHER_PRIMARY_PRESS)
                                                         .anim(LAMBDA_MISSILE_LAUNCHER_ANIMS)
                                                         .orchestra(
-                                                                Orchestras
-                                                                        .ORCHESTRA_MISSILE_LAUNCHER))
+                                                                GunAnimationActions
+                                                                        .MISSILE_LAUNCHER))
                                         .setDefaultAmmo(EnumAmmo.ROCKET_HEAT, 5),
                         Item.Properties::new);
     }

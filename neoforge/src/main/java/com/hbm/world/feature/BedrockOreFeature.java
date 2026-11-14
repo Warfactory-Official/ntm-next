@@ -1,16 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.world.feature;
 
-import com.hbm.blockentity.BlockEntityBedrockOre;
+import com.hbm.blockentity.BedrockOreBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.special.BedrockOreSet;
-import com.hbm.lib.Library;
 import com.hbm.registration.OverridePoint;
+import com.hbm.util.RegistryUtil;
 import com.hbm.world.NtmWorldgenFields;
 import java.util.List;
 import java.util.function.Function;
@@ -28,7 +58,6 @@ import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
 public class BedrockOreFeature extends Feature<BedrockOreConfig> {
-
     public BedrockOreFeature() {
         super(BedrockOreConfig.CODEC);
     }
@@ -41,7 +70,7 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
     }
 
     public static final OverridePoint<Function<Level, @Nullable FluidStackNTM>> BORE_FLUID =
-            OverridePoint.of(Library.id("bedrock_bore_fluid"), level -> null);
+            OverridePoint.of(RegistryUtil.id("bedrock_bore_fluid"), level -> null);
 
     public static @Nullable FluidStackNTM getBoreFluid(int tier) {
         return switch (tier) {
@@ -139,7 +168,7 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
                 if (!level.getBlockState(pos).is(Blocks.BEDROCK)) continue;
                 if ((ix == x && iz == z) || rand.nextBoolean()) {
                     level.setBlock(pos, ore, 2);
-                    if (level.getBlockEntity(pos) instanceof BlockEntityBedrockOre be) {
+                    if (level.getBlockEntity(pos) instanceof BedrockOreBlockEntity be) {
                         be.setData(resource.copy(), acid, color, tier, rand.nextInt(10));
                     }
                 }

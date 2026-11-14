@@ -1,19 +1,37 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.bomb.BlockEntityCompactLauncher;
+import com.hbm.blockentity.ordnance.launch.CompactLauncherBlockEntity;
 import com.hbm.client.render.MissilePronter;
 import com.hbm.handler.MissileStruct;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
-import com.hbm.items.weapon.ItemCustomMissilePart;
+import com.hbm.items.weapon.CustomMissilePartItem.PartType;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import com.hbm.render.loader.HFRWavefrontObject;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -23,15 +41,15 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 public final class CompactLauncherVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityCompactLauncher>
-        implements ShaderLightVisual {
+        extends AbstractDynamicExtentBlockEntityVisual<CompactLauncherBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final float MISSILE_Y = 1.0625F;
     private static final int BODY_RADIUS = 2;
     private static final int BODY_HEIGHT = 8;
     private static final Map<PartKey, PartModels> PART_MODELS = new ConcurrentHashMap<>();
 
     private final Slot[] slots = new Slot[4];
-    private final ItemCustomMissilePart[] keys = new ItemCustomMissilePart[4];
+    private final CustomMissilePartItem[] keys = new CustomMissilePartItem[4];
     private final Matrix4f pose = new Matrix4f();
     private final Matrix4f world = new Matrix4f();
     private @Nullable AABB lastLightBounds;
@@ -40,7 +58,7 @@ public final class CompactLauncherVisual
 
     public CompactLauncherVisual(
             VisualizationContext context,
-            BlockEntityCompactLauncher blockEntity,
+            CompactLauncherBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
         updateMovingParts(partialTick);
@@ -48,7 +66,7 @@ public final class CompactLauncherVisual
 
     public static void initModels() {}
 
-    private static ItemCustomMissilePart valid(ItemCustomMissilePart part, PartType type) {
+    private static CustomMissilePartItem valid(CustomMissilePartItem part, PartType type) {
         return part != null && part.type == type && part.mesh != null && part.skin != null
                 ? part
                 : null;
@@ -61,15 +79,15 @@ public final class CompactLauncherVisual
     }
 
     @Override
-    protected void trackExtent() {
-        if (blockEntity.loadedMissile != lastMissile) updateMovingParts(0F);
+    public void beforeFrame() {
+        if (blockEntity.observedAssembly != lastMissile) updateMovingParts(0F);
     }
 
     @Override
-    protected void frame(Context context) {}
+    public void frame(Context context) {}
 
     public void updateMovingParts(float partialTick) {
-        MissileStruct missile = blockEntity.loadedMissile;
+        MissileStruct missile = blockEntity.observedAssembly;
         lastMissile = missile;
         boolean changed = sync(0, valid(missile.thruster(), PartType.THRUSTER));
         changed |=
@@ -86,11 +104,11 @@ public final class CompactLauncherVisual
         pose.identity().translate(.5F, y, .5F);
         write(slots[0], pose);
         float top = slots[0] == null ? 0F : y + slots[0].maxY;
-        ItemCustomMissilePart thruster = missile.thruster();
+        CustomMissilePartItem thruster = missile.thruster();
         if (valid(thruster, PartType.THRUSTER) != null) y += thruster.height;
 
         pose.identity().translate(.5F, y, .5F);
-        ItemCustomMissilePart fuselage = missile.fuselage();
+        CustomMissilePartItem fuselage = missile.fuselage();
         if (valid(fuselage, PartType.FUSELAGE) != null) {
             write(slots[1], pose);
             write(slots[2], pose);
@@ -111,7 +129,7 @@ public final class CompactLauncherVisual
         }
     }
 
-    private boolean sync(int index, ItemCustomMissilePart part) {
+    private boolean sync(int index, CustomMissilePartItem part) {
         if (keys[index] == part) return false;
         if (slots[index] != null) slots[index].delete();
         keys[index] = part;
@@ -119,7 +137,7 @@ public final class CompactLauncherVisual
         return true;
     }
 
-    private Slot createSlot(ItemCustomMissilePart part) {
+    private Slot createSlot(CustomMissilePartItem part) {
         PartModels models =
                 PART_MODELS.computeIfAbsent(
                         new PartKey(part.mesh, part.skin), CompactLauncherVisual::models);

@@ -1,16 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.config;
 
 public final class InteractionConfig {
     public static volatile boolean crateOpensHeld = true;
     public static volatile boolean recipeViewerHidesSecrets = true;
+    public static volatile boolean checkForUpdates = true;
 
     private InteractionConfig() {}
 
     public static void loadFrom(ConfigStore c) {
         crateOpensHeld = c.get(ConfigSchema.CRATE_OPEN_HELD);
         recipeViewerHidesSecrets = c.get(ConfigSchema.JEI_HIDE_SECRETS);
+        checkForUpdates = c.get(ConfigSchema.CHECK_FOR_UPDATES);
     }
 }

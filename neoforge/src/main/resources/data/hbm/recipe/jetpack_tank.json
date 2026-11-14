@@ -5,6 +5,7 @@
     "K": {
       "neoforge:ingredient_type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "hbm:kerosene"
     },
     "S": "#c:plates/steel"

@@ -1,12 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.world.feature;
 
-import com.hbm.blockentity.BlockEntityBobble;
+import com.hbm.blockentity.BobbleBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockBobble.Bobble;
-import com.hbm.blocks.generic.BlockBobble;
+import com.hbm.blocks.generic.BobbleBlock.Bobble;
+import com.hbm.blocks.generic.BobbleBlock;
 import com.hbm.world.gen.WorldgenHeight;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -14,6 +44,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +54,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
 public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
-
     private static final int BRICK = 0;
     private static final int WEB = 1;
     private static final int CRATE = 2;
@@ -160,11 +190,12 @@ public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
                         ModBlocks.BOBBLEHEAD
                                 .get()
                                 .defaultBlockState()
-                                .setValue(BlockBobble.ROTATION, rand.nextInt(16));
+                                .setValue(BobbleBlock.ROTATION, rand.nextInt(16));
                 level.setBlock(at, bobblehead, 3);
-                if (level.getBlockEntity(at) instanceof BlockEntityBobble bobble) {
-                    List<Bobble> types = BlockBobble.TYPES.values();
-                    bobble.type = types.get(rand.nextInt(types.size() - 1) + 1);
+                if (level.getBlockEntity(at) instanceof BobbleBlockEntity bobble) {
+                    List<Bobble> types = BobbleBlock.TYPES.values();
+                    bobble.hbm$syncSet$BobbleBlockEntity$type(
+                            types.get(rand.nextInt(types.size() - 1) + 1));
                     bobble.setChanged();
                 }
                 continue;
@@ -178,7 +209,7 @@ public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
         int iy = WorldgenHeight.lightBlocking(level, x, z);
         BlockPos.MutableBlockPos ground = at.set(x, iy - 1, z);
 
-        if (LockedSafeFeature.canPlaceTorchOnTop(level.getBlockState(ground))) {
+        if (Block.canSupportCenter(level, ground, Direction.UP)) {
             level.setBlock(at.set(x, iy, z), ModBlocks.TAPE_RECORDER.get().defaultBlockState(), 3);
         }
     }

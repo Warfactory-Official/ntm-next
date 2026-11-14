@@ -1,48 +1,55 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.machine;
 
-import com.hbm.blockentity.machine.BlockEntityCoreInjector;
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.blockentity.machine.dfc.DfcInjectorBlockEntity;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import dan200.computercraft.api.lua.LuaFunction;
 
-public final class CoreInjectorPeripheral extends SnapshotPeripheral<BlockEntityCoreInjector> {
+public final class CoreInjectorPeripheral extends BlockEntityPeripheral<DfcInjectorBlockEntity> {
 
-    private static final int FILL_0 = 0;
-    private static final int FILL_1 = 1;
-    private static final int TYPE_0 = 0;
-    private static final int TYPE_1 = 1;
-
-    public CoreInjectorPeripheral(BlockEntityCoreInjector machine) {
-        super(machine, "dfc_injector", 2, 2);
-    }
-
-    @Override
-    protected void capture(BlockEntityCoreInjector machine) {
-        put(FILL_0, machine.tanks[0].getFill());
-        put(FILL_1, machine.tanks[1].getFill());
-        putRef(TYPE_0, NTMFluids.legacyName(machine.tanks[0].getTankType()));
-        putRef(TYPE_1, NTMFluids.legacyName(machine.tanks[1].getTankType()));
+    public CoreInjectorPeripheral(DfcInjectorBlockEntity machine) {
+        super(machine, "dfc_injector");
     }
 
     @LuaFunction
-    public final Object[] getFuel() {
-        return read(s -> new Object[] {s.intAt(FILL_0), s.intAt(FILL_1)});
+    public Object[] getFuel() {
+        return new Object[] {(int) target.tanks[0].getFill(), (int) target.tanks[1].getFill()};
     }
 
     @LuaFunction
-    public final Object[] getTypes() {
-        return read(s -> new Object[] {s.refAt(TYPE_0), s.refAt(TYPE_1)});
+    public Object[] getTypes() {
+        return new Object[] {
+            NTMFluids.legacyName(target.tanks[0].getTankType()),
+            NTMFluids.legacyName(target.tanks[1].getTankType())
+        };
     }
 
     @LuaFunction
-    public final Object[] getInfo() {
-        return read(
-                s ->
-                        new Object[] {
-                            s.intAt(FILL_0), s.refAt(TYPE_0), s.intAt(FILL_1), s.refAt(TYPE_1)
-                        });
+    public Object[] getInfo() {
+        return new Object[] {
+            (int) target.tanks[0].getFill(),
+            NTMFluids.legacyName(target.tanks[0].getTankType()),
+            (int) target.tanks[1].getFill(),
+            NTMFluids.legacyName(target.tanks[1].getTankType())
+        };
     }
 }

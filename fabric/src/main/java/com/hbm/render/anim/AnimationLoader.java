@@ -1,184 +1,127 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.anim;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.hbm.render.anim.BusAnimationKeyframe.EType;
 import com.hbm.render.anim.BusAnimationKeyframe.HType;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence.Dimension;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 
-public class AnimationLoader {
-    public static final Gson gson = new Gson();
+public final class AnimationLoader {
 
-    public static HashMap<String, BusAnimation> load(Identifier file) {
-        HashMap<String, BusAnimation> animations = new HashMap<String, BusAnimation>();
+    private static final String[] GROUPS = {"location", "rotation_euler", "scale"};
+    private static final String[] AXES = {"x", "y", "z"};
 
-        InputStream in;
-        try {
-            in = Minecraft.getInstance().getResourceManager().getResourceOrThrow(file).open();
-        } catch (IOException ex) {
-            return null;
+    private AnimationLoader() {}
+
+    public static Map<String, BusAnimation> load(Identifier id) {
+        try (var reader =
+                Minecraft.getInstance()
+                        .getResourceManager()
+                        .getResourceOrThrow(id)
+                        .openAsReader()) {
+            return read(reader);
+        } catch (IOException e) {
+            throw new UncheckedIOException("animation clips " + id, e);
         }
+    }
 
-        InputStreamReader reader = new InputStreamReader(in);
-        JsonObject json = gson.fromJson(reader, JsonObject.class);
-
-        HashMap<String, double[]> offsets = new HashMap<String, double[]>();
-        for (Map.Entry<String, JsonElement> root : json.getAsJsonObject("offset").entrySet()) {
-            JsonArray array = root.getValue().getAsJsonArray();
-
-            double[] offset = new double[3];
-            for (int i = 0; i < 3; i++) {
-                offset[i] = array.get(i).getAsDouble();
+    public static Map<String, BusAnimation> read(Reader reader) {
+        var file = JsonParser.parseReader(reader).getAsJsonObject();
+        var pivots = member(file, "offset").getAsJsonObject();
+        var clips = new HashMap<String, BusAnimation>();
+        for (var clip : member(file, "anim").getAsJsonObject().entrySet()) {
+            var animation = new BusAnimation();
+            for (var part : clip.getValue().getAsJsonObject().entrySet()) {
+                var motion = new AnimationSequence();
+                var pivot = pivots.get(part.getKey());
+                if (pivot != null) {
+                    var xyz = pivot.getAsJsonArray();
+                    motion.pivot(
+                            xyz.get(0).getAsDouble(),
+                            xyz.get(1).getAsDouble(),
+                            xyz.get(2).getAsDouble());
+                }
+                var groups = part.getValue().getAsJsonObject();
+                for (int group = 0; group < GROUPS.length; group++) {
+                    var axes = groups.get(GROUPS[group]);
+                    if (axes == null) continue;
+                    for (int axis = 0; axis < AXES.length; axis++) {
+                        var keys = axes.getAsJsonObject().get(AXES[axis]);
+                        if (keys != null) keys(motion, group * 3 + axis, keys.getAsJsonArray());
+                    }
+                }
+                animation.addBus(part.getKey(), motion);
             }
-
-            offsets.put(root.getKey(), offset);
+            clips.put(clip.getKey(), animation);
         }
+        return Map.copyOf(clips);
+    }
 
-        HashMap<String, double[]> rotModes = new HashMap<String, double[]>();
-        if (json.has("rotmode")) {
-            for (Map.Entry<String, JsonElement> root : json.getAsJsonObject("rotmode").entrySet()) {
-                String mode = root.getValue().getAsString();
-
-                double[] rotMode = new double[3];
-                rotMode[0] = getRot(mode.charAt(2));
-                rotMode[1] = getRot(mode.charAt(0));
-                rotMode[2] = getRot(mode.charAt(1));
+    private static void keys(AnimationSequence motion, int channel, JsonArray keys) {
+        BusAnimationKeyframe previous = null;
+        for (int i = 0; i < keys.size(); i++) {
+            var fields = keys.get(i).getAsJsonArray();
+            var type =
+                    fields.size() > 2 ? IType.valueOf(fields.get(2).getAsString()) : IType.LINEAR;
+            var easing =
+                    fields.size() > 3 ? EType.valueOf(fields.get(3).getAsString()) : EType.AUTO;
+            if (i + 1 < keys.size()) AnimationTrack.requireCurve(type, easing);
+            var key =
+                    new BusAnimationKeyframe(
+                            fields.get(0).getAsDouble(), fields.get(1).getAsInt(), type, easing);
+            int at = 4;
+            if (previous != null && previous.interpolationType == IType.BEZIER) {
+                key.leftX = fields.get(at++).getAsDouble();
+                key.leftY = fields.get(at++).getAsDouble();
+                key.leftType = HType.valueOf(fields.get(at++).getAsString());
             }
-        }
-
-        for (Map.Entry<String, JsonElement> root : json.getAsJsonObject("anim").entrySet()) {
-            BusAnimation animation = new BusAnimation();
-
-            JsonObject entryObject = root.getValue().getAsJsonObject();
-            for (Map.Entry<String, JsonElement> model : entryObject.entrySet()) {
-                String modelName = model.getKey();
-                double[] offset = new double[3];
-                double[] rotMode = new double[] {0, 1, 2};
-                if (offsets.containsKey(modelName)) offset = offsets.get(modelName);
-                if (rotModes.containsKey(modelName)) rotMode = rotModes.get(modelName);
-                animation.addBus(
-                        modelName,
-                        loadSequence(model.getValue().getAsJsonObject(), offset, rotMode));
+            if (type == IType.BEZIER) {
+                key.rightX = fields.get(at++).getAsDouble();
+                key.rightY = fields.get(at++).getAsDouble();
+                key.rightType = HType.valueOf(fields.get(at++).getAsString());
+            } else if (type == IType.ELASTIC) {
+                key.amplitude = fields.get(at++).getAsDouble();
+                key.period = fields.get(at).getAsDouble();
+            } else if (type == IType.BACK) {
+                key.back = fields.get(at).getAsDouble();
             }
-
-            animations.put(root.getKey(), animation);
-        }
-
-        return animations;
-    }
-
-    private static double getRot(char value) {
-        switch (value) {
-            case 'X':
-                return 0;
-            case 'Y':
-                return 1;
-            case 'Z':
-                return 2;
-            default:
-                return 0;
+            motion.key(channel, key);
+            previous = key;
         }
     }
 
-    private static BusAnimationSequence loadSequence(
-            JsonObject json, double[] offset, double[] rotMode) {
-        BusAnimationSequence sequence = new BusAnimationSequence();
-
-        if (json.has("location")) {
-            JsonObject location = json.getAsJsonObject("location");
-
-            if (location.has("x"))
-                addToSequence(sequence, Dimension.TX, location.getAsJsonArray("x"));
-            if (location.has("y"))
-                addToSequence(sequence, Dimension.TY, location.getAsJsonArray("y"));
-            if (location.has("z"))
-                addToSequence(sequence, Dimension.TZ, location.getAsJsonArray("z"));
-        }
-
-        if (json.has("rotation_euler")) {
-            JsonObject rotation = json.getAsJsonObject("rotation_euler");
-
-            if (rotation.has("x"))
-                addToSequence(sequence, Dimension.RX, rotation.getAsJsonArray("x"));
-            if (rotation.has("y"))
-                addToSequence(sequence, Dimension.RY, rotation.getAsJsonArray("y"));
-            if (rotation.has("z"))
-                addToSequence(sequence, Dimension.RZ, rotation.getAsJsonArray("z"));
-        }
-
-        if (json.has("scale")) {
-            JsonObject scale = json.getAsJsonObject("scale");
-
-            if (scale.has("x")) addToSequence(sequence, Dimension.SX, scale.getAsJsonArray("x"));
-            if (scale.has("y")) addToSequence(sequence, Dimension.SY, scale.getAsJsonArray("y"));
-            if (scale.has("z")) addToSequence(sequence, Dimension.SZ, scale.getAsJsonArray("z"));
-        }
-
-        sequence.offset = offset;
-        sequence.rotMode = rotMode;
-
-        return sequence;
-    }
-
-    private static void addToSequence(
-            BusAnimationSequence sequence, Dimension dimension, JsonArray array) {
-        IType prevInterp = null;
-        for (JsonElement element : array) {
-            BusAnimationKeyframe keyframe = loadKeyframe(element, prevInterp);
-            prevInterp = keyframe.interpolationType;
-            sequence.addKeyframe(dimension, keyframe);
-        }
-    }
-
-    private static BusAnimationKeyframe loadKeyframe(JsonElement element, IType prevInterp) {
-        JsonArray array = element.getAsJsonArray();
-
-        double value = array.get(0).getAsDouble();
-        int duration = array.get(1).getAsInt();
-        IType interpolation =
-                array.size() >= 3 ? IType.valueOf(array.get(2).getAsString()) : IType.LINEAR;
-        EType easing = array.size() >= 4 ? EType.valueOf(array.get(3).getAsString()) : EType.AUTO;
-
-        BusAnimationKeyframe keyframe =
-                new BusAnimationKeyframe(value, duration, interpolation, easing);
-
-        int i = 4;
-
-        if (prevInterp == IType.BEZIER) {
-            keyframe.leftX = array.get(i++).getAsDouble();
-            keyframe.leftY = array.get(i++).getAsDouble();
-            keyframe.leftType = HType.valueOf(array.get(i++).getAsString());
-        }
-
-        if (interpolation == IType.LINEAR || interpolation == IType.CONSTANT) return keyframe;
-
-        if (interpolation == IType.BEZIER) {
-            keyframe.rightX = array.get(i++).getAsDouble();
-            keyframe.rightY = array.get(i++).getAsDouble();
-            keyframe.rightType = HType.valueOf(array.get(i++).getAsString());
-        }
-
-        if (interpolation == IType.ELASTIC) {
-            keyframe.amplitude = array.get(i++).getAsDouble();
-            keyframe.period = array.get(i++).getAsDouble();
-        } else if (interpolation == IType.BACK) {
-            keyframe.back = array.get(i++).getAsDouble();
-        }
-
-        return keyframe;
+    private static JsonElement member(JsonObject object, String name) {
+        var member = object.get(name);
+        if (member == null) throw new JsonParseException("missing member " + name);
+        return member;
     }
 }

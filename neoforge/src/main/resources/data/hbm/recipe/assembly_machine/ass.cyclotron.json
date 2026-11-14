@@ -9,7 +9,10 @@
   "duration": 600,
   "input_items": [
     {
-      "ingredient": "hbm:battery_pack_battery_lithium"
+      "ingredient": "hbm:battery_pack_battery_lithium",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
     },
     {
       "count": 32,

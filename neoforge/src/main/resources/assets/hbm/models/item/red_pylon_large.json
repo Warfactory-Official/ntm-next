@@ -167,5 +167,8 @@
   "textures": {
     "all": "hbm:block/models/network/pylon_large",
     "particle": "hbm:block/models/network/pylon_large"
-  }
+  },
+  "tiled": [
+    "Cube_Cube.001"
+  ]
 }

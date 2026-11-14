@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin.iris;
 
@@ -12,14 +28,15 @@ import com.hbm.client.render.iris.WorldFallbackShader;
 import com.hbm.client.render.iris.WorldShaderCompiler;
 import com.hbm.interfaces.injected.RibbonPipeline;
 import com.hbm.interfaces.injected.WorldPipeline;
+import com.hbm.mixin.compat.iris.ProgramFallbackResolverAccessor;
 import com.mojang.blaze3d.opengl.GlProgram;
 import com.mojang.blaze3d.opengl.GlRenderPipeline;
+import com.mojang.blaze3d.pipeline.CompiledRenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import dev.engine_room.flywheel.iris.compile.ContractProgram;
 import dev.engine_room.flywheel.iris.compile.ContractProgramSet;
-import dev.engine_room.flywheel.iris.mixin.ProgramFallbackResolverAccessor;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
@@ -65,10 +82,15 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
     @Shadow @Final private ImmutableSet<Integer> flippedAfterPrepare;
     @Shadow @Final private ImmutableSet<Integer> flippedAfterTranslucent;
     @Shadow @Final private Supplier<ShadowRenderTargets> shadowTargetsSupplier;
-    @Unique private GlRenderPipeline hbm$litRibbon;
-    @Unique private GlRenderPipeline hbm$emissiveRibbon;
-    @Unique private GlRenderPipeline hbm$emissiveNoFogRibbon;
-    @Unique private GlRenderPipeline[] hbm$programs = new GlRenderPipeline[0];
+    @Unique private CompiledRenderPipeline hbm$litRibbon;
+    @Unique private CompiledRenderPipeline hbm$emissiveRibbon;
+    @Unique private CompiledRenderPipeline hbm$emissiveNoFogRibbon;
+    @Unique private CompiledRenderPipeline[] hbm$programs = new CompiledRenderPipeline[0];
+
+    @Unique
+    private CompiledRenderPipeline hbm$compile(RenderPipeline pipeline, GlProgram program) {
+        return new GlRenderPipeline(pipeline, program);
+    }
 
     @Shadow
     protected abstract ShaderSupplier createShader(
@@ -103,10 +125,10 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
             throws IOException;
 
     @Override
-    public GlRenderPipeline hbm$ribbon(RenderPipeline pipeline) {
+    public CompiledRenderPipeline hbm$ribbon(RenderPipeline pipeline) {
         boolean fullbright = pipeline != WeaponRenderTypes.TRACER_PIPELINE;
         boolean fog = pipeline != WeaponRenderTypes.TRACER_FULLBRIGHT_NO_FOG_PIPELINE;
-        GlRenderPipeline cached =
+        CompiledRenderPipeline cached =
                 !fog ? hbm$emissiveNoFogRibbon : fullbright ? hbm$emissiveRibbon : hbm$litRibbon;
         if (cached != null) return cached;
         ShaderKey key = fullbright ? ShaderKey.ENTITIES_EYES_TRANS : ShaderKey.ENTITIES_TRANSLUCENT;
@@ -155,7 +177,7 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
             }
             GlProgram program = compiled.shader().get();
             loadedShaders.add(program);
-            cached = new GlRenderPipeline(pipeline, program);
+            cached = hbm$compile(pipeline, program);
             if (!fog) hbm$emissiveNoFogRibbon = cached;
             else if (fullbright) hbm$emissiveRibbon = cached;
             else hbm$litRibbon = cached;
@@ -168,7 +190,7 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
     }
 
     @Override
-    public GlRenderPipeline hbm$program(WorldRenderPipeline pipeline) {
+    public CompiledRenderPipeline hbm$program(WorldRenderPipeline pipeline) {
         var world = (IrisRenderingPipeline) (Object) this;
         int phase = WorldShaderCompiler.phase(world);
         boolean nativeSky = pipeline.family == WorldRenderPipeline.Family.NATIVE_SKY;
@@ -192,14 +214,14 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
         }
         int index = pipeline.index * 5 + phase;
         if (index >= hbm$programs.length) hbm$programs = Arrays.copyOf(hbm$programs, index + 160);
-        GlRenderPipeline cached = hbm$programs[index];
+        CompiledRenderPipeline cached = hbm$programs[index];
         if (cached != null) return cached;
         if (nativeSky) {
             var target = renderTargets.createGbufferFramebuffer(flippedAfterPrepare, new int[] {0});
             String name = "hbm_native_sky_" + pipeline.getLocation().getPath().replace('/', '_');
             GlProgram program = new WorldFallbackShader(name, pipeline, world, target, target);
             loadedShaders.add(program);
-            return hbm$programs[index] = new GlRenderPipeline(pipeline, program);
+            return hbm$programs[index] = hbm$compile(pipeline, program);
         }
         WorldShaderCompiler.assignShadow(pipeline);
         ShaderKey key = WorldShaderCompiler.key(pipeline, phase);
@@ -212,7 +234,8 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
                         || pipeline.family == WorldRenderPipeline.Family.LIGHTNING)) {
             var contracts =
                     (ContractProgramSet)
-                            ((ProgramFallbackResolverAccessor) resolver).flywheel$programs();
+                            ((java.lang.Object)
+                                    (((ProgramFallbackResolverAccessor) resolver).hbm$programs()));
             ProgramSource emission =
                     contracts.flywheel$contractSource(
                             pipeline.family == WorldRenderPipeline.Family.LIGHTNING
@@ -284,6 +307,6 @@ public abstract class MixinIrisRenderingPipeline implements RibbonPipeline, Worl
             }
         }
         loadedShaders.add(program);
-        return hbm$programs[index] = new GlRenderPipeline(pipeline, program);
+        return hbm$programs[index] = hbm$compile(pipeline, program);
     }
 }

@@ -14,7 +14,10 @@
       "ingredient": "#c:plates/weapon_steel"
     },
     "E": {
-      "ingredient": "hbm:gun_maresleg"
+      "ingredient": "hbm:gun_maresleg",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "F": {
       "ingredient": "#c:plates/weapon_steel"

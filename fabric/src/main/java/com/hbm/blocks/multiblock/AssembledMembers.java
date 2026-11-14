@@ -1,19 +1,38 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.multiblock;
 
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.platform.ServerEvents;
 import com.hbm.uninos.graph.EndpointRegistry;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongCollection;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,24 +47,26 @@ public final class AssembledMembers {
     private AssembledMembers() {}
 
     public static void init() {
-        FabricServerEvents.onServerStopping(server -> WAITING.clear());
-    }
-
-    public interface Member {
-        void verify(ServerLevel level, BlockPos pos, BlockState state, BlockPos owner);
-
-        default int endpointDomains(BlockState state) {
-            return 0;
-        }
+        final Consumer<MinecraftServer> callback = server -> WAITING.clear();
+        ServerEvents.STOPPING.add(callback);
     }
 
     public static void assemble(ServerLevel level, BlockPos owner, Collection<BlockPos> members) {
-        BlockMultiblockCore.claimCells(level, owner, members, MultiblockCoreIndex.MEMBER);
+        MultiblockCoreBlock.claimCells(level, owner, members, MultiblockCoreIndex.MEMBER);
         for (BlockPos member : members) {
             BlockState state = level.getBlockState(member);
             if (!declare(level, member, state, owner)) continue;
-            BlockMultiblockCore.notifyCell(level, member);
-            BlockMultiblockCore.renotifyNeighbours(level, member);
+            MultiblockCoreBlock.notifyCell(level, member);
+            MultiblockCoreBlock.renotifyNeighbours(level, member);
+        }
+    }
+
+    public static void claimBulk(ServerLevel level, BlockPos owner, LongCollection members) {
+        MultiblockCoreBlock.claimBulkCells(level, owner, members, MultiblockCoreIndex.MEMBER);
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (long cell : members) {
+            pos.set(cell);
+            declare(level, pos, level.getBlockState(pos), owner);
         }
     }
 
@@ -53,7 +74,7 @@ public final class AssembledMembers {
             ServerLevel level, BlockPos member, BlockState state, BlockPos owner) {
         int domains = state.getBlock() instanceof Member m ? m.endpointDomains(state) : 0;
         if (domains == 0) return false;
-        EndpointRegistry.of(level).declare(member, owner, BlockMultiblockCore.MASK_ALL, domains);
+        EndpointRegistry.of(level).declare(member, owner, MultiblockCoreBlock.MASK_ALL, domains);
         return true;
     }
 
@@ -65,11 +86,11 @@ public final class AssembledMembers {
     }
 
     public static void release(ServerLevel level, BlockPos member) {
-        BlockMultiblockCore.unindexCell(level, member);
+        MultiblockCoreBlock.unindexCell(level, member);
         EndpointRegistry endpoints = EndpointRegistry.of(level);
         if (endpoints.declared(member.asLong()) == null) return;
         endpoints.withdraw(member);
-        BlockMultiblockCore.notifyCell(level, member);
+        MultiblockCoreBlock.notifyCell(level, member);
     }
 
     public static List<BlockPos> members(ServerLevel level, BlockPos owner, BoundingBox bounds) {
@@ -79,8 +100,17 @@ public final class AssembledMembers {
             for (int cz = bounds.minZ() >> 4; cz <= bounds.maxZ() >> 4; cz++) {
                 LevelChunk chunk = level.getChunkSource().getChunkNow(cx, cz);
                 if (chunk == null) continue;
-                long[] entries = chunk.hbm$coreIndex();
-                for (int i = 0, n = entries == null ? 0 : chunk.hbm$coreIndexSize(); i < n; i++) {
+                long[] entries =
+                        ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
+                for (int i = 0,
+                                n =
+                                        entries == null
+                                                ? 0
+                                                : ((com.hbm.interfaces.injected.ChunkExtension)
+                                                                (chunk))
+                                                        .hbm$coreIndexSize();
+                        i < n;
+                        i++) {
                     long entry = entries[i];
                     if (entry < 0) continue;
                     long cell = MultiblockCoreIndex.cellPacked(chunk.getPos(), level, entry);
@@ -97,8 +127,15 @@ public final class AssembledMembers {
     public static @Nullable LongOpenHashSet declareIn(ServerLevel level, LevelChunk chunk) {
         Long2ObjectMap<LongOpenHashSet> byChunk = WAITING.get(level);
         LongOpenHashSet due = byChunk == null ? null : byChunk.remove(chunk.getPos().pack());
-        long[] entries = chunk.hbm$coreIndex();
-        for (int i = 0, n = entries == null ? 0 : chunk.hbm$coreIndexSize(); i < n; i++) {
+        long[] entries = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
+        for (int i = 0,
+                        n =
+                                entries == null
+                                        ? 0
+                                        : ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                                                .hbm$coreIndexSize();
+                i < n;
+                i++) {
             long entry = entries[i];
             if (entry < 0 || MultiblockCoreIndex.populationOf(entry) != MultiblockCoreIndex.MEMBER)
                 continue;
@@ -143,5 +180,22 @@ public final class AssembledMembers {
         Long2ObjectMap<LongOpenHashSet> byChunk = WAITING.get(level);
         LongOpenHashSet waiting = byChunk == null ? null : byChunk.get(chunkKey);
         return waiting == null ? 0 : waiting.size();
+    }
+
+    public interface Member {
+
+        default boolean bulkMemberRelevant(BlockState ignoredState) {
+            return true;
+        }
+
+        default boolean bulkMemberCell(BlockState ignoredState) {
+            return true;
+        }
+
+        void verify(ServerLevel level, BlockPos pos, BlockState state, BlockPos owner);
+
+        default int endpointDomains(BlockState state) {
+            return 0;
+        }
     }
 }

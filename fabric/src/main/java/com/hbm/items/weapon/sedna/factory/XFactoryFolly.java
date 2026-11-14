@@ -1,34 +1,65 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
-import com.hbm.entity.effect.EntityNukeTorex;
-import com.hbm.entity.logic.EntityNukeExplosionMK5;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.entity.projectile.EntityBulletBeamBase;
+import com.hbm.entity.effect.NukeTorexEntity;
+import com.hbm.entity.logic.NukeExplosionMK5Entity;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.entity.projectile.BulletBeamBaseEntity;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.GunState;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.GunState;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmoSecret;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
+import com.hbm.lib.ModDamageTypes;
+import com.hbm.lib.ModifiedDamageSource;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.PlasmaBlastPayload;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.packet.layout.PlasmaBlastLayout;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
-import com.hbm.util.DamageClass;
-import com.hbm.util.EntityDamageUtil;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -54,14 +85,14 @@ public class XFactoryFolly {
     public static Consumer<Entity> LAMBDA_SM_UPDATE =
             (entity) -> {
                 if (!(entity.level() instanceof ServerLevel server)) return;
-                EntityBulletBeamBase beam = (EntityBulletBeamBase) entity;
+                BulletBeamBaseEntity beam = (BulletBeamBaseEntity) entity;
                 Vec3 dir = new Vec3(beam.headingX, beam.headingY, beam.headingZ).normalize();
 
                 if (beam.tickCount < 50) {
                     double spacing = 10;
                     double dist = beam.tickCount * spacing;
                     PacketWire.sendToAllAround(
-                            new PlasmaBlastPayload(
+                            PlasmaBlastLayout.encode(
                                     beam.getX() + dir.x * dist,
                                     beam.getY() + dir.y * dist,
                                     beam.getZ() + dir.z * dist,
@@ -79,9 +110,12 @@ public class XFactoryFolly {
 
                 if (beam.tickCount != 2) return;
 
-                if (beam.thrower != null)
+                if (beam.getThrower() != null)
                     ContaminationUtil.contaminate(
-                            beam.thrower, HazardType.RADIATION, ContaminationType.CREATIVE, 150F);
+                            beam.getThrower(),
+                            HazardType.RADIATION,
+                            ContaminationType.CREATIVE,
+                            150F);
 
                 List<Entity> entities =
                         server.getEntities(
@@ -105,34 +139,36 @@ public class XFactoryFolly {
                                 AABB aabb =
                                         new AABB(ix - 1, iy - 1, iz - 1, ix + 2, iy + 2, iz + 2);
                                 for (Entity e : entities)
-                                    if (e != beam.thrower && e.getBoundingBox().intersects(aabb)) {
+                                    if (e != beam.getThrower()
+                                            && e.getBoundingBox().intersects(aabb)) {
                                         if (e instanceof LivingEntity living)
-                                            EntityDamageUtil.attackEntityFromNT(
-                                                    living,
-                                                    BulletConfig.getDamage(
-                                                            beam,
-                                                            beam.thrower,
-                                                            beam.config.dmgClass),
-                                                    beam.damage,
-                                                    true,
-                                                    false,
-                                                    0D,
-                                                    100F,
-                                                    0.99F);
+                                            living.hurtServer(
+                                                    server,
+                                                    ModifiedDamageSource.of(
+                                                            BulletConfig.getDamage(
+                                                                    beam,
+                                                                    beam.getThrower(),
+                                                                    beam.config.dmgClass),
+                                                            true,
+                                                            0D,
+                                                            100F,
+                                                            0.99F),
+                                                    beam.damage);
                                         else
-                                            EntityDamageUtil.attackEntityFromIgnoreIFrame(
-                                                    e,
-                                                    BulletConfig.getDamage(
-                                                            beam,
-                                                            beam.thrower,
-                                                            beam.config.dmgClass),
+                                            e.hurtServer(
+                                                    server,
+                                                    ModifiedDamageSource.bypassingCooldown(
+                                                            BulletConfig.getDamage(
+                                                                    beam,
+                                                                    beam.getThrower(),
+                                                                    beam.config.dmgClass)),
                                                     beam.damage);
                                     }
                             }
                 }
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_NUKE_IMPACT =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_NUKE_IMPACT =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult && bullet.tickCount < 2) return;
                 if (bullet.isRemoved()) return;
@@ -140,17 +176,17 @@ public class XFactoryFolly {
                 Vec3 hit = mop.getLocation();
                 bullet.level()
                         .addFreshEntity(
-                                EntityNukeExplosionMK5.statFac(
+                                NukeExplosionMK5Entity.statFac(
                                         bullet.level(), 100, hit.x, hit.y, hit.z));
-                EntityNukeTorex.statFac(bullet.level(), hit.x, hit.y, hit.z, 100);
+                NukeTorexEntity.statFac(bullet.level(), hit.x, hit.y, hit.z, 100);
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_TOGGLE_AIM =
             (stack, ctx) -> {
-                if (ItemGunBaseNT.getState(stack, ctx.configIndex()) == GunState.IDLE) {
-                    boolean wasAiming = ItemGunBaseNT.getIsAiming(stack);
-                    ItemGunBaseNT.setIsAiming(stack, !wasAiming);
+                if (GunBaseNTItem.getState(stack, ctx.configIndex()) == GunState.IDLE) {
+                    boolean wasAiming = GunBaseNTItem.getIsAiming(stack);
+                    GunBaseNTItem.setIsAiming(stack, !wasAiming);
                     if (!wasAiming)
-                        ItemGunBaseNT.playAnimation(
+                        GunBaseNTItem.playAnimation(
                                 ctx.getPlayer(), stack, GunAnimation.SPINUP, ctx.configIndex());
                 }
             };
@@ -161,20 +197,21 @@ public class XFactoryFolly {
     public static BiFunction<ItemStack, LambdaContext, Boolean> LAMBDA_CAN_FIRE =
             (stack, ctx) -> {
                 if (ctx.entity() instanceof Player) {
-                    if (!ItemGunBaseNT.getIsAiming(stack)) return false;
-                    if (ItemGunBaseNT.getLastAnim(stack, ctx.configIndex()) != GunAnimation.SPINUP)
+                    if (!GunBaseNTItem.getIsAiming(stack)) return false;
+                    if (GunBaseNTItem.getLastAnim(stack, ctx.configIndex()) != GunAnimation.SPINUP)
                         return false;
-                    if (ItemGunBaseNT.getAnimTimer(stack, ctx.configIndex()) < 100) return false;
+                    if (GunBaseNTItem.getAnimTimer(stack, ctx.configIndex()) < 100) return false;
                 }
                 return ctx.config()
-                                .getReceivers(stack)[0]
+                                .getReceivers(stack)
+                                .get(0)
                                 .getMagazine(stack)
                                 .getAmount(stack, ctx.inventory())
                         > 0;
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_FOLLY =
             (stack, ctx) -> {
-                ItemGunBaseNT.setupRecoil(
+                GunBaseNTItem.setupRecoil(
                         25, (float) (ctx.getPlayer().getRandom().nextGaussian() * 1.5));
             };
     public static BiFunction<ItemStack, GunAnimation, BusAnimation> LAMBDA_FOLLY_ANIMS =
@@ -184,55 +221,55 @@ public class XFactoryFolly {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(-60, 0, 0, 0)
-                                                .addPos(5, 0, 0, 1500, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(-60, 0, 0, 0)
+                                                .to(5, 0, 0, 1500, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL));
                     case CYCLE:
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, -4.5, 50)
-                                                .addPos(0, 0, -4.5, 500)
-                                                .addPos(0, 0, 0, 500, IType.SIN_UP))
+                                        new AnimationSequence()
+                                                .to(0, 0, -4.5, 50)
+                                                .to(0, 0, -4.5, 500)
+                                                .to(0, 0, 0, 500, IType.SIN_UP))
                                 .addBus(
                                         "LOAD",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 50)
-                                                .addPos(-25, 0, 0, 250, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 1000, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 50)
+                                                .to(-25, 0, 0, 250, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 1000, IType.SIN_FULL));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "LOAD",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 1000, IType.SIN_FULL)
-                                                .addPos(60, 0, 0, 6000)
-                                                .addPos(0, 0, 0, 1000, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 1000, IType.SIN_FULL)
+                                                .to(60, 0, 0, 6000)
+                                                .to(0, 0, 0, 1000, IType.SIN_FULL))
                                 .addBus(
                                         "SCREW",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 1000)
-                                                .addPos(0, 0, -135, 1000, IType.SIN_FULL)
-                                                .addPos(0, 0, -135, 4000)
-                                                .addPos(0, 0, 0, 1000, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 1000)
+                                                .to(0, 0, -135, 1000, IType.SIN_FULL)
+                                                .to(0, 0, -135, 4000)
+                                                .to(0, 0, 0, 1000, IType.SIN_FULL))
                                 .addBus(
                                         "BREECH",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 1000)
-                                                .addPos(0, 0, -0.5, 1000, IType.SIN_FULL)
-                                                .addPos(0, -4, -0.5, 1000, IType.SIN_FULL)
-                                                .addPos(0, -4, -0.5, 2000)
-                                                .addPos(0, 0, -0.5, 1000, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 1000, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 1000)
+                                                .to(0, 0, -0.5, 1000, IType.SIN_FULL)
+                                                .to(0, -4, -0.5, 1000, IType.SIN_FULL)
+                                                .to(0, -4, -0.5, 2000)
+                                                .to(0, 0, -0.5, 1000, IType.SIN_FULL)
+                                                .to(0, 0, 0, 1000, IType.SIN_FULL))
                                 .addBus(
                                         "SHELL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, -4, -4.5, 0)
-                                                .addPos(0, -4, -4.5, 3000)
-                                                .addPos(0, 0, -4.5, 1000, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 500, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(0, -4, -4.5, 0)
+                                                .to(0, -4, -4.5, 3000)
+                                                .to(0, 0, -4.5, 1000, IType.SIN_FULL)
+                                                .to(0, 0, 0, 500, IType.SIN_UP));
                     default:
                         return null;
                 }
@@ -243,7 +280,7 @@ public class XFactoryFolly {
         folly_sm =
                 new BulletConfig()
                         .setItem(EnumAmmoSecret.FOLLY_SM)
-                        .setupDamageClass(DamageClass.SUBATOMIC)
+                        .setupDamageClass(ModDamageTypes.SUBATOMIC)
                         .setBeam()
                         .setLife(100)
                         .setVel(2F)
@@ -262,18 +299,18 @@ public class XFactoryFolly {
                         .setOnImpact(LAMBDA_NUKE_IMPACT);
 
         ModItems.GUN_FOLLY =
-                FabricRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_folly",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                         WeaponQuality.SECRET,
                                         props,
-                                        new GunConfig()
+                                        GunConfig.builder()
                                                 .dura(0)
                                                 .draw(40)
                                                 .crosshair(Crosshair.NONE)
                                                 .rec(
-                                                        new Receiver(0)
+                                                        Receiver.builder()
                                                                 .dmg(1_000F)
                                                                 .delay(26)
                                                                 .dryfire(false)
@@ -301,7 +338,7 @@ public class XFactoryFolly {
                                                 .setupStandardConfiguration()
                                                 .pt(LAMBDA_TOGGLE_AIM)
                                                 .anim(LAMBDA_FOLLY_ANIMS)
-                                                .orchestra(Orchestras.ORCHESTRA_FOLLY)),
+                                                .orchestra(GunAnimationActions.FOLLY)),
                         Item.Properties::new);
     }
 }

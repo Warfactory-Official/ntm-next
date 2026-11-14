@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.machine.Floodlight;
-import com.hbm.lib.Library;
+import com.hbm.blocks.machine.FloodlightBlock;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import com.mojang.math.OctahedralGroup;
 import java.util.List;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
@@ -21,7 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public record FloodlightModel() implements BlockModel<HFRWavefrontObject> {
 
-    private static final Identifier OBJ = Library.id("models/blocks/floodlight.obj");
+    private static final Identifier OBJ = RegistryUtil.id("models/blocks/floodlight.obj");
     private static final String[] BASE = {"Base"};
 
     private static OctahedralGroup rotationFor(int meta) {
@@ -60,7 +76,7 @@ public record FloodlightModel() implements BlockModel<HFRWavefrontObject> {
                 TextureSlots slots) {
             Material.Baked material =
                     BlockModel.slot(baker, carrier, slots, ObjUnbakedGeometry.SINGLE_SLOT);
-            int facing = state.getValue(Floodlight.FACING);
+            int facing = state.getValue(FloodlightBlock.FACING);
             List<ObjUnbakedGeometry.Group> groups =
                     List.of(
                             ObjUnbakedGeometry.Group.opaque(
@@ -73,7 +89,7 @@ public record FloodlightModel() implements BlockModel<HFRWavefrontObject> {
 
         @Override
         public Object visualEqualityGroup(BlockState blockState) {
-            return state.getValue(Floodlight.FACING);
+            return state.getValue(FloodlightBlock.FACING);
         }
     }
 }

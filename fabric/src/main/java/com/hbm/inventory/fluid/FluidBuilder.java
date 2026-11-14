@@ -1,11 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.fluid;
 
-import com.hbm.inventory.fluid.trait.FT_Flammable;
+import com.hbm.inventory.fluid.trait.FlammableTrait;
 import com.hbm.inventory.fluid.trait.FluidTrait;
 import java.util.*;
+import java.util.function.Predicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -23,7 +40,7 @@ public class FluidBuilder {
     private final int poison;
     private final int flammability;
     private final int reactivity;
-    private final EnumSymbol symbol;
+    private final HazardSymbol symbol;
     private final Map<Class<? extends FluidTrait>, FluidTrait> traits = new LinkedHashMap<>();
     private int temperature = ROOM_TEMPERATURE;
     private final List<String> shares = new ArrayList<>();
@@ -34,7 +51,7 @@ public class FluidBuilder {
             int poison,
             int flammability,
             int reactivity,
-            EnumSymbol symbol) {
+            HazardSymbol symbol) {
         this.name = name;
         this.color = color;
         this.poison = poison;
@@ -48,10 +65,26 @@ public class FluidBuilder {
         return BY_NAME.get(name);
     }
 
+    public static FluidBuilder copyOf(
+            String name, FluidBuilder base, Predicate<FluidTrait> include) {
+        FluidBuilder copy =
+                new FluidBuilder(
+                                name,
+                                base.color,
+                                base.poison,
+                                base.flammability,
+                                base.reactivity,
+                                base.symbol)
+                        .setTemp(base.temperature);
+        for (FluidTrait trait : base.traits.values())
+            if (include.test(trait)) copy.addTraits(trait);
+        return copy;
+    }
+
     public static void declareAll() {
         for (FluidBuilder b : PENDING) {
             Fluid fluid = NTMFluids.byName(b.name);
-            NTMFluidProperty property = b.bundleProperty();
+            NTMFluidProperty property = b.property();
             NTMFluidProperties.register(fluid, property);
         }
     }
@@ -94,11 +127,11 @@ public class FluidBuilder {
     }
 
     public long flammableEnergy() {
-        FT_Flammable f = (FT_Flammable) traits.get(FT_Flammable.class);
-        return f == null ? 0L : f.getHeatEnergy();
+        var fuel = (FlammableTrait) traits.get(FlammableTrait.class);
+        return fuel == null ? 0L : fuel.heatPerBucket();
     }
 
-    private NTMFluidProperty bundleProperty() {
+    public NTMFluidProperty property() {
         return new NTMFluidProperty(
                 color,
                 symbol,

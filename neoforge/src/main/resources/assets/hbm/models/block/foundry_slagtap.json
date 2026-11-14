@@ -87,8 +87,10 @@
   "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "hbm:block/foundry_slagtap_bottom",
+    "filter": "hbm:block/foundry_outlet_filter",
     "front": "hbm:block/foundry_slagtap_front",
     "inner": "hbm:block/foundry_slagtap_inner",
+    "lock": "hbm:block/foundry_outlet_lock",
     "particle": "hbm:block/foundry_slagtap_side",
     "side": "hbm:block/foundry_slagtap_side",
     "top": "hbm:block/foundry_slagtap_top"

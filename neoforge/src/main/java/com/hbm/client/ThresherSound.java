@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client;
 
-import com.hbm.blockentity.machine.BlockEntityThresher;
+import com.hbm.blockentity.machine.ThresherBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 
@@ -11,7 +27,7 @@ public final class ThresherSound {
 
     private ThresherSound() {}
 
-    public static void tick(BlockEntityThresher be) {
+    public static void tick(ThresherBlockEntity be) {
         Player player = Minecraft.getInstance().player;
         boolean near =
                 player != null
@@ -20,7 +36,7 @@ public final class ThresherSound {
                                                 be.getBlockPos().getX() + 0.5,
                                                 be.getBlockPos().getY() + 0.5,
                                                 be.getBlockPos().getZ() + 0.5)
-                                < BlockEntityThresher.AUDIO_RANGE_SQ;
+                                < ThresherBlockEntity.AUDIO_RANGE_SQ;
 
         be.audioLoop(be.isOn && !be.isSuspended && near, 1F);
     }

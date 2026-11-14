@@ -1,9 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.machine.rbmk.RBMKBase;
+import com.hbm.blocks.machine.rbmk.RBMKBlock;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.mojang.math.Quadrant;
 import java.util.ArrayList;
@@ -41,7 +71,7 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             TextureSlots slots,
             ModelBaker baker,
             ResolvedModel base,
-            RBMKBase.Lid lid,
+            RBMKBlock.Lid lid,
             boolean topCell,
             Kind kind,
             @Nullable HFRWavefrontObject obj) {
@@ -136,12 +166,13 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             TextureSlots slots,
             ModelBaker baker,
             ResolvedModel base,
-            RBMKBase.Lid lid,
+            RBMKBlock.Lid lid,
             boolean topCell) {
         if (!topCell || !lid.present()) return;
-        String prefix = lid == RBMKBase.Lid.GLASS ? "glass" : "cover";
+        String prefix = lid == RBMKBlock.Lid.GLASS ? "glass" : "cover";
         Material.Baked lidTop = BlockModel.slot(baker, base, slots, prefix + "_top");
         Material.Baked lidSide = BlockModel.slot(baker, base, slots, prefix + "_side");
+        final int origin = ABOVE;
         final Vector3f from = new Vector3f(0F * 16F, 1F * 16F, 0F * 16F);
         final Vector3f to = new Vector3f(1F * 16F, 1.25F * 16F, 1F * 16F);
         faces(
@@ -161,7 +192,7 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                 lidSide,
                 lidTop,
                 false,
-                ABOVE);
+                origin);
     }
 
     private static void addPipes(
@@ -171,6 +202,7 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             ResolvedModel base) {
         Material.Baked pipeTop = BlockModel.slot(baker, base, slots, "pipe_top");
         Material.Baked pipeSide = BlockModel.slot(baker, base, slots, "pipe_side");
+        final int origin = ABOVE;
         final Vector3f from = new Vector3f(0.0625F * 16F, 1F * 16F, 0.0625F * 16F);
         final Vector3f to = new Vector3f(0.4375F * 16F, 1.125F * 16F, 0.4375F * 16F);
         faces(
@@ -190,7 +222,8 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE);
+                origin);
+        final int origin2 = ABOVE;
         final Vector3f from2 = new Vector3f(0.0625F * 16F, 1F * 16F, 0.5625F * 16F);
         final Vector3f to2 = new Vector3f(0.4375F * 16F, 1.125F * 16F, 0.9375F * 16F);
         faces(
@@ -210,7 +243,8 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE);
+                origin2);
+        final int origin3 = ABOVE;
         final Vector3f from3 = new Vector3f(0.5625F * 16F, 1F * 16F, 0.5625F * 16F);
         final Vector3f to3 = new Vector3f(0.9375F * 16F, 1.125F * 16F, 0.9375F * 16F);
         faces(
@@ -230,7 +264,8 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE);
+                origin3);
+        final int origin4 = ABOVE;
         final Vector3f from4 = new Vector3f(0.5625F * 16F, 1F * 16F, 0.0625F * 16F);
         final Vector3f to4 = new Vector3f(0.9375F * 16F, 1.125F * 16F, 0.4375F * 16F);
         faces(
@@ -250,7 +285,7 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                 pipeSide,
                 pipeTop,
                 false,
-                ABOVE);
+                origin4);
     }
 
     private static void addCube(
@@ -259,6 +294,7 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
             Material.Baked top,
             Material.Baked side,
             Material.Baked bottom) {
+
         final Vector3f from = new Vector3f(0F * 16F, 0F * 16F, 0F * 16F);
         final Vector3f to = new Vector3f(1F * 16F, 1F * 16F, 1F * 16F);
         faces(
@@ -360,15 +396,16 @@ public record RBMKColumnModel(Kind kind) implements BlockModel<@Nullable HFRWave
                     slots,
                     baker,
                     carrier,
-                    RBMKBase.lidOf(state),
-                    state.getValue(RBMKBase.PART) == RBMKBase.Part.TOP,
+                    RBMKBlock.lidOf(state),
+                    state.getValue(RBMKBlock.PART) == RBMKBlock.Part.TOP,
                     kind,
                     obj);
         }
 
         @Override
         public Object visualEqualityGroup(BlockState state) {
-            return RBMKBase.lidOf(state).ordinal() | (state.getValue(RBMKBase.PART).ordinal() << 2);
+            return RBMKBlock.lidOf(state).ordinal()
+                    | (state.getValue(RBMKBlock.PART).ordinal() << 2);
         }
     }
 }

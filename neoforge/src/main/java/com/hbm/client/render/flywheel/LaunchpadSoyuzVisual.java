@@ -1,17 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityLaunchpadSoyuz;
+import com.hbm.blockentity.machine.LaunchpadSoyuzBlockEntity;
 import com.hbm.blockentity.machine.SoyuzRenderSource;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
@@ -22,7 +40,8 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSource>
-        extends HbmDynamicBlockEntityVisual<T> implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<T>
+        implements ShaderLightVisual, CulledDynamicVisual {
 
     private static final double[] WHEEL_FORWARD = {17D, 19D, 29D, 31D};
     private static final double[] WHEEL_SIDE = {6.75D, 5.25D, -5.25D, -6.75D};
@@ -44,7 +63,7 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
     private @Nullable AABB lastLightBounds;
     private Piece @Nullable [] rocket;
     private int lastSkin = Integer.MIN_VALUE;
-    private BlockEntityLaunchpadSoyuz.SoyuzStatus lastStatus;
+    private LaunchpadSoyuzBlockEntity.SoyuzStatus lastStatus;
     private boolean initialized;
     private boolean lastSelected;
 
@@ -111,12 +130,12 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     @Override
-    protected void trackExtent() {
+    public void beforeFrame() {
         updateSelection();
     }
 
@@ -146,11 +165,11 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
         }
         if (!changed) return;
         initialized = true;
-        syncRocket(skin, status != BlockEntityLaunchpadSoyuz.SoyuzStatus.ABSENT);
+        syncRocket(skin, status != LaunchpadSoyuzBlockEntity.SoyuzStatus.ABSENT);
         lastSkin = skin;
         lastStatus = status;
         float rotation =
-                switch (blockEntity.getBlockState().getValue(BlockMultiblockCore.FACING)) {
+                switch (blockEntity.getBlockState().getValue(MultiblockCoreBlock.FACING)) {
                     case NORTH -> 90F;
                     case WEST -> 180F;
                     case SOUTH -> 270F;
@@ -160,7 +179,7 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
         for (int i = 0; i < bounds.length / 2; i++) bounds[i] = Double.POSITIVE_INFINITY;
         for (int i = 3; i < bounds.length; i++) bounds[i] = Double.NEGATIVE_INFINITY;
 
-        if (rocket != null && status == BlockEntityLaunchpadSoyuz.SoyuzStatus.LAUNCHING) {
+        if (rocket != null && status == LaunchpadSoyuzBlockEntity.SoyuzStatus.LAUNCHING) {
             local.set(base).translate(0F, 4F, 0F).rotateY(-rotation * Mth.DEG_TO_RAD);
             writeRocket(local);
         }
@@ -174,7 +193,7 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
 
         float carriage =
                 Mth.clamp(
-                        (1F - lastPositions[BlockEntityLaunchpadSoyuz.INDEX_CARRIAGE]) * 19.5F,
+                        (1F - lastPositions[LaunchpadSoyuzBlockEntity.INDEX_CARRIAGE]) * 19.5F,
                         0F,
                         19.5F);
         float wheels = (float) (carriage * 360D / Math.PI);
@@ -182,7 +201,7 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
                 .set(base)
                 .translate(0F, 0F, -carriage)
                 .translate(0F, 1.5F, -32F)
-                .rotateX(-lastPositions[BlockEntityLaunchpadSoyuz.INDEX_TILT] * Mth.DEG_TO_RAD)
+                .rotateX(-lastPositions[LaunchpadSoyuzBlockEntity.INDEX_TILT] * Mth.DEG_TO_RAD)
                 .translate(0F, -1.5F, 32F);
         write(moving[5], carriagePose);
         for (int i = 0; i < 4; i++) {
@@ -197,7 +216,7 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
         }
         float rotor =
                 Mth.clamp(
-                        (1F - lastPositions[BlockEntityLaunchpadSoyuz.INDEX_ROTOR]) * 180F,
+                        (1F - lastPositions[LaunchpadSoyuzBlockEntity.INDEX_ROTOR]) * 180F,
                         0F,
                         180F);
         rotorPose
@@ -213,7 +232,7 @@ public final class LaunchpadSoyuzVisual<T extends BlockEntity & SoyuzRenderSourc
                 .translate(0F, -24.5F, 6F);
         write(moving[23], mountPose);
 
-        if (rocket != null && status != BlockEntityLaunchpadSoyuz.SoyuzStatus.LAUNCHING) {
+        if (rocket != null && status != LaunchpadSoyuzBlockEntity.SoyuzStatus.LAUNCHING) {
             local.set(mountPose).translate(0F, 4F, 0F).rotateY(-rotation * Mth.DEG_TO_RAD);
             writeRocket(local);
         }

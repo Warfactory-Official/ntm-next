@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.util;
 
@@ -35,10 +51,12 @@ public final class InventoryUtil {
         Container declared = NtmContracts.INVENTORY.at(level, pos);
         if (declared != null) return declared;
 
-        BlockState state = level.getBlockState(pos);
+        var chunk = ChunkUtil.chunkIfLoaded(level, pos);
+        if (chunk == null) return null;
+        BlockState state = chunk.getBlockState(pos);
         if (state.getBlock() instanceof WorldlyContainerHolder holder)
             return holder.getContainer(state, level, pos);
-        return state.hasBlockEntity() && level.getBlockEntity(pos) instanceof Container container
+        return state.hasBlockEntity() && chunk.getBlockEntity(pos) instanceof Container container
                 ? container
                 : null;
     }
@@ -62,7 +80,7 @@ public final class InventoryUtil {
         return toAdd;
     }
 
-    private static boolean takeIngredients(
+    public static boolean takeIngredients(
             Player player, List<CountIngredient> ingredients, boolean commit) {
         Inventory inventory = player.getInventory();
         StackedContents<ItemStack> contents = new StackedContents<>();
@@ -111,7 +129,7 @@ public final class InventoryUtil {
     }
 
     public static boolean consumeIngredients(Player player, List<CountIngredient> ingredients) {
-        return takeIngredients(player, ingredients, true);
+        return takeIngredients(player, ingredients, !player.hasInfiniteMaterials());
     }
 
     public static ItemStack exchangeHeld(Player player, ItemStack held, ItemStack remainder) {

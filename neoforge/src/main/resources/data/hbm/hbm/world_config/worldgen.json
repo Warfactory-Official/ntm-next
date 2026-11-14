@@ -1,4 +1,5 @@
 {
+  "coltan_deposit": true,
   "coltan_spawn": false,
   "end_ores": true,
   "nether_ores": true,

@@ -1,16 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.capability;
 
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.platform.ServerEvents;
 import com.hbm.util.ChunkPositionIndex;
 import com.hbm.util.ChunkUtil;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import java.lang.ref.WeakReference;
+import java.util.function.BiConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -25,12 +42,13 @@ public final class ResolvedCapCache {
     private final ChunkPositionIndex byChunk = new ChunkPositionIndex();
 
     public static ResolvedCapCache of(ServerLevel level) {
-        return level.hbm$resolvedCaps();
+        return ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$resolvedCaps();
     }
 
     public static void init() {
-        FabricServerEvents.onChunkUnload(
-                (level, chunk) -> of(level).onChunkUnload(chunk.getPos().pack()));
+        final BiConsumer<ServerLevel, LevelChunk> callback =
+                (level, chunk) -> of(level).onChunkUnload(chunk.getPos().pack());
+        ServerEvents.CHUNK_UNLOAD.add(callback);
     }
 
     public void onChunkUnload(long chunkKey) {
@@ -85,7 +103,7 @@ public final class ResolvedCapCache {
         int slot = slot(side, role, passivePlane);
         if (slot < 0) return;
         LevelChunk anchorChunk =
-                BlockMultiblockCore.readableChunk(
+                MultiblockCoreBlock.readableChunk(
                         level, anchor.getBlockPos().getX(), anchor.getBlockPos().getZ());
         if (anchorChunk == null) return;
         Entry entry = new Entry(slot, value, anchor, anchorChunk, anchor.getBlockState(), state);
@@ -109,9 +127,9 @@ public final class ResolvedCapCache {
                 };
         int planeIndex =
                 switch (passivePlane) {
-                    case BlockMultiblockCore.PASSIVE_NONE -> 0;
-                    case BlockMultiblockCore.PASSIVE_POWER_IN -> 1;
-                    case BlockMultiblockCore.PASSIVE_FLUID_IN -> 2;
+                    case MultiblockCoreBlock.PASSIVE_NONE -> 0;
+                    case MultiblockCoreBlock.PASSIVE_POWER_IN -> 1;
+                    case MultiblockCoreBlock.PASSIVE_FLUID_IN -> 2;
                     default -> -1;
                 };
         if (planeIndex < 0) return -1;

@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ],
         "parts": [
@@ -24,7 +24,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ]
       },
@@ -34,7 +34,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ],
         "texture": "hbm:textures/models/weapons/carbine_scope.png"
@@ -45,7 +45,7 @@
         ],
         "requires_mods": [
           {
-            "id": 219
+            "id": "hbm:weapon_mod_special_bayonet/carbine"
           }
         ],
         "texture": "hbm:textures/models/weapons/carbine_bayonet.png"
@@ -118,7 +118,7 @@
         ],
         "requires_mods": [
           {
-            "id": 219
+            "id": "hbm:weapon_mod_special_bayonet/carbine"
           }
         ]
       }

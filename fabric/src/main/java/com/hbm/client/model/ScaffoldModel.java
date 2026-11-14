@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.generic.BlockSteelScaffold;
-import com.hbm.lib.Library;
+import com.hbm.blocks.generic.SteelScaffoldBlock;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -23,18 +39,18 @@ import org.joml.Matrix4fc;
 
 public record ScaffoldModel() implements BlockModel<HFRWavefrontObject> {
 
-    private static final Identifier OBJ = Library.id("models/blocks/scaffold.obj");
+    private static final Identifier OBJ = RegistryUtil.id("models/blocks/scaffold.obj");
     private static final String[] SCAFFOLD = {"Cube_Cube.001"};
 
-    private static final Map<BlockSteelScaffold.Orient, Matrix4fc> MATRICES = buildMatrices();
+    private static final Map<SteelScaffoldBlock.Orient, Matrix4fc> MATRICES = buildMatrices();
 
-    private static Map<BlockSteelScaffold.Orient, Matrix4fc> buildMatrices() {
-        Map<BlockSteelScaffold.Orient, Matrix4fc> m =
-                new EnumMap<>(BlockSteelScaffold.Orient.class);
-        m.put(BlockSteelScaffold.Orient.NS_UPRIGHT, matrix(-90F, 0F, 0.5F, 0.0F, 0.5F));
-        m.put(BlockSteelScaffold.Orient.EW_FLAT, matrix(-90F, 90F, 0.5F, 0.5F, 0.0F));
-        m.put(BlockSteelScaffold.Orient.EW_UPRIGHT, matrix(-180F, 0F, 0.5F, 0.0F, 0.5F));
-        m.put(BlockSteelScaffold.Orient.NS_FLAT, matrix(-180F, 90F, 1.0F, 0.5F, 0.5F));
+    private static Map<SteelScaffoldBlock.Orient, Matrix4fc> buildMatrices() {
+        Map<SteelScaffoldBlock.Orient, Matrix4fc> m =
+                new EnumMap<>(SteelScaffoldBlock.Orient.class);
+        m.put(SteelScaffoldBlock.Orient.NS_UPRIGHT, matrix(-90F, 0F, 0.5F, 0.0F, 0.5F));
+        m.put(SteelScaffoldBlock.Orient.EW_FLAT, matrix(-90F, 90F, 0.5F, 0.5F, 0.0F));
+        m.put(SteelScaffoldBlock.Orient.EW_UPRIGHT, matrix(-180F, 0F, 0.5F, 0.0F, 0.5F));
+        m.put(SteelScaffoldBlock.Orient.NS_FLAT, matrix(-180F, 90F, 1.0F, 0.5F, 0.5F));
         return m;
     }
 
@@ -54,10 +70,10 @@ public record ScaffoldModel() implements BlockModel<HFRWavefrontObject> {
     public BlockStateModel.UnbakedRoot root(
             HFRWavefrontObject prepared, Block block, BlockState state) {
         return new Root(
-                BlockModel.base(block), prepared, state.getValue(BlockSteelScaffold.ORIENT));
+                BlockModel.base(block), prepared, state.getValue(SteelScaffoldBlock.ORIENT));
     }
 
-    public record Root(Identifier carrier, HFRWavefrontObject obj, BlockSteelScaffold.Orient orient)
+    public record Root(Identifier carrier, HFRWavefrontObject obj, SteelScaffoldBlock.Orient orient)
             implements CarrierRoot {
 
         @Override

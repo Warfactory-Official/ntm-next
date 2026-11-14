@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.bomb.LaunchPadBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.PadMissiles;
 import com.hbm.items.ModItems;
 import com.hbm.main.ResourceManager;
@@ -14,6 +30,8 @@ import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -22,8 +40,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class LaunchPadVisual extends HbmDynamicBlockEntityVisual<BlockEntityLaunchPad>
-        implements ShaderLightVisual {
+public final class LaunchPadVisual extends AbstractBoundedBlockEntityVisual<LaunchPadBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Item[] MISSILE_ITEMS = PadMissiles.table().keySet().toArray(Item[]::new);
     private static final MeshPart[][] MISSILE_PARTS = buildMissileParts();
     private final AABB bodyBounds;
@@ -34,11 +52,11 @@ public final class LaunchPadVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     private @Nullable MissileDraw currentDraw;
 
     public LaunchPadVisual(
-            VisualizationContext context, BlockEntityLaunchPad blockEntity, float partialTick) {
+            VisualizationContext context, LaunchPadBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         rootPose.translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 90)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 90)
                                 * Mth.DEG_TO_RAD);
         bodyBounds = LightBounds.of(ResourceManager.launch_pad_silo, "Plane", rootPose, pos);
         writeFrame();
@@ -103,12 +121,12 @@ public final class LaunchPadVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame();
     }
 
     private void writeFrame() {
-        Item item = blockEntity.loadedMissile;
+        Item item = blockEntity.displayedMissile;
         boolean itemChanged = item != currentItem;
         if (itemChanged) {
             if (currentDraw != null) currentDraw.delete();

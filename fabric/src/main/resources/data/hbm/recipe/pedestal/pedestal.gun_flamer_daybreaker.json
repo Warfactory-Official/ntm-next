@@ -15,7 +15,10 @@
       "ingredient": "#c:ingots/white_phosphorus"
     },
     "E": {
-      "ingredient": "hbm:gun_flamer"
+      "ingredient": "hbm:gun_flamer",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "F": {
       "ingredient": "#c:ingots/white_phosphorus"

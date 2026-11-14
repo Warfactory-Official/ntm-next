@@ -6,7 +6,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "hbm:battery_pack_capacitor_niobium"
+      "ingredient": "hbm:battery_pack_capacitor_niobium",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
     },
     {
       "count": 16,

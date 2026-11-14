@@ -1,10 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityCore;
+import com.hbm.blockentity.machine.dfc.DfcChamberBlockEntity;
 import com.hbm.main.ResourceManager;
+import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.DepthTest;
@@ -21,6 +38,8 @@ import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.material.StandardMaterialShaders;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -31,8 +50,8 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public final class CoreVisual extends HbmDynamicBlockEntityVisual<BlockEntityCore>
-        implements ShaderLightVisual {
+public final class CoreVisual extends AbstractBoundedBlockEntityVisual<DfcChamberBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int SHELLS = 17;
     private static final int FANS = 150;
     private static final double PULSE_T = .8D;
@@ -125,7 +144,7 @@ public final class CoreVisual extends HbmDynamicBlockEntityVisual<BlockEntityCor
     private boolean initialized;
 
     public CoreVisual(
-            VisualizationContext context, BlockEntityCore blockEntity, float partialTick) {
+            VisualizationContext context, DfcChamberBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         standby =
                 instancerProvider()
@@ -197,18 +216,19 @@ public final class CoreVisual extends HbmDynamicBlockEntityVisual<BlockEntityCor
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 
     private void writeFrame(float partialTick) {
         int heat = blockEntity.heat;
-        long time = level.getGameTime();
+        long millis = GameTime.now();
+        long time = heat == 0 ? (int) millis / 50 : level.getGameTime();
         int total = blockEntity.tanks[0].getMaxFill() + blockEntity.tanks[1].getMaxFill();
         int fill = blockEntity.tanks[0].getFill() + blockEntity.tanks[1].getFill();
         float fraction = total <= 0 ? 0F : (float) fill / total;
         boolean meltdown = blockEntity.meltdownTick;
-        boolean sparkWindow = heat == 0 && time / 2L % 10L == 0L;
+        boolean sparkWindow = heat == 0 && millis / 100L % 10L == 0L;
         boolean timedUpdate =
                 heat == 0
                         ? sparkWindow != lastSparkWindow || sparkWindow && time != lastTime
@@ -237,7 +257,7 @@ public final class CoreVisual extends HbmDynamicBlockEntityVisual<BlockEntityCor
             hideOrb();
             hideFans();
             if (sparkWindow) {
-                long tenths = time / 2L;
+                long tenths = (int) millis / 100;
                 scaledPose.set(basePose).scale(.25F * 1.25F);
                 for (int i = 0; i < 3; i++) {
                     sparks.write(scaledPose, (int) tenths + i * 10_000);
@@ -370,10 +390,9 @@ public final class CoreVisual extends HbmDynamicBlockEntityVisual<BlockEntityCor
             int start = used, i = 0;
             for (; i < 5 + random.nextInt(10); i++) {
                 double px = x, py = y, pz = z;
-                float step = 1.5F * random.nextFloat();
-                x = px + dirX * step;
-                y = py + dirY * step;
-                z = pz + dirZ * step;
+                x = px + dirX * (1.5F * random.nextFloat());
+                y = py + dirY * (1.5F * random.nextFloat());
+                z = pz + dirZ * (1.5F * random.nextFloat());
                 segment(base, px, py, pz, x, y, z, 0xFFFF00, true, start + i);
                 segment(base, px, py, pz, x, y, z, 0xFFFFFF, false, start + i);
             }

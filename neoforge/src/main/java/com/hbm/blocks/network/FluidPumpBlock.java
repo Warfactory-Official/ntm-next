@@ -1,24 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
 import com.hbm.api.fluidmk2.FluidCaps;
-import com.hbm.blockentity.network.BlockEntityFluidPump;
-import com.hbm.blocks.ITickingBlock;
+import com.hbm.blockentity.network.FluidPumpBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.blocks.RefreshesNeighborState;
-import com.hbm.capability.ICapabilityBlock;
+import com.hbm.blocks.TickingEntityBlock;
+import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.interfaces.ILookOverlay;
+import com.hbm.interfaces.LookOverlay;
+import com.hbm.interfaces.LookOverlayProvider;
+import com.hbm.inventory.BlockMenus;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.FluidIdentifierItem;
-import com.hbm.platform.NeoForgeCaps;
+import com.hbm.platform.Caps;
 import com.hbm.registration.RegistryHandle;
 import java.util.Locale;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -45,12 +61,10 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-@RefreshesNeighborState(be = BlockEntityFluidPump.class, calling = "refreshRedstone")
-public class FluidPumpBlock extends Block implements ITickingBlock, ILookOverlay, ICapabilityBlock {
+public class FluidPumpBlock extends Block
+        implements TickingEntityBlock, LookOverlayProvider, CapabilityBlock {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
-
-    public static Consumer<BlockEntityFluidPump> OPEN_GUI = be -> {};
 
     public FluidPumpBlock(BlockBehaviour.Properties props) {
         super(props);
@@ -79,7 +93,7 @@ public class FluidPumpBlock extends Block implements ITickingBlock, ILookOverlay
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityFluidPump(pos, state);
+        return new FluidPumpBlockEntity(pos, state);
     }
 
     @Override
@@ -94,7 +108,7 @@ public class FluidPumpBlock extends Block implements ITickingBlock, ILookOverlay
         if (player.isShiftKeyDown()) return InteractionResult.PASS;
         if (stack.getItem() instanceof FluidIdentifierItem) {
             if (level.isClientSide()) return InteractionResult.SUCCESS;
-            if (level.getBlockEntity(pos) instanceof BlockEntityFluidPump pump) {
+            if (level.getBlockEntity(pos) instanceof FluidPumpBlockEntity pump) {
                 FluidIdentifierData data =
                         stack.getOrDefault(
                                 ModDataComponents.FLUID_IDENTIFIER.get(),
@@ -117,34 +131,36 @@ public class FluidPumpBlock extends Block implements ITickingBlock, ILookOverlay
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown()) return InteractionResult.PASS;
-        if (level.isClientSide()
-                && level.getBlockEntity(pos) instanceof BlockEntityFluidPump pump) {
-            OPEN_GUI.accept(pump);
+        if (!level.isClientSide()
+                && level.getBlockEntity(pos) instanceof FluidPumpBlockEntity pump) {
+            BlockMenus.open(player, pump);
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void buildLookOverlay(Level level, BlockPos pos, ILookOverlay.LookInfo info) {
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityFluidPump pump)) return;
+    public void buildLookOverlay(Level level, BlockPos pos, LookOverlay info) {
+        if (!(level.getBlockEntity(pos) instanceof FluidPumpBlockEntity pump)) return;
         String typeName =
                 pump.type == null
                         ? Component.translatable("hbmfluid.none").getString()
                         : NTMFluidProperties.clientName(pump.type);
-        info.title(getName().getString(), 0xffff00, 0x404000)
-                .line(
-                        ChatFormatting.GREEN
-                                + "-> "
-                                + ChatFormatting.RESET
-                                + typeName
-                                + " ("
-                                + pump.pressure
-                                + " PU): "
-                                + String.format(Locale.US, "%,d", pump.rate)
-                                + "mB/t"
-                                + ChatFormatting.RED
-                                + " ->")
-                .line("Priority: " + ChatFormatting.YELLOW + pump.priority.name());
+        info.title(getName())
+                .row(
+                        LookOverlay.inflow(
+                                Component.translatable(
+                                                "overlay.hbm.pump_rate",
+                                                typeName,
+                                                pump.pressure,
+                                                String.format(Locale.ROOT, "%,d", pump.rate))
+                                        .append(
+                                                Component.literal(" ->")
+                                                        .withStyle(ChatFormatting.RED))))
+                .row(
+                        Component.translatable(
+                                "overlay.hbm.priority",
+                                Component.literal(pump.priority.name())
+                                        .withStyle(ChatFormatting.YELLOW)));
     }
 
     @Override
@@ -154,23 +170,50 @@ public class FluidPumpBlock extends Block implements ITickingBlock, ILookOverlay
 
     @Override
     public void declareExtraCaps(RegistryHandle<? extends Block> self) {
-        NeoForgeCaps.pending.add(
-                new NeoForgeCaps.Registration<>(
+        Caps.pending.add(
+                new Caps.Registration<>(
                         FluidCaps.PROVIDER,
-                        (Supplier<? extends BlockEntityType<? extends BlockEntityFluidPump>>)
+                        (Supplier<? extends BlockEntityType<? extends FluidPumpBlockEntity>>)
                                 ModBlockEntities.PIPE_PUMP,
                         (be, face) ->
                                 face.side() == be.output() && be.carries(face.fluid())
                                         ? be
                                         : null));
-        NeoForgeCaps.pending.add(
-                new NeoForgeCaps.Registration<>(
+        Caps.pending.add(
+                new Caps.Registration<>(
                         FluidCaps.RECEIVER,
-                        (Supplier<? extends BlockEntityType<? extends BlockEntityFluidPump>>)
+                        (Supplier<? extends BlockEntityType<? extends FluidPumpBlockEntity>>)
                                 ModBlockEntities.PIPE_PUMP,
                         (be, face) ->
                                 face.side() == be.intake() && be.carries(face.fluid())
                                         ? be
                                         : null));
+    }
+
+    @java.lang.Override
+    protected void neighborChanged(
+            net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.Level level,
+            net.minecraft.core.BlockPos pos,
+            net.minecraft.world.level.block.Block neighborBlock,
+            net.minecraft.world.level.redstone.Orientation orientation,
+            boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, orientation, movedByPiston);
+        net.minecraft.world.level.block.entity.BlockEntity hbm$be = level.getBlockEntity(pos);
+        if (hbm$be instanceof FluidPumpBlockEntity)
+            ((FluidPumpBlockEntity) hbm$be).refreshRedstone();
+    }
+
+    @java.lang.Override
+    protected void onPlace(
+            net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.Level level,
+            net.minecraft.core.BlockPos pos,
+            net.minecraft.world.level.block.state.BlockState oldState,
+            boolean movedByPiston) {
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+        net.minecraft.world.level.block.entity.BlockEntity hbm$be = level.getBlockEntity(pos);
+        if (hbm$be instanceof FluidPumpBlockEntity)
+            ((FluidPumpBlockEntity) hbm$be).refreshRedstone();
     }
 }

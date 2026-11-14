@@ -7,10 +7,20 @@
   ],
   "order": 22016,
   "output_items": [
-    {
-      "chance": 0.667,
-      "count": 2,
-      "id": "hbm:chunk_ore_cryolite"
-    }
+    [
+      {
+        "data": {
+          "id": "hbm:chunk_ore_cryolite"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:chunk_ore_cryolite"
+        },
+        "weight": 1
+      }
+    ]
   ]
 }

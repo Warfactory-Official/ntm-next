@@ -1,24 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
-import com.hbm.blockentity.network.BlockEntityRadioTorch;
-import com.hbm.blockentity.network.BlockEntityRadioTorchController;
-import com.hbm.blockentity.network.BlockEntityRadioTorchCounter;
-import com.hbm.blockentity.network.BlockEntityRadioTorchReader;
-import com.hbm.blocks.ITickingBlock;
+import com.hbm.blockentity.network.RadioCounterBlockEntity;
+import com.hbm.blockentity.network.RadioReaderBlockEntity;
+import com.hbm.blockentity.network.RadioTorchBlockEntity;
+import com.hbm.blockentity.network.RadioTorchControllerBlockEntity;
+import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.capability.NtmContracts;
-import com.hbm.interfaces.ILookOverlay;
-import com.hbm.inventory.IGUIProvider;
+import com.hbm.interfaces.LookOverlay;
+import com.hbm.interfaces.LookOverlayProvider;
+import com.hbm.inventory.BlockMenus;
 import com.hbm.util.InventoryUtil;
-import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -40,11 +55,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-public final class RadioTorchBlock extends Block implements ITickingBlock, ILookOverlay {
+public final class RadioTorchBlock extends Block
+        implements TickingEntityBlock, LookOverlayProvider {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
-    public static Consumer<BlockEntity> OPEN_SCREEN = blockEntity -> {};
     private final Kind kind;
 
     public RadioTorchBlock(BlockBehaviour.Properties properties, Kind kind) {
@@ -99,7 +114,7 @@ public final class RadioTorchBlock extends Block implements ITickingBlock, ILook
         Direction facing = state.getValue(FACING);
         if (!canAttach(level, pos.relative(facing.getOpposite()), facing)) {
             if (!level.isClientSide()) level.destroyBlock(pos, true);
-        } else if (level.getBlockEntity(pos) instanceof BlockEntityRadioTorch torch)
+        } else if (level.getBlockEntity(pos) instanceof RadioTorchBlockEntity torch)
             torch.refreshAttached();
     }
 
@@ -127,7 +142,7 @@ public final class RadioTorchBlock extends Block implements ITickingBlock, ILook
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return BlockEntityRadioTorch.create(kind, pos, state);
+        return RadioTorchBlockEntity.create(kind, pos, state);
     }
 
     @Override
@@ -138,7 +153,7 @@ public final class RadioTorchBlock extends Block implements ITickingBlock, ILook
     @Override
     protected int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
         if (!isSignalSource(state)) return 0;
-        return level.getBlockEntity(pos) instanceof BlockEntityRadioTorch radio
+        return level.getBlockEntity(pos) instanceof RadioTorchBlockEntity radio
                 ? radio.lastState
                 : 0;
     }
@@ -147,58 +162,54 @@ public final class RadioTorchBlock extends Block implements ITickingBlock, ILook
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown()) return InteractionResult.PASS;
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (kind == Kind.COUNTER) {
-            if (!level.isClientSide() && blockEntity instanceof MenuProvider provider) {
-                IGUIProvider.openBlockMenu(player, provider, pos);
-            }
-        } else if (level.isClientSide() && blockEntity != null) {
-            OPEN_SCREEN.accept(blockEntity);
+        if (!level.isClientSide()
+                && level.getBlockEntity(pos) instanceof RadioTorchBlockEntity radio) {
+            BlockMenus.open(player, radio);
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityRadioTorch radio)) return;
-        info.titleOnly(getName(), 0xffff00, 0x404000);
+    public void buildLookOverlay(Level level, BlockPos pos, LookOverlay info) {
+        if (!(level.getBlockEntity(pos) instanceof RadioTorchBlockEntity radio)) return;
+        info.soloTitle(getName(), 0xffff00, 0x404000);
         switch (radio) {
-            case BlockEntityRadioTorchCounter counter -> {
-                for (int i = 0; i < BlockEntityRadioTorchCounter.FILTER_COUNT; i++) {
+            case RadioCounterBlockEntity counter -> {
+                for (int i = 0; i < RadioCounterBlockEntity.FILTER_COUNT; i++) {
                     if (counter.channels[i].isEmpty()) continue;
-                    info.line(
+                    info.row(
                             Component.translatable(
                                             "overlay.hbm.radio.freq_numbered",
                                             i + 1,
                                             counter.channels[i])
                                     .withStyle(ChatFormatting.AQUA));
-                    info.line(
+                    info.row(
                             Component.translatable(
                                             "overlay.hbm.radio.signal_numbered",
                                             i + 1,
-                                            counter.lastCount[i])
+                                            counter.lastCounts[i])
                                     .withStyle(ChatFormatting.RED));
                 }
             }
-            case BlockEntityRadioTorchReader reader -> {
+            case RadioReaderBlockEntity reader -> {
                 for (int i = 0; i < reader.channels.length; i++) {
                     if (reader.channels[i].isEmpty() || reader.names[i].isEmpty()) continue;
-                    info.line(
+                    info.row(
                             Component.literal(reader.channels[i] + ": " + reader.names[i])
                                     .withStyle(ChatFormatting.AQUA));
                 }
             }
-            case BlockEntityRadioTorchController controller ->
-                    info.line(
+            case RadioTorchControllerBlockEntity controller ->
+                    info.row(
                             Component.translatable("overlay.hbm.radio.freq", controller.channel)
                                     .withStyle(ChatFormatting.AQUA));
             default -> {
                 if (!radio.channel.isEmpty()) {
-                    info.line(
+                    info.row(
                             Component.translatable("overlay.hbm.radio.freq", radio.channel)
                                     .withStyle(ChatFormatting.AQUA));
                 }
-                info.line(
+                info.row(
                         Component.translatable("overlay.hbm.radio.signal", radio.lastState)
                                 .withStyle(ChatFormatting.RED));
             }
@@ -232,7 +243,7 @@ public final class RadioTorchBlock extends Block implements ITickingBlock, ILook
             BlockState oldState,
             boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityRadioTorch torch)) return;
+        if (!(level.getBlockEntity(pos) instanceof RadioTorchBlockEntity torch)) return;
         torch.refreshAttached();
         if ((kind == Kind.RECEIVER || kind == Kind.LOGIC) && !oldState.is(this)) {
             torch.lastUpdate = level.getGameTime();

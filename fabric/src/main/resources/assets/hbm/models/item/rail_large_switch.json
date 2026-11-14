@@ -15,7 +15,7 @@
       ],
       "translation": [
         -0.05656971,
-        0.2400001,
+        -0.3400003,
         -0.056570068
       ]
     },
@@ -32,7 +32,7 @@
       ],
       "translation": [
         0.056569114,
-        0.2400001,
+        -0.3400003,
         0.056568757
       ]
     },
@@ -49,7 +49,7 @@
       ],
       "translation": [
         0.125,
-        -0.18499994,
+        -1.09125,
         0.5
       ]
     },
@@ -66,7 +66,7 @@
       ],
       "translation": [
         1.937151E-7,
-        -3.8500001,
+        -4.2125,
         0.049999997
       ]
     },
@@ -83,8 +83,8 @@
       ],
       "translation": [
         -0.08838922,
-        0.28056592,
-        0.26404667
+        -0.5042698,
+        -0.18907833
       ]
     },
     "head": {
@@ -100,7 +100,7 @@
       ],
       "translation": [
         0.19999999,
-        0.6000002,
+        -0.8500001,
         1.7881393E-7
       ]
     },
@@ -117,7 +117,7 @@
       ],
       "translation": [
         -0.25,
-        0.75,
+        -1.0625,
         0.0
       ]
     },
@@ -134,8 +134,8 @@
       ],
       "translation": [
         -1.8263531,
-        0.36074376,
-        0.83607996
+        0.17477061,
+        0.3251227
       ]
     },
     "thirdperson_righthand": {
@@ -151,24 +151,29 @@
       ],
       "translation": [
         -0.053033724,
-        2.027119,
-        0.22956921
+        1.8411458,
+        -0.28138852
       ]
     }
   },
+  "groups": [
+    {
+      "parts": [
+        "Rail"
+      ],
+      "texture": "rail_standard_straight"
+    }
+  ],
   "gui_light": "side",
+  "hidden": [
+    "SignTurn",
+    "SignStraight"
+  ],
   "model": "hbm:models/blocks/rail_standard_switch.obj",
   "offset_x": 2.0,
-  "offset_y": -0.5,
-  "skins": {
-    "all": [
-      "SignTurn",
-      "SignStraight",
-      "Rail"
-    ]
-  },
+  "offset_y": 0.40625,
   "textures": {
-    "all": "hbm:block/rail_standard_straight",
-    "particle": "hbm:block/rail_standard_straight"
+    "particle": "hbm:block/rail_standard_straight",
+    "rail_standard_straight": "hbm:block/rail_standard_straight"
   }
 }

@@ -1,9 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.ISectionGeometry;
+import com.hbm.blocks.SectionGeometryProvider;
+import com.hbm.registration.Reg;
 import com.hbm.util.Facing;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import java.util.Arrays;
@@ -27,6 +44,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
@@ -40,12 +58,13 @@ public final class SectionedModel implements BlockStateModel {
     private static final IdentityHashMap<SectionGeometryLayout, LayoutEntry> ENTRIES =
             new IdentityHashMap<>();
     private static final long CACHE_BYTES = 16 * 1024 * 1024;
+    private static final IdentityHashMap<SectionGeometryLayout.Culls, Integer> CACHED_CULLS =
+            new IdentityHashMap<>();
     private static long cachedBytes;
     final BlockStateModel complete;
     final SectionGeometry.Mesh mesh;
     final boolean contextual;
     private final SectionGeometry.Prepared[] appearances = new SectionGeometry.Prepared[4];
-    private final int[] appearanceHashes = new int[4];
     private int nextAppearance;
     private final Map<CardinalLighting, SectionGeometry.Prepared> uniform = new HashMap<>(2);
     private final Object[] cellKeys = new Object[4];
@@ -75,6 +94,8 @@ public final class SectionedModel implements BlockStateModel {
             LAYOUTS.clear();
             ACTIVE.clear();
             ENTRIES.clear();
+            CACHED_CULLS.clear();
+            SectionGeometryLayout.clearOriginals();
             cachedBytes = 0;
         }
         published = next.byState();
@@ -87,17 +108,32 @@ public final class SectionedModel implements BlockStateModel {
         var result = new IdentityHashMap<BlockState, BlockStateModel>(models);
         var byState = new IdentityHashMap<BlockState, SectionedModel>();
         var shared = new IdentityHashMap<BlockStateModel, SectionedModel>();
+        var contained = new IdentityHashMap<BlockStateModel, BlockStateModel>();
         var meshes = new HashMap<MeshKey, SectionGeometry.Mesh>();
         for (var entry : models.entrySet()) {
             BlockState state = entry.getKey();
             BlockStateModel complete = entry.getValue();
-            if (!(state.getBlock() instanceof ISectionGeometry owner)) continue;
+            if (!Reg.isNtmNamespace(BuiltInRegistries.BLOCK.getKey(state.getBlock()).getNamespace())
+                    || state.getRenderShape() != RenderShape.MODEL) continue;
+            boolean contextual =
+                    state.getBlock() instanceof SectionGeometryProvider owner
+                            && owner.contextualGeometry();
             SectionedModel sectioned = shared.get(complete);
             if (sectioned == null) {
                 var mesh =
                         captured.computeIfAbsent(
                                 complete, model -> SectionGeometry.mesh(model, state));
-                if (mesh.contained() && !owner.contextualGeometry()) continue;
+                if (mesh.contained() && !contextual) {
+                    if (mesh.vertices().length == 0 && complete.getClass() == SingleVariant.class)
+                        continue;
+                    if (state.getBlock() instanceof SectionGeometryProvider owner
+                            && owner.ownsBoundaryFaceAdmission()) {
+                        result.put(state, complete);
+                    } else {
+                        result.put(state, contained.computeIfAbsent(complete, BoundaryFaces::cull));
+                    }
+                    continue;
+                }
                 mesh = meshes.computeIfAbsent(new MeshKey(mesh), key -> key.mesh);
                 sectioned = new SectionedModel(complete, mesh);
                 shared.put(complete, sectioned);
@@ -148,7 +184,7 @@ public final class SectionedModel implements BlockStateModel {
                                 key, new SectionGeometryLayout(geometry.vertices(), placement));
                 ENTRIES.put(entry.layout, entry);
             } else {
-                cachedBytes -= entry.bytes();
+                uncache(entry);
             }
             ACTIVE.put(key, entry);
             entry.references = 1;
@@ -165,14 +201,28 @@ public final class SectionedModel implements BlockStateModel {
             ACTIVE.remove(entry.key);
             LAYOUTS.putAndMoveToLast(entry.key, entry);
             cachedBytes += entry.bytes();
+            var culls = entry.layout.originalCulls;
+            int count = CACHED_CULLS.getOrDefault(culls, 0);
+            if (count == 0) cachedBytes += culls.bytes();
+            CACHED_CULLS.put(culls, count + 1);
             trimLayouts();
         }
+    }
+
+    private static void uncache(LayoutEntry entry) {
+        cachedBytes -= entry.bytes();
+        var culls = entry.layout.originalCulls;
+        int count = CACHED_CULLS.get(culls);
+        if (count == 1) {
+            CACHED_CULLS.remove(culls);
+            cachedBytes -= culls.bytes();
+        } else CACHED_CULLS.put(culls, count - 1);
     }
 
     private static void trimLayouts() {
         while (cachedBytes > CACHE_BYTES) {
             var entry = LAYOUTS.removeFirst();
-            cachedBytes -= entry.bytes();
+            uncache(entry);
             ENTRIES.remove(entry.layout);
         }
     }
@@ -201,7 +251,7 @@ public final class SectionedModel implements BlockStateModel {
             BlockPos pos,
             BlockState state,
             SectionGeometry.@Nullable Prepared previous) {
-        if (contextual) return share(SectionGeometry.prepare(this, level, pos, state), previous);
+        if (contextual) return SectionGeometry.prepare(this, level, pos, state, previous);
         return uniform.computeIfAbsent(
                 ((BlockAndTintGetter) level).cardinalLighting(),
                 lighting ->
@@ -209,45 +259,40 @@ public final class SectionedModel implements BlockStateModel {
                                 mesh, SectionGeometry.colors(this, state, lighting)));
     }
 
-    private SectionGeometry.Prepared share(
-            SectionGeometry.Prepared value, SectionGeometry.@Nullable Prepared previous) {
-        if (previous != null && sameAppearance(previous, value)) return previous;
-        var geometry = value.mesh();
-        if (Arrays.equals(geometry.vertices(), mesh.vertices())
-                && Arrays.equals(geometry.normals(), mesh.normals())
-                && Arrays.equals(geometry.layers(), mesh.layers())
-                && Arrays.equals(geometry.surface(), mesh.surface())) {
-            geometry = mesh;
-            value = new SectionGeometry.Prepared(mesh, value.lit());
+    SectionGeometry.Prepared prepared(
+            SectionGeometry.Preparation scratch, SectionGeometry.@Nullable Prepared previous) {
+        if (previous != null && scratch.matches(previous)) return previous;
+        for (var old : appearances) if (old != null && scratch.matches(old)) return old;
+        var geometry = mesh;
+        if (!scratch.matches(geometry)) {
+            geometry =
+                    previous != null && scratch.matches(previous.mesh()) ? previous.mesh() : null;
+            if (geometry == null) {
+                for (var old : appearances) {
+                    if (old != null && scratch.matches(old.mesh())) {
+                        geometry = old.mesh();
+                        break;
+                    }
+                }
+            }
+            if (geometry == null)
+                geometry =
+                        new SectionGeometry.Mesh(
+                                scratch.vertices.toFloatArray(),
+                                scratch.normals.toFloatArray(),
+                                scratch.layers.toByteArray(),
+                                scratch.surface.toByteArray(),
+                                false,
+                                true);
         }
-        int hash =
-                ((Arrays.hashCode(geometry.vertices()) * 31 + Arrays.hashCode(geometry.normals()))
-                                                * 31
-                                        + Arrays.hashCode(geometry.layers()))
-                                * 31
-                        + Arrays.hashCode(geometry.surface());
-        hash =
-                (hash * 31 + Arrays.hashCode(value.lit().colors())) * 31
-                        + Arrays.hashCode(value.lit().light());
-        for (int i = 0; i < appearances.length; i++) {
-            var old = appearances[i];
-            if (old != null && appearanceHashes[i] == hash && sameAppearance(old, value))
-                return old;
-        }
-        int index = nextAppearance++ & 3;
-        appearances[index] = value;
-        appearanceHashes[index] = hash;
+        var value =
+                new SectionGeometry.Prepared(
+                        geometry,
+                        new SectionGeometry.Lit(
+                                scratch.colors.toIntArray(),
+                                scratch.preparedLight ? scratch.light.toIntArray() : null));
+        appearances[nextAppearance++ & 3] = value;
         return value;
-    }
-
-    private static boolean sameAppearance(
-            SectionGeometry.Prepared old, SectionGeometry.Prepared value) {
-        return Arrays.equals(old.lit().colors(), value.lit().colors())
-                && Arrays.equals(old.lit().light(), value.lit().light())
-                && Arrays.equals(old.mesh().vertices(), value.mesh().vertices())
-                && Arrays.equals(old.mesh().normals(), value.mesh().normals())
-                && Arrays.equals(old.mesh().layers(), value.mesh().layers())
-                && Arrays.equals(old.mesh().surface(), value.mesh().surface());
     }
 
     private static final class MeshKey {

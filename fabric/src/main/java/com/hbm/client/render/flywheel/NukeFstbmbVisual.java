@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.bomb.BlockEntityNukeBalefire;
-import com.hbm.blocks.machine.BlockMachineHorizontal;
-import com.hbm.client.render.RenderNukeFstbmb;
+import com.hbm.blockentity.bomb.BalefireNukeBlockEntity;
+import com.hbm.blocks.machine.HorizontalMachineBlock;
+import com.hbm.client.render.NukeFstbmbRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.GameTime;
@@ -24,15 +40,19 @@ import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.material.StandardMaterialShaders;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
 
-public final class NukeFstbmbVisual extends HbmDynamicBlockEntityVisual<BlockEntityNukeBalefire>
-        implements ShaderLightVisual {
+public final class NukeFstbmbVisual
+        extends AbstractBoundedBlockEntityVisual<BalefireNukeBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int GLINT_LAYERS = 2;
     private static final float GLINT_SPEED = 5F;
     private static final int GLINT_COLOR = ARGB.colorFromFloat(1F, 0F, .8F * .76F, .15F * .76F);
@@ -64,9 +84,9 @@ public final class NukeFstbmbVisual extends HbmDynamicBlockEntityVisual<BlockEnt
     private boolean glintsShown;
 
     public NukeFstbmbVisual(
-            VisualizationContext context, BlockEntityNukeBalefire blockEntity, float partialTick) {
+            VisualizationContext context, BalefireNukeBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        float yaw = RenderNukeFstbmb.yawFor(blockState.getValue(BlockMachineHorizontal.FACING));
+        float yaw = NukeFstbmbRenderer.yawFor(blockState.getValue(HorizontalMachineBlock.FACING));
         basePose.translate(.5F, 0F, .5F).rotateY(yaw * Mth.DEG_TO_RAD);
         bodyBounds =
                 new AABB(pos)
@@ -76,8 +96,8 @@ public final class NukeFstbmbVisual extends HbmDynamicBlockEntityVisual<BlockEnt
         PoseStack clockPoses = new PoseStack();
         clockPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
         clockPoses.translate(.5D, 0D, .5D);
-        clockPoses.mulPose(Axis.YP.rotationDegrees(yaw));
-        RenderNukeFstbmb.clockPose(clockPoses);
+        clockPoses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+        NukeFstbmbRenderer.clockPose(clockPoses);
         clockPose = clockPoses.last().pose();
         for (int i = 0; i < glints.length; i++) {
             glints[i] =
@@ -93,7 +113,7 @@ public final class NukeFstbmbVisual extends HbmDynamicBlockEntityVisual<BlockEnt
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
         writeClock();
     }

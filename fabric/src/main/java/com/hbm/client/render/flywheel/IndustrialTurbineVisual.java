@@ -1,19 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineIndustrialTurbine;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.IndustrialTurbineBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.material.Fluid;
@@ -22,8 +42,8 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 public final class IndustrialTurbineVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineIndustrialTurbine>
-        implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<IndustrialTurbineBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final Material MATERIAL =
             MeshPart.litCutout(ResourceManager.industrial_turbine_tex);
     private static final MeshPart GAUGE_PART =
@@ -38,40 +58,59 @@ public final class IndustrialTurbineVisual
                             .groups[ResourceManager.industrial_turbine.partId("Flywheel")],
                     ResourceManager.industrial_turbine.smoothing(),
                     MATERIAL);
+    private static final ChainInstance.Chain[] CHAINS = {
+        new ChainInstance.Chain()
+                .translate(0F, 1.5F, 0F)
+                .rotateZ(0, Mth.DEG_TO_RAD)
+                .translate(0F, -1.5F, 0F)
+                .end(),
+        new ChainInstance.Chain()
+                .translate(0F, 1.5F, 0F)
+                .rotateZ(1, -Mth.DEG_TO_RAD)
+                .translate(0F, -1.5F, 0F)
+                .end()
+    };
 
-    private final TransformedInstance gauge;
-    private final TransformedInstance flywheel;
-    private final AABB bodyBounds;
-    private final Matrix4f gaugePose = new Matrix4f();
-    private final Matrix4f flywheelPose = new Matrix4f();
-    private final Matrix4f basePose = new Matrix4f();
-    private final Matrix4f instancePose = new Matrix4f();
-    private final double[] lightBounds = new double[6];
-    private @Nullable AABB lastLightBounds;
-    private int lastSteamTier = -1;
-    private float lastRotor = Float.NaN;
-    private boolean initialized;
+    private final ChainParts parts;
+    private final AABB lightBounds;
 
     public IndustrialTurbineVisual(
             VisualizationContext context,
-            BlockEntityMachineIndustrialTurbine blockEntity,
+            IndustrialTurbineBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
-        gauge =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, GAUGE_PART.model())
-                        .createInstance();
-        flywheel =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, FLYWHEEL_PART.model())
-                        .createInstance();
-        basePose.identity()
-                .translate(.5F, 0F, .5F)
-                .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 180)
-                                * Mth.DEG_TO_RAD);
-        bodyBounds = LightBounds.of(ResourceManager.industrial_turbine, "Turbine", basePose, pos);
-        writeFrame(partialTick);
+        Matrix4f basePose =
+                new Matrix4f()
+                        .translate(.5F, 0F, .5F)
+                        .rotateY(
+                                Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 180)
+                                        * Mth.DEG_TO_RAD);
+        parts =
+                new ChainParts(
+                        context,
+                        visualPos,
+                        basePose,
+                        new Model[] {GAUGE_PART.model(), FLYWHEEL_PART.model()},
+                        CHAINS,
+                        2);
+        AABB bodyBounds =
+                LightBounds.of(ResourceManager.industrial_turbine, "Turbine", basePose, pos);
+        double[] bounds = new double[6];
+        LightBounds.resetBounds(
+                bounds,
+                bodyBounds.minmax(
+                        new AABB(
+                                        pos.getX() - 3,
+                                        pos.getY(),
+                                        pos.getZ() - 3,
+                                        pos.getX() + 4,
+                                        pos.getY() + 3,
+                                        pos.getZ() + 4)
+                                .inflate(1)));
+        parts.includeLightBounds(bounds, pos);
+        lightBounds = new AABB(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+        updateGauge();
+        updateRotor();
     }
 
     public static void initModels() {}
@@ -84,71 +123,38 @@ public final class IndustrialTurbineVisual
     }
 
     @Override
-    protected void frame(Context context) {
-        writeFrame(context.partialTick());
+    public void frame(DynamicVisual.Context context) {
+        updateGauge();
     }
 
-    private void writeFrame(float partialTick) {
-        int tier = steamTier(blockEntity.tanks[0].getTankType());
-        float rotor = Mth.lerp(partialTick, blockEntity.lastRotor, blockEntity.rotor);
-        boolean gaugeChanged = !initialized || tier != lastSteamTier;
-        boolean flywheelChanged =
-                !initialized || Float.floatToIntBits(rotor) != Float.floatToIntBits(lastRotor);
-        if (!gaugeChanged && !flywheelChanged) return;
-        if (gaugeChanged) {
-            float gaugeAngle = 135F - tier * 90F;
-            gaugePose
-                    .set(basePose)
-                    .translate(0F, 1.5F, 0F)
-                    .rotateZ(gaugeAngle * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.5F, 0F);
-            instancePose
-                    .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
-                    .mul(gaugePose);
-            gauge.setTransform(instancePose).light(0).setChanged();
-        }
-        if (flywheelChanged) {
-            flywheelPose
-                    .set(basePose)
-                    .translate(0F, 1.5F, 0F)
-                    .rotateZ(-rotor * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.5F, 0F);
-            instancePose
-                    .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
-                    .mul(flywheelPose);
-            flywheel.setTransform(instancePose).light(0).setChanged();
-        }
-        LightBounds.resetBounds(lightBounds, bodyBounds);
-        LightBounds.includeLightBounds(lightBounds, GAUGE_PART.model(), gaugePose, pos);
-        LightBounds.includeLightBounds(lightBounds, FLYWHEEL_PART.model(), flywheelPose, pos);
-        lastLightBounds = LightBounds.sections(lightSections, lightBounds, lastLightBounds);
-        lastSteamTier = tier;
-        lastRotor = rotor;
-        initialized = true;
+    @Override
+    public void tick(TickableVisual.Context context) {
+        updateRotor();
+    }
+
+    private void updateGauge() {
+        float gaugeAngle = 135F - steamTier(blockEntity.tanks[0].getTankType()) * 90F;
+        parts.set(0, gaugeAngle, gaugeAngle);
+        parts.write();
+    }
+
+    private void updateRotor() {
+        parts.set(1, blockEntity.lastRotor, blockEntity.rotor);
+        parts.write();
     }
 
     @Override
     protected AABB getRenderBoundingBox() {
-        return bodyBounds.minmax(
-                new AABB(
-                                pos.getX() - 3,
-                                pos.getY(),
-                                pos.getZ() - 3,
-                                pos.getX() + 4,
-                                pos.getY() + 3,
-                                pos.getZ() + 4)
-                        .inflate(1));
+        return lightBounds;
     }
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        consumer.accept(gauge);
-        consumer.accept(flywheel);
+        parts.collectCrumblingInstances(consumer);
     }
 
     @Override
     protected void _delete() {
-        gauge.delete();
-        flywheel.delete();
+        parts.delete();
     }
 }

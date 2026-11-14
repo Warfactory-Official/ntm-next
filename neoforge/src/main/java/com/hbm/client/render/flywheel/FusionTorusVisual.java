@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
+import com.hbm.blockentity.machine.fusion.FusionTorusBlockEntity;
 import com.hbm.inventory.recipes.FusionRecipe;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.GameTime;
@@ -18,6 +34,8 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.instance.UvTransformedInstance;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -27,8 +45,9 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class FusionTorusVisual extends HbmDynamicBlockEntityVisual<BlockEntityFusionTorus>
-        implements ShaderLightVisual {
+public final class FusionTorusVisual
+        extends AbstractBoundedBlockEntityVisual<FusionTorusBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int BOLT_COUNT = 4;
     private static final double EXTRA_LAYER_RANGE_SQ = 100D * 100D;
     private static final MeshPart MAGNET_PART =
@@ -75,7 +94,7 @@ public final class FusionTorusVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private boolean plasmaShown, glowShown, sparkleShown;
 
     public FusionTorusVisual(
-            VisualizationContext context, BlockEntityFusionTorus blockEntity, float partialTick) {
+            VisualizationContext context, FusionTorusBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         var rawBodyLocal = new Matrix4f().translation(.5F, 0F, .5F);
         if (blockEntity.isTilted())
@@ -154,7 +173,7 @@ public final class FusionTorusVisual extends HbmDynamicBlockEntityVisual<BlockEn
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick(), context.camera().position());
     }
 
@@ -162,9 +181,7 @@ public final class FusionTorusVisual extends HbmDynamicBlockEntityVisual<BlockEn
         float magnetAngle = Mth.lerp(partialTick, blockEntity.prevMagnet, blockEntity.magnet);
         FusionRecipe recipe = blockEntity.module.getRecipe() instanceof FusionRecipe f ? f : null;
         boolean burning = blockEntity.plasmaEnergy > 0 && recipe != null;
-        int connectionMask = 0;
-        for (int i = 0; i < BOLT_COUNT; i++)
-            if (blockEntity.connections[i]) connectionMask |= 1 << i;
+        var connectionMask = blockEntity.connections;
         boolean magnetChanged = !initialized || magnetAngle != lastMagnetAngle;
         boolean connectionsChanged = !initialized || connectionMask != lastConnectionMask;
         if (magnetChanged) {
@@ -176,8 +193,8 @@ public final class FusionTorusVisual extends HbmDynamicBlockEntityVisual<BlockEn
             LightBounds.resetBounds(lightBounds, rawBodyBounds);
             LightBounds.includeLightBounds(lightBounds, MAGNET_PART.model(), localPose, pos);
             for (int i = 0; i < BOLT_COUNT; i++) {
-                writeBolt(i, blockEntity.connections[i], fixedBasePose);
-                if (blockEntity.connections[i])
+                writeBolt(i, (connectionMask & (1 << i)) != 0, fixedBasePose);
+                if ((connectionMask & (1 << i)) != 0)
                     LightBounds.includeLightBounds(
                             lightBounds, BOLT_PARTS[i].model(), fixedBasePose, pos);
             }

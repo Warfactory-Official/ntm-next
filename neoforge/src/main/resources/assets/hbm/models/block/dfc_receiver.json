@@ -11,5 +11,8 @@
   "textures": {
     "all": "hbm:block/models/core_receiver",
     "particle": "hbm:block/dfc_receiver"
-  }
+  },
+  "tiled": [
+    "Cube_Cube.001"
+  ]
 }

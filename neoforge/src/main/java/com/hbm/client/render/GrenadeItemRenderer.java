@@ -1,15 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.render;
 
+import com.hbm.client.HeldItemAnimations;
 import com.hbm.client.render.flywheel.GrenadeItemVisual;
 import com.hbm.client.render.flywheel.ItemVisuals;
 import com.hbm.items.weapon.grenade.GrenadeData;
-import com.hbm.items.weapon.grenade.ItemGrenadeShell;
-import com.hbm.items.weapon.grenade.ItemGrenadeUniversal;
+import com.hbm.items.weapon.grenade.GrenadeShellItem;
+import com.hbm.items.weapon.grenade.GrenadeUniversalItem;
 import com.hbm.main.ResourceManager;
-import com.hbm.render.anim.HbmAnimations;
+import com.hbm.render.anim.AnimationSequence;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
@@ -30,6 +61,7 @@ import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Matrix4fc;
+import org.joml.Quaternionfc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
@@ -37,6 +69,8 @@ import org.jspecify.annotations.Nullable;
 public final class GrenadeItemRenderer
         implements SpecialModelRenderer<GrenadeItemRenderer.Argument>,
                 ItemVisuals.Factory<GrenadeItemRenderer.Argument> {
+    private static final double[] REST =
+            AnimationSequence.identity(new double[AnimationSequence.SIZE]);
     private static final int FRAG = ResourceManager.grenades.partId("Frag");
     private static final int FRAG_RING = ResourceManager.grenades.partId("FragRing");
     private static final int FRAG_SPOON = ResourceManager.grenades.partId("FragSpoon");
@@ -114,7 +148,7 @@ public final class GrenadeItemRenderer
     }
 
     private static void transformShell(
-            PoseStack pose, ItemGrenadeShell.EnumGrenadeShell shell, Arm arm) {
+            PoseStack pose, GrenadeShellItem.EnumGrenadeShell shell, Arm arm) {
         switch (shell) {
             case FRAG -> {
                 if (arm == Arm.INVENTORY) {
@@ -165,7 +199,7 @@ public final class GrenadeItemRenderer
         pose.translate(bodyMove[0], bodyMove[1], bodyMove[2]);
         switch (data.shell()) {
             case FRAG -> {
-                pose.mulPose(Axis.XP.rotationDegrees((float) bodyTurn[2]));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) bodyTurn[2]));
                 drawStandardBody(
                         visitor,
                         pose,
@@ -178,12 +212,12 @@ public final class GrenadeItemRenderer
                 visitor.accept(pose, ResourceManager.grenade_frag_tex, FRAG_SPOON, -1, false);
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
-                    pose.mulPose(Axis.XP.rotationDegrees((float) ringTurn[2]));
+                    pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) ringTurn[2]));
                     visitor.accept(pose, ResourceManager.grenade_frag_tex, FRAG_RING, -1, false);
                 }
             }
             case STICK -> {
-                pose.mulPose(Axis.ZP.rotationDegrees((float) bodyTurn[2]));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) bodyTurn[2]));
                 drawStandardBody(
                         visitor,
                         pose,
@@ -195,7 +229,7 @@ public final class GrenadeItemRenderer
                         ResourceManager.grenade_stick_fuze_tex);
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
-                    pose.mulPose(Axis.YP.rotationDegrees((float) ringTurn[1]));
+                    pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) ringTurn[1]));
                     visitor.accept(pose, ResourceManager.grenade_stick_tex, STICK_CAP, -1, false);
                     visitor.accept(
                             pose,
@@ -206,16 +240,16 @@ public final class GrenadeItemRenderer
                 }
             }
             case TECH -> {
-                pose.mulPose(Axis.XP.rotationDegrees((float) bodyTurn[2]));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) bodyTurn[2]));
                 drawTechBody(visitor, pose, data);
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
-                    pose.mulPose(Axis.XP.rotationDegrees((float) ringTurn[2]));
+                    pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) ringTurn[2]));
                     visitor.accept(pose, ResourceManager.grenade_tech_tex, TECH_RING, -1, false);
                 }
             }
             case NUKE -> {
-                pose.mulPose(Axis.ZP.rotationDegrees((float) bodyTurn[2]));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) bodyTurn[2]));
                 drawStandardBody(
                         visitor,
                         pose,
@@ -229,7 +263,7 @@ public final class GrenadeItemRenderer
                 if (renderRing[0] != 0) {
                     pose.translate(ringMove[0], ringMove[1], ringMove[2]);
                     pose.translate(-1, 5, 0);
-                    pose.mulPose(Axis.ZN.rotationDegrees((float) ringTurn[2]));
+                    pose.mulPose((Quaternionfc) Axis.ZN.rotationDegrees((float) ringTurn[2]));
                     pose.translate(1, -5, 0);
                     visitor.accept(pose, ResourceManager.grenade_nuka_tex, NUKA_RING, -1, false);
                 }
@@ -238,7 +272,7 @@ public final class GrenadeItemRenderer
     }
 
     private static double[] bus(boolean hand, String name) {
-        return hand ? HbmAnimations.getRelevantTransformation(name) : HbmAnimations.identity();
+        return hand ? HeldItemAnimations.sampleChannels(name) : REST;
     }
 
     private static void drawShell(
@@ -343,7 +377,7 @@ public final class GrenadeItemRenderer
 
     @Override
     public @Nullable Argument extractArgument(ItemStack stack) {
-        return new Argument(ItemGrenadeUniversal.getData(stack), ItemDisplayContext.NONE, false);
+        return new Argument(GrenadeUniversalItem.getData(stack), ItemDisplayContext.NONE, false);
     }
 
     @Override
@@ -373,7 +407,7 @@ public final class GrenadeItemRenderer
             @Nullable ItemOwner owner) {
         return new GrenadeItemVisual(
                 ctx,
-                argument == null ? ItemGrenadeUniversal.getData(stack) : argument.data(),
+                argument == null ? GrenadeUniversalItem.getData(stack) : argument.data(),
                 context);
     }
 
@@ -423,11 +457,12 @@ public final class GrenadeItemRenderer
                     renderer,
                     (stack, display, owner) ->
                             new Argument(
-                                    ItemGrenadeUniversal.getData(stack),
+                                    GrenadeUniversalItem.getData(stack),
                                     display,
                                     HandPass.local(display, owner)),
                     true,
-                    DynamicSpecialWrapper.properties(context, base));
+                    DynamicSpecialWrapper.properties(context, base),
+                    transformation);
         }
 
         @Override

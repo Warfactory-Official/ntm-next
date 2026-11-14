@@ -1,51 +1,60 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.storage;
 
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public abstract class FluidTankPeripheral<BE extends BlockEntity> extends SnapshotPeripheral<BE> {
-
-    private static final int FILL = 0;
-    private static final int MAX = 1;
-    private static final int TYPE = 0;
+public abstract class FluidTankPeripheral<BE extends BlockEntity>
+        extends BlockEntityPeripheral<BE> {
 
     protected FluidTankPeripheral(BE machine) {
-        super(machine, "ntm_fluid_tank", 2, 1);
+        super(machine, "ntm_fluid_tank");
     }
 
     protected abstract FluidTankNTM tank(BE machine);
 
-    @Override
-    protected final void capture(BE machine) {
-        FluidTankNTM tank = tank(machine);
-        put(FILL, tank.getFill());
-        put(MAX, tank.getMaxFill());
-        putRef(TYPE, NTMFluids.legacyName(tank.getTankType()));
-    }
-
     @LuaFunction
     public final Object[] getFluidStored() {
-        return read(s -> new Object[] {s.intAt(FILL)});
+        return new Object[] {(int) tank(target).getFill()};
     }
 
     @LuaFunction
     public final Object[] getMaxStored() {
-        return read(s -> new Object[] {s.intAt(MAX)});
+        return new Object[] {(int) tank(target).getMaxFill()};
     }
 
     @LuaFunction
     public final Object[] getTypeStored() {
-        return read(s -> new Object[] {s.refAt(TYPE)});
+        return new Object[] {NTMFluids.legacyName(tank(target).getTankType())};
     }
 
     @LuaFunction
     public final Object[] getInfo() {
-        return read(s -> new Object[] {s.intAt(FILL), s.intAt(MAX), s.refAt(TYPE)});
+        return new Object[] {
+            (int) tank(target).getFill(),
+            (int) tank(target).getMaxFill(),
+            NTMFluids.legacyName(tank(target).getTankType())
+        };
     }
 }

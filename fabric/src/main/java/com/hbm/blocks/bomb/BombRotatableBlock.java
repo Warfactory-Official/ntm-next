@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.bomb;
 
-import com.hbm.interfaces.IBomb;
-import com.hbm.inventory.IGUIProvider;
+import com.hbm.interfaces.TriggerHandler;
+import com.hbm.inventory.BlockMenus;
 import com.hbm.util.Facing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -24,7 +40,7 @@ import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public abstract class BombRotatableBlock extends Block implements EntityBlock, IBomb {
+public abstract class BombRotatableBlock extends Block implements EntityBlock, TriggerHandler {
     public static final IntegerProperty FACING = IntegerProperty.create("facing", 2, 5);
 
     protected BombRotatableBlock(Properties props) {
@@ -65,11 +81,7 @@ public abstract class BombRotatableBlock extends Block implements EntityBlock, I
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isSecondaryUseActive()) return InteractionResult.PASS;
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof MenuProvider provider) {
-            if (provider instanceof IGUIProvider gui) {
-                IGUIProvider.openBlockMenu(player, gui, pos);
-            } else {
-                player.openMenu(provider);
-            }
+            BlockMenus.open(player, provider);
         }
         return InteractionResult.SUCCESS;
     }
@@ -82,6 +94,6 @@ public abstract class BombRotatableBlock extends Block implements EntityBlock, I
             Block block,
             @Nullable Orientation orientation,
             boolean movedByPiston) {
-        if (!level.isClientSide() && level.hasNeighborSignal(pos)) explode(level, pos, null);
+        if (!level.isClientSide() && level.hasNeighborSignal(pos)) trigger(level, pos, null);
     }
 }

@@ -1,11 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.neoforge.inventory;
 
 import com.hbm.handler.UnstableFuses;
 import com.hbm.inventory.InteriorSlotSource;
-import com.hbm.inventory.InventoryAlias;
 import com.hbm.inventory.ItemInteriorAdapter;
 import com.hbm.inventory.ItemInteriorBackend;
 import com.hbm.inventory.ItemInteriors;
@@ -22,6 +37,7 @@ import net.neoforged.neoforge.transfer.transaction.Transaction;
 import net.p3pp3rf1y.sophisticatedbackpacks.backpack.BackpackItem;
 import net.p3pp3rf1y.sophisticatedbackpacks.backpack.BackpackStorage;
 import net.p3pp3rf1y.sophisticatedbackpacks.backpack.wrapper.BackpackWrapper;
+import net.p3pp3rf1y.sophisticatedbackpacks.init.ModDataComponents;
 import net.p3pp3rf1y.sophisticatedcore.api.IStorageWrapper;
 import net.p3pp3rf1y.sophisticatedcore.init.ModCoreDataComponents;
 import net.p3pp3rf1y.sophisticatedcore.inventory.ContainerContents;
@@ -155,7 +171,8 @@ public final class SophisticatedItemInteriors {
             if (source == sources[1]) return true;
             if (source != sources[0]) return false;
             InventoryHandler inventory = wrapper().getInventoryHandler();
-            return ((InventoryAlias) inventory).inventoryIdentity() == contents.inventory()
+            return ((com.hbm.inventory.InventoryAlias) (inventory)).inventoryIdentity()
+                            == contents.inventory()
                     && slot < inventory.size()
                     && !(inventory.getInventoryPartitioner().getPartBySlot(slot)
                             instanceof InfinityInventoryPart);
@@ -176,8 +193,8 @@ public final class SophisticatedItemInteriors {
                 current.getInventoryHandler().setStackInSlotInternal(slot, replacement);
             else {
                 var upgrades = current.getUpgradeHandler();
-                if (((InventoryAlias) upgrades).inventoryIdentity() != contents.upgrades())
-                    return false;
+                if (((com.hbm.inventory.InventoryAlias) (upgrades)).inventoryIdentity()
+                        != contents.upgrades()) return false;
                 upgrades.setStackInSlot(slot, replacement);
             }
             return true;
@@ -206,16 +223,16 @@ public final class SophisticatedItemInteriors {
 
             @Override
             protected @Nullable ContainerContents readContents() {
-                return ((SophisticatedContentsStorage) BackpackStorage.get()).storedContents(id);
+                return ((com.hbm.neoforge.inventory.SophisticatedContentsStorage)
+                                (BackpackStorage.get()))
+                        .storedContents(id);
             }
 
             @Override
             protected IStorageWrapper createWrapper() {
                 ItemStack item = prototype.create();
-                item.remove(
-                        net.p3pp3rf1y.sophisticatedbackpacks.init.ModDataComponents.COLUMNS_TAKEN
-                                .get());
-                var current = BackpackWrapper.fromStack(item);
+                item.remove(ModDataComponents.COLUMNS_TAKEN.get());
+                var current = BackpackWrapper.fromStackNoUuidCache(item);
                 current.setSlotNumbers(
                         contents().inventory().stacks().size(),
                         contents().upgrades().stacks().size());
@@ -247,7 +264,8 @@ public final class SophisticatedItemInteriors {
 
             @Override
             protected @Nullable ContainerContents readContents() {
-                return ((SophisticatedContentsStorage) ItemContentsStorage.get())
+                return ((com.hbm.neoforge.inventory.SophisticatedContentsStorage)
+                                (ItemContentsStorage.get()))
                         .storedContents(id);
             }
 

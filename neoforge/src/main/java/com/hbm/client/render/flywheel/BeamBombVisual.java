@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.entity.projectile.EntityB92Beam;
+import com.hbm.entity.projectile.B92BeamEntity;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.model.Mesh;
 import dev.engine_room.flywheel.api.model.Model;
@@ -20,7 +36,7 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public final class BeamBombVisual extends HbmDynamicEntityVisual<EntityB92Beam> {
+public final class BeamBombVisual extends HbmDynamicEntityVisual<B92BeamEntity> {
     private static final float RADIUS = 0.175F;
     private static final int LENGTH = 2;
     private static final int LAYERS = 8;
@@ -37,7 +53,7 @@ public final class BeamBombVisual extends HbmDynamicEntityVisual<EntityB92Beam> 
     private final TransformedInstance bolt;
     private final Matrix4f pose = new Matrix4f();
 
-    public BeamBombVisual(VisualizationContext ctx, EntityB92Beam entity, float partialTick) {
+    public BeamBombVisual(VisualizationContext ctx, B92BeamEntity entity, float partialTick) {
         super(ctx, entity, partialTick);
         bolt = instancerProvider().instancer(InstanceTypes.TRANSFORMED, MODEL).createInstance();
         bolt.overlay(OverlayTexture.NO_OVERLAY);

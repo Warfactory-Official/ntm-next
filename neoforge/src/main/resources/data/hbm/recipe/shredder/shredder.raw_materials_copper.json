@@ -7,10 +7,20 @@
   ],
   "order": 72960,
   "output_items": [
-    {
-      "chance": 0.667,
-      "count": 2,
-      "id": "hbm:powder_copper"
-    }
+    [
+      {
+        "data": {
+          "id": "hbm:powder_copper"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:powder_copper"
+        },
+        "weight": 1
+      }
+    ]
   ]
 }

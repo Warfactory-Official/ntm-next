@@ -5,10 +5,13 @@
     "P": "hbm:pedestal_steel",
     "S": "#c:plates/steel",
     "W": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:wrench",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     }
   },

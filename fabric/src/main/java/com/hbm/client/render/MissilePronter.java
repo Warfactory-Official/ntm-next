@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
 import com.google.common.base.Suppliers;
 import com.hbm.client.model.Meshes;
 import com.hbm.handler.MissileStruct;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
-import com.hbm.items.weapon.ItemCustomMissilePart;
+import com.hbm.items.weapon.CustomMissilePartItem.PartType;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import java.util.HashMap;
@@ -44,21 +60,21 @@ public final class MissilePronter {
         Map<Item, Drawn> parts = table.get().parts();
         float y = 0F;
 
-        ItemCustomMissilePart thruster = missile.thruster();
+        CustomMissilePartItem thruster = missile.thruster();
         if (thruster != null && thruster.type == PartType.THRUSTER) {
             parts.get(thruster).visit(visitor, y);
             y += thruster.height;
         }
 
-        ItemCustomMissilePart fuselage = missile.fuselage();
+        CustomMissilePartItem fuselage = missile.fuselage();
         if (fuselage != null && fuselage.type == PartType.FUSELAGE) {
-            ItemCustomMissilePart fins = missile.fins();
+            CustomMissilePartItem fins = missile.fins();
             if (fins != null && fins.type == PartType.FINS) parts.get(fins).visit(visitor, y);
             parts.get(fuselage).visit(visitor, y);
             y += fuselage.height;
         }
 
-        ItemCustomMissilePart warhead = missile.warhead();
+        CustomMissilePartItem warhead = missile.warhead();
         if (warhead != null && warhead.type == PartType.WARHEAD)
             parts.get(warhead).visit(visitor, y);
     }
@@ -75,7 +91,7 @@ public final class MissilePronter {
         float fuselage = 0F;
 
         for (Item item : BuiltInRegistries.ITEM) {
-            if (!(item instanceof ItemCustomMissilePart part) || part.mesh == null) continue;
+            if (!(item instanceof CustomMissilePartItem part) || part.mesh == null) continue;
             HFRWavefrontObject mesh = meshes.computeIfAbsent(part.mesh, MissilePronter::partMesh);
             parts.put(item, new Drawn(mesh, Objects.requireNonNull(part.skin)));
             box = union(box, mesh.getExtents());
@@ -88,7 +104,7 @@ public final class MissilePronter {
     }
 
     public static HFRWavefrontObject partMesh(Identifier mesh) {
-        return ItemCustomMissilePart.VERTEX_NORMAL_MESHES.get().contains(mesh)
+        return CustomMissilePartItem.VERTEX_NORMAL_MESHES.get().contains(mesh)
                 ? Meshes.flatShaded(Meshes.load(mesh))
                 : Meshes.faceNormals(mesh);
     }

@@ -1,5 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.render;
 
@@ -28,6 +58,7 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
+import org.joml.Quaternionfc;
 import org.jspecify.annotations.Nullable;
 
 public final class AssemblyMarkers {
@@ -67,13 +98,12 @@ public final class AssemblyMarkers {
         }
     }
 
-    public static void queue(Marker[] markers) {
+    public static void queue(Marker marker) {
         updateLevel();
-        if (markerLevel == null) return;
-        for (Marker marker : markers) MARKERS.put(marker.pos.asLong(), marker);
+        if (markerLevel != null) MARKERS.put(marker.pos.asLong(), marker);
     }
 
-    public static State extract(Vec3 cameraPosition) {
+    public static State extract(Vec3 cameraPosition, float partialTick) {
         updateLevel();
         if (MARKERS.isEmpty()) return EMPTY_STATE;
         long now = GameTime.now();
@@ -93,7 +123,9 @@ public final class AssemblyMarkers {
         }
         return alive.isEmpty()
                 ? EMPTY_STATE
-                : new State(alive.toArray(EMPTY), Minecraft.getInstance().player.getLookAngle());
+                : new State(
+                        alive.toArray(EMPTY),
+                        Minecraft.getInstance().player.getViewVector(partialTick));
     }
 
     public static void submit(
@@ -140,7 +172,7 @@ public final class AssemblyMarkers {
 
             poseStack.pushPose();
             poseStack.translate(vx * mult, vy * mult + 1.0, vz * mult);
-            poseStack.mulPose(camera.orientation);
+            poseStack.mulPose((Quaternionfc) camera.orientation);
             poseStack.scale(LABEL_SCALE, -LABEL_SCALE, LABEL_SCALE);
             FormattedCharSequence text = label.getVisualOrderText();
             int x = -font.width(text) / 2;

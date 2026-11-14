@@ -1,0 +1,8 @@
+{
+  "values": [
+    "hbm:physical",
+    "hbm:suicide",
+    "hbm:rubble",
+    "hbm:shrapnel"
+  ]
+}

@@ -1,13 +1,12 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:starmetal_plate",
-      "components": {
-        "minecraft:damage": 0
-      }
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:starmetal_plate",
     "C": "hbm:demon_core_closed",
     "M": "hbm:motor_desh",
     "P": "hbm:plate_armor_fau",

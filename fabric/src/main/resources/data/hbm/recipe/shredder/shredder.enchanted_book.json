@@ -2,7 +2,10 @@
   "type": "hbm:shredder",
   "input_items": [
     {
-      "ingredient": "minecraft:enchanted_book"
+      "ingredient": "minecraft:enchanted_book",
+      "predicates": {
+        "hbm:consume_component": "minecraft:stored_enchantments"
+      }
     }
   ],
   "order": 12032,

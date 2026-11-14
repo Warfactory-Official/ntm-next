@@ -1,13 +1,43 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.armor;
 
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
 import com.hbm.items.weapon.sedna.BulletConfig;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.GunState;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.GunState;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import com.hbm.items.weapon.sedna.factory.XFactoryRocket;
 import com.hbm.items.weapon.sedna.mags.MagazineBelt;
 import com.hbm.sound.EntitySounds;
@@ -16,7 +46,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class ArmorNCRPARanged implements IPARanged {
+public class ArmorNCRPARanged implements PowerArmorWeapon {
 
     public static final MagazineBelt rocketSteerMag = new MagazineBelt();
     public static final MagazineBelt rocketMag = new MagazineBelt();
@@ -26,19 +56,19 @@ public class ArmorNCRPARanged implements IPARanged {
     private static final int COOLDOWN = 10;
 
     @Override
-    public void clickPrimary(ItemStack stack, LambdaContext ctx) {
+    public void primary(ItemStack stack, LambdaContext ctx) {
         fireRocket(stack, ctx, true);
     }
 
     @Override
-    public void clickSecondary(ItemStack stack, LambdaContext ctx) {
+    public void secondary(ItemStack stack, LambdaContext ctx) {
         fireRocket(stack, ctx, false);
     }
 
     public static void fireRocket(ItemStack stack, LambdaContext ctx, boolean steer) {
         Player player = ctx.getPlayer();
         if (player == null) return;
-        if (ItemGunBaseNT.getState(stack, 0) != GunState.IDLE) return;
+        if (GunBaseNTItem.getState(stack, 0) != GunState.IDLE) return;
 
         MagazineBelt mag = steer ? rocketSteerMag : rocketMag;
         if (mag.acceptedBullets.isEmpty()) {
@@ -48,8 +78,8 @@ public class ArmorNCRPARanged implements IPARanged {
         BulletConfig cfg = mag.getType(stack, player.getInventory());
         int amount = mag.getAmount(stack, player.getInventory());
 
-        ItemGunBaseNT.setState(stack, 0, GunState.COOLDOWN);
-        ItemGunBaseNT.setTimer(stack, 0, COOLDOWN);
+        GunBaseNTItem.setState(stack, 0, GunState.COOLDOWN);
+        GunBaseNTItem.setTimer(stack, 0, COOLDOWN);
 
         if (amount <= 0) {
             EntitySounds.play(
@@ -64,9 +94,9 @@ public class ArmorNCRPARanged implements IPARanged {
             return;
         }
 
-        mag.useUpAmmo(stack, player.getInventory(), 1);
+        mag.consumeAmmo(stack, player.getInventory(), 1);
         float side = SIDE_OFFSET * (player.getRandom().nextBoolean() ? -1F : 1F);
-        EntityBulletBaseMK4 rocket = new EntityBulletBaseMK4(player, cfg, DAMAGE, 0F, side, 0D, 0D);
+        BulletBaseMK4Entity rocket = new BulletBaseMK4Entity(player, cfg, DAMAGE, 0F, side, 0D, 0D);
         player.level().addFreshEntity(rocket);
         EntitySounds.play(
                 player,

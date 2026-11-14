@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
-import com.hbm.blockentity.network.BlockEntitySubstation;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.network.SubstationBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,8 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
-public class SubstationBlock extends BlockMultiblockCore implements EntityBlock {
-
+public class SubstationBlock extends MultiblockCoreBlock implements EntityBlock {
     public static final MapCodec<SubstationBlock> CODEC = simpleCodec(SubstationBlock::new);
 
     public SubstationBlock(Properties props) {
@@ -51,9 +66,7 @@ public class SubstationBlock extends BlockMultiblockCore implements EntityBlock 
             boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
         if (level instanceof ServerLevel server && !oldState.is(this)) {
-            visitRing(
-                    pos,
-                    (cell, mask) -> CableConductorBlockBase.mintNode(server, cell, state, mask));
+            visitRing(pos, (cell, mask) -> CableConductorBlock.mintNode(server, cell, state, mask));
         }
     }
 
@@ -61,7 +74,7 @@ public class SubstationBlock extends BlockMultiblockCore implements EntityBlock 
     protected void removedAt(
             BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
         super.removedAt(state, level, pos, movedByPiston);
-        visitRing(pos, (cell, mask) -> CableConductorBlockBase.dropNode(level, cell));
+        visitRing(pos, (cell, mask) -> CableConductorBlock.dropNode(level, cell));
     }
 
     @Override
@@ -79,12 +92,12 @@ public class SubstationBlock extends BlockMultiblockCore implements EntityBlock 
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-        return PylonBlockBase.dyeAt(level, core, held, player);
+        return BasePylonBlock.dyeAt(level, core, held, player);
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntitySubstation(pos, state);
+        return new SubstationBlockEntity(pos, state);
     }
 
     private interface RingVisitor {

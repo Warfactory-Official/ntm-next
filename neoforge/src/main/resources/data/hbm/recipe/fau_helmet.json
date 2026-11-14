@@ -1,19 +1,21 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:starmetal_helmet"
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:starmetal_helmet",
     "F": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:gas_mask_filter",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:gas_mask_filter"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "P": "hbm:plate_armor_fau",
     "S": "#hbm:pipes/steel",

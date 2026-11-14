@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge.GaugeUnit;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge;
-import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBase;
-import com.hbm.client.render.RenderRBMKGauge;
+import com.hbm.blockentity.machine.rbmk.RBMKGaugeBlockEntity.GaugeUnit;
+import com.hbm.blockentity.machine.rbmk.RBMKGaugeBlockEntity;
+import com.hbm.blocks.machine.rbmk.RBMKMiniPanelBlock;
+import com.hbm.client.render.RBMKGaugeRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
@@ -21,6 +37,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
@@ -33,8 +51,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class RBMKGaugeVisual extends HbmDynamicBlockEntityVisual<BlockEntityRBMKGauge>
-        implements ShaderLightVisual {
+public final class RBMKGaugeVisual extends AbstractBoundedBlockEntityVisual<RBMKGaugeBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int GAUGE = ResourceManager.rbmk_gauge.partId("Gauge");
     private static final int NEEDLE = ResourceManager.rbmk_gauge.partId("Needle");
     private static final Material NEEDLE_MATERIAL =
@@ -60,33 +78,33 @@ public final class RBMKGaugeVisual extends HbmDynamicBlockEntityVisual<BlockEnti
                             ResourceManager.rbmk_gauge.smoothing()),
                     NEEDLE_MATERIAL);
     private final TransformedInstance[] gauges =
-            new TransformedInstance[BlockEntityRBMKGauge.GAUGES];
+            new TransformedInstance[RBMKGaugeBlockEntity.GAUGES];
     private final TransformedInstance[] needles =
-            new TransformedInstance[BlockEntityRBMKGauge.GAUGES];
-    private final Matrix4f[] gaugePoses = new Matrix4f[BlockEntityRBMKGauge.GAUGES];
-    private final Matrix4f[] needlePoses = new Matrix4f[BlockEntityRBMKGauge.GAUGES];
+            new TransformedInstance[RBMKGaugeBlockEntity.GAUGES];
+    private final Matrix4f[] gaugePoses = new Matrix4f[RBMKGaugeBlockEntity.GAUGES];
+    private final Matrix4f[] needlePoses = new Matrix4f[RBMKGaugeBlockEntity.GAUGES];
     private final Matrix4f world = new Matrix4f();
-    private final double[] lastAngles = new double[BlockEntityRBMKGauge.GAUGES];
-    private final int[] lastColors = new int[BlockEntityRBMKGauge.GAUGES];
-    private final boolean[] lastActive = new boolean[BlockEntityRBMKGauge.GAUGES];
-    private final WorldText[] lowers = new WorldText[BlockEntityRBMKGauge.GAUGES];
-    private final WorldText[] uppers = new WorldText[BlockEntityRBMKGauge.GAUGES];
-    private final WorldText[] labels = new WorldText[BlockEntityRBMKGauge.GAUGES];
+    private final double[] lastAngles = new double[RBMKGaugeBlockEntity.GAUGES];
+    private final int[] lastColors = new int[RBMKGaugeBlockEntity.GAUGES];
+    private final boolean[] lastActive = new boolean[RBMKGaugeBlockEntity.GAUGES];
+    private final WorldText[] lowers = new WorldText[RBMKGaugeBlockEntity.GAUGES];
+    private final WorldText[] uppers = new WorldText[RBMKGaugeBlockEntity.GAUGES];
+    private final WorldText[] labels = new WorldText[RBMKGaugeBlockEntity.GAUGES];
     private final WorldText.Posing[] labelPosings =
-            new WorldText.Posing[BlockEntityRBMKGauge.GAUGES];
-    private final Matrix4f[] lowerPoses = new Matrix4f[BlockEntityRBMKGauge.GAUGES];
-    private final Matrix4f[] upperPoses = new Matrix4f[BlockEntityRBMKGauge.GAUGES];
-    private final long[] lastMins = new long[BlockEntityRBMKGauge.GAUGES];
-    private final long[] lastMaxes = new long[BlockEntityRBMKGauge.GAUGES];
-    private final @Nullable String[] lastLabels = new String[BlockEntityRBMKGauge.GAUGES];
-    private final boolean[] textActive = new boolean[BlockEntityRBMKGauge.GAUGES];
+            new WorldText.Posing[RBMKGaugeBlockEntity.GAUGES];
+    private final Matrix4f[] lowerPoses = new Matrix4f[RBMKGaugeBlockEntity.GAUGES];
+    private final Matrix4f[] upperPoses = new Matrix4f[RBMKGaugeBlockEntity.GAUGES];
+    private final long[] lastMins = new long[RBMKGaugeBlockEntity.GAUGES];
+    private final long[] lastMaxes = new long[RBMKGaugeBlockEntity.GAUGES];
+    private final @Nullable String[] lastLabels = new String[RBMKGaugeBlockEntity.GAUGES];
+    private final boolean[] textActive = new boolean[RBMKGaugeBlockEntity.GAUGES];
     private boolean initialized;
     private boolean textInitialized;
 
     public RBMKGaugeVisual(
-            VisualizationContext context, BlockEntityRBMKGauge blockEntity, float partialTick) {
+            VisualizationContext context, RBMKGaugeBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        Direction facing = blockEntity.getBlockState().getValue(RBMKMiniPanelBase.FACING);
+        Direction facing = blockEntity.getBlockState().getValue(RBMKMiniPanelBlock.FACING);
         for (int i = 0; i < gauges.length; i++) {
             gauges[i] =
                     instancerProvider()
@@ -134,14 +152,14 @@ public final class RBMKGaugeVisual extends HbmDynamicBlockEntityVisual<BlockEnti
                 .translate(0F, -.4375F, .125F)
                 .translate(.032F, .4375F, .125F)
                 .scale(
-                        RenderRBMKGauge.LINE_SCALE,
-                        -RenderRBMKGauge.LINE_SCALE,
-                        RenderRBMKGauge.LINE_SCALE)
+                        RBMKGaugeRenderer.LINE_SCALE,
+                        -RBMKGaugeRenderer.LINE_SCALE,
+                        RBMKGaugeRenderer.LINE_SCALE)
                 .rotateY(90F * Mth.DEG_TO_RAD);
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
         updateText();
     }
@@ -161,12 +179,12 @@ public final class RBMKGaugeVisual extends HbmDynamicBlockEntityVisual<BlockEnti
                 lastLabels[i] = unit.label;
                 boolean labelled = unit.active && unit.label != null && !unit.label.isEmpty();
                 lowers[i].set(
-                        unit.active ? Component.literal(RenderRBMKGauge.bound(unit.min)) : null,
+                        unit.active ? Component.literal(RBMKGaugeRenderer.bound(unit.min)) : null,
                         0F,
                         y,
                         ARGB.opaque(0));
                 uppers[i].set(
-                        unit.active ? Component.literal(RenderRBMKGauge.bound(unit.max)) : null,
+                        unit.active ? Component.literal(RBMKGaugeRenderer.bound(unit.max)) : null,
                         0F,
                         y,
                         ARGB.opaque(0));

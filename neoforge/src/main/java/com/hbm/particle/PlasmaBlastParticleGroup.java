@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
@@ -20,8 +36,9 @@ import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionfc;
 
-public class PlasmaBlastParticleGroup extends ParticleGroup<ParticlePlasmaBlast> {
+public class PlasmaBlastParticleGroup extends ParticleGroup<PlasmaBlastParticle> {
 
     public PlasmaBlastParticleGroup(ParticleEngine engine) {
         super(engine);
@@ -33,7 +50,7 @@ public class PlasmaBlastParticleGroup extends ParticleGroup<ParticlePlasmaBlast>
         List<Instance> out = new ArrayList<>(this.particles.size());
         Vec3 cam = camera.position();
 
-        for (ParticlePlasmaBlast blast : this.particles) {
+        for (PlasmaBlastParticle blast : this.particles) {
             if (blast.ownsVisual()) continue;
             out.add(
                     new Instance(
@@ -73,8 +90,8 @@ public class PlasmaBlastParticleGroup extends ParticleGroup<ParticlePlasmaBlast>
             for (Instance in : instances) {
                 pose.pushPose();
                 pose.translate(in.relX, in.relY, in.relZ);
-                pose.mulPose(Axis.YP.rotationDegrees(in.yaw));
-                pose.mulPose(Axis.XP.rotationDegrees(in.pitch));
+                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(in.yaw));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(in.pitch));
 
                 float s = in.scale;
                 int color = ARGB.colorFromFloat(in.alpha, in.r, in.g, in.b);

@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler;
 
-import com.hbm.hazard.HazardClass;
+import com.hbm.hazard.Exposure;
 import it.unimi.dsi.fastutil.objects.Reference2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
@@ -11,6 +27,7 @@ import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -20,7 +37,7 @@ import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 
 public final class EquipmentProtections {
-    private static final HazardClass[] NO_HAZARDS = new HazardClass[0];
+    private static final Exposure[] NO_HAZARDS = new Exposure[0];
     private static Reference2IntOpenHashMap<Item> hazards = new Reference2IntOpenHashMap<>(0);
     private static Reference2IntOpenHashMap<Item> masks = emptyMasks();
     private static Reference2IntOpenHashMap<Item> claddingSlots = new Reference2IntOpenHashMap<>(0);
@@ -29,9 +46,9 @@ public final class EquipmentProtections {
     private static ReferenceOpenHashSet<Item> filters = new ReferenceOpenHashSet<>(0);
     private static ReferenceOpenHashSet<Item> lateFilterTooltips = new ReferenceOpenHashSet<>(0);
     private static ReferenceOpenHashSet<Item> claddingTooltips = new ReferenceOpenHashSet<>(0);
-    private static Reference2ObjectOpenHashMap<Item, HazardClass[]> orderedHazards =
+    private static Reference2ObjectOpenHashMap<Item, Exposure[]> orderedHazards =
             new Reference2ObjectOpenHashMap<>(0);
-    private static Reference2ObjectOpenHashMap<Item, HazardClass[]> orderedExclusions =
+    private static Reference2ObjectOpenHashMap<Item, Exposure[]> orderedExclusions =
             new Reference2ObjectOpenHashMap<>(0);
 
     private EquipmentProtections() {}
@@ -50,17 +67,17 @@ public final class EquipmentProtections {
         var nextFilters = new ReferenceOpenHashSet<Item>();
         var nextLate = new ReferenceOpenHashSet<Item>();
         var nextCladdingTooltips = new ReferenceOpenHashSet<Item>();
-        var nextOrdered = new Reference2ObjectOpenHashMap<Item, HazardClass[]>();
-        var nextExcludedOrder = new Reference2ObjectOpenHashMap<Item, HazardClass[]>();
+        var nextOrdered = new Reference2ObjectOpenHashMap<Item, Exposure[]>();
+        var nextExcludedOrder = new Reference2ObjectOpenHashMap<Item, Exposure[]>();
         Map<Item, Identifier> claims = new HashMap<>();
         for (var holder :
                 registries.lookupOrThrow(EquipmentProtection.REGISTRY).listElements().toList()) {
             var rule = holder.value();
             int hazardBits = 0;
-            for (HazardClass hazard : rule.hazards()) hazardBits |= hazard.bit();
+            for (Exposure hazard : rule.hazards()) hazardBits |= hazard.bit;
             int excluded = 0;
             if (rule.filterExclusions().isPresent()) {
-                for (HazardClass hazard : rule.filterExclusions().get()) excluded |= hazard.bit();
+                for (Exposure hazard : rule.filterExclusions().get()) excluded |= hazard.bit;
             }
             for (var target : rule.targets()) {
                 Item item = target.value();
@@ -74,13 +91,13 @@ public final class EquipmentProtections {
                                     + " and "
                                     + holder.key().identifier());
                 nextHazards.put(item, hazardBits);
-                nextOrdered.put(item, rule.hazards().toArray(HazardClass[]::new));
+                nextOrdered.put(item, rule.hazards().toArray(Exposure[]::new));
                 if (rule.filter()) nextFilters.add(item);
                 if (rule.filterTooltipAfterItem()) nextLate.add(item);
                 if (rule.filterExclusions().isPresent()) {
                     nextMasks.put(item, excluded);
                     nextExcludedOrder.put(
-                            item, rule.filterExclusions().get().toArray(HazardClass[]::new));
+                            item, rule.filterExclusions().get().toArray(Exposure[]::new));
                 }
                 if (rule.cladding().isPresent()) {
                     var cladding = rule.cladding().get();
@@ -127,11 +144,11 @@ public final class EquipmentProtections {
         return claddingTooltips.contains(stack.typeHolder().value());
     }
 
-    public static HazardClass[] hazardOrder(ItemInstance stack) {
+    public static Exposure[] hazardOrder(ItemInstance stack) {
         return orderedHazards.getOrDefault(stack.typeHolder().value(), NO_HAZARDS);
     }
 
-    public static HazardClass[] exclusionOrder(ItemInstance stack) {
+    public static Exposure[] exclusionOrder(ItemInstance stack) {
         return orderedExclusions.getOrDefault(stack.typeHolder().value(), NO_HAZARDS);
     }
 
@@ -159,11 +176,11 @@ public final class EquipmentProtections {
         if (!claddingTooltip(stack)) return;
         adder.accept(
                 Component.translatable("desc.item.armorMod.cladding", claddingResistance(stack))
-                        .withStyle(net.minecraft.ChatFormatting.YELLOW));
+                        .withStyle(ChatFormatting.YELLOW));
         adder.accept(Component.empty());
         adder.accept(
                 Component.translatable("armorMod.applicableTo")
-                        .withStyle(net.minecraft.ChatFormatting.DARK_PURPLE));
+                        .withStyle(ChatFormatting.DARK_PURPLE));
         int slots = claddingSlots.getInt(stack.getItem());
         if (slots == 15)
             adder.accept(Component.literal("  ").append(Component.translatable("armorMod.all")));
@@ -178,7 +195,7 @@ public final class EquipmentProtections {
         }
         adder.accept(
                 Component.translatable("desc.item.armorMod.slot")
-                        .withStyle(net.minecraft.ChatFormatting.DARK_PURPLE));
+                        .withStyle(ChatFormatting.DARK_PURPLE));
         adder.accept(
                 Component.literal("  ").append(Component.translatable("armorMod.type.cladding")));
     }

@@ -36,7 +36,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "texture": "hbm:textures/models/weapons/uzi.png"
@@ -47,7 +47,7 @@
         "duration": 75,
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "kind": "normal",
@@ -114,7 +114,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       }

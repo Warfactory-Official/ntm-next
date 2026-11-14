@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.fluid.trait;
 
 import com.hbm.handler.pollution.PollutionType;
-import com.hbm.hazard.HazardClass;
+import com.hbm.hazard.Exposure;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.*;
 import com.hbm.util.RegistryUtil;
 import com.mojang.datafixers.util.Either;
@@ -14,9 +30,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.HexFormat;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -91,81 +105,81 @@ public final class FluidTraitCodecs {
 
         put(
                 "corrosive",
-                RecordCodecBuilder.<FT_Corrosive>mapCodec(
+                RecordCodecBuilder.<CorrosiveTrait>mapCodec(
                         i ->
                                 i.group(
                                                 Codec.INT
                                                         .fieldOf("rating")
-                                                        .forGetter(FT_Corrosive::getRating))
-                                        .apply(i, FT_Corrosive::new)));
+                                                        .forGetter(CorrosiveTrait::rating))
+                                        .apply(i, CorrosiveTrait::new)));
 
         put(
                 "flammable",
-                RecordCodecBuilder.<FT_Flammable>mapCodec(
+                RecordCodecBuilder.<FlammableTrait>mapCodec(
                         i ->
                                 i.group(
                                                 Codec.LONG
                                                         .fieldOf("energy")
-                                                        .forGetter(FT_Flammable::getHeatEnergy))
-                                        .apply(i, FT_Flammable::new)));
+                                                        .forGetter(FlammableTrait::heatPerBucket))
+                                        .apply(i, FlammableTrait::new)));
 
         put(
                 "combustible",
-                RecordCodecBuilder.<FT_Combustible>mapCodec(
+                RecordCodecBuilder.<CombustibleTrait>mapCodec(
                         i ->
                                 i.group(
                                                 Codec.STRING
                                                         .xmap(
-                                                                FT_Combustible.FuelGrade::valueOf,
+                                                                CombustibleTrait.Grade::valueOf,
                                                                 Enum::name)
                                                         .fieldOf("grade")
-                                                        .forGetter(FT_Combustible::gradeOrThrow),
+                                                        .forGetter(CombustibleTrait::grade),
                                                 Codec.LONG
                                                         .fieldOf("energy")
                                                         .forGetter(
-                                                                FT_Combustible
-                                                                        ::getCombustionEnergy))
-                                        .apply(i, FT_Combustible::new)));
+                                                                CombustibleTrait::energyPerBucket))
+                                        .apply(i, CombustibleTrait::new)));
 
         put(
                 "poison",
-                RecordCodecBuilder.<FT_Poison>mapCodec(
+                RecordCodecBuilder.<PoisonTrait>mapCodec(
                         i ->
                                 i.group(
                                                 Codec.BOOL
                                                         .fieldOf("withering")
-                                                        .forGetter(FT_Poison::isWithering),
+                                                        .forGetter(PoisonTrait::withering),
                                                 Codec.INT
                                                         .fieldOf("level")
-                                                        .forGetter(FT_Poison::getLevel))
-                                        .apply(i, FT_Poison::new)));
+                                                        .forGetter(PoisonTrait::level))
+                                        .apply(i, PoisonTrait::new)));
 
         put(
                 "pwrmoderator",
-                RecordCodecBuilder.<FT_PWRModerator>mapCodec(
+                RecordCodecBuilder.<ReactorModeratorTrait>mapCodec(
                         i ->
                                 i.group(
                                                 Codec.DOUBLE
                                                         .fieldOf("multiplier")
-                                                        .forGetter(FT_PWRModerator::getMultiplier))
-                                        .apply(i, FT_PWRModerator::new)));
+                                                        .forGetter(
+                                                                ReactorModeratorTrait::multiplier))
+                                        .apply(i, ReactorModeratorTrait::new)));
 
         put(
                 "pheromone",
-                RecordCodecBuilder.<FT_Pheromone>mapCodec(
+                RecordCodecBuilder.<PheromoneTrait>mapCodec(
                         i ->
-                                i.group(Codec.INT.fieldOf("type").forGetter(FT_Pheromone::getType))
-                                        .apply(i, FT_Pheromone::new)));
+                                i.group(Codec.INT.fieldOf("type").forGetter(PheromoneTrait::kind))
+                                        .apply(i, PheromoneTrait::new)));
 
         put(
                 "ventradiation",
-                RecordCodecBuilder.<FT_VentRadiation>mapCodec(
+                RecordCodecBuilder.<RadiationReleaseTrait>mapCodec(
                         i ->
                                 i.group(
                                                 Codec.FLOAT
                                                         .fieldOf("rad_per_mb")
-                                                        .forGetter(FT_VentRadiation::getRadPerMB))
-                                        .apply(i, FT_VentRadiation::new)));
+                                                        .forGetter(RadiationReleaseTrait::perMb))
+                                        .apply(i, RadiationReleaseTrait::new)));
 
         Codec<Supplier<Fluid>> fluidRef =
                 Identifier.CODEC.comapFlatMap(
@@ -179,117 +193,118 @@ public final class FluidTraitCodecs {
                         },
                         supplier -> BuiltInRegistries.FLUID.getKey(supplier.get()));
 
-        Codec<FT_Heatable.HeatingStep> heatingStep =
+        Codec<HeatableTrait.Step> heatingStep =
                 RecordCodecBuilder.create(
                         i ->
                                 i.group(
-                                                Codec.INT
+                                                Codec.intRange(1, Integer.MAX_VALUE)
                                                         .fieldOf("amount_req")
-                                                        .forGetter(step -> step.amountReq),
-                                                Codec.INT
+                                                        .forGetter(HeatableTrait.Step::consumed),
+                                                Codec.intRange(1, Integer.MAX_VALUE)
                                                         .fieldOf("heat_req")
-                                                        .forGetter(step -> step.heatReq),
+                                                        .forGetter(HeatableTrait.Step::heat),
                                                 fluidRef.fieldOf("produces")
-                                                        .forGetter(step -> step::typeProduced),
-                                                Codec.INT
+                                                        .forGetter(step -> step::product),
+                                                Codec.intRange(1, Integer.MAX_VALUE)
                                                         .fieldOf("amount_produced")
-                                                        .forGetter(step -> step.amountProduced))
-                                        .apply(i, FT_Heatable.HeatingStep::new));
+                                                        .forGetter(HeatableTrait.Step::produced))
+                                        .apply(
+                                                i,
+                                                (consumed, heat, product, produced) ->
+                                                        new HeatableTrait.Step(
+                                                                heat, consumed, product,
+                                                                produced)));
 
-        Codec<Map<FT_Heatable.HeatingType, Double>> heatEff =
+        Codec<Map<HeatableTrait.Mode, Double>> heatEff =
                 Codec.unboundedMap(
-                        Codec.STRING.xmap(FT_Heatable.HeatingType::valueOf, Enum::name),
-                        Codec.DOUBLE);
+                        Codec.STRING.xmap(HeatableTrait.Mode::valueOf, Enum::name), Codec.DOUBLE);
         put(
                 "heatable",
-                RecordCodecBuilder.<FT_Heatable>mapCodec(
+                RecordCodecBuilder.<HeatableTrait>mapCodec(
                         i ->
                                 i.group(
                                                 heatingStep
                                                         .listOf()
+                                                        .validate(
+                                                                steps ->
+                                                                        steps.isEmpty()
+                                                                                ? DataResult.error(
+                                                                                        () ->
+                                                                                                "a heatable trait declares no step")
+                                                                                : DataResult
+                                                                                        .success(
+                                                                                                steps))
                                                         .fieldOf("steps")
-                                                        .forGetter(FT_Heatable::steps),
+                                                        .forGetter(HeatableTrait::steps),
                                                 heatEff.fieldOf("efficiency")
                                                         .forGetter(
                                                                 FluidTraitCodecs::heatEfficiency))
-                                        .apply(i, FluidTraitCodecs::heatable)));
+                                        .apply(i, HeatableTrait::new)));
 
-        Codec<Map<FT_Coolable.CoolingType, Double>> coolEff =
+        Codec<Map<CoolableTrait.Mode, Double>> coolEff =
                 Codec.unboundedMap(
-                        Codec.STRING.xmap(FT_Coolable.CoolingType::valueOf, Enum::name),
-                        Codec.DOUBLE);
+                        Codec.STRING.xmap(CoolableTrait.Mode::valueOf, Enum::name), Codec.DOUBLE);
         put(
                 "coolable",
-                RecordCodecBuilder.<FT_Coolable>mapCodec(
+                RecordCodecBuilder.<CoolableTrait>mapCodec(
                         i ->
                                 i.group(
                                                 fluidRef.fieldOf("cools_to")
-                                                        .forGetter(t -> t::coolsTo),
+                                                        .forGetter(t -> t::product),
                                                 Codec.INT
                                                         .fieldOf("amount_req")
-                                                        .forGetter(t -> t.amountReq),
+                                                        .forGetter(CoolableTrait::consumed),
                                                 Codec.INT
                                                         .fieldOf("amount_produced")
-                                                        .forGetter(t -> t.amountProduced),
+                                                        .forGetter(CoolableTrait::produced),
                                                 Codec.INT
                                                         .fieldOf("heat_energy")
-                                                        .forGetter(t -> t.heatEnergy),
+                                                        .forGetter(CoolableTrait::heat),
                                                 coolEff.fieldOf("efficiency")
                                                         .forGetter(
                                                                 FluidTraitCodecs::coolEfficiency))
-                                        .apply(i, FluidTraitCodecs::coolable)));
+                                        .apply(i, CoolableTrait::new)));
 
-        Codec<HazardClass> hazard = Codec.STRING.xmap(HazardClass::valueOf, Enum::name);
-        MapCodec<FT_Toxin.ToxinDirectDamage> directDamage =
+        MapCodec<ToxinTrait.Harm> directDamage =
                 RecordCodecBuilder.mapCodec(
                         i ->
                                 i.group(
                                                 ResourceKey.codec(Registries.DAMAGE_TYPE)
                                                         .fieldOf("damage")
-                                                        .forGetter(e -> e.damage),
+                                                        .forGetter(ToxinTrait.Harm::damage),
                                                 Codec.FLOAT
                                                         .fieldOf("amount")
-                                                        .forGetter(e -> e.amount),
-                                                Codec.INT.fieldOf("delay").forGetter(e -> e.delay),
-                                                hazard.optionalFieldOf("hazard")
-                                                        .forGetter(
-                                                                e -> Optional.ofNullable(e.clazz)),
+                                                        .forGetter(ToxinTrait.Harm::amount),
+                                                Codec.INT
+                                                        .fieldOf("delay")
+                                                        .forGetter(ToxinTrait.Harm::delay),
+                                                Exposure.CODEC
+                                                        .fieldOf("hazard")
+                                                        .forGetter(ToxinTrait.Harm::mask),
                                                 Codec.BOOL
                                                         .fieldOf("full_body")
-                                                        .forGetter(e -> e.fullBody))
-                                        .apply(
-                                                i,
-                                                (damage, amount, delay, clazz, fullBody) ->
-                                                        new FT_Toxin.ToxinDirectDamage(
-                                                                damage,
-                                                                amount,
-                                                                delay,
-                                                                clazz.orElse(null),
-                                                                fullBody)));
+                                                        .forGetter(ToxinTrait.Harm::fullBody))
+                                        .apply(i, ToxinTrait.Harm::new));
 
-        MapCodec<FT_Toxin.ToxinEffects> effects =
+        MapCodec<ToxinTrait.Afflict> effects =
                 RecordCodecBuilder.mapCodec(
                         i ->
                                 i.group(
                                                 MobEffectInstance.CODEC
                                                         .listOf()
                                                         .fieldOf("effects")
-                                                        .forGetter(e -> e.effects),
-                                                hazard.optionalFieldOf("hazard")
-                                                        .forGetter(
-                                                                e -> Optional.ofNullable(e.clazz)),
+                                                        .forGetter(ToxinTrait.Afflict::effects),
+                                                Exposure.CODEC
+                                                        .fieldOf("hazard")
+                                                        .forGetter(ToxinTrait.Afflict::mask),
                                                 Codec.BOOL
                                                         .fieldOf("full_body")
-                                                        .forGetter(e -> e.fullBody))
+                                                        .forGetter(ToxinTrait.Afflict::fullBody))
                                         .apply(
                                                 i,
-                                                (effs, clazz, fullBody) -> {
-                                                    FT_Toxin.ToxinEffects out =
-                                                            new FT_Toxin.ToxinEffects(
-                                                                    clazz.orElse(null), fullBody);
-                                                    out.effects.addAll(effs);
-                                                    return out;
-                                                }));
+                                                (effs, mask, fullBody) ->
+                                                        new ToxinTrait.Afflict(
+                                                                mask, fullBody, effs)));
 
         Codec<String> toxinKind =
                 Codec.STRING.validate(
@@ -303,13 +318,10 @@ public final class FluidTraitCodecs {
                                                                     + kind
                                                                     + "'; expected direct_damage or effects");
                                 });
-        Codec<FT_Toxin.ToxinEntry> toxinEntry =
+        Codec<ToxinTrait.Dose> toxinEntry =
                 toxinKind.dispatch(
                         "kind",
-                        entry ->
-                                entry instanceof FT_Toxin.ToxinDirectDamage
-                                        ? "direct_damage"
-                                        : "effects",
+                        dose -> dose instanceof ToxinTrait.Harm ? "direct_damage" : "effects",
                         kind ->
                                 switch (kind) {
                                     case "direct_damage" -> directDamage;
@@ -319,84 +331,48 @@ public final class FluidTraitCodecs {
 
         put(
                 "toxin",
-                RecordCodecBuilder.<FT_Toxin>mapCodec(
+                RecordCodecBuilder.<ToxinTrait>mapCodec(
                         i ->
                                 i.group(
                                                 toxinEntry
                                                         .listOf()
                                                         .fieldOf("entries")
-                                                        .forGetter(t -> t.entries))
-                                        .apply(i, FluidTraitCodecs::toxin)));
+                                                        .forGetter(ToxinTrait::doses))
+                                        .apply(i, ToxinTrait::new)));
 
         Codec<Map<PollutionType, Float>> pollution =
-                Codec.unboundedMap(
-                        Codec.STRING.xmap(PollutionType::valueOf, Enum::name), Codec.FLOAT);
+                Codec.unboundedMap(PollutionType.CODEC, Codec.FLOAT);
         put(
                 "polluting",
-                RecordCodecBuilder.<FT_Polluting>mapCodec(
+                RecordCodecBuilder.<PollutingTrait>mapCodec(
                         i ->
                                 i.group(
                                                 pollution
                                                         .optionalFieldOf("release", Map.of())
-                                                        .forGetter(FT_Polluting::getReleaseMap),
+                                                        .forGetter(PollutingTrait::spilled),
                                                 pollution
                                                         .optionalFieldOf("burn", Map.of())
-                                                        .forGetter(FT_Polluting::getBurnMap))
-                                        .apply(i, FluidTraitCodecs::polluting)));
+                                                        .forGetter(PollutingTrait::burned))
+                                        .apply(i, PollutingTrait::new)));
     }
 
     private FluidTraitCodecs() {}
 
-    private static Map<FT_Heatable.HeatingType, Double> heatEfficiency(FT_Heatable trait) {
-        Map<FT_Heatable.HeatingType, Double> out = new LinkedHashMap<>();
-        for (FT_Heatable.HeatingType type : FT_Heatable.HeatingType.values()) {
-            double eff = trait.getEfficiency(type);
-            if (eff != 0.0D) out.put(type, eff);
+    private static Map<HeatableTrait.Mode, Double> heatEfficiency(HeatableTrait trait) {
+        Map<HeatableTrait.Mode, Double> out = new LinkedHashMap<>();
+        for (var mode : HeatableTrait.Mode.values()) {
+            double eff = trait.efficiency(mode);
+            if (eff != 0.0D) out.put(mode, eff);
         }
         return out;
     }
 
-    private static FT_Heatable heatable(
-            List<FT_Heatable.HeatingStep> steps, Map<FT_Heatable.HeatingType, Double> efficiency) {
-        FT_Heatable out = new FT_Heatable();
-        for (FT_Heatable.HeatingStep step : steps) {
-            out.addStep(step.heatReq, step.amountReq, step::typeProduced, step.amountProduced);
+    private static Map<CoolableTrait.Mode, Double> coolEfficiency(CoolableTrait trait) {
+        Map<CoolableTrait.Mode, Double> out = new LinkedHashMap<>();
+        for (var mode : CoolableTrait.Mode.values()) {
+            double eff = trait.efficiency(mode);
+            if (eff != 0.0D) out.put(mode, eff);
         }
-        efficiency.forEach(out::setEff);
-        return out;
-    }
-
-    private static Map<FT_Coolable.CoolingType, Double> coolEfficiency(FT_Coolable trait) {
-        Map<FT_Coolable.CoolingType, Double> out = new LinkedHashMap<>();
-        for (FT_Coolable.CoolingType type : FT_Coolable.CoolingType.values()) {
-            double eff = trait.getEfficiency(type);
-            if (eff != 0.0D) out.put(type, eff);
-        }
-        return out;
-    }
-
-    private static FT_Coolable coolable(
-            Supplier<Fluid> coolsTo,
-            int amountReq,
-            int amountProduced,
-            int heatEnergy,
-            Map<FT_Coolable.CoolingType, Double> efficiency) {
-        FT_Coolable out = new FT_Coolable(coolsTo, amountReq, amountProduced, heatEnergy);
-        efficiency.forEach(out::setEff);
-        return out;
-    }
-
-    private static FT_Toxin toxin(List<FT_Toxin.ToxinEntry> entries) {
-        FT_Toxin out = new FT_Toxin();
-        entries.forEach(out::addEntry);
-        return out;
-    }
-
-    private static FT_Polluting polluting(
-            Map<PollutionType, Float> release, Map<PollutionType, Float> burn) {
-        FT_Polluting out = new FT_Polluting();
-        release.forEach(out::release);
-        burn.forEach(out::burn);
         return out;
     }
 
@@ -430,7 +406,7 @@ public final class FluidTraitCodecs {
     }
 
     private static <T extends FluidTrait> void put(String name, MapCodec<T> codec) {
-        if (!FluidTrait.traitNameMap.containsKey(name)) {
+        if (FluidTraitRegistry.kind(name) == null) {
             throw new IllegalStateException(
                     "no trait is registered under '"
                             + name
@@ -445,7 +421,7 @@ public final class FluidTraitCodecs {
     }
 
     public static String coverage() {
-        return BY_NAME.size() + "/" + FluidTrait.traitNameMap.size();
+        return BY_NAME.size() + "/" + FluidTraitRegistry.names().size();
     }
 
     public static Map<String, MapCodec<? extends FluidTrait>> all() {
@@ -473,10 +449,6 @@ public final class FluidTraitCodecs {
     }
 
     public static @Nullable String nameOf(FluidTrait trait) {
-        for (Map.Entry<String, Class<? extends FluidTrait>> e :
-                FluidTrait.traitNameMap.entrySet()) {
-            if (e.getValue() == trait.getClass()) return e.getKey();
-        }
-        return null;
+        return FluidTraitRegistry.nameOf(trait.getClass());
     }
 }

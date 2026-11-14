@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin;
 
-import com.hbm.blocks.IStepTickReceiver;
+import com.hbm.blocks.PlayerStepListener;
 import com.hbm.interfaces.injected.PlayerAppearance;
-import com.hbm.packet.toclient.PlayerAppearancePayload;
-import com.hbm.util.EntityDamageUtil;
+import com.hbm.items.armor.ArmorDamageHandler;
+import com.hbm.packet.PlayerAppearanceSync;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,7 +43,7 @@ public abstract class MixinPlayer implements PlayerAppearance {
     @Inject(method = "tick", at = @At("TAIL"))
     private void hbm$refreshAppearance(CallbackInfo ci) {
         Player player = (Player) (Object) this;
-        PlayerAppearancePayload.update(player);
+        PlayerAppearanceSync.update(player);
     }
 
     @Override
@@ -46,7 +62,7 @@ public abstract class MixinPlayer implements PlayerAppearance {
         if (player.getAbilities().flying) return;
 
         BlockPos pos = BlockPos.containing(player.getX(), player.getY() - 0.01D, player.getZ());
-        if (player.level().getBlockState(pos).getBlock() instanceof IStepTickReceiver step) {
+        if (player.level().getBlockState(pos).getBlock() instanceof PlayerStepListener step) {
             step.onPlayerStep(player.level(), pos, player);
         }
     }
@@ -55,7 +71,7 @@ public abstract class MixinPlayer implements PlayerAppearance {
     private float hbm$acceptedDamage(float amount, ServerLevel level, DamageSource source) {
         LivingEntity self = (LivingEntity) (Object) this;
         if (self.isInvulnerableTo(level, source)) return amount;
-        float result = EntityDamageUtil.modifyAcceptedDamage(self, source, amount);
+        float result = ArmorDamageHandler.modifyAcceptedDamage(self, source, amount);
         return result;
     }
 }

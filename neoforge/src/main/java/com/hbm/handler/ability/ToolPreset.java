@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler.ability;
 
@@ -62,49 +78,37 @@ public record ToolPreset(
     }
 
     public ToolPreset restrictTo(AvailableAbilities available) {
-        ToolAreaAbility newArea = area;
-        int newAreaLevel = areaLevel;
-        int maxArea = available.maxLevel(area);
+        int areaFit = fit(available, area, areaLevel);
+        ToolAreaAbility fittedArea = areaFit < 0 ? ToolAreaAbility.NONE : area;
+        int fittedAreaLevel = Math.max(areaFit, 0);
 
-        if (maxArea == -1) {
-            newArea = ToolAreaAbility.NONE;
-            newAreaLevel = 0;
-        } else {
-            newAreaLevel = Math.clamp(areaLevel, 0, maxArea);
-        }
+        boolean harvestAllowed = fittedArea.permitsHarvest();
+        ToolHarvestAbility wanted = harvestAllowed ? harvest : ToolHarvestAbility.NONE;
+        int harvestFit = fit(available, wanted, harvestAllowed ? harvestLevel : 0);
+        return new ToolPreset(
+                fittedArea,
+                fittedAreaLevel,
+                harvestFit < 0 ? ToolHarvestAbility.NONE : wanted,
+                Math.max(harvestFit, 0));
+    }
 
-        ToolHarvestAbility newHarvest = harvest;
-        int newHarvestLevel = harvestLevel;
-        if (!newArea.allowsHarvest(newAreaLevel)) {
-            newHarvest = ToolHarvestAbility.NONE;
-            newHarvestLevel = 0;
-        }
-
-        int maxHarvest = available.maxLevel(newHarvest);
-        if (maxHarvest == -1) {
-            newHarvest = ToolHarvestAbility.NONE;
-            newHarvestLevel = 0;
-        } else {
-            newHarvestLevel = Math.clamp(newHarvestLevel, 0, maxHarvest);
-        }
-
-        return new ToolPreset(newArea, newAreaLevel, newHarvest, newHarvestLevel);
+    private static int fit(AvailableAbilities available, BaseAbility ability, int level) {
+        int max = available.maxLevel(ability);
+        return max == -1 ? -1 : Math.clamp(level, 0, max);
     }
 
     public Component message() {
-        if (isNone()) {
+        if (isNone())
             return Component.translatable("chat.toolAbility.deactivated")
                     .withStyle(ChatFormatting.GOLD);
-        }
 
-        MutableComponent abilities = Component.empty();
-        if (area != ToolAreaAbility.NONE) abilities.append(name(area, areaLevel));
-        if (area != ToolAreaAbility.NONE && harvest != ToolHarvestAbility.NONE) {
-            abilities.append(Component.literal(" + "));
+        MutableComponent enabled = Component.empty();
+        if (area != ToolAreaAbility.NONE) enabled.append(name(area, areaLevel));
+        if (harvest != ToolHarvestAbility.NONE) {
+            if (!enabled.getSiblings().isEmpty()) enabled.append(" + ");
+            enabled.append(name(harvest, harvestLevel));
         }
-        if (harvest != ToolHarvestAbility.NONE) abilities.append(name(harvest, harvestLevel));
-
-        return Component.translatable("chat.toolAbility.enabled", abilities)
+        return Component.translatable("chat.toolAbility.enabled", enabled)
                 .withStyle(ChatFormatting.YELLOW);
     }
 

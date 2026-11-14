@@ -1,11 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.wiaj.cannery;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.items.EnumPlantType;
 import com.hbm.items.ModItems;
+import com.hbm.items.variant.PlantProduct;
+import com.hbm.wiaj.cannery.CanneryBase;
+import com.hbm.wiaj.cannery.CanneryCentrifuge;
+import com.hbm.wiaj.cannery.CanneryCrucible;
+import com.hbm.wiaj.cannery.CanneryFEnSU;
+import com.hbm.wiaj.cannery.CanneryFirebox;
+import com.hbm.wiaj.cannery.CanneryFoundryChannel;
+import com.hbm.wiaj.cannery.CannerySILEX;
+import com.hbm.wiaj.cannery.CanneryStirling;
+import com.hbm.wiaj.cannery.CanneryWillow;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.minecraft.world.item.Item;
@@ -32,7 +57,7 @@ public final class Jars {
         register(canneries, ModBlocks.FOUNDRY_CHANNEL.get(), new CanneryFoundryChannel());
         register(canneries, ModBlocks.MACHINE_CRUCIBLE.get(), new CanneryCrucible());
         CanneryWillow willow = new CanneryWillow();
-        register(canneries, ModItems.PLANT_ITEM.get(EnumPlantType.MUSTARDWILLOW), willow);
+        register(canneries, ModItems.PLANT_ITEM.get(PlantProduct.MUSTARDWILLOW), willow);
         register(canneries, ModBlocks.PLANT_FLOWER_CD0.get(), willow);
         if (canneries.size() != 11)
             throw new IllegalStateException("Cannery item registration incomplete");

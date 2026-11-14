@@ -7,10 +7,20 @@
   ],
   "order": 79104,
   "output_items": [
-    {
-      "chance": 0.667,
-      "count": 2,
-      "id": "hbm:powder_thorium"
-    }
+    [
+      {
+        "data": {
+          "id": "hbm:powder_thorium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:powder_thorium"
+        },
+        "weight": 1
+      }
+    ]
   ]
 }

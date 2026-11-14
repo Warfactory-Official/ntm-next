@@ -1,57 +1,57 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.fusion;
 
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionBoiler;
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.blockentity.machine.fusion.FusionBoilerBlockEntity;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import dan200.computercraft.api.lua.LuaFunction;
 
-public final class FusionBoilerPeripheral extends SnapshotPeripheral<BlockEntityFusionBoiler> {
+public final class FusionBoilerPeripheral extends BlockEntityPeripheral<FusionBoilerBlockEntity> {
 
-    private static final int PLASMA = 0;
-    private static final int FILL_0 = 1;
-    private static final int MAX_0 = 2;
-    private static final int FILL_1 = 3;
-    private static final int MAX_1 = 4;
-
-    public FusionBoilerPeripheral(BlockEntityFusionBoiler machine) {
-        super(machine, "ntm_fusion_boiler", 5, 0);
-    }
-
-    @Override
-    protected void capture(BlockEntityFusionBoiler machine) {
-        put(PLASMA, machine.plasmaEnergySync);
-        put(FILL_0, machine.tanks[0].getFill());
-        put(MAX_0, machine.tanks[0].getMaxFill());
-        put(FILL_1, machine.tanks[1].getFill());
-        put(MAX_1, machine.tanks[1].getMaxFill());
+    public FusionBoilerPeripheral(FusionBoilerBlockEntity machine) {
+        super(machine, "ntm_fusion_boiler");
     }
 
     @LuaFunction
-    public final Object[] getPlasmaEnergy() {
-        return read(s -> new Object[] {s.longAt(PLASMA)});
+    public Object[] getPlasmaEnergy() {
+        return new Object[] {(long) target.plasmaEnergySync};
     }
 
     @LuaFunction
-    public final Object[] getFluid() {
-        return read(
-                s ->
-                        new Object[] {
-                            s.intAt(FILL_0), s.intAt(MAX_0), s.intAt(FILL_1), s.intAt(MAX_1)
-                        });
+    public Object[] getFluid() {
+        return new Object[] {
+            (int) target.tanks[0].getFill(),
+            (int) target.tanks[0].getMaxFill(),
+            (int) target.tanks[1].getFill(),
+            (int) target.tanks[1].getMaxFill()
+        };
     }
 
     @LuaFunction
-    public final Object[] getInfo() {
-        return read(
-                s ->
-                        new Object[] {
-                            s.longAt(PLASMA),
-                            s.intAt(FILL_0),
-                            s.intAt(MAX_0),
-                            s.intAt(FILL_1),
-                            s.intAt(MAX_1)
-                        });
+    public Object[] getInfo() {
+        return new Object[] {
+            (long) target.plasmaEnergySync,
+            (int) target.tanks[0].getFill(),
+            (int) target.tanks[0].getMaxFill(),
+            (int) target.tanks[1].getFill(),
+            (int) target.tanks[1].getMaxFill()
+        };
     }
 }

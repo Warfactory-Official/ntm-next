@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items.machine;
 
-import com.hbm.blocks.machine.BlockPWR;
-import com.hbm.blocks.machine.MachinePWRController;
+import com.hbm.blocks.machine.PWRBlock;
+import com.hbm.blocks.machine.PWRControllerBlock;
 import com.hbm.util.ChunkUtil;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
@@ -22,7 +38,7 @@ public record PwrPrintData(
 
     public static @Nullable PwrPrintData capture(ServerLevel level, BlockPos core) {
         Direction direction =
-                level.getBlockState(core).getValue(MachinePWRController.FACING).getOpposite();
+                level.getBlockState(core).getValue(PWRControllerBlock.FACING).getOpposite();
         LongOpenHashSet visited = new LongOpenHashSet();
         LongArrayList pending = new LongArrayList();
         visited.add(core.asLong());
@@ -35,7 +51,7 @@ public record PwrPrintData(
             BlockPos pos = BlockPos.of(packed);
             BlockState state = ChunkUtil.blockStateIfLoaded(level, pos);
             if (state == null) return null;
-            if (!(state.getBlock() instanceof BlockPWR)) continue;
+            if (!(state.getBlock() instanceof PWRBlock)) continue;
             minX = Math.min(minX, pos.getX());
             minY = Math.min(minY, pos.getY());
             minZ = Math.min(minZ, pos.getZ());
@@ -57,9 +73,9 @@ public record PwrPrintData(
                 for (int z = minZ; z <= maxZ; z++) {
                     BlockState state = ChunkUtil.blockStateIfLoaded(level, at.set(x, y, z));
                     if (state == null) return null;
-                    if (state.getBlock() instanceof BlockPWR) {
-                        blocks.put(at.asLong(), state.getValue(BlockPWR.PART).original());
-                    } else if (state.getBlock() instanceof MachinePWRController) {
+                    if (state.getBlock() instanceof PWRBlock) {
+                        blocks.put(at.asLong(), state.getValue(PWRBlock.PART).original());
+                    } else if (state.getBlock() instanceof PWRControllerBlock) {
                         blocks.put(at.asLong(), state);
                     }
                 }

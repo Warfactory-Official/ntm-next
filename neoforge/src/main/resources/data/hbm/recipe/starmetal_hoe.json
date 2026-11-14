@@ -8,11 +8,14 @@
   "type": "hbm:crafting_shaped",
   "key": {
     "B": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:cobalt_decorated_hoe",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:cobalt_decorated_hoe"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "I": "#c:ingots/starmetal",
     "S": "hbm:ring_starmetal"

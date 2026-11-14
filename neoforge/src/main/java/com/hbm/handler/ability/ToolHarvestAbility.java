@@ -1,29 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler.ability;
 
+import com.hbm.data.DataGroups;
 import com.hbm.data.ItemData;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.recipes.CentrifugeRecipes;
 import com.hbm.inventory.recipes.CrystallizerRecipe;
 import com.hbm.inventory.recipes.CrystallizerRecipes;
+import com.hbm.inventory.recipes.ShredderRecipe;
 import com.hbm.inventory.recipes.ShredderRecipes;
 import com.hbm.items.ModItems;
-import com.hbm.items.tool.ItemToolAbility;
+import com.hbm.items.tool.ToolAbilityItem;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -33,213 +50,237 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jspecify.annotations.Nullable;
 
-public enum ToolHarvestAbility implements BaseAbility, StringRepresentable {
-    NONE("", 0),
-    SILK("tool.ability.silktouch", 1) {
-        @Override
-        public boolean allowed() {
-            return ItemData.TOOL_ABILITY_SILK.get();
-        }
+public final class ToolHarvestAbility extends BaseAbility {
 
-        @Override
-        public ItemStack harvestTool(ToolDig dig, int abilityLevel) {
-            return enchanted(dig, Enchantments.SILK_TOUCH, 1);
-        }
-    },
-    LUCK("tool.ability.luck", 2) {
-        private static final int[] POWER = {1, 2, 3, 4, 5, 9};
+    private static final int BASE_SORT_ORDER = 100;
+    private static final int[] FORTUNE_POWERS = {1, 2, 3, 4, 5, 9};
 
-        @Override
-        public int levels() {
-            return POWER.length;
-        }
+    private static final LootTool HELD = (dig, _) -> dig.held();
+    private static final Outcome ORDINARY =
+            (dig, pos, _) -> ToolAbilityItem.harvest(dig, pos, false);
 
-        @Override
-        public String extension(int level) {
-            return " (" + POWER[level] + ")";
-        }
+    public static final ToolHarvestAbility NONE =
+            new ToolHarvestAbility(100, "none", "", oneLevel(), null, HELD, ORDINARY);
+    public static final ToolHarvestAbility SILK_TOUCH =
+            new ToolHarvestAbility(
+                    101,
+                    "silk",
+                    "tool.ability.silktouch",
+                    oneLevel(),
+                    ItemData.TOOL_ABILITY_SILK,
+                    (dig, _) -> enchanted(dig, Enchantments.SILK_TOUCH, 1),
+                    ORDINARY);
+    public static final ToolHarvestAbility FORTUNE =
+            new ToolHarvestAbility(
+                    102,
+                    "luck",
+                    "tool.ability.luck",
+                    levelText(FORTUNE_POWERS),
+                    ItemData.TOOL_ABILITY_LUCK,
+                    (dig, level) -> enchanted(dig, Enchantments.FORTUNE, FORTUNE_POWERS[level]),
+                    ORDINARY);
+    public static final ToolHarvestAbility AUTO_SMELTER =
+            new ToolHarvestAbility(
+                    103,
+                    "smelter",
+                    "tool.ability.smelter",
+                    oneLevel(),
+                    ItemData.TOOL_ABILITY_FURNACE,
+                    HELD,
+                    ToolHarvestAbility::smelt);
+    public static final ToolHarvestAbility AUTO_SHREDDER =
+            new ToolHarvestAbility(
+                    104,
+                    "shredder",
+                    "tool.ability.shredder",
+                    oneLevel(),
+                    ItemData.TOOL_ABILITY_SHREDDER,
+                    HELD,
+                    ToolHarvestAbility::shred);
+    public static final ToolHarvestAbility AUTO_CENTRIFUGE =
+            new ToolHarvestAbility(
+                    105,
+                    "centrifuge",
+                    "tool.ability.centrifuge",
+                    oneLevel(),
+                    ItemData.TOOL_ABILITY_CENTRIFUGE,
+                    HELD,
+                    ToolHarvestAbility::centrifuge);
+    public static final ToolHarvestAbility AUTO_CRYSTALLIZER =
+            new ToolHarvestAbility(
+                    106,
+                    "crystallizer",
+                    "tool.ability.crystallizer",
+                    oneLevel(),
+                    ItemData.TOOL_ABILITY_CRYSTALLIZER,
+                    HELD,
+                    ToolHarvestAbility::crystallize);
+    public static final ToolHarvestAbility MERCURY_TOUCH =
+            new ToolHarvestAbility(
+                    107,
+                    "mercury",
+                    "tool.ability.mercury",
+                    oneLevel(),
+                    ItemData.TOOL_ABILITY_MERCURY,
+                    HELD,
+                    ToolHarvestAbility::mercury);
 
-        @Override
-        public boolean allowed() {
-            return ItemData.TOOL_ABILITY_LUCK.get();
-        }
-
-        @Override
-        public ItemStack harvestTool(ToolDig dig, int abilityLevel) {
-            return enchanted(dig, Enchantments.FORTUNE, POWER[abilityLevel]);
-        }
-    },
-    SMELTER("tool.ability.smelter", 3) {
-        @Override
-        public boolean allowed() {
-            return ItemData.TOOL_ABILITY_FURNACE.get();
-        }
-
-        @Override
-        public void onHarvestBlock(ToolDig dig, int abilityLevel, BlockPos pos, BlockState state) {
-            ServerLevel level = dig.level();
-            List<ItemStack> drops =
-                    new ArrayList<>(
-                            Block.getDrops(
-                                    state,
-                                    level,
-                                    pos,
-                                    level.getBlockEntity(pos),
-                                    dig.player(),
-                                    dig.harvestTool()));
-
-            boolean smelts = false;
-            for (int i = 0; i < drops.size(); i++) {
-                ItemStack drop = drops.get(i);
-                SingleRecipeInput input = new SingleRecipeInput(drop);
-                ItemStack result =
-                        level.recipeAccess()
-                                .getRecipeFor(RecipeType.SMELTING, input, level)
-                                .map(holder -> holder.value().assemble(input))
-                                .orElse(ItemStack.EMPTY);
-                if (result.isEmpty()) continue;
-
-                result = result.copy();
-                result.setCount(result.getCount() * drop.getCount());
-                drops.set(i, result);
-                smelts = true;
-            }
-
-            ItemToolAbility.harvest(dig, pos, smelts);
-            if (!smelts) return;
-
-            for (ItemStack drop : drops) ItemToolAbility.dropAtReference(dig, drop.copy());
-        }
-    },
-    SHREDDER("tool.ability.shredder", 4) {
-        @Override
-        public boolean allowed() {
-            return ItemData.TOOL_ABILITY_SHREDDER.get();
-        }
-
-        @Override
-        public void onHarvestBlock(ToolDig dig, int abilityLevel, BlockPos pos, BlockState state) {
-            ItemStack result = ShredderRecipes.getShredderResult(new ItemStack(state.getBlock()));
-            boolean shreds = !result.isEmpty() && !result.is(ModItems.SCRAP.get());
-
-            ItemToolAbility.harvest(dig, pos, shreds);
-            if (shreds) ItemToolAbility.dropAtReference(dig, result.copy());
-        }
-    },
-    CENTRIFUGE("tool.ability.centrifuge", 5) {
-        @Override
-        public boolean allowed() {
-            return ItemData.TOOL_ABILITY_CENTRIFUGE.get();
-        }
-
-        @Override
-        public void onHarvestBlock(ToolDig dig, int abilityLevel, BlockPos pos, BlockState state) {
-            ItemStack[] results =
-                    CentrifugeRecipes.INSTANCE.getOutputs(
-                            new ItemStack(state.getBlock()), dig.level());
-
-            ItemToolAbility.harvest(dig, pos, results != null);
-            if (results == null) return;
-
-            for (ItemStack result : results) {
-                if (result != null && !result.isEmpty())
-                    ItemToolAbility.dropAtReference(dig, result.copy());
-            }
-        }
-    },
-    CRYSTALLIZER("tool.ability.crystallizer", 6) {
-        @Override
-        public boolean allowed() {
-            return ItemData.TOOL_ABILITY_CRYSTALLIZER.get();
-        }
-
-        @Override
-        public void onHarvestBlock(ToolDig dig, int abilityLevel, BlockPos pos, BlockState state) {
-            CrystallizerRecipe recipe =
-                    CrystallizerRecipes.INSTANCE.getOutput(
-                            new ItemStack(state.getBlock()), NTMFluids.PEROXIDE);
-
-            ItemToolAbility.harvest(dig, pos, recipe != null);
-            if (recipe != null) ItemToolAbility.dropAtReference(dig, recipe.output().copy());
-        }
-    },
-    MERCURY("tool.ability.mercury", 7) {
-        @Override
-        public boolean allowed() {
-            return ItemData.TOOL_ABILITY_MERCURY.get();
-        }
-
-        @Override
-        public void onHarvestBlock(ToolDig dig, int abilityLevel, BlockPos pos, BlockState state) {
-            int mercury = 0;
-            if (state.is(Blocks.REDSTONE_ORE)) mercury = dig.player().getRandom().nextInt(5) + 4;
-            if (state.is(Blocks.REDSTONE_BLOCK)) mercury = dig.player().getRandom().nextInt(7) + 8;
-
-            ItemToolAbility.harvest(dig, pos, mercury > 0);
-            if (mercury > 0) {
-                ItemToolAbility.dropAtReference(
-                        dig, new ItemStack(ModItems.NUGGET_MERCURY.get(), mercury));
-            }
-        }
+    private static final ToolHarvestAbility[] MEMBERS = {
+        NONE,
+        SILK_TOUCH,
+        FORTUNE,
+        AUTO_SMELTER,
+        AUTO_SHREDDER,
+        AUTO_CENTRIFUGE,
+        AUTO_CRYSTALLIZER,
+        MERCURY_TOUCH
     };
 
-    public static final ToolHarvestAbility[] VALUES = values();
     public static final Codec<ToolHarvestAbility> CODEC =
-            StringRepresentable.fromEnum(ToolHarvestAbility::values);
+            AbilityCodecs.byId(MEMBERS, ToolHarvestAbility::id);
     public static final StreamCodec<ByteBuf, ToolHarvestAbility> STREAM_CODEC =
-            ByteBufCodecs.idMapper(id -> VALUES[id], Enum::ordinal);
+            AbilityCodecs.byIndex(MEMBERS);
 
-    private static final int SORT_ORDER_BASE = 100;
+    private final String id;
+    private final LootTool loot;
+    private final Outcome outcome;
 
-    private final String translationKey;
-    private final int sortOrder;
-
-    ToolHarvestAbility(String translationKey, int order) {
-        this.translationKey = translationKey;
-        this.sortOrder = SORT_ORDER_BASE + order;
+    private ToolHarvestAbility(
+            int sortOrder,
+            String id,
+            String translationKey,
+            String[] levelText,
+            DataGroups.@Nullable Param<Boolean> gate,
+            LootTool loot,
+            Outcome outcome) {
+        super(translationKey, sortOrder, levelText, gate);
+        this.id = id;
+        this.loot = loot;
+        this.outcome = outcome;
     }
 
-    private static ItemStack enchanted(
-            ToolDig dig, ResourceKey<Enchantment> enchantment, int power) {
-        ItemStack tool = dig.held().copy();
-        var holder =
-                dig.level()
-                        .registryAccess()
-                        .lookupOrThrow(Registries.ENCHANTMENT)
-                        .getOrThrow(enchantment);
-        tool.update(
-                DataComponents.ENCHANTMENTS,
-                ItemEnchantments.EMPTY,
-                existing -> {
-                    ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(existing);
-                    int applied = existing.getLevel(holder);
-                    mutable.set(holder, applied == power ? power + 1 : Math.max(applied, power));
-                    return mutable.toImmutable();
-                });
+    public String id() {
+        return id;
+    }
+
+    @Override
+    int index() {
+        return sortOrder() - BASE_SORT_ORDER;
+    }
+
+    public ItemStack lootTool(ToolDig dig, int level) {
+        return loot.choose(dig, level);
+    }
+
+    public void harvestBlock(ToolDig dig, BlockPos pos, BlockState state) {
+        outcome.apply(dig, pos, state);
+    }
+
+    private static ItemStack enchanted(ToolDig dig, ResourceKey<Enchantment> key, int power) {
+        Holder<Enchantment> enchantment =
+                dig.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(key);
+        ItemStack held = dig.held();
+        int applied =
+                held.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY)
+                        .getLevel(enchantment);
+        ItemStack tool = held.copy();
+        tool.enchant(enchantment, applied == power ? power + 1 : Math.max(applied, power));
         return tool;
     }
 
-    public ItemStack harvestTool(ToolDig dig, int abilityLevel) {
-        return dig.held();
+    private static void convert(ToolDig dig, BlockPos pos, ItemStack replacement) {
+        if (ToolAbilityItem.harvest(dig, pos, true))
+            ToolAbilityItem.dropAtReference(dig, replacement);
     }
 
-    public void onHarvestBlock(ToolDig dig, int abilityLevel, BlockPos pos, BlockState state) {
-        ItemToolAbility.harvest(dig, pos, false);
+    private static ItemStack probe(BlockState state) {
+        return new ItemStack(state.getBlock());
     }
 
-    @Override
-    public String getSerializedName() {
-        return name().toLowerCase(Locale.ROOT);
+    private static void smelt(ToolDig dig, BlockPos pos, BlockState state) {
+        ServerLevel level = dig.level();
+        List<ItemStack> drops =
+                Block.getDrops(
+                        state,
+                        level,
+                        pos,
+                        level.getBlockEntity(pos),
+                        dig.player(),
+                        dig.harvestTool());
+        List<ItemStack> smelted = null;
+        for (int i = 0, n = drops.size(); i < n; i++) {
+            ItemStack drop = drops.get(i);
+            var input = new SingleRecipeInput(drop);
+            var recipe = level.recipeAccess().getRecipeFor(RecipeType.SMELTING, input, level);
+            if (recipe.isEmpty()) continue;
+            ItemStack result = recipe.get().value().assemble(input);
+            result.setCount(result.getCount() * drop.getCount());
+            if (smelted == null) smelted = new ArrayList<>(drops);
+            smelted.set(i, result);
+        }
+        if (smelted == null) {
+            ToolAbilityItem.harvest(dig, pos, false);
+            return;
+        }
+        if (!ToolAbilityItem.harvest(dig, pos, true)) return;
+        for (int i = 0, n = smelted.size(); i < n; i++)
+            ToolAbilityItem.dropAtReference(dig, smelted.get(i));
     }
 
-    @Override
-    public String translationKey() {
-        return translationKey;
+    private static void shred(ToolDig dig, BlockPos pos, BlockState state) {
+        ShredderRecipe recipe = ShredderRecipes.getRecipe(probe(state));
+        ItemStack output = recipe == null ? ItemStack.EMPTY : recipe.output();
+        if (output.isEmpty() || output.is(ModItems.SCRAP.get())) {
+            ToolAbilityItem.harvest(dig, pos, false);
+            return;
+        }
+        convert(dig, pos, output.copy());
     }
 
-    @Override
-    public int sortOrder() {
-        return sortOrder;
+    private static void centrifuge(ToolDig dig, BlockPos pos, BlockState state) {
+        ItemStack[] outputs = CentrifugeRecipes.INSTANCE.getOutputs(probe(state), dig.level());
+        if (outputs == null) {
+            ToolAbilityItem.harvest(dig, pos, false);
+            return;
+        }
+        if (!ToolAbilityItem.harvest(dig, pos, true)) return;
+        for (ItemStack output : outputs) ToolAbilityItem.dropAtReference(dig, output);
+    }
+
+    private static void crystallize(ToolDig dig, BlockPos pos, BlockState state) {
+        CrystallizerRecipe recipe =
+                CrystallizerRecipes.INSTANCE.getOutput(probe(state), NTMFluids.PEROXIDE);
+        if (recipe == null) {
+            ToolAbilityItem.harvest(dig, pos, false);
+            return;
+        }
+        convert(dig, pos, recipe.output().copy());
+    }
+
+    private static void mercury(ToolDig dig, BlockPos pos, BlockState state) {
+        RandomSource random = dig.player().getRandom();
+        int nuggets =
+                state.is(Blocks.REDSTONE_ORE)
+                        ? 4 + random.nextInt(5)
+                        : state.is(Blocks.REDSTONE_BLOCK) ? 8 + random.nextInt(7) : 0;
+        if (nuggets == 0) {
+            ToolAbilityItem.harvest(dig, pos, false);
+            return;
+        }
+        convert(dig, pos, new ItemStack(ModItems.NUGGET_MERCURY.get(), nuggets));
+    }
+
+    @FunctionalInterface
+    private interface LootTool {
+
+        ItemStack choose(ToolDig dig, int level);
+    }
+
+    @FunctionalInterface
+    private interface Outcome {
+
+        void apply(ToolDig dig, BlockPos pos, BlockState state);
     }
 }

@@ -1,11 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.integration.recipeviewer;
 
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemRBMKPellet;
-import com.hbm.items.machine.ItemRBMKRod;
+import com.hbm.items.machine.RBMKPelletItem;
+import com.hbm.items.machine.RBMKRodItem;
 import com.hbm.registration.RegistryHandle;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +55,9 @@ public final class RBMKDisassemblyPage extends RecipePage<RBMKDisassemblyPage.Re
     @Override
     public List<Recipe> rows() {
         List<Recipe> rows = new ArrayList<>();
-        for (RegistryHandle<ItemRBMKRod> handle : ModItems.CRAFTABLE_RODS) {
-            ItemRBMKRod rod = handle.get();
-            ItemRBMKPellet pellet = rod.pellet;
+        for (RegistryHandle<RBMKRodItem> handle : ModItems.CRAFTABLE_RODS) {
+            RBMKRodItem rod = handle.get();
+            RBMKPelletItem pellet = rod.pellet;
             for (int enrichment = 0; enrichment <= 4; enrichment++) {
                 rows.add(row(rod, pellet, enrichment, false));
                 if (pellet.isXenonEnabled()) rows.add(row(rod, pellet, enrichment, true));
@@ -36,17 +66,17 @@ public final class RBMKDisassemblyPage extends RecipePage<RBMKDisassemblyPage.Re
         return rows;
     }
 
-    private Recipe row(ItemRBMKRod rod, ItemRBMKPellet pellet, int enrichment, boolean poison) {
+    private Recipe row(RBMKRodItem rod, RBMKPelletItem pellet, int enrichment, boolean poison) {
         String key = PageIds.segment(BuiltInRegistries.ITEM.getKey(rod));
         Identifier id =
                 poison
                         ? PageIds.derived(id(), key, String.valueOf(enrichment), "xenon")
                         : PageIds.derived(id(), key, String.valueOf(enrichment));
-        ItemStack pellets = pellet.of(new ItemRBMKPellet.Stage(enrichment, poison));
+        ItemStack pellets = pellet.of(new RBMKPelletItem.Stage(enrichment, poison));
         pellets.setCount(8);
         ItemStack stack = new ItemStack(rod);
-        ItemRBMKRod.setYield(stack, Math.min(1 - enrichment / 5D, 0.99) * rod.yield);
-        if (poison) ItemRBMKRod.setPoison(stack, 50);
+        RBMKRodItem.setYield(stack, Math.min(1 - enrichment / 5D, 0.99) * rod.yield);
+        if (poison) RBMKRodItem.setPoison(stack, 50);
         return new Recipe(id, stack, pellets);
     }
 
@@ -54,9 +84,9 @@ public final class RBMKDisassemblyPage extends RecipePage<RBMKDisassemblyPage.Re
     public LookupFilter lookupFilter() {
         return (looked, lookup) ->
                 lookup != Lookup.USES
-                        || !(looked.getItem() instanceof ItemRBMKRod)
-                        || ItemRBMKRod.getCoreHeat(looked) <= 50
-                                && ItemRBMKRod.getHullHeat(looked) <= 50;
+                        || !(looked.getItem() instanceof RBMKRodItem)
+                        || RBMKRodItem.getCoreHeat(looked) <= 50
+                                && RBMKRodItem.getHullHeat(looked) <= 50;
     }
 
     @Override

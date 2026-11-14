@@ -1,6 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler.radiation;
 
@@ -8,14 +23,13 @@ import com.hbm.NuclearTech;
 import com.hbm.config.RadiationConfig;
 import com.hbm.data.RadiationData;
 import com.hbm.handler.threading.TargetPoint;
-import com.hbm.interfaces.ServerThread;
-import com.hbm.lib.Library;
 import com.hbm.lib.queues.MpscUnboundedXaddArrayLongQueue;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.EffectNTPayload;
-import com.hbm.particle.HbmEffectNT;
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.packet.layout.EffectRadFogLayout;
+import com.hbm.platform.ServerEvents;
 import com.hbm.util.DecodeException;
+import com.hbm.util.LocalBlockIndex;
+import com.hbm.util.SectionKeys;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongIterable;
 import it.unimi.dsi.fastutil.longs.LongIterator;
@@ -31,6 +45,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -190,10 +205,14 @@ public final class RadiationSystemNT {
     }
 
     public static void init() {
-        FabricServerEvents.onServerTickPost(RadiationSystemNT::tickSim);
-        FabricServerEvents.onChunkLoad(RadiationSystemNT::onChunkLoad);
-        FabricServerEvents.onChunkUnload(RadiationSystemNT::onChunkUnload);
-        FabricServerEvents.onServerStopping(RadiationSystemNT::onServerStopping);
+        final Consumer<MinecraftServer> callback = RadiationSystemNT::tickSim;
+        ServerEvents.TICK_POST.add(callback);
+        final BiConsumer<ServerLevel, LevelChunk> callback2 = RadiationSystemNT::onChunkLoad;
+        ServerEvents.CHUNK_LOAD.add(callback2);
+        final BiConsumer<ServerLevel, LevelChunk> callback3 = RadiationSystemNT::onChunkUnload;
+        ServerEvents.CHUNK_UNLOAD.add(callback3);
+        final Consumer<MinecraftServer> callback4 = RadiationSystemNT::onServerStopping;
+        ServerEvents.STOPPING.add(callback4);
     }
 
     static void tickSim(MinecraftServer server) {
@@ -214,12 +233,10 @@ public final class RadiationSystemNT {
             radiationFuture.join();
         } catch (RuntimeException ex) {
             NuclearTech.LOGGER.error("Radiation async step failed", ex);
-        } finally {
-            radiationFuture = COMPLETED;
         }
+        radiationFuture = COMPLETED;
     }
 
-    @ServerThread
     static void runRebuilds() {
         for (WorldRadiationData data : worldMap.values()) {
             if (data.world.getServer() == null) continue;
@@ -234,7 +251,6 @@ public final class RadiationSystemNT {
         }
     }
 
-    @ServerThread
     static void runWorldEffects() {
         for (WorldRadiationData data : worldMap.values()) {
             if (data.world.getServer() == null) continue;
@@ -250,7 +266,6 @@ public final class RadiationSystemNT {
         }
     }
 
-    @ServerThread
     static void runFog(WorldRadiationData data) {
         for (int i = 0; i < FOG_DRAIN_LIMIT; i++) {
             long pk = data.fogQueue.poll();
@@ -260,9 +275,8 @@ public final class RadiationSystemNT {
         if (data.workEpoch % 200 == 13) data.fogQueue.clear(true);
     }
 
-    @ServerThread
     static void spawnFog(WorldRadiationData data, long pk) {
-        long ck = Library.sectionToChunkLong(pk);
+        long ck = SectionPos.sectionToChunk(pk);
         int ownerId = data.getId(ck);
         if (ownerId < 0 || ownerId >= data.nextId || data.cks[ownerId] != ck) return;
         LevelChunk chunk = data.mcChunks[ownerId];
@@ -312,13 +326,11 @@ public final class RadiationSystemNT {
 
             double fx = x + 0.5D, fy = y + 0.5D, fz = z + 0.5D;
             PacketWire.sendToAllAround(
-                    new EffectNTPayload(HbmEffectNT.RadFog, fx, fy, fz),
-                    new TargetPoint(world, fx, fy, fz, 100));
+                    EffectRadFogLayout.encode(fx, fy, fz), new TargetPoint(world, fx, fy, fz, 100));
             return;
         }
     }
 
-    @ServerThread
     static void handleWorldDestruction(WorldRadiationData data) {
         if (tickDelay == 1) {
             long pk = data.pocketToDestroy;
@@ -334,9 +346,8 @@ public final class RadiationSystemNT {
         if (data.workEpoch % 200 == 13) data.destructionQueue.clear(true);
     }
 
-    @ServerThread
     static void destroyPocket(WorldRadiationData data, long pk) {
-        long ck = Library.sectionToChunkLong(pk);
+        long ck = SectionPos.sectionToChunk(pk);
         int ownerId = data.getId(ck);
         if (ownerId < 0 || ownerId >= data.nextId || data.cks[ownerId] != ck) return;
         LevelChunk chunk = data.mcChunks[ownerId];
@@ -382,7 +393,6 @@ public final class RadiationSystemNT {
         }
     }
 
-    @ServerThread
     static void decayLocal(
             ServerLevel world,
             LevelChunk chunk,
@@ -392,7 +402,7 @@ public final class RadiationSystemNT {
             int baseZ,
             int i,
             BlockPos.MutableBlockPos pos) {
-        int lx = Library.getLocalX(i), ly = Library.getLocalY(i), lz = Library.getLocalZ(i);
+        int lx = LocalBlockIndex.x(i), ly = LocalBlockIndex.y(i), lz = LocalBlockIndex.z(i);
         BlockState state = section.getBlockState(lx, ly, lz);
         if (state.isAir()) return;
         int topY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, lx, lz);
@@ -402,7 +412,6 @@ public final class RadiationSystemNT {
         RadiationWorldHandler.decayBlock(world, pos, state);
     }
 
-    @ServerThread
     static void writeSidecar(
             ServerLevel world, ChunkPos pos, byte @Nullable [] payload, boolean logFailure) {
         try {
@@ -460,9 +469,8 @@ public final class RadiationSystemNT {
             radiationFuture.join();
         } catch (RuntimeException ex) {
             simulationFailure = ex;
-        } finally {
-            radiationFuture = COMPLETED;
         }
+        radiationFuture = COMPLETED;
         try {
             saveDirtySidecar(true);
         } finally {
@@ -488,7 +496,7 @@ public final class RadiationSystemNT {
         if (!RadiationData.ENABLE_CHUNK_RADS.get()) return null;
         int cx = pos.x(), cz = pos.z();
         if (((cx ^ (cx << 10) >> 10) | (cz ^ (cz << 10) >> 10)) != 0) return null;
-        MinecraftServer server = FabricServerEvents.getCurrentServer();
+        MinecraftServer server = ServerEvents.getCurrentServer();
         if (server == null) return null;
         ServerLevel level = server.getLevel(dimension);
         if (level == null) return null;
@@ -520,7 +528,6 @@ public final class RadiationSystemNT {
         }
     }
 
-    @ServerThread
     public static boolean jettisonData(ServerLevel world) {
         WorldRadiationData data = worldMap.get(world);
         awaitSimulation();
@@ -545,7 +552,6 @@ public final class RadiationSystemNT {
         return true;
     }
 
-    @ServerThread
     public static void incrementRad(ServerLevel world, BlockPos pos, double amount) {
         if (!RadiationData.ENABLE_CHUNK_RADS.get()
                 || Math.abs(amount) < RAD_EPSILON
@@ -553,7 +559,6 @@ public final class RadiationSystemNT {
         addOrEmit(world, pos, amount, 0.0D, false);
     }
 
-    @ServerThread
     public static void incrementRad(
             ServerLevel world, BlockPos pos, double emission, double saturation) {
         if (!RadiationData.ENABLE_CHUNK_RADS.get()
@@ -566,7 +571,7 @@ public final class RadiationSystemNT {
             ServerLevel world, BlockPos pos, double emission, double saturation, boolean isSource) {
         long posLong = pos.asLong();
         long sck = SectionPos.blockToSection(posLong);
-        long ck = Library.sectionToChunkLong(sck);
+        long ck = SectionPos.sectionToChunk(sck);
         LevelChunk chunk = world.getChunkSource().getChunkNow(ChunkPos.getX(ck), ChunkPos.getZ(ck));
         if (chunk == null) return;
         if (isResistantAt(chunk, pos)) return;
@@ -578,21 +583,21 @@ public final class RadiationSystemNT {
         if (data.backend != null) {
             if (isSource) data.backend.emitRad(pos, emission, saturation);
             else data.backend.addRad(pos, emission);
+            data.setChunkDirty(ownerId);
             return;
         }
-        int local = Library.blockPosToLocal(posLong);
+        int local = LocalBlockIndex.fromBlockPos(posLong);
         if (isSource) data.queueEmit(sck, local, emission, saturation);
         else data.queueAdd(sck, local, emission);
         if (data.getKind(ownerId, slot) == KIND_NONE) data.dirtyCk.add(ck, ownerId, slot);
         data.setChunkDirty(ownerId);
     }
 
-    @ServerThread
     public static void setRadForCoord(ServerLevel world, BlockPos pos, double amount) {
         if (!RadiationData.ENABLE_CHUNK_RADS.get() || isOutsideWorld(world, pos)) return;
         long posLong = pos.asLong();
         long sck = SectionPos.blockToSection(posLong);
-        long ck = Library.sectionToChunkLong(sck);
+        long ck = SectionPos.sectionToChunk(sck);
         LevelChunk chunk = world.getChunkSource().getChunkNow(ChunkPos.getX(ck), ChunkPos.getZ(ck));
         if (chunk == null) return;
         if (isResistantAt(chunk, pos)) return;
@@ -603,9 +608,10 @@ public final class RadiationSystemNT {
         if (slot < 0) return;
         if (data.backend != null) {
             data.backend.setRad(pos, amount);
+            data.setChunkDirty(ownerId);
             return;
         }
-        int local = Library.blockPosToLocal(posLong);
+        int local = LocalBlockIndex.fromBlockPos(posLong);
         data.queueSet(sck, local, amount);
         if (data.getKind(ownerId, slot) == KIND_NONE) data.dirtyCk.add(ck, ownerId, slot);
         data.setChunkDirty(ownerId);
@@ -625,12 +631,11 @@ public final class RadiationSystemNT {
         return field >= 0.0D ? Math.max(field, ambient) : Math.max(0.0D, field + ambient);
     }
 
-    @ServerThread
     public static double getRadForCoord(ServerLevel world, BlockPos pos) {
         if (!RadiationData.ENABLE_CHUNK_RADS.get() || isOutsideWorld(world, pos)) return 0D;
         long posLong = pos.asLong();
         long sck = SectionPos.blockToSection(posLong);
-        long ck = Library.sectionToChunkLong(sck);
+        long ck = SectionPos.sectionToChunk(sck);
         LevelChunk chunk = world.getChunkSource().getChunkNow(ChunkPos.getX(ck), ChunkPos.getZ(ck));
         if (chunk == null) return 0D;
         awaitSimulation();
@@ -670,7 +675,6 @@ public final class RadiationSystemNT {
         }
     }
 
-    @ServerThread
     public static void markSectionForRebuild(Level world, BlockPos pos) {
         if (world == null || world.isClientSide() || !RadiationData.ENABLE_CHUNK_RADS.get()) return;
         if (!(world instanceof ServerLevel server)) return;
@@ -679,11 +683,10 @@ public final class RadiationSystemNT {
         markSectionForRebuild(world, SectionPos.asLong(pos));
     }
 
-    @ServerThread
     public static void markSectionForRebuild(Level world, long sck) {
         if (world == null || world.isClientSide() || !RadiationData.ENABLE_CHUNK_RADS.get()) return;
         if (!(world instanceof ServerLevel ws)) return;
-        long ck = Library.sectionToChunkLong(sck);
+        long ck = SectionPos.sectionToChunk(sck);
         LevelChunk chunk = ws.getChunkSource().getChunkNow(ChunkPos.getX(ck), ChunkPos.getZ(ck));
         if (chunk == null) return;
         awaitSimulation();
@@ -695,7 +698,6 @@ public final class RadiationSystemNT {
         data.setChunkDirty(id);
     }
 
-    @ServerThread
     public static void markSectionsForRebuild(Level world, LongIterable sections) {
         if (world == null || world.isClientSide() || !RadiationData.ENABLE_CHUNK_RADS.get()) return;
         if (!(world instanceof ServerLevel ws)) return;
@@ -704,7 +706,7 @@ public final class RadiationSystemNT {
         LongIterator it = sections.iterator();
         while (it.hasNext()) {
             long sck = it.nextLong();
-            long ck = Library.sectionToChunkLong(sck);
+            long ck = SectionPos.sectionToChunk(sck);
             LevelChunk chunk =
                     ws.getChunkSource().getChunkNow(ChunkPos.getX(ck), ChunkPos.getZ(ck));
             if (chunk == null) continue;
@@ -765,9 +767,10 @@ public final class RadiationSystemNT {
         int id = data.onChunkLoaded(cx, cz, chunk);
         data.dirtyCk.add(ChunkPos.pack(cx, cz), id);
 
-        byte[] sidecarBytes = chunk.hbm$getRadiation();
+        byte[] sidecarBytes =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$getRadiation();
         if (sidecarBytes != null) {
-            chunk.hbm$setRadiation(null);
+            ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$setRadiation(null);
             try {
                 byte[] payload = unwrapSidecarCarry(server.dimension(), sidecarBytes);
                 byte[] verified = payload == null ? null : verifyPayload(payload);
@@ -840,7 +843,6 @@ public final class RadiationSystemNT {
         return RAD_RESISTANT_STATES.contains(chunk.getBlockState(pos));
     }
 
-    @ServerThread
     public static void onBlockStateReplaced(LevelChunk chunk, BlockPos pos, BlockState next) {
         Level level = chunk.getLevel();
         if (level.isClientSide()) return;
@@ -857,7 +859,6 @@ public final class RadiationSystemNT {
         }
     }
 
-    @ServerThread
     static void markDiffusivityDirty(ServerLevel level, BlockPos pos) {
         if (!RadiationData.ENABLE_CHUNK_RADS.get() || isOutsideWorld(level, pos)) return;
         WorldRadiationData data = worldMap.get(level);
@@ -928,6 +929,10 @@ public final class RadiationSystemNT {
         resistantStateVersion++;
     }
 
+    public static boolean isRadResistant(BlockState state) {
+        return RAD_RESISTANT_STATES.contains(state);
+    }
+
     public static void forEachResistantState(Consumer<BlockState> consumer) {
         RAD_RESISTANT_STATES.forEach(consumer);
     }
@@ -958,7 +963,7 @@ public final class RadiationSystemNT {
 
     static long pocketKey(long sectionKey, int pocketIndex, int slot) {
         int yz = (slot << 11) | pocketIndex;
-        return Library.setSectionY(sectionKey, yz);
+        return SectionKeys.withY(sectionKey, yz);
     }
 
     public static @Nullable SectionMask scanResistantMask(@Nullable LevelChunkSection section) {
@@ -1229,9 +1234,11 @@ public final class RadiationSystemNT {
             int idLimit,
             float @Nullable [] out) {
         if (pocketData == null) {
+            int[] unpacked = TL_PAL_SCRATCH.get().unpacked;
+            storage.unpack(unpacked);
             double reciprocal = 0.0D;
             for (int local = 0; local < SectionPos.SECTION_BLOCK_COUNT; local++) {
-                int id = storage.get(local);
+                int id = unpacked[local];
                 reciprocal += (id < 0 || id >= idLimit) ? 1.0D : reciprocalById[id];
             }
             float value =

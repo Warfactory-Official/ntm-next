@@ -1,14 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blockentity.network.BlockEntityPipePaintable;
-import com.hbm.blockentity.network.pneumatic.BlockEntityPneumoTubePaintable;
+import com.hbm.blockentity.network.PipePaintableBlockEntity;
+import com.hbm.blockentity.network.pneumatic.PneumoTubePaintableBlockEntity;
 import com.hbm.blocks.network.CablePaintableBlock;
+import com.hbm.blocks.network.CamouflageStateProvider;
 import com.hbm.blocks.network.FluidDuctPaintableBlock;
 import com.hbm.blocks.network.FluidDuctPaintableExhaustBlock;
-import com.hbm.blocks.network.PaintableCamoBlock;
 import com.hbm.blocks.network.pneumatic.PneumoTubePaintableBlock;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +33,8 @@ import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.ResolvedModel;
@@ -40,7 +58,7 @@ public record PaintableDuctModel() implements SimpleBlockModel {
 
     @Override
     public BlockStateModel.UnbakedRoot root(Block block, BlockState state) {
-        PaintableCamoBlock paintable = (PaintableCamoBlock) block;
+        CamouflageStateProvider paintable = (CamouflageStateProvider) block;
         return new Root(
                 BlockModel.base(block),
                 Kind.of(block),
@@ -112,8 +130,8 @@ public record PaintableDuctModel() implements SimpleBlockModel {
         private final Root root;
         private final SimpleModelWrapper plain;
         private final @Nullable SimpleModelWrapper frame;
-        private final SimpleModelWrapper[] tubeFrames =
-                new SimpleModelWrapper[(NO_PORT + 1) * (NO_PORT + 1)];
+        private final ModelPartCache tubeFrames =
+                ModelPartCache.dense((NO_PORT + 1) * (NO_PORT + 1), this::buildTubeFrame);
 
         public Baked(ModelBaker baker, ResolvedModel carrier, Root root) {
             this.baker = RuntimeBaker.capture(baker, carrier);
@@ -215,48 +233,44 @@ public record PaintableDuctModel() implements SimpleBlockModel {
         }
 
         private static @Nullable BlockState camo(@Nullable BlockEntity be) {
-            if (be instanceof BlockEntityPipePaintable pipe) return pipe.getCamo();
-            if (be instanceof BlockEntityPneumoTubePaintable tube) return tube.getCamo();
+            if (be instanceof PipePaintableBlockEntity pipe) return pipe.getCamo();
+            if (be instanceof PneumoTubePaintableBlockEntity tube) return tube.getCamo();
             return null;
         }
 
         private static int portIndex(@Nullable BlockEntity be) {
-            if (!(be instanceof BlockEntityPneumoTubePaintable tube))
+            if (!(be instanceof PneumoTubePaintableBlockEntity tube))
                 return NO_PORT * (NO_PORT + 1) + NO_PORT;
-            return index(tube.ejectionDir) * (NO_PORT + 1) + index(tube.insertionDir);
+            return index(tube.outletFace) * (NO_PORT + 1) + index(tube.intakeFace);
         }
 
         private static int index(@Nullable Direction dir) {
             return dir == null ? NO_PORT : dir.ordinal();
         }
 
-        private SimpleModelWrapper tubeFrame(@Nullable BlockEntity be) {
-            int index = portIndex(be);
-            synchronized (tubeFrames) {
-                SimpleModelWrapper part = tubeFrames[index];
-                if (part == null) {
-                    int ejection = index / (NO_PORT + 1);
-                    int insertion = index % (NO_PORT + 1);
-                    QuadCollection.Builder quads = new QuadCollection.Builder();
-                    for (Direction dir : Direction.VALUES) {
-                        String slot =
-                                dir.ordinal() == ejection
-                                        ? "frame_in"
-                                        : dir.ordinal() == insertion ? "frame_out" : "frame";
-                        quads.addCulledFace(
+        private BlockStateModelPart tubeFrame(@Nullable BlockEntity be) {
+            return tubeFrames.get(portIndex(be));
+        }
+
+        private BlockStateModelPart buildTubeFrame(int index) {
+            int ejection = index / (NO_PORT + 1);
+            int insertion = index % (NO_PORT + 1);
+            QuadCollection.Builder quads = new QuadCollection.Builder();
+            for (Direction dir : Direction.VALUES) {
+                String slot =
+                        dir.ordinal() == ejection
+                                ? "frame_in"
+                                : dir.ordinal() == insertion ? "frame_out" : "frame";
+                quads.addCulledFace(
+                        dir,
+                        Boxes.face(
+                                baker,
+                                Boxes.UNIT_FROM,
+                                Boxes.UNIT_TO,
                                 dir,
-                                Boxes.face(
-                                        baker,
-                                        Boxes.UNIT_FROM,
-                                        Boxes.UNIT_TO,
-                                        dir,
-                                        BlockModel.slot(baker, carrier, slots, slot)));
-                    }
-                    part = wrap(quads);
-                    tubeFrames[index] = part;
-                }
-                return part;
+                                BlockModel.slot(baker, carrier, slots, slot)));
             }
+            return wrap(quads);
         }
 
         public static int camoTint(
@@ -290,6 +304,18 @@ public record PaintableDuctModel() implements SimpleBlockModel {
                 BakedQuad quad, BlockState camo, BlockAndTintGetter level, BlockPos pos) {
             BakedQuad.MaterialInfo info = quad.materialInfo();
             if (!info.isTinted()) return quad;
+            final TextureAtlasSprite sprite = info.sprite();
+            final RenderType itemType = info.itemRenderType();
+            final int emission = info.lightEmission();
+            BakedQuad.MaterialInfo material =
+                    new BakedQuad.MaterialInfo(
+                            sprite,
+                            info.layer(),
+                            itemType,
+                            CuboidFace.NO_TINT,
+                            info.shade(),
+                            emission,
+                            info.ambientOcclusion() && true);
             return new BakedQuad(
                     quad.position0(),
                     quad.position1(),
@@ -300,14 +326,7 @@ public record PaintableDuctModel() implements SimpleBlockModel {
                     quad.packedUV2(),
                     quad.packedUV3(),
                     quad.direction(),
-                    new BakedQuad.MaterialInfo(
-                            info.sprite(),
-                            info.layer(),
-                            info.itemRenderType(),
-                            CuboidFace.NO_TINT,
-                            info.shade(),
-                            info.lightEmission(),
-                            info.ambientOcclusion()),
+                    material,
                     quad.bakedNormals(),
                     BakedColors.of(camoTint(camo, level, pos, info.tintIndex())));
         }

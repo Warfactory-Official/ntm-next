@@ -1,5 +1,6 @@
 {
   "values": [
+    "hbm:obj_tester",
     "hbm:red_connector",
     "hbm:red_connector_super",
     "hbm:red_pylon",
@@ -162,6 +163,7 @@
     "hbm:machine_radar_large",
     "hbm:radar_screen",
     "hbm:launch_table",
+    "hbm:sat_dock",
     "hbm:soyuz_capsule",
     "hbm:secure_access_door",
     "hbm:qe_sliding_door",

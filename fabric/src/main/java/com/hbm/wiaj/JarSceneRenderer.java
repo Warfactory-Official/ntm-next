@@ -1,18 +1,37 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.wiaj;
 
 import com.hbm.particle.DebrisMesh;
-import com.hbm.wiaj.actors.ISpecialActor;
+import com.hbm.wiaj.actors.JarActor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockModelLighter;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.gui.GuiRenderState;
+import org.joml.Quaternionfc;
 
 public final class JarSceneRenderer extends PictureInPictureRenderer<JarRenderState> {
     private JarScript cachedScript;
@@ -39,8 +58,8 @@ public final class JarSceneRenderer extends PictureInPictureRenderer<JarRenderSt
     @Override
     public void prepare(
             JarRenderState state,
-            net.minecraft.client.renderer.state.gui.GuiRenderState gui,
-            net.minecraft.client.renderer.feature.FeatureRenderDispatcher features,
+            GuiRenderState gui,
+            FeatureRenderDispatcher features,
             int guiScale) {
         this.guiScale = guiScale;
         super.prepare(state, gui, features, guiScale);
@@ -57,8 +76,8 @@ public final class JarSceneRenderer extends PictureInPictureRenderer<JarRenderSt
         pose.scale(-1, -1, 0.5F);
         double zoom = script.zoom();
         pose.scale((float) zoom, (float) zoom, (float) zoom);
-        pose.mulPose(Axis.XP.rotationDegrees((float) script.pitch()));
-        pose.mulPose(Axis.YP.rotationDegrees((float) script.yaw()));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) script.pitch()));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) script.yaw()));
         pose.translate(world.sizeX / -2D, -world.sizeY / 2D, world.sizeZ / -2D);
         pose.translate(script.offsetX(), script.offsetY(), script.offsetZ());
 
@@ -80,9 +99,9 @@ public final class JarSceneRenderer extends PictureInPictureRenderer<JarRenderSt
         }
 
         JarRenderContext context = new JarRenderContext(world, pose, collector);
-        for (ISpecialActor actor : script.actors.values()) {
+        for (JarActor actor : script.actors.values()) {
             pose.pushPose();
-            actor.drawBackgroundComponent(context, script.ticksElapsed, script.interp);
+            actor.drawInJar(context, script.ticksElapsed, script.interp);
             pose.popPose();
         }
     }

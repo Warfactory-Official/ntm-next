@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "hbm",
   "version": "${version}",
-  "name": "NTM",
-  "description": "Nuclear Tech Mod, ported to Minecraft 26.2 for Fabric and NeoForge.",
+  "name": "NTM NEXT",
+  "description": "Nuclear Tech Mod, ported to Minecraft ${minecraft_version} for Fabric and NeoForge. Copyright HbmMods (The Bobcat), Contributors to Hbm's Nuclear Tech Mod, 2026 movblock <admin@movblock.mov>; the GNU GPL and LGPL texts are LICENSES/GPL-3.0-only.txt and LICENSES/LGPL-3.0-only.txt in this jar.",
   "authors": [
     "HbmMods (The Bobcat) - creating the original mod",
     "movblock - porting to 26.2"
@@ -23,9 +23,6 @@
     "client": [
       "com.hbm.fabric.client.NuclearTechFabricClient"
     ],
-    "fabric-datagen": [
-      "com.hbm.fabric.datagen.HbmDataGenerator"
-    ],
     "jei_mod_plugin": [
       "com.hbm.integration.jei.NTMJeiPlugin"
     ],
@@ -40,7 +37,9 @@
   "mixins": [
     "hbm-common.mixins.json",
     "hbm-iris-compat.mixins.json",
+    "hbm-jigsaw-optimizer.mixins.json",
     "hbm-network-optimizer.mixins.json",
+    "hbm-replay-timing.mixins.json",
     "hbm-fabric.mixins.json"
   ],
   "accessWidener": "hbm.classtweaker",
@@ -51,21 +50,26 @@
   ],
   "depends": {
     "hbm_client": "*",
-    "fabricloader": ">=0.19.3",
-    "fabric-api": ">=0.153.0+26.2",
-    "minecraft": "~26.2"
+    "fabricloader": ">=${fabric_loader_minimum}",
+    "mixinextras": ">=0.5.5",
+    "fabric-api": ">=${fabric_api_version}",
+    "minecraft": "~${minecraft_version}"
   },
   "suggests": {
     "team_reborn_energy": ">=5.0.0"
   },
   "breaks": {
+    "ae2": "*",
     "fusion": "<1.3.13",
-    "iris": "<1.11.4",
-    "sodium": "<0.9.2-beta.1",
+    "iris": "<${iris_minimum}",
+    "sodium": "<${sodium_minimum}",
     "scalablelux": "<0.3.0-alpha.0.3",
     "lithium": [
-      "<0.25.3",
-      ">=0.26"
+      "<${lithium_minimum}",
+      ">=${lithium_maximum}"
     ]
+  },
+  "contact": {
+    "sources": "https://github.com/Warfactory-Official/ntm-next"
   }
 }

@@ -1,19 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.util;
 
+import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.handler.threading.BombForkJoinPool;
 import com.hbm.interfaces.BitMask;
-import com.hbm.interfaces.ServerThread;
-import com.hbm.interfaces.ThreadSafeMethod;
-import com.hbm.interfaces.injected.IBulkLightEngine;
-import com.hbm.lib.Library;
-import com.hbm.lib.internal.UnsafeHolder;
+import com.hbm.interfaces.injected.BulkLightEngine;
 import com.hbm.lib.maps.NonBlockingHashMapLong;
-import com.hbm.packet.toclient.OcclusionRefreshPayload;
-import com.hbm.platform.NeoForgeServerEvents;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.packet.PacketWire;
+import com.hbm.packet.layout.OcclusionRefreshLayout;
+import com.hbm.platform.ServerEvents;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
@@ -29,10 +43,11 @@ import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
@@ -55,8 +70,6 @@ import net.minecraft.world.level.lighting.LightEngine;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.Nullable;
-
-import static com.hbm.lib.internal.UnsafeHolder.U;
 
 public final class ChunkUtil {
     public static boolean resident(BlockEntity be, LevelChunk chunk) {
@@ -100,16 +113,18 @@ public final class ChunkUtil {
     private ChunkUtil() {}
 
     public static void init() {
-        NeoForgeServerEvents.onChunkLoad(ChunkUtil::onChunkLoad);
-        NeoForgeServerEvents.onChunkUnload(ChunkUtil::onChunkUnload);
-        NeoForgeServerEvents.onServerStopping(
+        final BiConsumer<ServerLevel, LevelChunk> callback = ChunkUtil::onChunkLoad;
+        ServerEvents.CHUNK_LOAD.add(callback);
+        final BiConsumer<ServerLevel, LevelChunk> callback2 = ChunkUtil::onChunkUnload;
+        ServerEvents.CHUNK_UNLOAD.add(callback2);
+        final Consumer<MinecraftServer> callback3 =
                 server -> {
                     BombForkJoinPool.onServerStopped();
                     onServerStopped();
-                });
+                };
+        ServerEvents.STOPPING.add(callback3);
     }
 
-    @ServerThread
     public static NonBlockingHashMapLong<LevelChunk> acquireMirrorMap(ServerLevel level) {
         Identifier dim = level.dimension().identifier();
         NonBlockingHashMapLong<LevelChunk> thisDim;
@@ -129,20 +144,17 @@ public final class ChunkUtil {
         return Objects.requireNonNull(thisDim);
     }
 
-    @ServerThread
     private static @Nullable LevelChunk fullChunkIfLoaded(@Nullable ChunkHolder holder) {
         if (holder == null || holder.getTicketLevel() > ChunkLevel.byStatus(FullChunkStatus.FULL))
             return null;
         return holder.getFullChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK).orElse(null);
     }
 
-    @ServerThread
     public static @Nullable LevelChunk liveChunkNow(ServerLevel level, long chunkPos) {
         return fullChunkIfLoaded(
                 level.getChunkSource().chunkMap.getVisibleChunkIfPresent(chunkPos));
     }
 
-    @ServerThread
     public static void forEachLoadedChunk(ServerLevel level, Consumer<LevelChunk> visitor) {
         for (ChunkHolder holder : level.getChunkSource().chunkMap.visibleChunkMap.values()) {
             LevelChunk chunk = fullChunkIfLoaded(holder);
@@ -150,7 +162,6 @@ public final class ChunkUtil {
         }
     }
 
-    @ServerThread
     public static void releaseMirrorMap(ServerLevel level) {
         Identifier dim = level.dimension().identifier();
         if (activeTask.addTo(dim, -1) == 1) {
@@ -162,11 +173,11 @@ public final class ChunkUtil {
 
     public static void register() {
         BLAST_LOAD =
-                NeoForgeRegistrar.registerTicketType(
+                Registrar.registerTicketType(
                         "blast_load",
                         () -> new TicketType(TicketType.NO_TIMEOUT, TicketType.FLAG_LOADING));
         ENTITY_HOLD =
-                NeoForgeRegistrar.registerTicketType(
+                Registrar.registerTicketType(
                         "entity_hold",
                         () ->
                                 new TicketType(
@@ -177,7 +188,6 @@ public final class ChunkUtil {
                                                 | TicketType.FLAG_KEEP_DIMENSION_ACTIVE));
     }
 
-    @ServerThread
     public static void holdForEntity(ServerLevel level, ChunkPos chunkPos, int radius) {
         level.getChunkSource().addTicketWithRadius(ENTITY_HOLD.get(), chunkPos, radius);
     }
@@ -187,13 +197,11 @@ public final class ChunkUtil {
             holdForEntity(server, entity.chunkPosition(), HOLD_RADIUS);
     }
 
-    @ServerThread
     public static void loadForEntity(ServerLevel level, ChunkPos chunkPos) {
         holdForEntity(level, chunkPos, HOLD_RADIUS);
         level.getChunk(chunkPos.x(), chunkPos.z());
     }
 
-    @ServerThread
     public static void loadTickingForEntity(ServerLevel level, ChunkPos pos) {
         holdForEntity(level, pos, HOLD_RADIUS);
         flushChunkTickets(level);
@@ -209,7 +217,6 @@ public final class ChunkUtil {
         level.waitForEntities(pos, 0);
     }
 
-    @ServerThread
     public static void addBlastTicket(ServerLevel level, long chunkPos) {
         Long2IntOpenHashMap held =
                 BLAST_LOAD_CLAIMS.computeIfAbsent(level, ignored -> new Long2IntOpenHashMap());
@@ -218,19 +225,16 @@ public final class ChunkUtil {
         level.getChunkSource().addTicketWithRadius(BLAST_LOAD.get(), pos, 0);
     }
 
-    @ServerThread
     public static void flushChunkTickets(ServerLevel level) {
         level.getChunkSource().runDistanceManagerUpdates();
     }
 
-    @ServerThread
     public static @Nullable CompletableFuture<ChunkResult<LevelChunk>> blastChunkFuture(
             ServerLevel level, long chunkPos) {
         ChunkHolder holder = level.getChunkSource().chunkMap.getVisibleChunkIfPresent(chunkPos);
         return holder == null ? null : holder.getFullChunkFuture();
     }
 
-    @ServerThread
     public static void releaseChunkAsync(ServerLevel level, long chunkPos) {
         Long2IntOpenHashMap held = BLAST_LOAD_CLAIMS.get(level);
         int count = held.addTo(chunkPos, -1);
@@ -243,11 +247,16 @@ public final class ChunkUtil {
     }
 
     public static @Nullable LevelChunk chunkIfLoaded(Level level, BlockPos pos) {
-        int cx = SectionPos.blockToSectionCoord(pos.getX());
-        int cz = SectionPos.blockToSectionCoord(pos.getZ());
+        return chunkIfLoaded(
+                level,
+                SectionPos.blockToSectionCoord(pos.getX()),
+                SectionPos.blockToSectionCoord(pos.getZ()));
+    }
+
+    public static @Nullable LevelChunk chunkIfLoaded(Level level, int chunkX, int chunkZ) {
         return level instanceof ServerLevel server
-                ? server.getChunkSource().getChunkNow(cx, cz)
-                : level.getChunkSource().getChunk(cx, cz, false);
+                ? server.getChunkSource().getChunkNow(chunkX, chunkZ)
+                : level.getChunkSource().getChunk(chunkX, chunkZ, false);
     }
 
     public static @Nullable BlockEntity blockEntityIfLoaded(Level level, BlockPos pos) {
@@ -266,20 +275,17 @@ public final class ChunkUtil {
         return chunk == null ? null : chunk.getBlockState(pos);
     }
 
-    @ThreadSafeMethod
     public static @Nullable LevelChunk getLoadedChunk(
             NonBlockingHashMapLong<LevelChunk> mirror, long chunkPos) {
         return mirror.get(chunkPos);
     }
 
-    @ThreadSafeMethod
     public static LevelChunkSection @Nullable [] getLoadedSections(
             NonBlockingHashMapLong<LevelChunk> mirror, long chunkPos) {
         LevelChunk chunk = getLoadedChunk(mirror, chunkPos);
         return chunk == null ? null : chunk.getSections();
     }
 
-    @ServerThread
     public static boolean postCarveBlockUpdate(
             ServerLevel level,
             LevelChunk chunk,
@@ -303,7 +309,6 @@ public final class ChunkUtil {
                 (BlockGetter) chunk, pos, oldState, newState);
     }
 
-    @ServerThread
     public static void replaceEmptied(
             ServerLevel level, BlockPos pos, BlockState state, @Block.UpdateFlags int flags) {
         BlockPos at = pos.immutable();
@@ -315,7 +320,6 @@ public final class ChunkUtil {
         level.setBlock(at, state, flags);
     }
 
-    @ServerThread
     public static void dispatchRemovalHook(
             ServerLevel level, BlockPos pos, BlockState oldState, BlockState newState) {
         Block newBlock = newState.getBlock();
@@ -324,18 +328,16 @@ public final class ChunkUtil {
         }
     }
 
-    @ServerThread
     public static CompletableFuture<?> updateLight(
             ServerLevel level, LevelChunk chunk, LongList positions, long sectionMaskFromBottom) {
         assert level.getServer().isSameThread();
         ThreadedLevelLightEngine lightEngine = level.getChunkSource().getLightEngine();
-        if (lightEngine instanceof IBulkLightEngine bulk) {
+        if (lightEngine instanceof BulkLightEngine bulk) {
             return bulk.hbm$updateLight(chunk, positions, sectionMaskFromBottom);
         }
         return updateLightIndividually(level, chunk, positions, sectionMaskFromBottom);
     }
 
-    @ServerThread
     public static CompletableFuture<?> updateLightIndividually(
             ServerLevel level, LevelChunk chunk, LongList positions, long sectionMaskFromBottom) {
         assert level.getServer().isSameThread();
@@ -358,15 +360,14 @@ public final class ChunkUtil {
         return lightEngine.waitForPendingTasks(cx, cz);
     }
 
-    @ServerThread
-    public static void broadcastWholesaleResend(
+    public static CompletableFuture<Void> broadcastWholesaleResend(
             ServerLevel level, long chunkPos, CompletableFuture<?> lighting) {
         int cx = ChunkPos.getX(chunkPos);
         int cz = ChunkPos.getZ(chunkPos);
         MinecraftServer server = level.getServer();
         ThreadedLevelLightEngine lightEngine = level.getChunkSource().getLightEngine();
-        lighting.thenAcceptAsync(
-                ignored -> {
+        return lighting.thenAcceptAsync(
+                _ -> {
                     LevelChunk fresh = level.getChunkSource().getChunkNow(cx, cz);
                     if (fresh == null) return;
                     fresh.markUnsaved();
@@ -376,18 +377,14 @@ public final class ChunkUtil {
                     ClientboundLevelChunkWithLightPacket chunkPacket =
                             new ClientboundLevelChunkWithLightPacket(
                                     fresh, lightEngine, null, null);
-                    ClientboundCustomPayloadPacket propagatePacket =
-                            new ClientboundCustomPayloadPacket(
-                                    new OcclusionRefreshPayload(chunkPos));
                     for (ServerPlayer p : players) {
                         p.connection.send(chunkPacket);
-                        p.connection.send(propagatePacket);
                     }
+                    PacketWire.sendToPlayers(OcclusionRefreshLayout.encode(chunkPos), players);
                 },
                 server);
     }
 
-    @ThreadSafeMethod
     @Contract(mutates = "param7,param8")
     public static @Nullable LevelChunkSection copyAndCarveLocal(
             ServerLevel level,
@@ -399,7 +396,7 @@ public final class ChunkUtil {
             @Nullable LongCollection edgeOut,
             @Nullable Long2ObjectMap<BlockState> modifiedOut,
             boolean skipBlockEntities) {
-        LevelChunkSection src = getSectionVolatile(sections, subY);
+        LevelChunkSection src = SectionAccess.getVolatile(sections, subY);
         return carveLocal(
                 level,
                 chunkX,
@@ -413,7 +410,6 @@ public final class ChunkUtil {
                 false);
     }
 
-    @ThreadSafeMethod
     public static boolean carveSnapshot(
             ServerLevel level,
             int chunkX,
@@ -466,9 +462,9 @@ public final class ChunkUtil {
         for (int idx = localMask.nextSetBit(0);
                 idx >= 0 && idx < 4096;
                 idx = localMask.nextSetBit(idx + 1)) {
-            int xLocal = Library.getLocalX(idx);
-            int yLocal = Library.getLocalY(idx);
-            int zLocal = Library.getLocalZ(idx);
+            int xLocal = LocalBlockIndex.x(idx);
+            int yLocal = LocalBlockIndex.y(idx);
+            int zLocal = LocalBlockIndex.z(idx);
 
             BlockState old = src.getBlockState(xLocal, yLocal, zLocal);
             if (old.isAir()) continue;
@@ -497,9 +493,9 @@ public final class ChunkUtil {
         for (int i = 0; i < carvedCount; i++) {
             int idx = carved[i];
             dst.setBlockState(
-                    Library.getLocalX(idx),
-                    Library.getLocalY(idx),
-                    Library.getLocalZ(idx),
+                    LocalBlockIndex.x(idx),
+                    LocalBlockIndex.y(idx),
+                    LocalBlockIndex.z(idx),
                     AIR_DEFAULT_STATE,
                     false);
         }
@@ -546,7 +542,7 @@ public final class ChunkUtil {
                 && yLocal < 16
                 && zLocal >= 0
                 && zLocal < 16) {
-            int idx = Library.packLocal(xLocal, yLocal, zLocal);
+            int idx = LocalBlockIndex.pack(xLocal, yLocal, zLocal);
             if (carveMask.get(idx)) return false;
             return !src.getBlockState(xLocal, yLocal, zLocal).isAir();
         }
@@ -578,23 +574,8 @@ public final class ChunkUtil {
         if (neighbor == null) return true;
         LevelChunkSection[] nSections = neighbor.getSections();
         if (nSubY < 0 || nSubY >= nSections.length) return false;
-        LevelChunkSection s = getSectionVolatile(nSections, nSubY);
+        LevelChunkSection s = SectionAccess.getVolatile(nSections, nSubY);
         return s != null && !s.hasOnlyAir() && !s.getBlockState(nx, ny, nz).isAir();
-    }
-
-    @ThreadSafeMethod
-    public static boolean casSectionAt(
-            @Nullable LevelChunkSection expect,
-            @Nullable LevelChunkSection update,
-            LevelChunkSection @NotNull [] arr,
-            int subY) {
-        return U.compareAndSetReference(arr, UnsafeHolder.offReference(subY), expect, update);
-    }
-
-    @ThreadSafeMethod
-    public static @Nullable LevelChunkSection getSectionVolatile(
-            LevelChunkSection @NotNull [] arr, int subY) {
-        return (LevelChunkSection) U.getReferenceVolatile(arr, UnsafeHolder.offReference(subY));
     }
 
     private static void onChunkLoad(ServerLevel server, LevelChunk chunk) {
@@ -630,18 +611,36 @@ public final class ChunkUtil {
         return (chunkZ << 4) | ((index >>> 4) & 0xF);
     }
 
-    @ThreadSafeMethod
     public static void applyToSnapshot(
             SectionSnapshot snapshot,
             Long2ObjectOpenHashMap<BlockState> newStates,
             Long2ObjectOpenHashMap<BlockState> oldStatesOut,
             Long2ObjectOpenHashMap<BlockState> deferredBeOut) {
-        if (newStates.isEmpty()) return;
         LevelChunk chunk = snapshot.chunk();
-        Level level = chunk.getLevel();
-        int chunkX = chunk.getPos().x();
-        int chunkZ = chunk.getPos().z();
-        int sectionCount = snapshot.sections.length;
+        applyToSections(
+                snapshot.sections,
+                chunk.getMinSectionY(),
+                chunk.getPos().x(),
+                chunk.getPos().z(),
+                newStates,
+                oldStatesOut,
+                deferredBeOut,
+                false,
+                snapshot::changed);
+    }
+
+    public static void applyToSections(
+            LevelChunkSection[] sections,
+            int minSectionY,
+            int chunkX,
+            int chunkZ,
+            Long2ObjectOpenHashMap<BlockState> newStates,
+            Long2ObjectOpenHashMap<BlockState> oldStatesOut,
+            Long2ObjectOpenHashMap<BlockState> deferredOut,
+            boolean deferSurfaces,
+            IntConsumer changedSection) {
+        if (newStates.isEmpty()) return;
+        int sectionCount = sections.length;
         Int2ObjectOpenHashMap<BlockState>[] bySub = TL_BUCKET.get();
         if (bySub.length < sectionCount) {
             @SuppressWarnings("unchecked")
@@ -660,15 +659,15 @@ public final class ChunkUtil {
             int y = BlockPos.getY(pos);
             int z = BlockPos.getZ(pos);
             assert (x >> 4) == chunkX && (z >> 4) == chunkZ;
-            int index = level.getSectionIndex(y);
+            int index = (y >> 4) - minSectionY;
             assert index >= 0 && index < sectionCount;
-            bySub[index].put(Library.packLocal(x & 15, y & 15, z & 15), entry.getValue());
+            bySub[index].put(LocalBlockIndex.pack(x & 15, y & 15, z & 15), entry.getValue());
         }
         for (int subIndex = 0; subIndex < sectionCount; subIndex++) {
             Int2ObjectOpenHashMap<BlockState> bucket = bySub[subIndex];
             if (bucket.isEmpty()) continue;
-            LevelChunkSection section = snapshot.sections[subIndex];
-            int yBase = (subIndex + level.getMinSectionY()) << 4;
+            LevelChunkSection section = sections[subIndex];
+            int yBase = (subIndex + minSectionY) << 4;
             boolean changed = false;
             if (bucket.size() < DENSE_THRESHOLD) {
                 for (var iterator = bucket.int2ObjectEntrySet().fastIterator();
@@ -683,7 +682,8 @@ public final class ChunkUtil {
                                     entry.getIntKey(),
                                     entry.getValue(),
                                     oldStatesOut,
-                                    deferredBeOut);
+                                    deferredOut,
+                                    deferSurfaces);
                 }
             } else {
                 BlockState[] overrides = TL_OVERRIDES.get();
@@ -705,11 +705,12 @@ public final class ChunkUtil {
                                         index,
                                         replacement,
                                         oldStatesOut,
-                                        deferredBeOut);
+                                        deferredOut,
+                                        deferSurfaces);
                     }
                 }
             }
-            if (changed) snapshot.changed(subIndex);
+            if (changed) changedSection.accept(subIndex);
         }
     }
 
@@ -721,19 +722,28 @@ public final class ChunkUtil {
             int index,
             BlockState replacement,
             Long2ObjectOpenHashMap<BlockState> oldStatesOut,
-            Long2ObjectOpenHashMap<BlockState> deferredBeOut) {
-        int x = Library.getLocalX(index);
-        int y = Library.getLocalY(index);
-        int z = Library.getLocalZ(index);
+            Long2ObjectOpenHashMap<BlockState> deferredOut,
+            boolean deferSurfaces) {
+        int x = LocalBlockIndex.x(index);
+        int y = LocalBlockIndex.y(index);
+        int z = LocalBlockIndex.z(index);
         BlockState previous = section.getBlockState(x, y, z);
-        if (previous == replacement) return false;
         long pos = BlockPos.asLong((chunkX << 4) | x, yBase | y, (chunkZ << 4) | z);
-        if (previous.hasBlockEntity() || replacement.hasBlockEntity()) {
-            deferredBeOut.put(pos, replacement);
+        if (previous == replacement) {
+            deferredOut.remove(pos);
+            return false;
+        }
+        if (previous.hasBlockEntity()
+                || replacement.hasBlockEntity()
+                || deferSurfaces
+                        && (MultiblockSurface.isSurface(previous)
+                                || MultiblockSurface.isSurface(replacement))) {
+            deferredOut.put(pos, replacement);
             return false;
         }
         section.setBlockState(x, y, z, replacement, false);
-        oldStatesOut.put(pos, previous);
+        oldStatesOut.putIfAbsent(pos, previous);
+        deferredOut.remove(pos);
         return true;
     }
 }

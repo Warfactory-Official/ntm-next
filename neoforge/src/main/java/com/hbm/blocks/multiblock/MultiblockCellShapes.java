@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.multiblock;
 
@@ -23,8 +39,8 @@ public final class MultiblockCellShapes {
             new HashMap<>();
     private static final Map<CellBuckets.Geometry, Object2IntOpenHashMap<String>> INTERNED =
             new HashMap<>();
-    private static final Map<BlockMultiblockCore, Long2IntOpenHashMap> BY_BLOCK = new HashMap<>();
-    private static final Set<BlockMultiblockCore> SHAPED = new HashSet<>();
+    private static final Map<MultiblockCoreBlock, Long2IntOpenHashMap> BY_BLOCK = new HashMap<>();
+    private static final Set<MultiblockCoreBlock> SHAPED = new HashSet<>();
     private static final Set<CellBuckets.Geometry> UNPUBLISHED = new HashSet<>();
 
     static {
@@ -33,7 +49,7 @@ public final class MultiblockCellShapes {
 
     private MultiblockCellShapes() {}
 
-    public static void install(BlockMultiblockCore block, MultiblockLayout.CellGeometry geometry) {
+    public static void install(MultiblockCoreBlock block, MultiblockLayout.CellGeometry geometry) {
         Long2IntOpenHashMap ids = new Long2IntOpenHashMap();
         ids.defaultReturnValue(PLAIN);
         CellBuckets.Geometry bucket = null;
@@ -79,12 +95,9 @@ public final class MultiblockCellShapes {
                             + " overflowed its"
                             + " alphabet at "
                             + part.maxShapes()
-                            + " (radix="
-                            + part.radix()
-                            + " squared); raise that"
-                            + " bucket's radix in CellBuckets and re-cost it (states x sum|values| x 4 B) first");
+                            + "; raise that bucket's capacity in CellBuckets first");
         }
-        VoxelShape[] shapes = new VoxelShape[4];
+        VoxelShape[] shapes = new VoxelShape[MultiblockLayout.CellGeometry.VARIANT_COUNT];
         for (int v = 0; v < shapes.length; v++) {
             shapes[v] = MultiblockLayout.CellGeometry.shape(geometry.tupleBoxes()[tuple][v]);
         }
@@ -101,7 +114,7 @@ public final class MultiblockCellShapes {
             ModBlocks.geometryCell(part)
                     .get()
                     .publish(
-                            new BlockMultiblockGeometryCell.Alphabet(
+                            new MultiblockGeometryCellBlock.Alphabet(
                                     BY_ID.get(part).toArray(VoxelShape[][]::new),
                                     SOUND_BY_ID.get(part).toArray(SoundType[]::new),
                                     CLIMB_BY_ID.get(part).toArray(AABB[]::new)));
@@ -109,13 +122,13 @@ public final class MultiblockCellShapes {
         UNPUBLISHED.clear();
     }
 
-    public static int idAt(BlockMultiblockCore block, int lx, int ly, int lz, Direction facing) {
+    public static int idAt(MultiblockCoreBlock block, int lx, int ly, int lz, Direction facing) {
         Long2IntOpenHashMap ids = BY_BLOCK.get(block);
         return ids == null ? PLAIN : ids.get(key(facing, lx, ly, lz));
     }
 
     public static int idAtWorld(
-            BlockMultiblockCore block, BlockPos core, BlockPos pos, Direction facing) {
+            MultiblockCoreBlock block, BlockPos core, BlockPos pos, Direction facing) {
         int dx = pos.getX() - core.getX(),
                 dy = pos.getY() - core.getY(),
                 dz = pos.getZ() - core.getZ();
@@ -146,8 +159,12 @@ public final class MultiblockCellShapes {
         return !BY_BLOCK.isEmpty();
     }
 
-    public static boolean hasGeometry(BlockMultiblockCore block) {
+    public static boolean hasGeometry(MultiblockCoreBlock block) {
         return SHAPED.contains(block);
+    }
+
+    public static boolean hasGeometryCells(MultiblockCoreBlock block) {
+        return BY_BLOCK.containsKey(block);
     }
 
     private static long key(Direction facing, int lx, int ly, int lz) {
@@ -159,15 +176,23 @@ public final class MultiblockCellShapes {
 
     public static void reset() {
         for (CellBuckets.Geometry part : CellBuckets.geometry()) {
-            BY_ID.put(part, new ArrayList<>());
-            SOUND_BY_ID.put(part, new ArrayList<>());
-            CLIMB_BY_ID.put(part, new ArrayList<>());
-            Object2IntOpenHashMap<String> interned = new Object2IntOpenHashMap<>();
-            interned.defaultReturnValue(PLAIN);
-            INTERNED.put(part, interned);
-            UNPUBLISHED.add(part);
+            initializeBucket(part);
         }
         BY_BLOCK.clear();
         SHAPED.clear();
+    }
+
+    static void addBucket(CellBuckets.Geometry part) {
+        if (!BY_ID.containsKey(part)) initializeBucket(part);
+    }
+
+    private static void initializeBucket(CellBuckets.Geometry part) {
+        BY_ID.put(part, new ArrayList<>());
+        SOUND_BY_ID.put(part, new ArrayList<>());
+        CLIMB_BY_ID.put(part, new ArrayList<>());
+        Object2IntOpenHashMap<String> interned = new Object2IntOpenHashMap<>();
+        interned.defaultReturnValue(PLAIN);
+        INTERNED.put(part, interned);
+        UNPUBLISHED.add(part);
     }
 }

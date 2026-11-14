@@ -7,6 +7,7 @@
     "hbm:revolver_bullet",
     "hbm:emplacer",
     "hbm:combine",
-    "hbm:tau"
+    "hbm:tau",
+    "hbm:lethal_projectile"
   ]
 }

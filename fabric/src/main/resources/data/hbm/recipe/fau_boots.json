@@ -1,13 +1,12 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:starmetal_boots",
-      "components": {
-        "minecraft:damage": 0
-      }
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:starmetal_boots",
     "D": "#hbm:billets/polonium_210",
     "P": "hbm:plate_armor_fau"
   },

@@ -1,55 +1,115 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks;
 
 import com.hbm.blockentity.*;
 import com.hbm.blockentity.bomb.*;
-import com.hbm.blockentity.deco.BlockEntityObjTester;
+import com.hbm.blockentity.deco.ObjTesterBlockEntity;
+import com.hbm.blockentity.door.BlastDoorBlockEntity;
+import com.hbm.blockentity.door.DoorBlockEntity;
+import com.hbm.blockentity.effect.EmitterBlockEntity;
+import com.hbm.blockentity.effect.GeyserBlockEntity;
+import com.hbm.blockentity.encounter.LogicBlockEntity;
+import com.hbm.blockentity.encounter.TrappedBrickBlockEntity;
+import com.hbm.blockentity.generator.IsotopeGeneratorBlockEntity;
+import com.hbm.blockentity.generator.RadGenBlockEntity;
+import com.hbm.blockentity.generator.WasteFuel;
 import com.hbm.blockentity.machine.*;
 import com.hbm.blockentity.machine.albion.*;
+import com.hbm.blockentity.machine.dfc.*;
 import com.hbm.blockentity.machine.fusion.*;
 import com.hbm.blockentity.machine.oil.*;
 import com.hbm.blockentity.machine.pile.*;
+import com.hbm.blockentity.machine.radio.EnervationBlockEntity;
+import com.hbm.blockentity.machine.radio.RadioReceiverBlockEntity;
 import com.hbm.blockentity.machine.rbmk.*;
+import com.hbm.blockentity.machine.reactor.ReactorControlBlockEntity;
+import com.hbm.blockentity.machine.reactor.ResearchReactorBlockEntity;
 import com.hbm.blockentity.machine.storage.*;
+import com.hbm.blockentity.machine.thermal.BrickFurnaceBlockEntity;
+import com.hbm.blockentity.machine.thermal.CombinationFurnaceBlockEntity;
+import com.hbm.blockentity.machine.thermal.CompactTurbineBlockEntity;
+import com.hbm.blockentity.machine.thermal.CoolingHeatBlockEntity;
+import com.hbm.blockentity.machine.thermal.ElectricHeatBlockEntity;
+import com.hbm.blockentity.machine.thermal.IronFurnaceBlockEntity;
+import com.hbm.blockentity.machine.thermal.LeviathanTurbineBlockEntity;
+import com.hbm.blockentity.machine.thermal.PoweredCondenserBlockEntity;
+import com.hbm.blockentity.machine.thermal.SteamCondenserBlockEntity;
+import com.hbm.blockentity.machine.thermal.SteelFurnaceBlockEntity;
+import com.hbm.blockentity.machine.thermal.StirlingGeneratorBlockEntity;
+import com.hbm.blockentity.machine.thermal.TimberSawBlockEntity;
 import com.hbm.blockentity.network.*;
 import com.hbm.blockentity.network.pneumatic.*;
-import com.hbm.blockentity.turret.BlockEntityTurretArty;
-import com.hbm.blockentity.turret.BlockEntityTurretChekhov;
-import com.hbm.blockentity.turret.BlockEntityTurretFriendly;
-import com.hbm.blockentity.turret.BlockEntityTurretFritz;
-import com.hbm.blockentity.turret.BlockEntityTurretHIMARS;
-import com.hbm.blockentity.turret.BlockEntityTurretHoward;
-import com.hbm.blockentity.turret.BlockEntityTurretHowardDamaged;
-import com.hbm.blockentity.turret.BlockEntityTurretJeremy;
-import com.hbm.blockentity.turret.BlockEntityTurretMaxwell;
-import com.hbm.blockentity.turret.BlockEntityTurretRichard;
-import com.hbm.blockentity.turret.BlockEntityTurretSentry;
-import com.hbm.blockentity.turret.BlockEntityTurretSentryDamaged;
-import com.hbm.blockentity.turret.BlockEntityTurretTauon;
-import com.hbm.blocks.generic.BlockDynamicSlag;
-import com.hbm.blocks.generic.BlockLoot;
-import com.hbm.blocks.generic.TrappedBrick;
+import com.hbm.blockentity.ordnance.launch.*;
+import com.hbm.blockentity.processing.AmmoPressBlockEntity;
+import com.hbm.blockentity.processing.ArcFurnaceBlockEntity;
+import com.hbm.blockentity.processing.ArcWelderBlockEntity;
+import com.hbm.blockentity.processing.AssemblyMachineBlockEntity;
+import com.hbm.blockentity.processing.BurnerPressBlockEntity;
+import com.hbm.blockentity.processing.CentrifugeBlockEntity;
+import com.hbm.blockentity.processing.ChemicalFactoryBlockEntity;
+import com.hbm.blockentity.processing.ChemicalPlantBlockEntity;
+import com.hbm.blockentity.processing.ConveyorStampBlockEntity;
+import com.hbm.blockentity.processing.CrystalProcessorBlockEntity;
+import com.hbm.blockentity.processing.ElectricPressBlockEntity;
+import com.hbm.blockentity.processing.ElectrolysisBlockEntity;
+import com.hbm.blockentity.processing.FluidMixerBlockEntity;
+import com.hbm.blockentity.processing.ShredderBlockEntity;
+import com.hbm.blockentity.processing.SolderingBenchBlockEntity;
+import com.hbm.blockentity.prop.BehemothLanternBlockEntity;
+import com.hbm.blockentity.prop.PedestalBlockEntity;
+import com.hbm.blockentity.travel.TeleporterBlockEntity;
+import com.hbm.blockentity.turret.TurretArtyBlockEntity;
+import com.hbm.blockentity.turret.TurretChekhovBlockEntity;
+import com.hbm.blockentity.turret.TurretFriendlyBlockEntity;
+import com.hbm.blockentity.turret.TurretFritzBlockEntity;
+import com.hbm.blockentity.turret.TurretHIMARSBlockEntity;
+import com.hbm.blockentity.turret.TurretHowardBlockEntity;
+import com.hbm.blockentity.turret.TurretHowardDamagedBlockEntity;
+import com.hbm.blockentity.turret.TurretJeremyBlockEntity;
+import com.hbm.blockentity.turret.TurretMaxwellBlockEntity;
+import com.hbm.blockentity.turret.TurretRichardBlockEntity;
+import com.hbm.blockentity.turret.TurretSentryBlockEntity;
+import com.hbm.blockentity.turret.TurretSentryDamagedBlockEntity;
+import com.hbm.blockentity.turret.TurretTauonBlockEntity;
+import com.hbm.blocks.generic.DynamicSlagBlock;
+import com.hbm.blocks.generic.LootBlock;
+import com.hbm.blocks.generic.TrappedBrickBlock;
 import com.hbm.registration.Reg;
 import com.hbm.registration.RegistryHandle;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public final class ModBlockEntities {
-    public static final RegistryHandle<BlockEntityType<TestBlockEntity>> TEST =
-            be("test_block_entity", TestBlockEntity::new, ModBlocks.TEST_BLOCK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityObjTester>> OBJ_TESTER =
-            be("objtester", BlockEntityObjTester::new, ModBlocks.OBJ_TESTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRail>> RAIL =
-            be(
+    public static final Reg.BeHandle<TestBlockEntity> TEST =
+            (Reg.<TestBlockEntity>be(
+                    "test_block_entity", TestBlockEntity::new, ModBlocks.TEST_BLOCK));
+    public static final Reg.BeHandle<ObjTesterBlockEntity> OBJ_TESTER =
+            (Reg.<ObjTesterBlockEntity>be(
+                    "objtester", ObjTesterBlockEntity::new, ModBlocks.OBJ_TESTER));
+    public static final Reg.BeHandle<RailBlockEntity> RAIL =
+            (Reg.<RailBlockEntity>be(
                     "rail_switch",
-                    BlockEntityRail::new,
+                    RailBlockEntity::new,
                     ModBlocks.RAIL_LARGE_STRAIGHT,
                     ModBlocks.RAIL_LARGE_STRAIGHT_SHORT,
                     ModBlocks.RAIL_LARGE_CURVE,
@@ -60,154 +120,211 @@ public final class ModBlockEntities {
                     ModBlocks.RAIL_LARGE_SWITCH,
                     ModBlocks.RAIL_LARGE_SWITCH_FLIPPED,
                     ModBlocks.RAIL_NARROW_STRAIGHT,
-                    ModBlocks.RAIL_NARROW_CURVE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCentrifuge>> CENTRIFUGE =
-            clientMachine(
-                    "centrifuge", BlockEntityMachineCentrifuge::new, ModBlocks.MACHINE_CENTRIFUGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineGasCent>> GAS_CENTRIFUGE =
-            clientMachine(
-                    "gas_centrifuge", BlockEntityMachineGasCent::new, ModBlocks.MACHINE_GASCENT);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineSuperComputer>>
-            SUPERCOMPUTER =
-                    machine(
+                    ModBlocks.RAIL_NARROW_CURVE));
+    public static final Reg.BeHandle<CentrifugeBlockEntity> CENTRIFUGE =
+            (Reg.<CentrifugeBlockEntity>be(
+                            "centrifuge", CentrifugeBlockEntity::new, ModBlocks.MACHINE_CENTRIFUGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<GasCentBlockEntity> GAS_CENTRIFUGE =
+            (Reg.<GasCentBlockEntity>be(
+                            "gas_centrifuge", GasCentBlockEntity::new, ModBlocks.MACHINE_GASCENT))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SuperComputerBlockEntity> SUPERCOMPUTER =
+            (Reg.<SuperComputerBlockEntity>be(
                             "supercomputer",
-                            BlockEntityMachineSuperComputer::new,
-                            ModBlocks.MACHINE_SUPERCOMPUTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineTapeDrive>> TAPE_DRIVE =
-            machine("tape_drive", BlockEntityMachineTapeDrive::new, ModBlocks.MACHINE_TAPE_DRIVE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineElectricFurnace>>
-            ELECTRIC_FURNACE =
-                    machine(
+                            SuperComputerBlockEntity::new,
+                            ModBlocks.MACHINE_SUPERCOMPUTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<TapeDriveBlockEntity> TAPE_DRIVE =
+            (Reg.<TapeDriveBlockEntity>be(
+                            "tape_drive", TapeDriveBlockEntity::new, ModBlocks.MACHINE_TAPE_DRIVE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ElectricFurnaceBlockEntity> ELECTRIC_FURNACE =
+            (Reg.<ElectricFurnaceBlockEntity>be(
                             "electric_furnace",
-                            BlockEntityMachineElectricFurnace::new,
-                            ModBlocks.MACHINE_ELECTRIC_FURNACE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityGeiger>> GEIGER =
-            be("geiger", BlockEntityGeiger::new, ModBlocks.GEIGER)
-                    .ticksServerAt(BlockEntityGeiger::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCyberCrab>> CRABS =
-            be("crabs", BlockEntityCyberCrab::new, ModBlocks.METEOR_SPAWNER)
-                    .ticksServerAt(BlockEntityCyberCrab::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRebar>> REBAR =
-            be("rebar", BlockEntityRebar::new, ModBlocks.REBAR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTesla>> TESLA_COIL =
-            machine("tesla_coil", BlockEntityTesla::new, ModBlocks.TESLA);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePress>> PRESS =
-            clientMachine("press", BlockEntityMachinePress::new, ModBlocks.MACHINE_PRESS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityConveyorPress>> CONVEYOR_PRESS =
-            clientMachine(
-                    "conveyor_press",
-                    BlockEntityConveyorPress::new,
-                    ModBlocks.MACHINE_CONVEYOR_PRESS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneInserter>> CRANE_INSERTER =
-            machine("inserter", BlockEntityCraneInserter::new, ModBlocks.CRANE_INSERTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneExtractor>> CRANE_EXTRACTOR =
-            machine("extractor", BlockEntityCraneExtractor::new, ModBlocks.CRANE_EXTRACTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneGrabber>> CRANE_GRABBER =
-            machine("grabber", BlockEntityCraneGrabber::new, ModBlocks.CRANE_GRABBER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneBoxer>> CRANE_BOXER =
-            machine("boxer", BlockEntityCraneBoxer::new, ModBlocks.CRANE_BOXER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneUnboxer>> CRANE_UNBOXER =
-            machine("unboxer", BlockEntityCraneUnboxer::new, ModBlocks.CRANE_UNBOXER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneRouter>> CRANE_ROUTER =
-            be("router", BlockEntityCraneRouter::new, ModBlocks.CRANE_ROUTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneSplitter>> CRANE_SPLITTER =
-            be("splitter", BlockEntityCraneSplitter::new, ModBlocks.CRANE_SPLITTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCranePartitioner>>
-            CRANE_PARTITIONER =
-                    machine(
+                            ElectricFurnaceBlockEntity::new,
+                            ModBlocks.MACHINE_ELECTRIC_FURNACE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<GeigerBlockEntity> GEIGER =
+            (Reg.<GeigerBlockEntity>be("geiger", GeigerBlockEntity::new, ModBlocks.GEIGER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CyberCrabBlockEntity> CRABS =
+            (Reg.<CyberCrabBlockEntity>be(
+                            "crabs", CyberCrabBlockEntity::new, ModBlocks.METEOR_SPAWNER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RebarBlockEntity> REBAR =
+            (Reg.<RebarBlockEntity>be("rebar", RebarBlockEntity::new, ModBlocks.REBAR));
+    public static final Reg.BeHandle<TeslaCoilBlockEntity> TESLA_COIL =
+            (Reg.<TeslaCoilBlockEntity>be("tesla_coil", TeslaCoilBlockEntity::new, ModBlocks.TESLA))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<BurnerPressBlockEntity> PRESS =
+            (Reg.<BurnerPressBlockEntity>be(
+                            "press", BurnerPressBlockEntity::new, ModBlocks.MACHINE_PRESS))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ConveyorStampBlockEntity> CONVEYOR_PRESS =
+            (Reg.<ConveyorStampBlockEntity>be(
+                            "conveyor_press",
+                            ConveyorStampBlockEntity::new,
+                            ModBlocks.MACHINE_CONVEYOR_PRESS))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CraneInserterBlockEntity> CRANE_INSERTER =
+            (Reg.<CraneInserterBlockEntity>be(
+                            "inserter", CraneInserterBlockEntity::new, ModBlocks.CRANE_INSERTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CraneExtractorBlockEntity> CRANE_EXTRACTOR =
+            (Reg.<CraneExtractorBlockEntity>be(
+                            "extractor", CraneExtractorBlockEntity::new, ModBlocks.CRANE_EXTRACTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CraneGrabberBlockEntity> CRANE_GRABBER =
+            (Reg.<CraneGrabberBlockEntity>be(
+                            "grabber", CraneGrabberBlockEntity::new, ModBlocks.CRANE_GRABBER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CraneBoxerBlockEntity> CRANE_BOXER =
+            (Reg.<CraneBoxerBlockEntity>be(
+                            "boxer", CraneBoxerBlockEntity::new, ModBlocks.CRANE_BOXER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CraneUnboxerBlockEntity> CRANE_UNBOXER =
+            (Reg.<CraneUnboxerBlockEntity>be(
+                            "unboxer", CraneUnboxerBlockEntity::new, ModBlocks.CRANE_UNBOXER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CraneRouterBlockEntity> CRANE_ROUTER =
+            (Reg.<CraneRouterBlockEntity>be(
+                    "router", CraneRouterBlockEntity::new, ModBlocks.CRANE_ROUTER));
+    public static final Reg.BeHandle<CraneSplitterBlockEntity> CRANE_SPLITTER =
+            (Reg.<CraneSplitterBlockEntity>be(
+                    "splitter", CraneSplitterBlockEntity::new, ModBlocks.CRANE_SPLITTER));
+    public static final Reg.BeHandle<CranePartitionerBlockEntity> CRANE_PARTITIONER =
+            (Reg.<CranePartitionerBlockEntity>be(
                             "partitioner",
-                            BlockEntityCranePartitioner::new,
-                            ModBlocks.CRANE_PARTITIONER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineAutocrafter>> AUTOCRAFTER =
-            machine(
-                    "autocrafter",
-                    BlockEntityMachineAutocrafter::new,
-                    ModBlocks.MACHINE_AUTOCRAFTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeMan>> NUKEMAN =
-            be("nukeman", BlockEntityNukeMan::new, ModBlocks.NUKE_MAN);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeGadget>> NUKE_GADGET =
-            be("nukegadget", BlockEntityNukeGadget::new, ModBlocks.NUKE_GADGET);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeBoy>> NUKE_BOY =
-            be("nukeboy", BlockEntityNukeBoy::new, ModBlocks.NUKE_BOY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeMike>> NUKE_MIKE =
-            be("nukemike", BlockEntityNukeMike::new, ModBlocks.NUKE_MIKE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeTsar>> NUKE_TSAR =
-            be("nuketsar", BlockEntityNukeTsar::new, ModBlocks.NUKE_TSAR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeFleija>> NUKE_FLEIJA =
-            be("nukefleija", BlockEntityNukeFleija::new, ModBlocks.NUKE_FLEIJA);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukePrototype>> NUKE_PROTOTYPE =
-            be("nukeproto", BlockEntityNukePrototype::new, ModBlocks.NUKE_PROTOTYPE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeSolinium>> NUKE_SOLINIUM =
-            be("nuke_solinium", BlockEntityNukeSolinium::new, ModBlocks.NUKE_SOLINIUM);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeN2>> NUKE_N2 =
-            be("nuke_n2", BlockEntityNukeN2::new, ModBlocks.NUKE_N2);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineMissileAssembly>>
-            MISSILE_ASSEMBLY =
-                    be(
-                            "missile_assembly",
-                            BlockEntityMachineMissileAssembly::new,
-                            ModBlocks.MACHINE_MISSILE_ASSEMBLY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityLaunchPad>> LAUNCH1 =
-            clientMachine("launch1", BlockEntityLaunchPad::new, ModBlocks.LAUNCH_PAD);
-    public static final RegistryHandle<BlockEntityType<BlockEntityLaunchPadRusted>>
-            LAUNCHPAD_RUSTED =
-                    be(
-                                    "launchpad_rusted",
-                                    BlockEntityLaunchPadRusted::new,
-                                    ModBlocks.LAUNCH_PAD_RUSTED)
-                            .ticksClient(BlockEntityLaunchPadRusted::tickClient);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRadar>> RADAR =
-            clientMachine("radar", BlockEntityMachineRadar::new, ModBlocks.MACHINE_RADAR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRadarLarge>> RADAR_LARGE =
-            clientMachine(
-                    "radar_large",
-                    BlockEntityMachineRadarLarge::new,
-                    ModBlocks.MACHINE_RADAR_LARGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRadarScreen>>
-            RADAR_SCREEN =
-                    be("radar_screen", BlockEntityMachineRadarScreen::new, ModBlocks.RADAR_SCREEN)
-                            .ticksServer(BlockEntityMachineRadarScreen::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityLaunchTable>> LARGE_LAUNCH_TABLE =
-            clientMachine(
-                    "large_launch_table", BlockEntityLaunchTable::new, ModBlocks.LAUNCH_TABLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityLaunchPadLarge>> LAUNCHPAD_LARGE =
-            clientMachine(
-                    "launchpad_large", BlockEntityLaunchPadLarge::new, ModBlocks.LAUNCH_PAD_LARGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCompactLauncher>> SMALL_LAUNCHER =
-            clientMachine(
-                    "small_launcher", BlockEntityCompactLauncher::new, ModBlocks.COMPACT_LAUNCHER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMultiblock>> MULTI_CORE =
-            be(
-                            "multi_core",
-                            BlockEntityMultiblock::new,
-                            ModBlocks.STRUCT_LAUNCHER_CORE,
-                            ModBlocks.STRUCT_LAUNCHER_CORE_LARGE)
-                    .ticksServer(BlockEntityMultiblock::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySoyuzCapsule>> SOYUZ_CAPSULE =
-            be("soyuz_capsule", BlockEntitySoyuzCapsule::new, ModBlocks.SOYUZ_CAPSULE);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySoyuzStruct>> SOYUZ_STRUCT =
-            be("soyuz_struct", BlockEntitySoyuzStruct::new, ModBlocks.STRUCT_SOYUZ_CORE)
-                    .ticksServer(BlockEntitySoyuzStruct::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySoyuzLauncher>> SOYUZ_LAUNCHER =
-            clientMachine(
-                    "soyuz_launcher", BlockEntitySoyuzLauncher::new, ModBlocks.SOYUZ_LAUNCHER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityLaunchpadSoyuz>> LAUNCHPAD_SOYUZ =
-            clientMachine(
-                    "launchpad_soyuz", BlockEntityLaunchpadSoyuz::new, ModBlocks.LAUNCHPAD_SOYUZ);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySoyuzRenderAnchor>>
-            LAUNCHPAD_SOYUZ_ANCHOR =
-                    be(
-                                    "launchpad_soyuz_anchor",
-                                    BlockEntitySoyuzRenderAnchor::new,
-                                    ModBlocks.LAUNCHPAD_SOYUZ_ANCHOR)
-                            .ticksServer(BlockEntitySoyuzRenderAnchor::tickServer)
-                            .ticksClient(BlockEntitySoyuzRenderAnchor::tickClient);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineSatDock>> MINER_DOCK =
-            machine("miner_dock", BlockEntityMachineSatDock::new, ModBlocks.SAT_DOCK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDoorGeneric>> NTM_DOOR =
-            be(
+                            CranePartitionerBlockEntity::new,
+                            ModBlocks.CRANE_PARTITIONER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<TemplateCrafterBlockEntity> AUTOCRAFTER =
+            (Reg.<TemplateCrafterBlockEntity>be(
+                            "autocrafter",
+                            TemplateCrafterBlockEntity::new,
+                            ModBlocks.MACHINE_AUTOCRAFTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<NukeManBlockEntity> NUKEMAN =
+            (Reg.<NukeManBlockEntity>be("nukeman", NukeManBlockEntity::new, ModBlocks.NUKE_MAN));
+    public static final Reg.BeHandle<NukeGadgetBlockEntity> NUKE_GADGET =
+            (Reg.<NukeGadgetBlockEntity>be(
+                    "nukegadget", NukeGadgetBlockEntity::new, ModBlocks.NUKE_GADGET));
+    public static final Reg.BeHandle<NukeBoyBlockEntity> NUKE_BOY =
+            (Reg.<NukeBoyBlockEntity>be("nukeboy", NukeBoyBlockEntity::new, ModBlocks.NUKE_BOY));
+    public static final Reg.BeHandle<NukeMikeBlockEntity> NUKE_MIKE =
+            (Reg.<NukeMikeBlockEntity>be(
+                    "nukemike", NukeMikeBlockEntity::new, ModBlocks.NUKE_MIKE));
+    public static final Reg.BeHandle<NukeTsarBlockEntity> NUKE_TSAR =
+            (Reg.<NukeTsarBlockEntity>be(
+                    "nuketsar", NukeTsarBlockEntity::new, ModBlocks.NUKE_TSAR));
+    public static final Reg.BeHandle<NukeFleijaBlockEntity> NUKE_FLEIJA =
+            (Reg.<NukeFleijaBlockEntity>be(
+                    "nukefleija", NukeFleijaBlockEntity::new, ModBlocks.NUKE_FLEIJA));
+    public static final Reg.BeHandle<NukePrototypeBlockEntity> NUKE_PROTOTYPE =
+            (Reg.<NukePrototypeBlockEntity>be(
+                    "nukeproto", NukePrototypeBlockEntity::new, ModBlocks.NUKE_PROTOTYPE));
+    public static final Reg.BeHandle<NukeSoliniumBlockEntity> NUKE_SOLINIUM =
+            (Reg.<NukeSoliniumBlockEntity>be(
+                    "nuke_solinium", NukeSoliniumBlockEntity::new, ModBlocks.NUKE_SOLINIUM));
+    public static final Reg.BeHandle<NukeN2BlockEntity> NUKE_N2 =
+            (Reg.<NukeN2BlockEntity>be("nuke_n2", NukeN2BlockEntity::new, ModBlocks.NUKE_N2));
+    public static final Reg.BeHandle<MissileWorkbenchBlockEntity> MISSILE_ASSEMBLY =
+            (Reg.<MissileWorkbenchBlockEntity>be(
+                    "missile_assembly",
+                    MissileWorkbenchBlockEntity::new,
+                    ModBlocks.MACHINE_MISSILE_ASSEMBLY));
+    public static final Reg.BeHandle<LaunchPadBlockEntity> LAUNCH1 =
+            (Reg.<LaunchPadBlockEntity>be(
+                            "launch1", LaunchPadBlockEntity::new, ModBlocks.LAUNCH_PAD))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<LaunchSiloBlockEntity> LAUNCHPAD_RUSTED =
+            (Reg.<LaunchSiloBlockEntity>be(
+                            "launchpad_rusted",
+                            LaunchSiloBlockEntity::new,
+                            ModBlocks.LAUNCH_PAD_RUSTED))
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RadarBlockEntity> RADAR =
+            (Reg.<RadarBlockEntity>be("radar", RadarBlockEntity::new, ModBlocks.MACHINE_RADAR))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RadarLargeBlockEntity> RADAR_LARGE =
+            (Reg.<RadarLargeBlockEntity>be(
+                            "radar_large",
+                            RadarLargeBlockEntity::new,
+                            ModBlocks.MACHINE_RADAR_LARGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RadarScreenBlockEntity> RADAR_SCREEN =
+            (Reg.<RadarScreenBlockEntity>be(
+                            "radar_screen", RadarScreenBlockEntity::new, ModBlocks.RADAR_SCREEN))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<LaunchTableBlockEntity> LARGE_LAUNCH_TABLE =
+            (Reg.<LaunchTableBlockEntity>be(
+                            "large_launch_table",
+                            LaunchTableBlockEntity::new,
+                            ModBlocks.LAUNCH_TABLE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<MissileErectorBlockEntity> LAUNCHPAD_LARGE =
+            (Reg.<MissileErectorBlockEntity>be(
+                            "launchpad_large",
+                            MissileErectorBlockEntity::new,
+                            ModBlocks.LAUNCH_PAD_LARGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CompactLauncherBlockEntity> SMALL_LAUNCHER =
+            (Reg.<CompactLauncherBlockEntity>be(
+                            "small_launcher",
+                            CompactLauncherBlockEntity::new,
+                            ModBlocks.COMPACT_LAUNCHER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<LauncherAssemblyBlockEntity> MULTI_CORE =
+            (Reg.<LauncherAssemblyBlockEntity>be(
+                    "multi_core",
+                    LauncherAssemblyBlockEntity::new,
+                    ModBlocks.STRUCT_LAUNCHER_CORE,
+                    ModBlocks.STRUCT_LAUNCHER_CORE_LARGE));
+    public static final Reg.BeHandle<CargoCapsuleBlockEntity> SOYUZ_CAPSULE =
+            (Reg.<CargoCapsuleBlockEntity>be(
+                    "soyuz_capsule", CargoCapsuleBlockEntity::new, ModBlocks.SOYUZ_CAPSULE));
+    public static final Reg.BeHandle<SoyuzAssemblyBlockEntity> SOYUZ_STRUCT =
+            (Reg.<SoyuzAssemblyBlockEntity>be(
+                    "soyuz_struct", SoyuzAssemblyBlockEntity::new, ModBlocks.STRUCT_SOYUZ_CORE));
+    public static final Reg.BeHandle<SoyuzLauncherBlockEntity> SOYUZ_LAUNCHER =
+            (Reg.<SoyuzLauncherBlockEntity>be(
+                            "soyuz_launcher",
+                            SoyuzLauncherBlockEntity::new,
+                            ModBlocks.SOYUZ_LAUNCHER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<LaunchpadSoyuzBlockEntity> LAUNCHPAD_SOYUZ =
+            (Reg.<LaunchpadSoyuzBlockEntity>be(
+                            "launchpad_soyuz",
+                            LaunchpadSoyuzBlockEntity::new,
+                            ModBlocks.LAUNCHPAD_SOYUZ))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SoyuzRenderAnchorBlockEntity> LAUNCHPAD_SOYUZ_ANCHOR =
+            (Reg.<SoyuzRenderAnchorBlockEntity>be(
+                            "launchpad_soyuz_anchor",
+                            SoyuzRenderAnchorBlockEntity::new,
+                            ModBlocks.LAUNCHPAD_SOYUZ_ANCHOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SatDockBlockEntity> MINER_DOCK =
+            (Reg.<SatDockBlockEntity>be("miner_dock", SatDockBlockEntity::new, ModBlocks.SAT_DOCK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DoorBlockEntity> NTM_DOOR =
+            (Reg.<DoorBlockEntity>be(
                             "door",
-                            BlockEntityDoorGeneric::new,
+                            DoorBlockEntity::new,
                             ModBlocks.TRANSITION_SEAL,
                             ModBlocks.VAULT_DOOR,
                             ModBlocks.SLIDING_SEAL_DOOR,
@@ -221,1185 +338,1536 @@ public final class ModBlockEntities {
                             ModBlocks.WATER_DOOR,
                             ModBlocks.FIRE_DOOR,
                             ModBlocks.SILO_HATCH,
-                            ModBlocks.SILO_HATCH_LARGE)
-                    .ticks(BlockEntityDoorGeneric::tickClient, BlockEntityDoorGeneric::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretHowardDamaged>>
-            TURRET_HOWARD_DAMAGED =
-                    be(
-                                    "turret_howard_damaged",
-                                    BlockEntityTurretHowardDamaged::new,
-                                    ModBlocks.TURRET_HOWARD_DAMAGED)
-                            .ticks(
-                                    BlockEntityTurretHowardDamaged::tickClient,
-                                    BlockEntityTurretHowardDamaged::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretChekhov>> TURRET_CHEKHOV =
-            be("turret_chekhov", BlockEntityTurretChekhov::new, ModBlocks.TURRET_CHEKHOV)
-                    .ticks(
-                            BlockEntityTurretChekhov::tickClient,
-                            BlockEntityTurretChekhov::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretFriendly>> TURRET_FRIENDLY =
-            be("turret_friendly", BlockEntityTurretFriendly::new, ModBlocks.TURRET_FRIENDLY)
-                    .ticks(
-                            BlockEntityTurretFriendly::tickClient,
-                            BlockEntityTurretFriendly::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretJeremy>> TURRET_JEREMY =
-            be("turret_jeremy", BlockEntityTurretJeremy::new, ModBlocks.TURRET_JEREMY)
-                    .ticks(
-                            BlockEntityTurretJeremy::tickClient,
-                            BlockEntityTurretJeremy::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretRichard>> TURRET_RICHARD =
-            be("turret_richard", BlockEntityTurretRichard::new, ModBlocks.TURRET_RICHARD)
-                    .ticks(
-                            BlockEntityTurretRichard::tickClient,
-                            BlockEntityTurretRichard::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretHoward>> TURRET_HOWARD =
-            be("turret_howard", BlockEntityTurretHoward::new, ModBlocks.TURRET_HOWARD)
-                    .ticks(
-                            BlockEntityTurretHoward::tickClient,
-                            BlockEntityTurretHoward::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretTauon>> TURRET_TAUON =
-            be("turret_tauon", BlockEntityTurretTauon::new, ModBlocks.TURRET_TAUON)
-                    .ticks(BlockEntityTurretTauon::tickClient, BlockEntityTurretTauon::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretFritz>> TURRET_FRITZ =
-            be("turret_fritz", BlockEntityTurretFritz::new, ModBlocks.TURRET_FRITZ)
-                    .ticks(BlockEntityTurretFritz::tickClient, BlockEntityTurretFritz::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretMaxwell>> TURRET_MAXWELL =
-            be("turret_maxwell", BlockEntityTurretMaxwell::new, ModBlocks.TURRET_MAXWELL)
-                    .ticks(
-                            BlockEntityTurretMaxwell::tickClient,
-                            BlockEntityTurretMaxwell::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretSentry>> TURRET_SENTRY =
-            be("turret_sentry", BlockEntityTurretSentry::new, ModBlocks.TURRET_SENTRY)
-                    .ticks(
-                            BlockEntityTurretSentry::tickClient,
-                            BlockEntityTurretSentry::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretSentryDamaged>>
-            TURRET_SENTRY_DAMAGED =
-                    be(
-                                    "turret_sentry_damaged",
-                                    BlockEntityTurretSentryDamaged::new,
-                                    ModBlocks.TURRET_SENTRY_DAMAGED)
-                            .ticks(
-                                    BlockEntityTurretSentryDamaged::tickClient,
-                                    BlockEntityTurretSentryDamaged::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretArty>> TURRET_ARTY =
-            be("turret_arty", BlockEntityTurretArty::new, ModBlocks.TURRET_ARTY)
-                    .ticks(BlockEntityTurretArty::tickClient, BlockEntityTurretArty::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTurretHIMARS>> TURRET_HIMARS =
-            be("turret_himars", BlockEntityTurretHIMARS::new, ModBlocks.TURRET_HIMARS)
-                    .ticks(
-                            BlockEntityTurretHIMARS::tickClient,
-                            BlockEntityTurretHIMARS::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySkeletonHolder>> NTM_SKELETON =
-            be("skeleton", BlockEntitySkeletonHolder::new, ModBlocks.SKELETON_HOLDER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPedestal>> NTM_PEDESTAL =
-            be("pedestal", BlockEntityPedestal::new, ModBlocks.PEDESTAL)
-                    .ticksServerAt(BlockEntityPedestal::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDungeonSpawner>>
-            NTM_DUNGEON_SPAWNER =
-                    be("dungeon_spawner", BlockEntityDungeonSpawner::new, ModBlocks.DUNGEON_SPAWNER)
-                            .ticksServerAt(BlockEntityDungeonSpawner::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBobble>> NTM_BOBBLEHEAD =
-            be("bobblehead", BlockEntityBobble::new, ModBlocks.BOBBLEHEAD);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySnowglobe>> NTM_SNOWGLOBE =
-            be("snowglobe", BlockEntitySnowglobe::new, ModBlocks.SNOWGLOBE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPlushie>> NTM_PLUSHIE =
-            be("plushie", BlockEntityPlushie::new, ModBlocks.PLUSHIE)
-                    .ticksClient(BlockEntityPlushie::tickClient);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFloodlight>> FLOODLIGHT =
-            be("floodlight", BlockEntityFloodlight::new, ModBlocks.FLOODLIGHT)
-                    .ticksServer(BlockEntityFloodlight::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFloodlightBeam>> FLOODLIGHT_BEAM =
-            be("floodlight_beam", BlockEntityFloodlightBeam::new, ModBlocks.FLOODLIGHT_BEAM);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDemonLamp>> DEMON_LAMP =
-            be("demonlamp", BlockEntityDemonLamp::new, ModBlocks.LAMP_DEMON)
-                    .ticksServer(BlockEntityDemonLamp::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineAssemblyMachine>>
-            ASSEMBLYMACHINE =
-                    clientMachine(
+                            ModBlocks.SILO_HATCH_LARGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretHowardDamagedBlockEntity> TURRET_HOWARD_DAMAGED =
+            (Reg.<TurretHowardDamagedBlockEntity>be(
+                            "turret_howard_damaged",
+                            TurretHowardDamagedBlockEntity::new,
+                            ModBlocks.TURRET_HOWARD_DAMAGED))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretChekhovBlockEntity> TURRET_CHEKHOV =
+            (Reg.<TurretChekhovBlockEntity>be(
+                            "turret_chekhov",
+                            TurretChekhovBlockEntity::new,
+                            ModBlocks.TURRET_CHEKHOV))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretFriendlyBlockEntity> TURRET_FRIENDLY =
+            (Reg.<TurretFriendlyBlockEntity>be(
+                            "turret_friendly",
+                            TurretFriendlyBlockEntity::new,
+                            ModBlocks.TURRET_FRIENDLY))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretJeremyBlockEntity> TURRET_JEREMY =
+            (Reg.<TurretJeremyBlockEntity>be(
+                            "turret_jeremy", TurretJeremyBlockEntity::new, ModBlocks.TURRET_JEREMY))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretRichardBlockEntity> TURRET_RICHARD =
+            (Reg.<TurretRichardBlockEntity>be(
+                            "turret_richard",
+                            TurretRichardBlockEntity::new,
+                            ModBlocks.TURRET_RICHARD))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretHowardBlockEntity> TURRET_HOWARD =
+            (Reg.<TurretHowardBlockEntity>be(
+                            "turret_howard", TurretHowardBlockEntity::new, ModBlocks.TURRET_HOWARD))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretTauonBlockEntity> TURRET_TAUON =
+            (Reg.<TurretTauonBlockEntity>be(
+                            "turret_tauon", TurretTauonBlockEntity::new, ModBlocks.TURRET_TAUON))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretFritzBlockEntity> TURRET_FRITZ =
+            (Reg.<TurretFritzBlockEntity>be(
+                            "turret_fritz", TurretFritzBlockEntity::new, ModBlocks.TURRET_FRITZ))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretMaxwellBlockEntity> TURRET_MAXWELL =
+            (Reg.<TurretMaxwellBlockEntity>be(
+                            "turret_maxwell",
+                            TurretMaxwellBlockEntity::new,
+                            ModBlocks.TURRET_MAXWELL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretSentryBlockEntity> TURRET_SENTRY =
+            (Reg.<TurretSentryBlockEntity>be(
+                            "turret_sentry", TurretSentryBlockEntity::new, ModBlocks.TURRET_SENTRY))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretSentryDamagedBlockEntity> TURRET_SENTRY_DAMAGED =
+            (Reg.<TurretSentryDamagedBlockEntity>be(
+                            "turret_sentry_damaged",
+                            TurretSentryDamagedBlockEntity::new,
+                            ModBlocks.TURRET_SENTRY_DAMAGED))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretArtyBlockEntity> TURRET_ARTY =
+            (Reg.<TurretArtyBlockEntity>be(
+                            "turret_arty", TurretArtyBlockEntity::new, ModBlocks.TURRET_ARTY))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurretHIMARSBlockEntity> TURRET_HIMARS =
+            (Reg.<TurretHIMARSBlockEntity>be(
+                            "turret_himars", TurretHIMARSBlockEntity::new, ModBlocks.TURRET_HIMARS))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SkeletonHolderBlockEntity> NTM_SKELETON =
+            (Reg.<SkeletonHolderBlockEntity>be(
+                    "skeleton", SkeletonHolderBlockEntity::new, ModBlocks.SKELETON_HOLDER));
+    public static final Reg.BeHandle<PedestalBlockEntity> NTM_PEDESTAL =
+            (Reg.<PedestalBlockEntity>be("pedestal", PedestalBlockEntity::new, ModBlocks.PEDESTAL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DungeonSpawnerBlockEntity> NTM_DUNGEON_SPAWNER =
+            (Reg.<DungeonSpawnerBlockEntity>be(
+                            "dungeon_spawner",
+                            DungeonSpawnerBlockEntity::new,
+                            ModBlocks.DUNGEON_SPAWNER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<BobbleBlockEntity> NTM_BOBBLEHEAD =
+            (Reg.<BobbleBlockEntity>be("bobblehead", BobbleBlockEntity::new, ModBlocks.BOBBLEHEAD));
+    public static final Reg.BeHandle<SnowglobeBlockEntity> NTM_SNOWGLOBE =
+            (Reg.<SnowglobeBlockEntity>be(
+                    "snowglobe", SnowglobeBlockEntity::new, ModBlocks.SNOWGLOBE));
+    public static final Reg.BeHandle<PlushieBlockEntity> NTM_PLUSHIE =
+            (Reg.<PlushieBlockEntity>be("plushie", PlushieBlockEntity::new, ModBlocks.PLUSHIE))
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FloodlightBlockEntity> FLOODLIGHT =
+            (Reg.<FloodlightBlockEntity>be(
+                            "floodlight", FloodlightBlockEntity::new, ModBlocks.FLOODLIGHT))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FloodlightBeamBlockEntity> FLOODLIGHT_BEAM =
+            (Reg.<FloodlightBeamBlockEntity>be(
+                    "floodlight_beam", FloodlightBeamBlockEntity::new, ModBlocks.FLOODLIGHT_BEAM));
+    public static final Reg.BeHandle<DemonLampBlockEntity> DEMON_LAMP =
+            (Reg.<DemonLampBlockEntity>be(
+                            "demonlamp", DemonLampBlockEntity::new, ModBlocks.LAMP_DEMON))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<AssemblyMachineBlockEntity> ASSEMBLYMACHINE =
+            (Reg.<AssemblyMachineBlockEntity>be(
                             "assemblymachine",
-                            BlockEntityMachineAssemblyMachine::new,
-                            ModBlocks.MACHINE_ASSEMBLY_MACHINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineAssemblyFactory>>
-            ASSEMBLYFACTORY =
-                    clientMachine(
+                            AssemblyMachineBlockEntity::new,
+                            ModBlocks.MACHINE_ASSEMBLY_MACHINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<AssemblyFactoryBlockEntity> ASSEMBLYFACTORY =
+            (Reg.<AssemblyFactoryBlockEntity>be(
                             "assemblyfactory",
-                            BlockEntityMachineAssemblyFactory::new,
-                            ModBlocks.MACHINE_ASSEMBLY_FACTORY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineChemicalPlant>>
-            CHEMICALPLANT =
-                    clientMachine(
+                            AssemblyFactoryBlockEntity::new,
+                            ModBlocks.MACHINE_ASSEMBLY_FACTORY))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ChemicalPlantBlockEntity> CHEMICALPLANT =
+            (Reg.<ChemicalPlantBlockEntity>be(
                             "chemicalplant",
-                            BlockEntityMachineChemicalPlant::new,
-                            ModBlocks.MACHINE_CHEMICAL_PLANT);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRockMill>> ROCK_MILL =
-            clientMachine(
-                    "rock_mill", BlockEntityMachineRockMill::new, ModBlocks.MACHINE_ROCK_MILL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCustomMachine>> CUSTOM_MACHINE =
-            machine("custom_machine", BlockEntityCustomMachine::new, ModBlocks.CUSTOM_MACHINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRadiolysis>> RADIOLYSIS =
-            machine("radiolysis", BlockEntityMachineRadiolysis::new, ModBlocks.MACHINE_RADIOLYSIS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDeuteriumExtractor>>
-            DEUTERIUM_EXTRACTOR =
-                    machine(
+                            ChemicalPlantBlockEntity::new,
+                            ModBlocks.MACHINE_CHEMICAL_PLANT))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RockMillBlockEntity> ROCK_MILL =
+            (Reg.<RockMillBlockEntity>be(
+                            "rock_mill", RockMillBlockEntity::new, ModBlocks.MACHINE_ROCK_MILL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CustomMachineBlockEntity> CUSTOM_MACHINE =
+            (Reg.<CustomMachineBlockEntity>be(
+                            "custom_machine",
+                            CustomMachineBlockEntity::new,
+                            ModBlocks.CUSTOM_MACHINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadiolysisBlockEntity> RADIOLYSIS =
+            (Reg.<RadiolysisBlockEntity>be(
+                            "radiolysis", RadiolysisBlockEntity::new, ModBlocks.MACHINE_RADIOLYSIS))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DeuteriumExtractorBlockEntity> DEUTERIUM_EXTRACTOR =
+            (Reg.<DeuteriumExtractorBlockEntity>be(
                             "deuterium_extractor",
-                            BlockEntityDeuteriumExtractor::new,
-                            ModBlocks.MACHINE_DEUTERIUM_EXTRACTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDeuteriumTower>> DEUTERIUM_TOWER =
-            machine(
-                    "deuterium_tower",
-                    BlockEntityDeuteriumTower::new,
-                    ModBlocks.MACHINE_DEUTERIUM_TOWER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineChemicalFactory>>
-            CHEMICALFACTORY =
-                    clientMachine(
+                            DeuteriumExtractorBlockEntity::new,
+                            ModBlocks.MACHINE_DEUTERIUM_EXTRACTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DeuteriumTowerBlockEntity> DEUTERIUM_TOWER =
+            (Reg.<DeuteriumTowerBlockEntity>be(
+                            "deuterium_tower",
+                            DeuteriumTowerBlockEntity::new,
+                            ModBlocks.MACHINE_DEUTERIUM_TOWER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ChemicalFactoryBlockEntity> CHEMICALFACTORY =
+            (Reg.<ChemicalFactoryBlockEntity>be(
                             "chemicalfactory",
-                            BlockEntityMachineChemicalFactory::new,
-                            ModBlocks.MACHINE_CHEMICAL_FACTORY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineElectrolyser>>
-            ELECTROLYSER =
-                    clientMachine(
+                            ChemicalFactoryBlockEntity::new,
+                            ModBlocks.MACHINE_CHEMICAL_FACTORY))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ElectrolysisBlockEntity> ELECTROLYSER =
+            (Reg.<ElectrolysisBlockEntity>be(
                             "electrolyser",
-                            BlockEntityMachineElectrolyser::new,
-                            ModBlocks.MACHINE_ELECTROLYSER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRefinery>> REFINERY =
-            clientMachine("refinery", BlockEntityMachineRefinery::new, ModBlocks.MACHINE_REFINERY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCatalyticReformer>>
-            CATALYTIC_REFORMER =
-                    machine(
+                            ElectrolysisBlockEntity::new,
+                            ModBlocks.MACHINE_ELECTROLYSER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RefineryBlockEntity> REFINERY =
+            (Reg.<RefineryBlockEntity>be(
+                            "refinery", RefineryBlockEntity::new, ModBlocks.MACHINE_REFINERY))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CatalyticReformerBlockEntity> CATALYTIC_REFORMER =
+            (Reg.<CatalyticReformerBlockEntity>be(
                             "catalytic_reformer",
-                            BlockEntityMachineCatalyticReformer::new,
-                            ModBlocks.MACHINE_CATALYTIC_REFORMER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineHydrotreater>>
-            HYDROTREATER =
-                    machine(
+                            CatalyticReformerBlockEntity::new,
+                            ModBlocks.MACHINE_CATALYTIC_REFORMER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<HydrotreaterBlockEntity> HYDROTREATER =
+            (Reg.<HydrotreaterBlockEntity>be(
                             "hydrotreater",
-                            BlockEntityMachineHydrotreater::new,
-                            ModBlocks.MACHINE_HYDROTREATER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineFractionTower>>
-            FRACTION_TOWER =
-                    machine(
+                            HydrotreaterBlockEntity::new,
+                            ModBlocks.MACHINE_HYDROTREATER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FractionTowerBlockEntity> FRACTION_TOWER =
+            (Reg.<FractionTowerBlockEntity>be(
                             "fraction_tower",
-                            BlockEntityMachineFractionTower::new,
-                            ModBlocks.MACHINE_FRACTION_TOWER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFractionSpacer>> FRACTION_SPACER =
-            be("fraction_spacer", BlockEntityFractionSpacer::new, ModBlocks.FRACTION_SPACER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCrackingTower>>
-            CATALYTIC_CRACKER =
-                    machine(
+                            FractionTowerBlockEntity::new,
+                            ModBlocks.MACHINE_FRACTION_TOWER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FractionSpacerBlockEntity> FRACTION_SPACER =
+            (Reg.<FractionSpacerBlockEntity>be(
+                    "fraction_spacer", FractionSpacerBlockEntity::new, ModBlocks.FRACTION_SPACER));
+    public static final Reg.BeHandle<CrackingTowerBlockEntity> CATALYTIC_CRACKER =
+            (Reg.<CrackingTowerBlockEntity>be(
                             "catalytic_cracker",
-                            BlockEntityMachineCrackingTower::new,
-                            ModBlocks.MACHINE_CRACKING_TOWER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePUREX>> PUREX =
-            clientMachine("purex", BlockEntityMachinePUREX::new, ModBlocks.MACHINE_PUREX);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineMixer>> MIXER =
-            clientMachine("mixer", BlockEntityMachineMixer::new, ModBlocks.MACHINE_MIXER);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySILEX>> SILEX =
-            machine("silex", BlockEntitySILEX::new, ModBlocks.MACHINE_SILEX);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineOreSlopper>> ORE_SLOPPER =
-            clientMachine(
-                    "ore_slopper",
-                    BlockEntityMachineOreSlopper::new,
-                    ModBlocks.MACHINE_ORE_SLOPPER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineAnnihilator>> ANNIHILATOR =
-            machine(
-                    "annihilator",
-                    BlockEntityMachineAnnihilator::new,
-                    ModBlocks.MACHINE_ANNIHILATOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineBlastFurnace>>
-            BLAST_FURNACE =
-                    clientMachine(
+                            CrackingTowerBlockEntity::new,
+                            ModBlocks.MACHINE_CRACKING_TOWER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PurexBlockEntity> PUREX =
+            (Reg.<PurexBlockEntity>be("purex", PurexBlockEntity::new, ModBlocks.MACHINE_PUREX))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FluidMixerBlockEntity> MIXER =
+            (Reg.<FluidMixerBlockEntity>be(
+                            "mixer", FluidMixerBlockEntity::new, ModBlocks.MACHINE_MIXER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SilexBlockEntity> SILEX =
+            (Reg.<SilexBlockEntity>be("silex", SilexBlockEntity::new, ModBlocks.MACHINE_SILEX))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<OreSlopperBlockEntity> ORE_SLOPPER =
+            (Reg.<OreSlopperBlockEntity>be(
+                            "ore_slopper",
+                            OreSlopperBlockEntity::new,
+                            ModBlocks.MACHINE_ORE_SLOPPER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<AnnihilatorBlockEntity> ANNIHILATOR =
+            (Reg.<AnnihilatorBlockEntity>be(
+                            "annihilator",
+                            AnnihilatorBlockEntity::new,
+                            ModBlocks.MACHINE_ANNIHILATOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<BlastFurnaceBlockEntity> BLAST_FURNACE =
+            (Reg.<BlastFurnaceBlockEntity>be(
                             "blast_furnace",
-                            BlockEntityMachineBlastFurnace::new,
-                            ModBlocks.MACHINE_BLAST_FURNACE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineHephaestus>> HEPHAESTUS =
-            clientMachine(
-                    "hephaestus", BlockEntityMachineHephaestus::new, ModBlocks.MACHINE_HEPHAESTUS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrucible>> CRUCIBLE =
-            clientMachine("crucible", BlockEntityCrucible::new, ModBlocks.MACHINE_CRUCIBLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineStrandCaster>>
-            STRAND_CASTER =
-                    foundry(
+                            BlastFurnaceBlockEntity::new,
+                            ModBlocks.MACHINE_BLAST_FURNACE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<GeothermalExchanger> HEPHAESTUS =
+            (Reg.<GeothermalExchanger>be(
+                            "hephaestus", GeothermalExchanger::new, ModBlocks.MACHINE_HEPHAESTUS))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CrucibleBlockEntity> CRUCIBLE =
+            (Reg.<CrucibleBlockEntity>be(
+                            "crucible", CrucibleBlockEntity::new, ModBlocks.MACHINE_CRUCIBLE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ContinuousCaster> STRAND_CASTER =
+            (Reg.<ContinuousCaster>be(
                             "strand_caster",
-                            BlockEntityMachineStrandCaster::new,
-                            ModBlocks.MACHINE_STRAND_CASTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePrecAss>> PRECASS =
-            clientMachine("precass", BlockEntityMachinePrecAss::new, ModBlocks.MACHINE_PRECASS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineMiningLaser>>
-            MINING_LASER =
-                    machine(
+                            ContinuousCaster::new,
+                            ModBlocks.MACHINE_STRAND_CASTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PrecisionAssemblerBlockEntity> PRECASS =
+            (Reg.<PrecisionAssemblerBlockEntity>be(
+                            "precass",
+                            PrecisionAssemblerBlockEntity::new,
+                            ModBlocks.MACHINE_PRECASS))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<MiningLaserBlockEntity> MINING_LASER =
+            (Reg.<MiningLaserBlockEntity>be(
                             "mining_laser",
-                            BlockEntityMachineMiningLaser::new,
-                            ModBlocks.MACHINE_MINING_LASER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityForceField>> FORCEFIELD =
-            clientMachine(
-                    "machine_field", BlockEntityForceField::new, ModBlocks.MACHINE_FORCEFIELD);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineExcavator>> EXCAVATOR =
-            clientMachine(
-                    "excavator", BlockEntityMachineExcavator::new, ModBlocks.MACHINE_EXCAVATOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCyclotron>> CYCLOTRON =
-            machine("cyclotron", BlockEntityMachineCyclotron::new, ModBlocks.MACHINE_CYCLOTRON);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineExposureChamber>>
-            EXPOSURE_CHAMBER =
-                    clientMachine(
+                            MiningLaserBlockEntity::new,
+                            ModBlocks.MACHINE_MINING_LASER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RepulsionFieldBlockEntity> FORCEFIELD =
+            (Reg.<RepulsionFieldBlockEntity>be(
+                            "machine_field",
+                            RepulsionFieldBlockEntity::new,
+                            ModBlocks.MACHINE_FORCEFIELD))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ExcavatorBlockEntity> EXCAVATOR =
+            (Reg.<ExcavatorBlockEntity>be(
+                            "excavator", ExcavatorBlockEntity::new, ModBlocks.MACHINE_EXCAVATOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CyclotronBlockEntity> CYCLOTRON =
+            (Reg.<CyclotronBlockEntity>be(
+                            "cyclotron", CyclotronBlockEntity::new, ModBlocks.MACHINE_CYCLOTRON))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ExposureChamberBlockEntity> EXPOSURE_CHAMBER =
+            (Reg.<ExposureChamberBlockEntity>be(
                             "exposure_chamber",
-                            BlockEntityMachineExposureChamber::new,
-                            ModBlocks.MACHINE_EXPOSURE_CHAMBER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRadGen>> RADGEN =
-            machine("radgen", BlockEntityMachineRadGen::new, ModBlocks.MACHINE_RADGEN);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineReactorBreeding>>
-            MACHINE_REACTOR_BREEDING =
-                    machine(
+                            ExposureChamberBlockEntity::new,
+                            ModBlocks.MACHINE_EXPOSURE_CHAMBER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RadGenBlockEntity> RADGEN =
+            (Reg.<RadGenBlockEntity>be("radgen", RadGenBlockEntity::new, ModBlocks.MACHINE_RADGEN))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+
+    static {
+        Reg.afterRegistration(RADGEN, _ -> WasteFuel.initialize());
+    }
+
+    public static final Reg.BeHandle<ReactorBreedingBlockEntity> MACHINE_REACTOR_BREEDING =
+            (Reg.<ReactorBreedingBlockEntity>be(
                             "reactor",
-                            BlockEntityMachineReactorBreeding::new,
-                            ModBlocks.MACHINE_REACTOR_BREEDING);
-    public static final RegistryHandle<BlockEntityType<BlockEntityReactorResearch>>
-            REACTOR_RESEARCH =
-                    clientMachine(
+                            ReactorBreedingBlockEntity::new,
+                            ModBlocks.MACHINE_REACTOR_BREEDING))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ResearchReactorBlockEntity> REACTOR_RESEARCH =
+            (Reg.<ResearchReactorBlockEntity>be(
                             "small_reactor",
-                            BlockEntityReactorResearch::new,
-                            ModBlocks.REACTOR_RESEARCH);
-    public static final RegistryHandle<BlockEntityType<BlockEntityReactorControl>> REACTOR_CONTROL =
-            machine(
-                    "reactor_remote_control",
-                    BlockEntityReactorControl::new,
-                    ModBlocks.MACHINE_CONTROLLER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTowerSmall>> TOWER_SMALL =
-            clientMachine(
-                    "cooling_tower_small",
-                    BlockEntityTowerSmall::new,
-                    ModBlocks.MACHINE_TOWER_SMALL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTowerLarge>> TOWER_LARGE =
-            clientMachine(
-                    "cooling_tower_large",
-                    BlockEntityTowerLarge::new,
-                    ModBlocks.MACHINE_TOWER_LARGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRotaryFurnace>>
-            ROTARY_FURNACE =
-                    clientMachine(
+                            ResearchReactorBlockEntity::new,
+                            ModBlocks.REACTOR_RESEARCH))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ReactorControlBlockEntity> REACTOR_CONTROL =
+            (Reg.<ReactorControlBlockEntity>be(
+                            "reactor_remote_control",
+                            ReactorControlBlockEntity::new,
+                            ModBlocks.MACHINE_CONTROLLER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<TowerSmallBlockEntity> TOWER_SMALL =
+            (Reg.<TowerSmallBlockEntity>be(
+                            "cooling_tower_small",
+                            TowerSmallBlockEntity::new,
+                            ModBlocks.MACHINE_TOWER_SMALL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TowerLargeBlockEntity> TOWER_LARGE =
+            (Reg.<TowerLargeBlockEntity>be(
+                            "cooling_tower_large",
+                            TowerLargeBlockEntity::new,
+                            ModBlocks.MACHINE_TOWER_LARGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RotaryFurnaceBlockEntity> ROTARY_FURNACE =
+            (Reg.<RotaryFurnaceBlockEntity>be(
                             "rotary_furnace",
-                            BlockEntityMachineRotaryFurnace::new,
-                            ModBlocks.MACHINE_ROTARY_FURNACE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineArcFurnace>>
-            ARC_FURNACE_LARGE =
-                    clientMachine(
+                            RotaryFurnaceBlockEntity::new,
+                            ModBlocks.MACHINE_ROTARY_FURNACE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ArcFurnaceBlockEntity> ARC_FURNACE_LARGE =
+            (Reg.<ArcFurnaceBlockEntity>be(
                             "arc_furnace_large",
-                            BlockEntityMachineArcFurnace::new,
-                            ModBlocks.MACHINE_ARC_FURNACE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityHeaterFirebox>> FIREBOX =
-            clientMachine("firebox", BlockEntityHeaterFirebox::new, ModBlocks.HEATER_FIREBOX);
-    public static final RegistryHandle<BlockEntityType<BlockEntityHeaterElectric>> ELECTRIC_HEATER =
-            clientMachine(
-                    "electric_heater", BlockEntityHeaterElectric::new, ModBlocks.HEATER_ELECTRIC);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFoundryMold>> FOUNDRY_MOLD =
-            foundry("foundry_mold", BlockEntityFoundryMold::new, ModBlocks.FOUNDRY_MOLD);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFoundryBasin>> FOUNDRY_BASIN =
-            foundry("foundry_basin", BlockEntityFoundryBasin::new, ModBlocks.FOUNDRY_BASIN);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFoundryChannel>> FOUNDRY_CHANNEL =
-            foundry("foundry_channel", BlockEntityFoundryChannel::new, ModBlocks.FOUNDRY_CHANNEL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFoundryOutlet>> FOUNDRY_OUTLET =
-            clientFoundry(
-                    "foundry_outlet", BlockEntityFoundryOutlet::new, ModBlocks.FOUNDRY_OUTLET);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFoundrySlagtap>> FOUNDRY_SLAGTAP =
-            clientFoundry(
-                    "foundry_slagtap", BlockEntityFoundrySlagtap::new, ModBlocks.FOUNDRY_SLAGTAP);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFoundryTank>> FOUNDRY_TANK =
-            foundry("foundry_tank", BlockEntityFoundryTank::new, ModBlocks.FOUNDRY_TANK);
-    public static final RegistryHandle<BlockEntityType<BlockDynamicSlag.BlockEntitySlag>>
-            FOUNDRY_SLAG =
-                    be("foundry_slag", BlockDynamicSlag.BlockEntitySlag::new, ModBlocks.SLAG);
-    public static final RegistryHandle<BlockEntityType<BlockLoot.BlockEntityLoot>> NTM_LOOT =
-            be("loot", BlockLoot.BlockEntityLoot::new, ModBlocks.LOOT);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineOilWell>> DERRICK =
-            machine("derrick", BlockEntityMachineOilWell::new, ModBlocks.MACHINE_WELL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePumpjack>>
-            MACHINE_PUMPJACK =
-                    clientMachine(
+                            ArcFurnaceBlockEntity::new,
+                            ModBlocks.MACHINE_ARC_FURNACE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<HeaterFireboxBlockEntity> FIREBOX =
+            (Reg.<HeaterFireboxBlockEntity>be(
+                            "firebox", HeaterFireboxBlockEntity::new, ModBlocks.HEATER_FIREBOX))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ElectricHeatBlockEntity> ELECTRIC_HEATER =
+            (Reg.<ElectricHeatBlockEntity>be(
+                            "electric_heater",
+                            ElectricHeatBlockEntity::new,
+                            ModBlocks.HEATER_ELECTRIC))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FoundryMoldBlockEntity> FOUNDRY_MOLD =
+            (Reg.<FoundryMoldBlockEntity>be(
+                            "foundry_mold", FoundryMoldBlockEntity::new, ModBlocks.FOUNDRY_MOLD))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FoundryBasinBlockEntity> FOUNDRY_BASIN =
+            (Reg.<FoundryBasinBlockEntity>be(
+                            "foundry_basin", FoundryBasinBlockEntity::new, ModBlocks.FOUNDRY_BASIN))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FoundryChannelBlockEntity> FOUNDRY_CHANNEL =
+            (Reg.<FoundryChannelBlockEntity>be(
+                            "foundry_channel",
+                            FoundryChannelBlockEntity::new,
+                            ModBlocks.FOUNDRY_CHANNEL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FoundryDischarge> FOUNDRY_OUTLET =
+            (Reg.<FoundryDischarge>be(
+                            "foundry_outlet", FoundryDischarge::new, ModBlocks.FOUNDRY_OUTLET))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SlagDischarge> FOUNDRY_SLAGTAP =
+            (Reg.<SlagDischarge>be(
+                            "foundry_slagtap", SlagDischarge::new, ModBlocks.FOUNDRY_SLAGTAP))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FoundryTankBlockEntity> FOUNDRY_TANK =
+            (Reg.<FoundryTankBlockEntity>be(
+                            "foundry_tank", FoundryTankBlockEntity::new, ModBlocks.FOUNDRY_TANK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DynamicSlagBlock.BlockEntitySlag> FOUNDRY_SLAG =
+            (Reg.<DynamicSlagBlock.BlockEntitySlag>be(
+                    "foundry_slag", DynamicSlagBlock.BlockEntitySlag::new, ModBlocks.SLAG));
+    public static final Reg.BeHandle<LootBlock.BlockEntityLoot> NTM_LOOT =
+            (Reg.<LootBlock.BlockEntityLoot>be(
+                    "loot", LootBlock.BlockEntityLoot::new, ModBlocks.LOOT));
+    public static final Reg.BeHandle<DerrickBlockEntity> DERRICK =
+            (Reg.<DerrickBlockEntity>be("derrick", DerrickBlockEntity::new, ModBlocks.MACHINE_WELL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PumpjackBlockEntity> MACHINE_PUMPJACK =
+            (Reg.<PumpjackBlockEntity>be(
                             "machine_pumpjack",
-                            BlockEntityMachinePumpjack::new,
-                            ModBlocks.MACHINE_PUMPJACK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCompressor>> COMPRESSOR =
-            clientMachine(
-                    "compressor", BlockEntityMachineCompressor::new, ModBlocks.MACHINE_COMPRESSOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCompressorCompact>>
-            COMPRESSOR_COMPACT =
-                    clientMachine(
+                            PumpjackBlockEntity::new,
+                            ModBlocks.MACHINE_PUMPJACK))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<PneumaticCompressorBlockEntity> COMPRESSOR =
+            (Reg.<PneumaticCompressorBlockEntity>be(
+                            "compressor",
+                            PneumaticCompressorBlockEntity::new,
+                            ModBlocks.MACHINE_COMPRESSOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CompactPneumaticCompressor> COMPRESSOR_COMPACT =
+            (Reg.<CompactPneumaticCompressor>be(
                             "compressor_compact",
-                            BlockEntityMachineCompressorCompact::new,
-                            ModBlocks.MACHINE_COMPRESSOR_COMPACT);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineGasFlare>> GASFLARE =
-            clientMachine("gasflare", BlockEntityMachineGasFlare::new, ModBlocks.MACHINE_FLARE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityChimneyBrick>> CHIMNEY_BRICK =
-            be("chimney_brick", BlockEntityChimneyBrick::new, ModBlocks.CHIMNEY_BRICK)
-                    .ticks(BlockEntityChimneyBase::tickClient, BlockEntityChimneyBase::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityChimneyIndustrial>>
-            CHIMNEY_INDUSTRIAL =
-                    be(
-                                    "chimney_industrial",
-                                    BlockEntityChimneyIndustrial::new,
-                                    ModBlocks.CHIMNEY_INDUSTRIAL)
-                            .ticks(
-                                    BlockEntityChimneyBase::tickClient,
-                                    BlockEntityChimneyBase::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityReactorZirnox>> ZIRNOX =
-            machine("zirnox", BlockEntityReactorZirnox::new, ModBlocks.REACTOR_ZIRNOX);
-    public static final RegistryHandle<BlockEntityType<BlockEntityZirnoxDestroyed>>
-            ZIRNOX_DESTROYED =
-                    be(
-                                    "zirnox_destroyed",
-                                    BlockEntityZirnoxDestroyed::new,
-                                    ModBlocks.ZIRNOX_DESTROYED)
-                            .ticksServerAt(BlockEntityZirnoxDestroyed::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFEL>> FEL =
-            clientMachine("fel", BlockEntityFEL::new, ModBlocks.MACHINE_FEL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPASource>> PA_SOURCE =
-            machine("pa_source", BlockEntityPASource::new, ModBlocks.PA_SOURCE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPABeamline>> PA_BEAMLINE =
-            be("pa_beamline", BlockEntityPABeamline::new, ModBlocks.PA_BEAMLINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPARFC>> PA_RFC =
-            machine("pa_rfc", BlockEntityPARFC::new, ModBlocks.PA_RFC);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPAQuadrupole>> PA_QUADRUPOLE =
-            machine("pa_quadrupole", BlockEntityPAQuadrupole::new, ModBlocks.PA_QUADRUPOLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPADipole>> PA_DIPOLE =
-            machine("pa_dipole", BlockEntityPADipole::new, ModBlocks.PA_DIPOLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPADetector>> PA_DETECTOR =
-            machine("pa_detector", BlockEntityPADetector::new, ModBlocks.PA_DETECTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineSolderingStation>>
-            SOLDERING_STATION =
-                    machine(
+                            CompactPneumaticCompressor::new,
+                            ModBlocks.MACHINE_COMPRESSOR_COMPACT))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<GasFlareBlockEntity> GASFLARE =
+            (Reg.<GasFlareBlockEntity>be(
+                            "gasflare", GasFlareBlockEntity::new, ModBlocks.MACHINE_FLARE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ChimneyBrickBlockEntity> CHIMNEY_BRICK =
+            (Reg.<ChimneyBrickBlockEntity>be(
+                            "chimney_brick", ChimneyBrickBlockEntity::new, ModBlocks.CHIMNEY_BRICK))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ChimneyIndustrialBlockEntity> CHIMNEY_INDUSTRIAL =
+            (Reg.<ChimneyIndustrialBlockEntity>be(
+                            "chimney_industrial",
+                            ChimneyIndustrialBlockEntity::new,
+                            ModBlocks.CHIMNEY_INDUSTRIAL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ReactorZirnoxBlockEntity> ZIRNOX =
+            (Reg.<ReactorZirnoxBlockEntity>be(
+                            "zirnox", ReactorZirnoxBlockEntity::new, ModBlocks.REACTOR_ZIRNOX))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ZirnoxDestroyedBlockEntity> ZIRNOX_DESTROYED =
+            (Reg.<ZirnoxDestroyedBlockEntity>be(
+                            "zirnox_destroyed",
+                            ZirnoxDestroyedBlockEntity::new,
+                            ModBlocks.ZIRNOX_DESTROYED))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<WavelengthLaserBlockEntity> FEL =
+            (Reg.<WavelengthLaserBlockEntity>be(
+                            "fel", WavelengthLaserBlockEntity::new, ModBlocks.MACHINE_FEL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<PASourceBlockEntity> PA_SOURCE =
+            (Reg.<PASourceBlockEntity>be(
+                            "pa_source", PASourceBlockEntity::new, ModBlocks.PA_SOURCE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PABeamlineBlockEntity> PA_BEAMLINE =
+            (Reg.<PABeamlineBlockEntity>be(
+                    "pa_beamline", PABeamlineBlockEntity::new, ModBlocks.PA_BEAMLINE));
+    public static final Reg.BeHandle<RFCavityBlockEntity> PA_RFC =
+            (Reg.<RFCavityBlockEntity>be("pa_rfc", RFCavityBlockEntity::new, ModBlocks.PA_RFC))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PAQuadrupoleBlockEntity> PA_QUADRUPOLE =
+            (Reg.<PAQuadrupoleBlockEntity>be(
+                            "pa_quadrupole", PAQuadrupoleBlockEntity::new, ModBlocks.PA_QUADRUPOLE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PADipoleBlockEntity> PA_DIPOLE =
+            (Reg.<PADipoleBlockEntity>be(
+                            "pa_dipole", PADipoleBlockEntity::new, ModBlocks.PA_DIPOLE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PADetectorBlockEntity> PA_DETECTOR =
+            (Reg.<PADetectorBlockEntity>be(
+                            "pa_detector", PADetectorBlockEntity::new, ModBlocks.PA_DETECTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<SolderingBenchBlockEntity> SOLDERING_STATION =
+            (Reg.<SolderingBenchBlockEntity>be(
                             "soldering_station",
-                            BlockEntityMachineSolderingStation::new,
-                            ModBlocks.MACHINE_SOLDERING_STATION);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineArcWelder>> ARC_WELDER =
-            machine("arc_welder", BlockEntityMachineArcWelder::new, ModBlocks.MACHINE_ARC_WELDER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineEPress>> ELECTRIC_PRESS =
-            clientMachine(
-                    "electric_press", BlockEntityMachineEPress::new, ModBlocks.MACHINE_EPRESS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineFluidTank>> FLUID_TANK =
-            machine("fluid_tank", BlockEntityMachineFluidTank::new, ModBlocks.MACHINE_FLUID_TANK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBarrel>> FLUID_BARREL =
-            machine(
-                    "fluid_barrel",
-                    BlockEntityBarrel::new,
-                    ModBlocks.BARREL_PLASTIC,
-                    ModBlocks.BARREL_STEEL,
-                    ModBlocks.BARREL_TCALLOY,
-                    ModBlocks.BARREL_ANTIMATTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPneumoTube>> PNEUMATIC_TUBE =
-            machine("pneumatic_tube", BlockEntityPneumoTube::new, ModBlocks.PNEUMATIC_TUBE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPneumoTubePaintable>>
-            PNEUMATIC_TUBE_PAINTABLE =
-                    machine(
+                            SolderingBenchBlockEntity::new,
+                            ModBlocks.MACHINE_SOLDERING_STATION))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ArcWelderBlockEntity> ARC_WELDER =
+            (Reg.<ArcWelderBlockEntity>be(
+                            "arc_welder", ArcWelderBlockEntity::new, ModBlocks.MACHINE_ARC_WELDER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ElectricPressBlockEntity> ELECTRIC_PRESS =
+            (Reg.<ElectricPressBlockEntity>be(
+                            "electric_press",
+                            ElectricPressBlockEntity::new,
+                            ModBlocks.MACHINE_EPRESS))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FluidTankBlockEntity> FLUID_TANK =
+            (Reg.<FluidTankBlockEntity>be(
+                            "fluid_tank", FluidTankBlockEntity::new, ModBlocks.MACHINE_FLUID_TANK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FluidBarrelBlockEntity> FLUID_BARREL =
+            (Reg.<FluidBarrelBlockEntity>be(
+                            "fluid_barrel",
+                            FluidBarrelBlockEntity::new,
+                            ModBlocks.BARREL_PLASTIC,
+                            ModBlocks.BARREL_STEEL,
+                            ModBlocks.BARREL_TCALLOY,
+                            ModBlocks.BARREL_ANTIMATTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PneumaticTubeBlockEntity> PNEUMATIC_TUBE =
+            (Reg.<PneumaticTubeBlockEntity>be(
+                            "pneumatic_tube",
+                            PneumaticTubeBlockEntity::new,
+                            ModBlocks.PNEUMATIC_TUBE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PneumoTubePaintableBlockEntity> PNEUMATIC_TUBE_PAINTABLE =
+            (Reg.<PneumoTubePaintableBlockEntity>be(
                             "pneumatic_tube_paintable",
-                            BlockEntityPneumoTubePaintable::new,
-                            ModBlocks.PNEUMATIC_TUBE_PAINTABLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPneumoStorageAccess>>
-            PNEUMATIC_STORAGE_ACCESS =
-                    be(
-                            "pneumatic_storage_access",
-                            BlockEntityPneumoStorageAccess::new,
-                            ModBlocks.PNEUMATIC_STORAGE_ACCESS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPneumoStorageClutter>>
-            PNEUMATIC_STORAGE_CLUTTER =
-                    machine(
+                            PneumoTubePaintableBlockEntity::new,
+                            ModBlocks.PNEUMATIC_TUBE_PAINTABLE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PneumoStorageAccessBlockEntity> PNEUMATIC_STORAGE_ACCESS =
+            (Reg.<PneumoStorageAccessBlockEntity>be(
+                    "pneumatic_storage_access",
+                    PneumoStorageAccessBlockEntity::new,
+                    ModBlocks.PNEUMATIC_STORAGE_ACCESS));
+    public static final Reg.BeHandle<PneumaticStorageClutterBlockEntity> PNEUMATIC_STORAGE_CLUTTER =
+            (Reg.<PneumaticStorageClutterBlockEntity>be(
                             "pneumatic_storage_clutter",
-                            BlockEntityPneumoStorageClutter::new,
-                            ModBlocks.PNEUMATIC_STORAGE_CLUTTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPneumoStorageMono>>
-            PNEUMATIC_STORAGE_MONO =
-                    machine(
+                            PneumaticStorageClutterBlockEntity::new,
+                            ModBlocks.PNEUMATIC_STORAGE_CLUTTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PneumoStorageMonoBlockEntity> PNEUMATIC_STORAGE_MONO =
+            (Reg.<PneumoStorageMonoBlockEntity>be(
                             "pneumatic_storage_mono",
-                            BlockEntityPneumoStorageMono::new,
-                            ModBlocks.PNEUMATIC_STORAGE_MONO);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPneumoStorageImporter>>
-            PNEUMATIC_STORAGE_IMPORTER =
-                    machine(
+                            PneumoStorageMonoBlockEntity::new,
+                            ModBlocks.PNEUMATIC_STORAGE_MONO))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PneumaticImporterBlockEntity> PNEUMATIC_STORAGE_IMPORTER =
+            (Reg.<PneumaticImporterBlockEntity>be(
                             "pneumatic_storage_importer",
-                            BlockEntityPneumoStorageImporter::new,
-                            ModBlocks.PNEUMATIC_STORAGE_IMPORTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPneumoStorageExporter>>
-            PNEUMATIC_STORAGE_EXPORTER =
-                    machine(
+                            PneumaticImporterBlockEntity::new,
+                            ModBlocks.PNEUMATIC_STORAGE_IMPORTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PneumoStorageExporterBlockEntity> PNEUMATIC_STORAGE_EXPORTER =
+            (Reg.<PneumoStorageExporterBlockEntity>be(
                             "pneumatic_storage_exporter",
-                            BlockEntityPneumoStorageExporter::new,
-                            ModBlocks.PNEUMATIC_STORAGE_EXPORTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPipeGauge>> PIPE_GAUGE =
-            be("pipe_gauge", BlockEntityPipeGauge::new, ModBlocks.FLUID_DUCT_GAUGE)
-                    .ticksServer(BlockEntityPipeGauge::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFluidCounterValve>>
-            PIPE_COUNTER_VALVE =
-                    be(
-                                    "pipe_counter_valve",
-                                    BlockEntityFluidCounterValve::new,
-                                    ModBlocks.FLUID_COUNTER_VALVE)
-                            .ticksServer(BlockEntityFluidCounterValve::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCableDiode>> CABLE_DIODE =
-            be("cable_diode", BlockEntityCableDiode::new, ModBlocks.CABLE_DIODE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPylonMedium>> PYLON_MEDIUM =
-            be(
+                            PneumoStorageExporterBlockEntity::new,
+                            ModBlocks.PNEUMATIC_STORAGE_EXPORTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PipeGaugeBlockEntity> PIPE_GAUGE =
+            (Reg.<PipeGaugeBlockEntity>be(
+                            "pipe_gauge", PipeGaugeBlockEntity::new, ModBlocks.FLUID_DUCT_GAUGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FluidCounterValveBlockEntity> PIPE_COUNTER_VALVE =
+            (Reg.<FluidCounterValveBlockEntity>be(
+                            "pipe_counter_valve",
+                            FluidCounterValveBlockEntity::new,
+                            ModBlocks.FLUID_COUNTER_VALVE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CableDiodeBlockEntity> CABLE_DIODE =
+            (Reg.<CableDiodeBlockEntity>be(
+                    "cable_diode", CableDiodeBlockEntity::new, ModBlocks.CABLE_DIODE));
+    public static final Reg.BeHandle<PylonMediumBlockEntity> PYLON_MEDIUM =
+            (Reg.<PylonMediumBlockEntity>be(
                     "pylon_medium",
-                    BlockEntityPylonMedium::new,
+                    PylonMediumBlockEntity::new,
                     ModBlocks.RED_PYLON_MEDIUM_WOOD,
                     ModBlocks.RED_PYLON_MEDIUM_WOOD_TRANSFORMER,
                     ModBlocks.RED_PYLON_MEDIUM_STEEL,
-                    ModBlocks.RED_PYLON_MEDIUM_STEEL_TRANSFORMER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPylonLarge>> PYLON_LARGE =
-            be("pylon_large", BlockEntityPylonLarge::new, ModBlocks.RED_PYLON_LARGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySubstation>> SUBSTATION =
-            be("substation", BlockEntitySubstation::new, ModBlocks.SUBSTATION);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPylon>> PYLON_REDWIRE =
-            be(
+                    ModBlocks.RED_PYLON_MEDIUM_STEEL_TRANSFORMER));
+    public static final Reg.BeHandle<PylonLargeBlockEntity> PYLON_LARGE =
+            (Reg.<PylonLargeBlockEntity>be(
+                    "pylon_large", PylonLargeBlockEntity::new, ModBlocks.RED_PYLON_LARGE));
+    public static final Reg.BeHandle<SubstationBlockEntity> SUBSTATION =
+            (Reg.<SubstationBlockEntity>be(
+                    "substation", SubstationBlockEntity::new, ModBlocks.SUBSTATION));
+    public static final Reg.BeHandle<PylonBlockEntity> PYLON_REDWIRE =
+            (Reg.<PylonBlockEntity>be(
                     "pylon_redwire",
-                    BlockEntityPylon::new,
+                    PylonBlockEntity::new,
                     ModBlocks.RED_PYLON,
-                    ModBlocks.RED_PYLON_STEEL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityConnector>> CONNECTOR_REDWIRE =
-            be("connector_redwire", BlockEntityConnector::new, ModBlocks.RED_CONNECTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityConnectorSuper>>
-            CONNECTOR_REDWIRE_SUPER =
-                    be(
-                            "connector_redwire_super",
-                            BlockEntityConnectorSuper::new,
-                            ModBlocks.RED_CONNECTOR_SUPER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCableGauge>> CABLE_GAUGE =
-            be("cable_gauge", BlockEntityCableGauge::new, ModBlocks.RED_CABLE_GAUGE)
-                    .ticksServer(BlockEntityCableGauge::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFluidPump>> PIPE_PUMP =
-            be("pipe_pump", BlockEntityFluidPump::new, ModBlocks.FLUID_PUMP)
-                    .ticksServer(BlockEntityFluidPump::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadiobox>> RADIOBOX =
-            machine("radio_broadcaster", BlockEntityRadiobox::new, ModBlocks.RADIOBOX);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioRec>> RADIO_RECEIVER =
-            be("radio_receiver", BlockEntityRadioRec::new, ModBlocks.RADIO_REC)
-                    .ticksServer(BlockEntityRadioRec::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioTorchSender>> RTTY_SENDER =
-            be("rtty_sender", BlockEntityRadioTorchSender::new, ModBlocks.RADIO_TORCH_SENDER)
-                    .ticksServer(BlockEntityRadioTorch::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioTorchReceiver>> RTTY_REC =
-            be("rtty_rec", BlockEntityRadioTorchReceiver::new, ModBlocks.RADIO_TORCH_RECEIVER)
-                    .ticksServer(BlockEntityRadioTorch::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioTorchCounter>> RTTY_COUNTER =
-            be("rtty_counter", BlockEntityRadioTorchCounter::new, ModBlocks.RADIO_TORCH_COUNTER)
-                    .ticksServer(BlockEntityRadioTorch::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioTorchLogic>> RTTY_LOGIC =
-            be("rtty_logic", BlockEntityRadioTorchLogic::new, ModBlocks.RADIO_TORCH_LOGIC)
-                    .ticksServer(BlockEntityRadioTorch::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioTorchReader>> RTTY_READER =
-            be("rtty_reader", BlockEntityRadioTorchReader::new, ModBlocks.RADIO_TORCH_READER)
-                    .ticksServer(BlockEntityRadioTorch::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioTorchController>>
-            RTTY_CONTROLLER =
-                    be(
-                                    "rtty_controller",
-                                    BlockEntityRadioTorchController::new,
-                                    ModBlocks.RADIO_TORCH_CONTROLLER)
-                            .ticksServer(BlockEntityRadioTorch::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDroneCrate>> DRONE_CRATE =
-            machine("drone_crate", BlockEntityDroneCrate::new, ModBlocks.DRONE_CRATE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDroneDock>> DRONE_DOCK =
-            machine("drone_dock", BlockEntityDroneDock::new, ModBlocks.DRONE_DOCK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDroneProvider>> DRONE_PROVIDER =
-            machine(
-                    "drone_provider",
-                    BlockEntityDroneProvider::new,
-                    ModBlocks.DRONE_CRATE_PROVIDER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDroneRequester>> DRONE_REQUESTER =
-            machine(
-                    "drone_requester",
-                    BlockEntityDroneRequester::new,
-                    ModBlocks.DRONE_CRATE_REQUESTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDroneWaypointRequest>>
-            DRONE_WAYPOINT_REQUEST =
-                    machine(
+                    ModBlocks.RED_PYLON_STEEL));
+    public static final Reg.BeHandle<ConnectorBlockEntity> CONNECTOR_REDWIRE =
+            (Reg.<ConnectorBlockEntity>be(
+                    "connector_redwire", ConnectorBlockEntity::new, ModBlocks.RED_CONNECTOR));
+    public static final Reg.BeHandle<ConnectorSuperBlockEntity> CONNECTOR_REDWIRE_SUPER =
+            (Reg.<ConnectorSuperBlockEntity>be(
+                    "connector_redwire_super",
+                    ConnectorSuperBlockEntity::new,
+                    ModBlocks.RED_CONNECTOR_SUPER));
+    public static final Reg.BeHandle<CableGaugeBlockEntity> CABLE_GAUGE =
+            (Reg.<CableGaugeBlockEntity>be(
+                            "cable_gauge", CableGaugeBlockEntity::new, ModBlocks.RED_CABLE_GAUGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FluidPumpBlockEntity> PIPE_PUMP =
+            (Reg.<FluidPumpBlockEntity>be(
+                            "pipe_pump", FluidPumpBlockEntity::new, ModBlocks.FLUID_PUMP))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<EnervationBlockEntity> RADIOBOX =
+            (Reg.<EnervationBlockEntity>be(
+                            "radio_broadcaster", EnervationBlockEntity::new, ModBlocks.RADIOBOX))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioReceiverBlockEntity> RADIO_RECEIVER =
+            (Reg.<RadioReceiverBlockEntity>be(
+                            "radio_receiver", RadioReceiverBlockEntity::new, ModBlocks.RADIO_REC))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioTorchSenderBlockEntity> RTTY_SENDER =
+            (Reg.<RadioTorchSenderBlockEntity>be(
+                            "rtty_sender",
+                            RadioTorchSenderBlockEntity::new,
+                            ModBlocks.RADIO_TORCH_SENDER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioTorchReceiverBlockEntity> RTTY_REC =
+            (Reg.<RadioTorchReceiverBlockEntity>be(
+                            "rtty_rec",
+                            RadioTorchReceiverBlockEntity::new,
+                            ModBlocks.RADIO_TORCH_RECEIVER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioCounterBlockEntity> RTTY_COUNTER =
+            (Reg.<RadioCounterBlockEntity>be(
+                            "rtty_counter",
+                            RadioCounterBlockEntity::new,
+                            ModBlocks.RADIO_TORCH_COUNTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioLogicBlockEntity> RTTY_LOGIC =
+            (Reg.<RadioLogicBlockEntity>be(
+                            "rtty_logic", RadioLogicBlockEntity::new, ModBlocks.RADIO_TORCH_LOGIC))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioReaderBlockEntity> RTTY_READER =
+            (Reg.<RadioReaderBlockEntity>be(
+                            "rtty_reader",
+                            RadioReaderBlockEntity::new,
+                            ModBlocks.RADIO_TORCH_READER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioTorchControllerBlockEntity> RTTY_CONTROLLER =
+            (Reg.<RadioTorchControllerBlockEntity>be(
+                            "rtty_controller",
+                            RadioTorchControllerBlockEntity::new,
+                            ModBlocks.RADIO_TORCH_CONTROLLER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DroneCrateBlockEntity> DRONE_CRATE =
+            (Reg.<DroneCrateBlockEntity>be(
+                            "drone_crate", DroneCrateBlockEntity::new, ModBlocks.DRONE_CRATE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DroneDockBlockEntity> DRONE_DOCK =
+            (Reg.<DroneDockBlockEntity>be(
+                            "drone_dock", DroneDockBlockEntity::new, ModBlocks.DRONE_DOCK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DroneProviderBlockEntity> DRONE_PROVIDER =
+            (Reg.<DroneProviderBlockEntity>be(
+                            "drone_provider",
+                            DroneProviderBlockEntity::new,
+                            ModBlocks.DRONE_CRATE_PROVIDER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DroneRequesterBlockEntity> DRONE_REQUESTER =
+            (Reg.<DroneRequesterBlockEntity>be(
+                            "drone_requester",
+                            DroneRequesterBlockEntity::new,
+                            ModBlocks.DRONE_CRATE_REQUESTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DroneWaypointRequestBlockEntity> DRONE_WAYPOINT_REQUEST =
+            (Reg.<DroneWaypointRequestBlockEntity>be(
                             "drone_waypoint_request",
-                            BlockEntityDroneWaypointRequest::new,
-                            ModBlocks.DRONE_WAYPOINT_REQUEST);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDroneWaypoint>> DRONE_WAYPOINT =
-            be("drone_waypoint", BlockEntityDroneWaypoint::new, ModBlocks.DRONE_WAYPOINT)
-                    .ticks(
-                            BlockEntityDroneWaypoint::tickClient,
-                            BlockEntityDroneWaypoint::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioTelex>> RTTY_TELEX =
-            be("rtty_telex", BlockEntityRadioTelex::new, ModBlocks.RADIO_TELEX)
-                    .ticksServer(BlockEntityRadioTelex::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRadioAUTOCAL>> RTTY_AUTOCAL =
-            be("rtty_autocal", BlockEntityRadioAUTOCAL::new, ModBlocks.RADIO_AUTOCAL)
-                    .ticksServer(BlockEntityRadioAUTOCAL::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPowerDetector>> HE_DETECTOR =
-            be("he_detector", BlockEntityPowerDetector::new, ModBlocks.MACHINE_DETECTOR)
-                    .ticksServer(BlockEntityPowerDetector::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPipePaintable>> PIPE_PAINTABLE =
-            be(
+                            DroneWaypointRequestBlockEntity::new,
+                            ModBlocks.DRONE_WAYPOINT_REQUEST))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DroneWaypointBlockEntity> DRONE_WAYPOINT =
+            (Reg.<DroneWaypointBlockEntity>be(
+                            "drone_waypoint",
+                            DroneWaypointBlockEntity::new,
+                            ModBlocks.DRONE_WAYPOINT))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RadioTelexBlockEntity> RTTY_TELEX =
+            (Reg.<RadioTelexBlockEntity>be(
+                            "rtty_telex", RadioTelexBlockEntity::new, ModBlocks.RADIO_TELEX))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RadioAutocalBlockEntity> RTTY_AUTOCAL =
+            (Reg.<RadioAutocalBlockEntity>be(
+                            "rtty_autocal", RadioAutocalBlockEntity::new, ModBlocks.RADIO_AUTOCAL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PowerDetectorBlockEntity> HE_DETECTOR =
+            (Reg.<PowerDetectorBlockEntity>be(
+                            "he_detector",
+                            PowerDetectorBlockEntity::new,
+                            ModBlocks.MACHINE_DETECTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PipePaintableBlockEntity> PIPE_PAINTABLE =
+            (Reg.<PipePaintableBlockEntity>be(
                     "pipe_paintable",
-                    BlockEntityPipePaintable::new,
+                    PipePaintableBlockEntity::new,
                     ModBlocks.FLUID_DUCT_PAINTABLE,
-                    ModBlocks.FLUID_DUCT_PAINTABLE_EXHAUST);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCablePaintable>> CABLE_PAINTABLE =
-            be("cable_paintable", BlockEntityCablePaintable::new, ModBlocks.RED_CABLE_PAINTABLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPipeAnchor>> PIOE_ANCHOR =
-            be("pioe_anchor", BlockEntityPipeAnchor::new, ModBlocks.PIPE_ANCHOR)
-                    .ticksServer(BlockEntityPipeAnchor::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineWoodBurner>> WOOD_BURNER =
-            clientMachine(
-                    "wood_burner",
-                    BlockEntityMachineWoodBurner::new,
-                    ModBlocks.MACHINE_WOOD_BURNER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineDiesel>> DIESEL_GENERATOR =
-            clientMachine(
-                    "diesel_generator", BlockEntityMachineDiesel::new, ModBlocks.MACHINE_DIESEL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineRTG>> MACHINE_RTG =
-            machine("machine_rtg", BlockEntityMachineRTG::new, ModBlocks.MACHINE_RTG);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineTurbine>> TURBINE =
-            machine("turbine", BlockEntityMachineTurbine::new, ModBlocks.MACHINE_TURBINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineLargeTurbine>>
-            INDUSTRIAL_TURBINE =
-                    clientMachine(
+                    ModBlocks.FLUID_DUCT_PAINTABLE_EXHAUST));
+    public static final Reg.BeHandle<CablePaintableBlockEntity> CABLE_PAINTABLE =
+            (Reg.<CablePaintableBlockEntity>be(
+                    "cable_paintable",
+                    CablePaintableBlockEntity::new,
+                    ModBlocks.RED_CABLE_PAINTABLE));
+    public static final Reg.BeHandle<PipeAnchorBlockEntity> PIOE_ANCHOR =
+            (Reg.<PipeAnchorBlockEntity>be(
+                            "pioe_anchor", PipeAnchorBlockEntity::new, ModBlocks.PIPE_ANCHOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<WoodGeneratorBlockEntity> WOOD_BURNER =
+            (Reg.<WoodGeneratorBlockEntity>be(
+                            "wood_burner",
+                            WoodGeneratorBlockEntity::new,
+                            ModBlocks.MACHINE_WOOD_BURNER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<DieselGeneratorBlockEntity> DIESEL_GENERATOR =
+            (Reg.<DieselGeneratorBlockEntity>be(
+                            "diesel_generator",
+                            DieselGeneratorBlockEntity::new,
+                            ModBlocks.MACHINE_DIESEL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<IsotopeGeneratorBlockEntity> MACHINE_RTG =
+            (Reg.<IsotopeGeneratorBlockEntity>be(
+                            "machine_rtg", IsotopeGeneratorBlockEntity::new, ModBlocks.MACHINE_RTG))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CompactTurbineBlockEntity> TURBINE =
+            (Reg.<CompactTurbineBlockEntity>be(
+                            "turbine", CompactTurbineBlockEntity::new, ModBlocks.MACHINE_TURBINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<LargeTurbineBlockEntity> INDUSTRIAL_TURBINE =
+            (Reg.<LargeTurbineBlockEntity>be(
                             "industrial_turbine",
-                            BlockEntityMachineLargeTurbine::new,
-                            ModBlocks.MACHINE_LARGE_TURBINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineIndustrialTurbine>>
-            IND_TURBINE =
-                    clientMachine(
+                            LargeTurbineBlockEntity::new,
+                            ModBlocks.MACHINE_LARGE_TURBINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<IndustrialTurbineBlockEntity> IND_TURBINE =
+            (Reg.<IndustrialTurbineBlockEntity>be(
                             "ind_turbine",
-                            BlockEntityMachineIndustrialTurbine::new,
-                            ModBlocks.MACHINE_INDUSTRIAL_TURBINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityChungus>> CHUNGUS =
-            clientMachine("chungus", BlockEntityChungus::new, ModBlocks.MACHINE_CHUNGUS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityHeatBoiler>> HEAT_BOILER =
-            clientMachine("heat_boiler", BlockEntityHeatBoiler::new, ModBlocks.MACHINE_BOILER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityHeatBoilerIndustrial>>
-            HEAT_BOILER_INDUSTRIAL =
-                    clientMachine(
+                            IndustrialTurbineBlockEntity::new,
+                            ModBlocks.MACHINE_INDUSTRIAL_TURBINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<LeviathanTurbineBlockEntity> CHUNGUS =
+            (Reg.<LeviathanTurbineBlockEntity>be(
+                            "chungus", LeviathanTurbineBlockEntity::new, ModBlocks.MACHINE_CHUNGUS))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<HeatBoilerBlockEntity> HEAT_BOILER =
+            (Reg.<HeatBoilerBlockEntity>be(
+                            "heat_boiler", HeatBoilerBlockEntity::new, ModBlocks.MACHINE_BOILER))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<HeatBoilerIndustrialBlockEntity> HEAT_BOILER_INDUSTRIAL =
+            (Reg.<HeatBoilerIndustrialBlockEntity>be(
                             "heat_boiler_industrial",
-                            BlockEntityHeatBoilerIndustrial::new,
-                            ModBlocks.MACHINE_INDUSTRIAL_BOILER);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySteamEngine>> STEAM_ENGINE =
-            clientMachine(
-                    "steam_engine", BlockEntitySteamEngine::new, ModBlocks.MACHINE_STEAM_ENGINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCombustionEngine>>
-            COMBUSTION_ENGINE =
-                    clientMachine(
+                            HeatBoilerIndustrialBlockEntity::new,
+                            ModBlocks.MACHINE_INDUSTRIAL_BOILER))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SteamEngineBlockEntity> STEAM_ENGINE =
+            (Reg.<SteamEngineBlockEntity>be(
+                            "steam_engine",
+                            SteamEngineBlockEntity::new,
+                            ModBlocks.MACHINE_STEAM_ENGINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CombustionEngineBlockEntity> COMBUSTION_ENGINE =
+            (Reg.<CombustionEngineBlockEntity>be(
                             "combustion_engine",
-                            BlockEntityMachineCombustionEngine::new,
-                            ModBlocks.MACHINE_COMBUSTION_ENGINE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineTurbineGas>>
-            MACHINE_GASTURBINE =
-                    clientMachine(
+                            CombustionEngineBlockEntity::new,
+                            ModBlocks.MACHINE_COMBUSTION_ENGINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurbineGasBlockEntity> MACHINE_GASTURBINE =
+            (Reg.<TurbineGasBlockEntity>be(
                             "machine_gasturbine",
-                            BlockEntityMachineTurbineGas::new,
-                            ModBlocks.MACHINE_TURBINEGAS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineTurbofan>>
-            MACHINE_TURBOFAN =
-                    clientMachine(
+                            TurbineGasBlockEntity::new,
+                            ModBlocks.MACHINE_TURBINEGAS))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TurbofanBlockEntity> MACHINE_TURBOFAN =
+            (Reg.<TurbofanBlockEntity>be(
                             "machine_turbofan",
-                            BlockEntityMachineTurbofan::new,
-                            ModBlocks.MACHINE_TURBOFAN);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineLPW2>> LPW2 =
-            be("machine_lpw2", BlockEntityMachineLPW2::new, ModBlocks.MACHINE_LPW2);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePumpSteam>> STEAM_PUMP =
-            pump("steam_pump", BlockEntityMachinePumpSteam::new, ModBlocks.PUMP_STEAM);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySolarBoiler>> SOLARBOILER =
-            clientMachine(
-                    "solarboiler", BlockEntitySolarBoiler::new, ModBlocks.MACHINE_SOLAR_BOILER);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySolarMirror>> SOLARMIRROR =
-            clientMachine("solarmirror", BlockEntitySolarMirror::new, ModBlocks.SOLAR_MIRROR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityWasteDrum>> WASTE_DRUM =
-            machine("waste_drum", BlockEntityWasteDrum::new, ModBlocks.WASTE_DRUM);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBatterySocket>> BATTERY_SOCKET =
-            clientMachine(
-                    "battery_socket",
-                    BlockEntityBatterySocket::new,
-                    ModBlocks.MACHINE_BATTERY_SOCKET);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineBattery>> BATTERY =
-            machine("battery", BlockEntityMachineBattery::new, ModBlocks.MACHINE_BATTERY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineFENSU>> FENSU =
-            clientMachine("fensu", BlockEntityMachineFENSU::new, ModBlocks.MACHINE_FENSU);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBatteryREDD>> BATTERY_REDD =
-            be("battery_redd", BlockEntityBatteryREDD::new, ModBlocks.MACHINE_BATTERY_REDD)
-                    .ticksServer(BlockEntityBatteryREDD::tickServer)
-                    .ticksClient(BlockEntityBatteryREDD::tickClient);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCapacitor>> CAPACITOR =
-            be("capacitor", BlockEntityMachineCapacitor::new, ModBlocks.CAPACITOR_COPPER)
-                    .ticksServer(BlockEntityMachineCapacitor::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCharger>> NTM_CHARGER =
-            be("charger", BlockEntityCharger::new, ModBlocks.CHARGER)
-                    .ticksServerAt(BlockEntityCharger::tick)
-                    .ticksClientAt(BlockEntityCharger::tickClient);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRefueler>> REFUELER =
-            clientMachine("refueler", BlockEntityRefueler::new, ModBlocks.REFUELER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrate>> CRATE_IRON =
+                            TurbofanBlockEntity::new,
+                            ModBlocks.MACHINE_TURBOFAN))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<LPW2BlockEntity> LPW2 =
+            (Reg.<LPW2BlockEntity>be("machine_lpw2", LPW2BlockEntity::new, ModBlocks.MACHINE_LPW2));
+    public static final Reg.BeHandle<SteamPumpBlockEntity> STEAM_PUMP =
+            (Reg.<SteamPumpBlockEntity>be(
+                            "steam_pump", SteamPumpBlockEntity::new, ModBlocks.PUMP_STEAM))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SolarBoilerBlockEntity> SOLARBOILER =
+            (Reg.<SolarBoilerBlockEntity>be(
+                            "solarboiler",
+                            SolarBoilerBlockEntity::new,
+                            ModBlocks.MACHINE_SOLAR_BOILER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SolarMirrorBlockEntity> SOLARMIRROR =
+            (Reg.<SolarMirrorBlockEntity>be(
+                            "solarmirror", SolarMirrorBlockEntity::new, ModBlocks.SOLAR_MIRROR))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SpentFuelCoolingBlockEntity> WASTE_DRUM =
+            (Reg.<SpentFuelCoolingBlockEntity>be(
+                            "waste_drum", SpentFuelCoolingBlockEntity::new, ModBlocks.WASTE_DRUM))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<SocketBlockEntity> BATTERY_SOCKET =
+            (Reg.<SocketBlockEntity>be(
+                            "battery_socket",
+                            SocketBlockEntity::new,
+                            ModBlocks.MACHINE_BATTERY_SOCKET))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<BatteryBlockEntity> BATTERY =
+            (Reg.<BatteryBlockEntity>be(
+                            "battery", BatteryBlockEntity::new, ModBlocks.MACHINE_BATTERY))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FensuBlockEntity> FENSU =
+            (Reg.<FensuBlockEntity>be("fensu", FensuBlockEntity::new, ModBlocks.MACHINE_FENSU))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ReddBlockEntity> BATTERY_REDD =
+            (Reg.<ReddBlockEntity>be(
+                            "battery_redd", ReddBlockEntity::new, ModBlocks.MACHINE_BATTERY_REDD))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CapacitorBlockEntity> CAPACITOR =
+            (Reg.<CapacitorBlockEntity>be(
+                            "capacitor", CapacitorBlockEntity::new, ModBlocks.CAPACITOR_COPPER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ChargerBlockEntity> NTM_CHARGER =
+            (Reg.<ChargerBlockEntity>be("charger", ChargerBlockEntity::new, ModBlocks.CHARGER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RefuelerBlockEntity> REFUELER =
+            (Reg.<RefuelerBlockEntity>be("refueler", RefuelerBlockEntity::new, ModBlocks.REFUELER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CrateBlockEntity> CRATE_IRON =
             crate(CrateType.IRON, ModBlocks.CRATE_IRON).andThen(CrateType.IRON::setTypeSupplier);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrate>> CRATE_STEEL =
+    public static final Reg.BeHandle<CrateBlockEntity> CRATE_STEEL =
             crate(CrateType.STEEL, ModBlocks.CRATE_STEEL).andThen(CrateType.STEEL::setTypeSupplier);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrate>> CRATE_DESH =
+    public static final Reg.BeHandle<CrateBlockEntity> CRATE_DESH =
             crate(CrateType.DESH, ModBlocks.CRATE_DESH).andThen(CrateType.DESH::setTypeSupplier);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrateTungsten>> CRATE_HOT =
-            be("crate_hot", BlockEntityCrateTungsten::new, ModBlocks.CRATE_TUNGSTEN)
-                    .ticks(
-                            BlockEntityCrateTungsten::tickClient,
-                            BlockEntityCrateTungsten::tickServer)
+    public static final Reg.BeHandle<CrateTungstenBlockEntity> CRATE_HOT =
+            (Reg.<CrateTungstenBlockEntity>be(
+                            "crate_hot", CrateTungstenBlockEntity::new, ModBlocks.CRATE_TUNGSTEN))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT)
                     .andThen(CrateType.TUNGSTEN::setTypeSupplier);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrate>> SAFE =
+    public static final Reg.BeHandle<CrateBlockEntity> SAFE =
             crate(CrateType.SAFE, ModBlocks.SAFE).andThen(CrateType.SAFE::setTypeSupplier);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMassStorage>> MASS_STORAGE =
-            machine(
-                    "mass_storage",
-                    BlockEntityMassStorage::new,
-                    ModBlocks.MASS_STORAGE_WOOD,
-                    ModBlocks.MASS_STORAGE_IRON,
-                    ModBlocks.MASS_STORAGE_DESH,
-                    ModBlocks.MASS_STORAGE_TCALLOY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrateSupply>> SUPPLY_CRATE =
-            be("supply_crate", BlockEntityCrateSupply::new, ModBlocks.CRATE_SUPPLY);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFileCabinet>> FILE_CABINET =
-            clientMachine(
-                    "file_cabinet",
-                    BlockEntityFileCabinet::new,
-                    ModBlocks.FILING_CABINET_GREEN,
-                    ModBlocks.FILING_CABINET_STEEL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKRod>> RBMK_ROD =
-            machine(
-                    "rbmk_rod",
-                    BlockEntityRBMKRod::new,
-                    ModBlocks.RBMK_ROD,
-                    ModBlocks.RBMK_ROD_MODERATED);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKRodReaSim>> RBMK_ROD_REASIM =
-            machine(
-                    "rbmk_rod_reasim",
-                    BlockEntityRBMKRodReaSim::new,
-                    ModBlocks.RBMK_ROD_REASIM,
-                    ModBlocks.RBMK_ROD_REASIM_MODERATED);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKControlManual>> RBMK_CONTROL =
-            clientMachine(
-                    "rbmk_control",
-                    BlockEntityRBMKControlManual::new,
-                    ModBlocks.RBMK_CONTROL,
-                    ModBlocks.RBMK_CONTROL_MOD,
-                    ModBlocks.RBMK_CONTROL_REASIM);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKControlAuto>>
-            RBMK_CONTROL_AUTO =
-                    clientMachine(
+    public static final Reg.BeHandle<MassStorageBlockEntity> MASS_STORAGE =
+            (Reg.<MassStorageBlockEntity>be(
+                            "mass_storage",
+                            MassStorageBlockEntity::new,
+                            ModBlocks.MASS_STORAGE_WOOD,
+                            ModBlocks.MASS_STORAGE_IRON,
+                            ModBlocks.MASS_STORAGE_DESH,
+                            ModBlocks.MASS_STORAGE_TCALLOY))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CrateSupplyBlockEntity> SUPPLY_CRATE =
+            (Reg.<CrateSupplyBlockEntity>be(
+                    "supply_crate", CrateSupplyBlockEntity::new, ModBlocks.CRATE_SUPPLY));
+    public static final Reg.BeHandle<FileCabinetBlockEntity> FILE_CABINET =
+            (Reg.<FileCabinetBlockEntity>be(
+                            "file_cabinet",
+                            FileCabinetBlockEntity::new,
+                            ModBlocks.FILING_CABINET_GREEN,
+                            ModBlocks.FILING_CABINET_STEEL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RBMKRodBlockEntity> RBMK_ROD =
+            (Reg.<RBMKRodBlockEntity>be(
+                            "rbmk_rod",
+                            RBMKRodBlockEntity::new,
+                            ModBlocks.RBMK_ROD,
+                            ModBlocks.RBMK_ROD_MODERATED))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKRodReaSimBlockEntity> RBMK_ROD_REASIM =
+            (Reg.<RBMKRodReaSimBlockEntity>be(
+                            "rbmk_rod_reasim",
+                            RBMKRodReaSimBlockEntity::new,
+                            ModBlocks.RBMK_ROD_REASIM,
+                            ModBlocks.RBMK_ROD_REASIM_MODERATED))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKManualControlBlockEntity> RBMK_CONTROL =
+            (Reg.<RBMKManualControlBlockEntity>be(
+                            "rbmk_control",
+                            RBMKManualControlBlockEntity::new,
+                            ModBlocks.RBMK_CONTROL,
+                            ModBlocks.RBMK_CONTROL_MOD,
+                            ModBlocks.RBMK_CONTROL_REASIM))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RBMKControlAutoBlockEntity> RBMK_CONTROL_AUTO =
+            (Reg.<RBMKControlAutoBlockEntity>be(
                             "rbmk_control_auto",
-                            BlockEntityRBMKControlAuto::new,
+                            RBMKControlAutoBlockEntity::new,
                             ModBlocks.RBMK_CONTROL_AUTO,
-                            ModBlocks.RBMK_CONTROL_REASIM_AUTO);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKBoiler>> RBMK_BOILER =
-            machine("rbmk_boiler", BlockEntityRBMKBoiler::new, ModBlocks.RBMK_BOILER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKModerator>> RBMK_MODERATOR =
-            machine("rbmk_moderator", BlockEntityRBMKModerator::new, ModBlocks.RBMK_MODERATOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKReflector>> RBMK_REFLECTOR =
-            machine("rbmk_reflector", BlockEntityRBMKReflector::new, ModBlocks.RBMK_REFLECTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKAbsorber>> RBMK_ABSORBER =
-            machine("rbmk_absorber", BlockEntityRBMKAbsorber::new, ModBlocks.RBMK_ABSORBER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKBlank>> RBMK_BLANK =
-            machine("rbmk_blank", BlockEntityRBMKBlank::new, ModBlocks.RBMK_BLANK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKCooler>> RBMK_COOLER =
-            machine("rbmk_cooler", BlockEntityRBMKCooler::new, ModBlocks.RBMK_COOLER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKStorage>> RBMK_STORAGE =
-            machine("rbmk_storage", BlockEntityRBMKStorage::new, ModBlocks.RBMK_STORAGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKHeater>> RBMK_HEATER =
-            machine("rbmk_heater", BlockEntityRBMKHeater::new, ModBlocks.RBMK_HEATER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKOutgasser>> RBMK_OUTGASSER =
-            machine("rbmk_outgasser", BlockEntityRBMKOutgasser::new, ModBlocks.RBMK_OUTGASSER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKInlet>> RBMK_INLET =
-            machine("rbmk_inlet", BlockEntityRBMKInlet::new, ModBlocks.RBMK_INLET);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKOutlet>> RBMK_OUTLET =
-            machine("rbmk_outlet", BlockEntityRBMKOutlet::new, ModBlocks.RBMK_OUTLET);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKConsole>> RBMK_CONSOLE =
-            machine("rbmk_console", BlockEntityRBMKConsole::new, ModBlocks.RBMK_CONSOLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCraneConsole>>
-            RBMK_CRANE_CONSOLE =
-                    clientMachine(
+                            ModBlocks.RBMK_CONTROL_REASIM_AUTO))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RBMKBoilerBlockEntity> RBMK_BOILER =
+            (Reg.<RBMKBoilerBlockEntity>be(
+                            "rbmk_boiler", RBMKBoilerBlockEntity::new, ModBlocks.RBMK_BOILER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKPassiveBlockEntity> RBMK_MODERATOR =
+            (Reg.<RBMKPassiveBlockEntity>be(
+                            "rbmk_moderator",
+                            (pos, state) ->
+                                    new RBMKPassiveBlockEntity(
+                                            RBMKPassiveBlockEntity.MODERATOR, pos, state),
+                            ModBlocks.RBMK_MODERATOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKPassiveBlockEntity> RBMK_REFLECTOR =
+            (Reg.<RBMKPassiveBlockEntity>be(
+                            "rbmk_reflector",
+                            (pos, state) ->
+                                    new RBMKPassiveBlockEntity(
+                                            RBMKPassiveBlockEntity.REFLECTOR, pos, state),
+                            ModBlocks.RBMK_REFLECTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKPassiveBlockEntity> RBMK_ABSORBER =
+            (Reg.<RBMKPassiveBlockEntity>be(
+                            "rbmk_absorber",
+                            (pos, state) ->
+                                    new RBMKPassiveBlockEntity(
+                                            RBMKPassiveBlockEntity.ABSORBER, pos, state),
+                            ModBlocks.RBMK_ABSORBER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKBlankBlockEntity> RBMK_BLANK =
+            (Reg.<RBMKBlankBlockEntity>be(
+                            "rbmk_blank", RBMKBlankBlockEntity::new, ModBlocks.RBMK_BLANK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKCoolerBlockEntity> RBMK_COOLER =
+            (Reg.<RBMKCoolerBlockEntity>be(
+                            "rbmk_cooler", RBMKCoolerBlockEntity::new, ModBlocks.RBMK_COOLER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKStorageBlockEntity> RBMK_STORAGE =
+            (Reg.<RBMKStorageBlockEntity>be(
+                            "rbmk_storage", RBMKStorageBlockEntity::new, ModBlocks.RBMK_STORAGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKHeaterBlockEntity> RBMK_HEATER =
+            (Reg.<RBMKHeaterBlockEntity>be(
+                            "rbmk_heater", RBMKHeaterBlockEntity::new, ModBlocks.RBMK_HEATER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKIrradiationColumnBlockEntity> RBMK_OUTGASSER =
+            (Reg.<RBMKIrradiationColumnBlockEntity>be(
+                            "rbmk_outgasser",
+                            RBMKIrradiationColumnBlockEntity::new,
+                            ModBlocks.RBMK_OUTGASSER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKInletBlockEntity> RBMK_INLET =
+            (Reg.<RBMKInletBlockEntity>be(
+                            "rbmk_inlet", RBMKInletBlockEntity::new, ModBlocks.RBMK_INLET))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKOutletBlockEntity> RBMK_OUTLET =
+            (Reg.<RBMKOutletBlockEntity>be(
+                            "rbmk_outlet", RBMKOutletBlockEntity::new, ModBlocks.RBMK_OUTLET))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKConsoleBlockEntity> RBMK_CONSOLE =
+            (Reg.<RBMKConsoleBlockEntity>be(
+                            "rbmk_console", RBMKConsoleBlockEntity::new, ModBlocks.RBMK_CONSOLE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKCraneConsoleBlockEntity> RBMK_CRANE_CONSOLE =
+            (Reg.<RBMKCraneConsoleBlockEntity>be(
                             "rbmk_crane_console",
-                            BlockEntityCraneConsole::new,
-                            ModBlocks.RBMK_CRANE_CONSOLE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKGauge>> RBMK_GAUGE =
-            be("rbmk_gauge", BlockEntityRBMKGauge::new, ModBlocks.RBMK_GAUGE)
-                    .ticksClient(BlockEntityRBMKGauge::tickClient)
-                    .ticksServerAt(BlockEntityRBMKGauge::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKDisplay>> RBMK_DISPLAY =
-            be("rbmk_display", BlockEntityRBMKDisplay::new, ModBlocks.RBMK_DISPLAY)
-                    .ticksServerAt(BlockEntityRBMKDisplay::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKNumitron>> RBMK_NUMITRON =
-            be("rbmk_numitron", BlockEntityRBMKNumitron::new, ModBlocks.RBMK_NUMITRON)
-                    .ticksServerAt(BlockEntityRBMKNumitron::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKIndicator>> RBMK_INDICATOR =
-            be("rbmk_indicator", BlockEntityRBMKIndicator::new, ModBlocks.RBMK_INDICATOR)
-                    .ticksServerAt(BlockEntityRBMKIndicator::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKGraph>> RBMK_GRAPH =
-            be("rbmk_graph", BlockEntityRBMKGraph::new, ModBlocks.RBMK_GRAPH)
-                    .ticksServerAt(BlockEntityRBMKGraph::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKLever>> RBMK_LEVER =
-            be("rbmk_lever", BlockEntityRBMKLever::new, ModBlocks.RBMK_LEVER)
-                    .ticksClient(BlockEntityRBMKLever::tickClient)
-                    .ticksServerAt(BlockEntityRBMKLever::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKKeyPad>> RBMK_KEYPAD =
-            be("rbmk_keypad", BlockEntityRBMKKeyPad::new, ModBlocks.RBMK_KEY_PAD)
-                    .ticksServerAt(BlockEntityRBMKKeyPad::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKTerminal>> RBMK_TERMINAL =
-            be("rbmk_terminal", BlockEntityRBMKTerminal::new, ModBlocks.RBMK_TERMINAL)
-                    .ticksServerAt(BlockEntityRBMKTerminal::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityRBMKAutoloader>> RBMK_AUTOLOADER =
-            clientMachine(
-                    "rbmk_autoloader", BlockEntityRBMKAutoloader::new, ModBlocks.RBMK_AUTOLOADER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileFuel>> PILE_FUEL =
-            be("pile_fuel", BlockEntityPileFuel::new, ModBlocks.BLOCK_GRAPHITE_FUEL)
-                    .ticksServer(BlockEntityPileBase::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileBreedingFuel>>
-            PILE_BREEDINGFUEL =
-                    be(
-                                    "pile_breedingfuel",
-                                    BlockEntityPileBreedingFuel::new,
-                                    ModBlocks.BLOCK_GRAPHITE_LITHIUM)
-                            .ticksServer(BlockEntityPileBase::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileSource>> PILE_SOURCE =
-            be(
+                            RBMKCraneConsoleBlockEntity::new,
+                            ModBlocks.RBMK_CRANE_CONSOLE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RBMKGaugeBlockEntity> RBMK_GAUGE =
+            (Reg.<RBMKGaugeBlockEntity>be(
+                            "rbmk_gauge", RBMKGaugeBlockEntity::new, ModBlocks.RBMK_GAUGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RBMKDisplayBlockEntity> RBMK_DISPLAY =
+            (Reg.<RBMKDisplayBlockEntity>be(
+                            "rbmk_display", RBMKDisplayBlockEntity::new, ModBlocks.RBMK_DISPLAY))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKNumitronBlockEntity> RBMK_NUMITRON =
+            (Reg.<RBMKNumitronBlockEntity>be(
+                            "rbmk_numitron", RBMKNumitronBlockEntity::new, ModBlocks.RBMK_NUMITRON))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKIndicatorBlockEntity> RBMK_INDICATOR =
+            (Reg.<RBMKIndicatorBlockEntity>be(
+                            "rbmk_indicator",
+                            RBMKIndicatorBlockEntity::new,
+                            ModBlocks.RBMK_INDICATOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKGraphBlockEntity> RBMK_GRAPH =
+            (Reg.<RBMKGraphBlockEntity>be(
+                            "rbmk_graph", RBMKGraphBlockEntity::new, ModBlocks.RBMK_GRAPH))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKLeverBlockEntity> RBMK_LEVER =
+            (Reg.<RBMKLeverBlockEntity>be(
+                            "rbmk_lever", RBMKLeverBlockEntity::new, ModBlocks.RBMK_LEVER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<RBMKKeyPadBlockEntity> RBMK_KEYPAD =
+            (Reg.<RBMKKeyPadBlockEntity>be(
+                            "rbmk_keypad", RBMKKeyPadBlockEntity::new, ModBlocks.RBMK_KEY_PAD))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKTerminalBlockEntity> RBMK_TERMINAL =
+            (Reg.<RBMKTerminalBlockEntity>be(
+                            "rbmk_terminal", RBMKTerminalBlockEntity::new, ModBlocks.RBMK_TERMINAL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<RBMKAutoloaderBlockEntity> RBMK_AUTOLOADER =
+            (Reg.<RBMKAutoloaderBlockEntity>be(
+                            "rbmk_autoloader",
+                            RBMKAutoloaderBlockEntity::new,
+                            ModBlocks.RBMK_AUTOLOADER))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<PileFuelBlockEntity> PILE_FUEL =
+            (Reg.<PileFuelBlockEntity>be(
+                            "pile_fuel", PileFuelBlockEntity::new, ModBlocks.BLOCK_GRAPHITE_FUEL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PileBreedingFuelBlockEntity> PILE_BREEDINGFUEL =
+            (Reg.<PileBreedingFuelBlockEntity>be(
+                            "pile_breedingfuel",
+                            PileBreedingFuelBlockEntity::new,
+                            ModBlocks.BLOCK_GRAPHITE_LITHIUM))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PileSourceBlockEntity> PILE_SOURCE =
+            (Reg.<PileSourceBlockEntity>be(
                             "pile_source",
-                            BlockEntityPileSource::new,
+                            PileSourceBlockEntity::new,
                             ModBlocks.BLOCK_GRAPHITE_SOURCE,
-                            ModBlocks.BLOCK_GRAPHITE_PLUTONIUM)
-                    .ticksServer(BlockEntityPileBase::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileNeutronDetector>>
-            PILE_NEUTRONDETECTOR =
-                    be(
-                                    "pile_neutrondetector",
-                                    BlockEntityPileNeutronDetector::new,
-                                    ModBlocks.BLOCK_GRAPHITE_DETECTOR)
-                            .ticksServer(BlockEntityPileNeutronDetector::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileCore>> PILE_CORE =
-            be("pile_core", BlockEntityPileCore::new, ModBlocks.PILE_BLOCK)
-                    .ticksServer(BlockEntityPileCore::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileLoader>> PILE_LOADER =
-            be("pile_loader", BlockEntityPileLoader::new, ModBlocks.PILE_LOADER)
-                    .ticks(BlockEntityPileLoader::tickClient, BlockEntityPileLoader::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileVent>> PILE_VENT =
-            be("pile_vent", BlockEntityPileVent::new, ModBlocks.PILE_VENT)
-                    .ticks(BlockEntityPileVent::tickClient, BlockEntityPileVent::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPileControl>> PILE_CONTROL =
-            be("pile_control", BlockEntityPileControl::new, ModBlocks.PILE_CONTROL)
-                    .ticks(BlockEntityPileControl::tickClient, BlockEntityPileControl::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFan>> FAN =
-            be("fan", BlockEntityFan::new, ModBlocks.FAN).ticks(BlockEntityFan::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPistonInserter>> PISTON_INSERTER =
-            clientMachine(
-                    "piston_inserter", BlockEntityPistonInserter::new, ModBlocks.PISTON_INSERTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePWRController>>
-            PWR_CONTROLLER =
-                    clientMachine(
+                            ModBlocks.BLOCK_GRAPHITE_PLUTONIUM))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PileNeutronDetectorBlockEntity> PILE_NEUTRONDETECTOR =
+            (Reg.<PileNeutronDetectorBlockEntity>be(
+                            "pile_neutrondetector",
+                            PileNeutronDetectorBlockEntity::new,
+                            ModBlocks.BLOCK_GRAPHITE_DETECTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PileCoreBlockEntity> PILE_CORE =
+            (Reg.<PileCoreBlockEntity>be(
+                            "pile_core", PileCoreBlockEntity::new, ModBlocks.PILE_BLOCK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PileLoaderBlockEntity> PILE_LOADER =
+            (Reg.<PileLoaderBlockEntity>be(
+                            "pile_loader", PileLoaderBlockEntity::new, ModBlocks.PILE_LOADER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<PileVentBlockEntity> PILE_VENT =
+            (Reg.<PileVentBlockEntity>be(
+                            "pile_vent", PileVentBlockEntity::new, ModBlocks.PILE_VENT))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<PileControlBlockEntity> PILE_CONTROL =
+            (Reg.<PileControlBlockEntity>be(
+                            "pile_control", PileControlBlockEntity::new, ModBlocks.PILE_CONTROL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FanBlockEntity> FAN =
+            (Reg.<FanBlockEntity>be("fan", FanBlockEntity::new, ModBlocks.FAN))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<PistonInserterBlockEntity> PISTON_INSERTER =
+            (Reg.<PistonInserterBlockEntity>be(
+                            "piston_inserter",
+                            PistonInserterBlockEntity::new,
+                            ModBlocks.PISTON_INSERTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<PWRControllerBlockEntity> PWR_CONTROLLER =
+            (Reg.<PWRControllerBlockEntity>be(
                             "pwr_controller",
-                            BlockEntityMachinePWRController::new,
-                            ModBlocks.PWR_CONTROLLER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineICFController>>
-            ICF_CONTROLLER =
-                    be(
-                                    "icf_controller",
-                                    BlockEntityMachineICFController::new,
-                                    ModBlocks.ICF_CONTROLLER)
-                            .ticks(
-                                    BlockEntityMachineICFController::tickClient,
-                                    BlockEntityMachineICFController::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityICF>> ICF =
-            machine("icf", BlockEntityICF::new, ModBlocks.MACHINE_ICF);
-    public static final RegistryHandle<BlockEntityType<BlockEntityICFStruct>> ICF_STRUCT =
-            be("icf_struct", BlockEntityICFStruct::new, ModBlocks.STRUCT_ICF_CORE)
-                    .ticksServer(BlockEntityICFStruct::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityICFPress>> ICF_PRESS =
-            machine("icf_press", BlockEntityICFPress::new, ModBlocks.MACHINE_ICF_PRESS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBedrockOre>> BEDROCK_ORE =
-            be("bedrock_ore", BlockEntityBedrockOre::new, ModBlocks.ORE_BEDROCK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeCustom>> NUKE_CUSTOM =
-            be("nuke_custom", BlockEntityNukeCustom::new, ModBlocks.NUKE_CUSTOM);
-    public static final RegistryHandle<BlockEntityType<BlockEntityNukeBalefire>> NUKE_FSTBMB =
-            machine("nuke_fstbmb", BlockEntityNukeBalefire::new, ModBlocks.NUKE_FSTBMB);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBombMulti>> BOMB_MULTI =
-            be("bombmulti", BlockEntityBombMulti::new, ModBlocks.BOMB_MULTI);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFireworks>> FIREWORK_BOX =
-            be("firework_box", BlockEntityFireworks::new, ModBlocks.FIREWORKS)
-                    .ticksServerAt(BlockEntityFireworks::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFissure>> FISSURE =
-            be("fissure", BlockEntityFissure::new, ModBlocks.ORE_VOLCANO)
-                    .ticksServerAt(BlockEntityFissure::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityGeysir>> GEYSIR =
-            be("geysir", BlockEntityGeysir::new, ModBlocks.GEYSIR_NETHER, ModBlocks.GEYSIR_CHLORINE)
-                    .ticksServerAt(BlockEntityGeysir::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityVent>> VENT =
-            be(
+                            PWRControllerBlockEntity::new,
+                            ModBlocks.PWR_CONTROLLER))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ICFControllerBlockEntity> ICF_CONTROLLER =
+            (Reg.<ICFControllerBlockEntity>be(
+                            "icf_controller",
+                            ICFControllerBlockEntity::new,
+                            ModBlocks.ICF_CONTROLLER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ICFBlockEntity> ICF =
+            (Reg.<ICFBlockEntity>be("icf", ICFBlockEntity::new, ModBlocks.MACHINE_ICF))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ICFAssemblyBlockEntity> ICF_STRUCT =
+            (Reg.<ICFAssemblyBlockEntity>be(
+                    "icf_struct", ICFAssemblyBlockEntity::new, ModBlocks.STRUCT_ICF_CORE));
+    public static final Reg.BeHandle<FusionPelletPressBlockEntity> ICF_PRESS =
+            (Reg.<FusionPelletPressBlockEntity>be(
+                            "icf_press",
+                            FusionPelletPressBlockEntity::new,
+                            ModBlocks.MACHINE_ICF_PRESS))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<BedrockOreBlockEntity> BEDROCK_ORE =
+            (Reg.<BedrockOreBlockEntity>be(
+                    "bedrock_ore", BedrockOreBlockEntity::new, ModBlocks.ORE_BEDROCK));
+    public static final Reg.BeHandle<CustomNukeBlockEntity> NUKE_CUSTOM =
+            (Reg.<CustomNukeBlockEntity>be(
+                    "nuke_custom", CustomNukeBlockEntity::new, ModBlocks.NUKE_CUSTOM));
+    public static final Reg.BeHandle<BalefireNukeBlockEntity> NUKE_FSTBMB =
+            (Reg.<BalefireNukeBlockEntity>be(
+                            "nuke_fstbmb", BalefireNukeBlockEntity::new, ModBlocks.NUKE_FSTBMB))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<BombMultiBlockEntity> BOMB_MULTI =
+            (Reg.<BombMultiBlockEntity>be(
+                    "bombmulti", BombMultiBlockEntity::new, ModBlocks.BOMB_MULTI));
+    public static final Reg.BeHandle<FireworksBlockEntity> FIREWORK_BOX =
+            (Reg.<FireworksBlockEntity>be(
+                            "firework_box", FireworksBlockEntity::new, ModBlocks.FIREWORKS))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FissureBlockEntity> FISSURE =
+            (Reg.<FissureBlockEntity>be("fissure", FissureBlockEntity::new, ModBlocks.ORE_VOLCANO))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<GeyserBlockEntity> GEYSIR =
+            (Reg.<GeyserBlockEntity>be(
+                            "geysir",
+                            GeyserBlockEntity::new,
+                            ModBlocks.GEYSIR_NETHER,
+                            ModBlocks.GEYSIR_CHLORINE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<VentBlockEntity> VENT =
+            (Reg.<VentBlockEntity>be(
                             "vent",
-                            BlockEntityVent::new,
+                            VentBlockEntity::new,
                             ModBlocks.VENT_CHLORINE,
                             ModBlocks.VENT_CLOUD,
-                            ModBlocks.VENT_PINK_CLOUD)
-                    .ticksServerAt(BlockEntityVent::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityChlorineSeal>> CHLORINE_SEAL =
-            be("chlorine_seal", BlockEntityChlorineSeal::new, ModBlocks.VENT_CHLORINE_SEAL)
-                    .ticksServerAt(BlockEntityChlorineSeal::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityEmitter>> EMITTER =
-            be("emitter", BlockEntityEmitter::new, ModBlocks.DECO_EMITTER)
-                    .ticksServerAt(BlockEntityEmitter::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityPartEmitter>> PART_EMITTER =
-            be("partemitter", BlockEntityPartEmitter::new, ModBlocks.PART_EMITTER)
-                    .ticksServerAt(BlockEntityPartEmitter::tickServer)
-                    .ticksClientAt(BlockEntityPartEmitter::tickClient);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBlastDoor>> BLAST_DOOR =
-            machine("blast_door", BlockEntityBlastDoor::new, ModBlocks.BLAST_DOOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityBroadcaster>> BROADCASTER =
-            be("pink_cloud_broadcaster", BlockEntityBroadcaster::new, ModBlocks.BROADCASTER_PC)
-                    .ticksClientAt(BlockEntityBroadcaster::tickClient)
-                    .ticksServerAt(BlockEntityBroadcaster::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityTrappedBrick>> TRAPPED_BRICK =
-            be(
+                            ModBlocks.VENT_PINK_CLOUD))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ChlorineSealBlockEntity> CHLORINE_SEAL =
+            (Reg.<ChlorineSealBlockEntity>be(
+                            "chlorine_seal",
+                            ChlorineSealBlockEntity::new,
+                            ModBlocks.VENT_CHLORINE_SEAL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<EmitterBlockEntity> EMITTER =
+            (Reg.<EmitterBlockEntity>be("emitter", EmitterBlockEntity::new, ModBlocks.DECO_EMITTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PartEmitterBlockEntity> PART_EMITTER =
+            (Reg.<PartEmitterBlockEntity>be(
+                            "partemitter", PartEmitterBlockEntity::new, ModBlocks.PART_EMITTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<BlastDoorBlockEntity> BLAST_DOOR =
+            (Reg.<BlastDoorBlockEntity>be(
+                            "blast_door", BlastDoorBlockEntity::new, ModBlocks.BLAST_DOOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<BroadcasterBlockEntity> BROADCASTER =
+            (Reg.<BroadcasterBlockEntity>be(
+                            "pink_cloud_broadcaster",
+                            BroadcasterBlockEntity::new,
+                            ModBlocks.BROADCASTER_PC))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TrappedBrickBlockEntity> TRAPPED_BRICK =
+            (Reg.<TrappedBrickBlockEntity>be(
                             "trapped_brick",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityTrappedBrick::new,
+                                            TrappedBrickBlockEntity::new,
                                             ModBlocks.JUNGLE_TRAPS.stream()
                                                     .map(RegistryHandle::get)
                                                     .filter(
                                                             b ->
                                                                     b.trap.type
-                                                                            == TrappedBrick.TrapType
+                                                                            == TrappedBrickBlock
+                                                                                    .TrapType
                                                                                     .DETECTOR)
-                                                    .collect(Collectors.toSet())))
-                    .ticksServerAt(BlockEntityTrappedBrick::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCrashedBomb>> CRASHED_BALEFIRE =
-            be(
+                                                    .collect(Collectors.toSet()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CrashedBombBlockEntity> CRASHED_BALEFIRE =
+            (Reg.<CrashedBombBlockEntity>be(
                             "crashed_balefire",
                             () ->
                                     new BlockEntityType<>(
-                                            BlockEntityCrashedBomb::new,
+                                            CrashedBombBlockEntity::new,
                                             ModBlocks.CRASHED_BOMBS.stream()
                                                     .map(RegistryHandle::get)
-                                                    .collect(Collectors.toSet())))
-                    .ticksServerAt(BlockEntityCrashedBomb::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityLandmine>> LANDMINE =
-            be(
+                                                    .collect(Collectors.toSet()))))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<LandmineBlockEntity> LANDMINE =
+            (Reg.<LandmineBlockEntity>be(
                             "landmine",
-                            BlockEntityLandmine::new,
+                            LandmineBlockEntity::new,
                             ModBlocks.MINE_AP,
                             ModBlocks.MINE_SHRAP,
                             ModBlocks.MINE_HE,
                             ModBlocks.MINE_FAT,
-                            ModBlocks.MINE_NAVAL)
-                    .ticksServerAt(BlockEntityLandmine::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCharge>> EXPLOSIVE_CHARGE =
-            be(
+                            ModBlocks.MINE_NAVAL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ChargeBlockEntity> EXPLOSIVE_CHARGE =
+            (Reg.<ChargeBlockEntity>be(
                     "explosive_charge",
-                    BlockEntityCharge::new,
+                    ChargeBlockEntity::new,
                     ModBlocks.CHARGE_C4,
                     ModBlocks.CHARGE_DYNAMITE,
                     ModBlocks.CHARGE_MINER,
-                    ModBlocks.CHARGE_SEMTEX);
-    public static final RegistryHandle<BlockEntityType<BlockEntityVolcanoCore>> VOLCANO_CORE =
-            be(
+                    ModBlocks.CHARGE_SEMTEX));
+    public static final Reg.BeHandle<VolcanoCoreBlockEntity> VOLCANO_CORE =
+            (Reg.<VolcanoCoreBlockEntity>be(
                             "volcano_core",
-                            BlockEntityVolcanoCore::new,
+                            VolcanoCoreBlockEntity::new,
                             ModBlocks.VOLCANO_CORE,
-                            ModBlocks.VOLCANO_RAD_CORE)
-                    .ticksServerAt(BlockEntityVolcanoCore::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityLogicBlock>> NTM_LOGIC_BLOCK =
-            be(
+                            ModBlocks.VOLCANO_RAD_CORE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<LogicBlockEntity> NTM_LOGIC_BLOCK =
+            (Reg.<LogicBlockEntity>be(
                             "logic_block",
-                            BlockEntityLogicBlock::new,
+                            LogicBlockEntity::new,
                             ModBlocks.LOGIC_BLOCK,
-                            ModBlocks.LOGIC_BLOCK_INVIS)
-                    .ticksServerAt(BlockEntityLogicBlock::tick);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFurnaceIron>> FURNACE_IRON =
-            clientMachine("furnace_iron", BlockEntityFurnaceIron::new, ModBlocks.FURNACE_IRON);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFurnaceSteel>> FURNACE_STEEL =
-            clientMachine("furnace_steel", BlockEntityFurnaceSteel::new, ModBlocks.FURNACE_STEEL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFurnaceCombination>>
-            COMBINATION_OVEN =
-                    clientMachine(
+                            ModBlocks.LOGIC_BLOCK_INVIS))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<IronFurnaceBlockEntity> FURNACE_IRON =
+            (Reg.<IronFurnaceBlockEntity>be(
+                            "furnace_iron", IronFurnaceBlockEntity::new, ModBlocks.FURNACE_IRON))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<SteelFurnaceBlockEntity> FURNACE_STEEL =
+            (Reg.<SteelFurnaceBlockEntity>be(
+                            "furnace_steel", SteelFurnaceBlockEntity::new, ModBlocks.FURNACE_STEEL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CombinationFurnaceBlockEntity> COMBINATION_OVEN =
+            (Reg.<CombinationFurnaceBlockEntity>be(
                             "combination_oven",
-                            BlockEntityFurnaceCombination::new,
-                            ModBlocks.FURNACE_COMBINATION);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFurnaceBrick>> FURNACE_BRICK =
-            machine("furnace_brick", BlockEntityFurnaceBrick::new, ModBlocks.MACHINE_FURNACE_BRICK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityHeaterOven>> HEATING_OVEN =
-            clientMachine("heating_oven", BlockEntityHeaterOven::new, ModBlocks.HEATER_OVEN);
-    public static final RegistryHandle<BlockEntityType<BlockEntityAshpit>> ASHPIT =
-            clientMachine("ashpit", BlockEntityAshpit::new, ModBlocks.MACHINE_ASHPIT);
-    public static final RegistryHandle<BlockEntityType<BlockEntityHeaterOilburner>> OILBURNER =
-            machine("oilburner", BlockEntityHeaterOilburner::new, ModBlocks.HEATER_OILBURNER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityHeaterHeatex>> HEATER_HEATEX =
-            machine("heater_heatex", BlockEntityHeaterHeatex::new, ModBlocks.HEATER_HEATEX);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCrystallizer>> ACIDOMATIC =
-            clientMachine(
-                    "acidomatic",
-                    BlockEntityMachineCrystallizer::new,
-                    ModBlocks.MACHINE_CRYSTALLIZER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineCoker>> COKER =
-            clientMachine("coker", BlockEntityMachineCoker::new, ModBlocks.MACHINE_COKER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineLiquefactor>> LIQUEFACTOR =
-            machine(
-                    "liquefactor",
-                    BlockEntityMachineLiquefactor::new,
-                    ModBlocks.MACHINE_LIQUEFACTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineSolidifier>> SOLIDIFIER =
-            machine("solidifier", BlockEntityMachineSolidifier::new, ModBlocks.MACHINE_SOLIDIFIER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePyroOven>> PYROOVEN =
-            clientMachine("pyrooven", BlockEntityMachinePyroOven::new, ModBlocks.MACHINE_PYROOVEN);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineVacuumDistill>>
-            VACUUUM_DISTILL =
-                    clientMachine(
+                            CombinationFurnaceBlockEntity::new,
+                            ModBlocks.FURNACE_COMBINATION))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<BrickFurnaceBlockEntity> FURNACE_BRICK =
+            (Reg.<BrickFurnaceBlockEntity>be(
+                            "furnace_brick",
+                            BrickFurnaceBlockEntity::new,
+                            ModBlocks.MACHINE_FURNACE_BRICK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<HeaterOvenBlockEntity> HEATING_OVEN =
+            (Reg.<HeaterOvenBlockEntity>be(
+                            "heating_oven", HeaterOvenBlockEntity::new, ModBlocks.HEATER_OVEN))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<AshpitBlockEntity> ASHPIT =
+            (Reg.<AshpitBlockEntity>be("ashpit", AshpitBlockEntity::new, ModBlocks.MACHINE_ASHPIT))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<HeaterOilburnerBlockEntity> OILBURNER =
+            (Reg.<HeaterOilburnerBlockEntity>be(
+                            "oilburner",
+                            HeaterOilburnerBlockEntity::new,
+                            ModBlocks.HEATER_OILBURNER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CoolingHeatBlockEntity> HEATER_HEATEX =
+            (Reg.<CoolingHeatBlockEntity>be(
+                            "heater_heatex", CoolingHeatBlockEntity::new, ModBlocks.HEATER_HEATEX))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<CrystalProcessorBlockEntity> ACIDOMATIC =
+            (Reg.<CrystalProcessorBlockEntity>be(
+                            "acidomatic",
+                            CrystalProcessorBlockEntity::new,
+                            ModBlocks.MACHINE_CRYSTALLIZER))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CokerBlockEntity> COKER =
+            (Reg.<CokerBlockEntity>be("coker", CokerBlockEntity::new, ModBlocks.MACHINE_COKER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<LiquefactorBlockEntity> LIQUEFACTOR =
+            (Reg.<LiquefactorBlockEntity>be(
+                            "liquefactor",
+                            LiquefactorBlockEntity::new,
+                            ModBlocks.MACHINE_LIQUEFACTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<SolidifierBlockEntity> SOLIDIFIER =
+            (Reg.<SolidifierBlockEntity>be(
+                            "solidifier", SolidifierBlockEntity::new, ModBlocks.MACHINE_SOLIDIFIER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PyroOvenBlockEntity> PYROOVEN =
+            (Reg.<PyroOvenBlockEntity>be(
+                            "pyrooven", PyroOvenBlockEntity::new, ModBlocks.MACHINE_PYROOVEN))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<VacuumRefineryBlockEntity> VACUUUM_DISTILL =
+            (Reg.<VacuumRefineryBlockEntity>be(
                             "vacuuum_distill",
-                            BlockEntityMachineVacuumDistill::new,
-                            ModBlocks.MACHINE_VACUUM_DISTILL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineFrackingTower>>
-            FRACKING_TOWER =
-                    machine(
+                            VacuumRefineryBlockEntity::new,
+                            ModBlocks.MACHINE_VACUUM_DISTILL))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FrackingTowerBlockEntity> FRACKING_TOWER =
+            (Reg.<FrackingTowerBlockEntity>be(
                             "fracking_tower",
-                            BlockEntityMachineFrackingTower::new,
-                            ModBlocks.MACHINE_FRACKING_TOWER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachinePumpElectric>>
-            ELECTRIC_PUMP =
-                    pump(
-                            "electric_pump",
-                            BlockEntityMachinePumpElectric::new,
-                            ModBlocks.PUMP_ELECTRIC);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineIntake>> INTAKE =
-            be("intake", BlockEntityMachineIntake::new, ModBlocks.MACHINE_INTAKE)
-                    .ticks(
-                            BlockEntityMachineIntake::tickClient,
-                            BlockEntityMachineIntake::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineDrain>> FLUID_DRAIN =
-            be("fluid_drain", BlockEntityMachineDrain::new, ModBlocks.MACHINE_DRAIN)
-                    .ticks(
-                            BlockEntityMachineDrain::tickClient,
-                            BlockEntityMachineDrain::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineFunnel>> FUNNEL =
-            machine("funnel", BlockEntityMachineFunnel::new, ModBlocks.MACHINE_FUNNEL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCondenser>> CONDENSER =
-            machine("condenser", BlockEntityCondenser::new, ModBlocks.MACHINE_CONDENSER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCondenserPowered>>
-            CONDENSER_POWERED =
-                    clientMachine(
+                            FrackingTowerBlockEntity::new,
+                            ModBlocks.MACHINE_FRACKING_TOWER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<ElectricPumpBlockEntity> ELECTRIC_PUMP =
+            (Reg.<ElectricPumpBlockEntity>be(
+                            "electric_pump", ElectricPumpBlockEntity::new, ModBlocks.PUMP_ELECTRIC))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<IntakeBlockEntity> INTAKE =
+            (Reg.<IntakeBlockEntity>be("intake", IntakeBlockEntity::new, ModBlocks.MACHINE_INTAKE))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<DrainBlockEntity> FLUID_DRAIN =
+            (Reg.<DrainBlockEntity>be(
+                            "fluid_drain", DrainBlockEntity::new, ModBlocks.MACHINE_DRAIN))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<ItemCompressionBlockEntity> FUNNEL =
+            (Reg.<ItemCompressionBlockEntity>be(
+                            "funnel", ItemCompressionBlockEntity::new, ModBlocks.MACHINE_FUNNEL))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<SteamCondenserBlockEntity> CONDENSER =
+            (Reg.<SteamCondenserBlockEntity>be(
+                            "condenser",
+                            SteamCondenserBlockEntity::new,
+                            ModBlocks.MACHINE_CONDENSER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<PoweredCondenserBlockEntity> CONDENSER_POWERED =
+            (Reg.<PoweredCondenserBlockEntity>be(
                             "condenser_powered",
-                            BlockEntityCondenserPowered::new,
-                            ModBlocks.MACHINE_CONDENSER_POWERED);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineBigAssTank>> BIGASSTANK =
-            machine("bigasstank", BlockEntityMachineBigAssTank::new, ModBlocks.MACHINE_BIGASSTANK);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineOrbus>> ORBUS =
-            machine("orbus", BlockEntityMachineOrbus::new, ModBlocks.MACHINE_ORBUS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityUF6Tank>> UF6_TANK =
-            be(
+                            PoweredCondenserBlockEntity::new,
+                            ModBlocks.MACHINE_CONDENSER_POWERED))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<BigAssTankBlockEntity> BIGASSTANK =
+            (Reg.<BigAssTankBlockEntity>be(
+                            "bigasstank", BigAssTankBlockEntity::new, ModBlocks.MACHINE_BIGASSTANK))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<OrbusBlockEntity> ORBUS =
+            (Reg.<OrbusBlockEntity>be("orbus", OrbusBlockEntity::new, ModBlocks.MACHINE_ORBUS))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<UF6TankBlockEntity> UF6_TANK =
+            (Reg.<UF6TankBlockEntity>be(
                     "uf6_tank",
                     () ->
                             new BlockEntityType<>(
                                     (pos, state) ->
-                                            new BlockEntityUF6Tank(
+                                            new UF6TankBlockEntity(
                                                     ModBlockEntities.UF6_TANK.get(), pos, state),
-                                    Set.of(ModBlocks.MACHINE_UF6_TANK.get())));
-    public static final RegistryHandle<BlockEntityType<BlockEntityUF6Tank>> PUF6_TANK =
-            be(
+                                    Set.of(ModBlocks.MACHINE_UF6_TANK.get()))));
+    public static final Reg.BeHandle<UF6TankBlockEntity> PUF6_TANK =
+            (Reg.<UF6TankBlockEntity>be(
                     "puf6_tank",
                     () ->
                             new BlockEntityType<>(
                                     (pos, state) ->
-                                            new BlockEntityUF6Tank(
+                                            new UF6TankBlockEntity(
                                                     ModBlockEntities.PUF6_TANK.get(), pos, state),
-                                    Set.of(ModBlocks.MACHINE_PUF6_TANK.get())));
-    public static final RegistryHandle<BlockEntityType<BlockEntityMicrowave>> MICROWAVE =
-            machine("microwave", BlockEntityMicrowave::new, ModBlocks.MACHINE_MICROWAVE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineSatLinker>> SATLINKER =
-            be("satlinker", BlockEntityMachineSatLinker::new, ModBlocks.MACHINE_SATLINKER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineSatLink>> SATLINK =
-            be("satlink", BlockEntityMachineSatLink::new, ModBlocks.MACHINE_SATLINK)
-                    .ticksClientAt(BlockEntityMachineSatLink::tickClient)
-                    .ticksServerAt(BlockEntityMachineSatLink::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineKeyForge>> KEY_FORGE =
-            be("key_forge", BlockEntityMachineKeyForge::new, ModBlocks.MACHINE_KEYFORGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityThresher>> THRESHER =
-            be("thresher", BlockEntityThresher::new, ModBlocks.MACHINE_THRESHER)
-                    .ticksClient(BlockEntityThresher::tickClient)
-                    .ticksServerAt(BlockEntityThresher::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineAutosaw>> AUTOSAW =
-            be("autosaw", BlockEntityMachineAutosaw::new, ModBlocks.MACHINE_AUTOSAW)
-                    .ticksClient(BlockEntityMachineAutosaw::tickClient)
-                    .ticksServerAt(BlockEntityMachineAutosaw::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntitySawmill>> SAWMILL =
-            clientMachine("sawmill", BlockEntitySawmill::new, ModBlocks.MACHINE_SAWMILL);
-    public static final RegistryHandle<BlockEntityType<BlockEntityStirling>> STIRLING =
-            clientMachine(
-                    "stirling",
-                    BlockEntityStirling::new,
-                    ModBlocks.MACHINE_STIRLING,
-                    ModBlocks.MACHINE_STIRLING_STEEL,
-                    ModBlocks.MACHINE_STIRLING_CREATIVE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineAmmoPress>> AMMO_PRESS =
-            clientMachine(
-                    "ammo_press", BlockEntityMachineAmmoPress::new, ModBlocks.MACHINE_AMMO_PRESS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionTorus>> FUSION_TORUS =
-            clientMachine("fusion_torus", BlockEntityFusionTorus::new, ModBlocks.FUSION_TORUS);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCore>> CORE_CORE =
-            machine("v0", BlockEntityCore::new, ModBlocks.DFC_CORE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCoreEmitter>> CORE_EMITTER =
-            machine("v0_emitter", BlockEntityCoreEmitter::new, ModBlocks.DFC_EMITTER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCoreReceiver>> CORE_RECEIVER =
-            machine("v0_receiver", BlockEntityCoreReceiver::new, ModBlocks.DFC_RECEIVER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCoreInjector>> CORE_INJECTOR =
-            machine("v0_injector", BlockEntityCoreInjector::new, ModBlocks.DFC_INJECTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCoreStabilizer>> CORE_STABILIZER =
-            machine("v0_stabilizer", BlockEntityCoreStabilizer::new, ModBlocks.DFC_STABILIZER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionKlystron>> FUSION_KLYSTRON =
-            clientMachine(
-                    "fusion_klystron", BlockEntityFusionKlystron::new, ModBlocks.FUSION_KLYSTRON);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionKlystronCreative>>
-            FUSION_KLYSTRON_CREATIVE =
-                    be(
-                                    "fusion_klystron_creative",
-                                    BlockEntityFusionKlystronCreative::new,
-                                    ModBlocks.FUSION_KLYSTRON_CREATIVE)
-                            .ticks(
-                                    BlockEntityFusionKlystronCreative::tickClient,
-                                    BlockEntityFusionKlystronCreative::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionBreeder>> FUSION_BREEDER =
-            machine("fusion_breeder", BlockEntityFusionBreeder::new, ModBlocks.FUSION_BREEDER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionCollector>>
-            FUSION_COLLECTOR =
-                    be(
-                            "fusion_collector",
-                            BlockEntityFusionCollector::new,
-                            ModBlocks.FUSION_COLLECTOR);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionBoiler>> FUSION_BOILER =
-            be("fusion_boiler", BlockEntityFusionBoiler::new, ModBlocks.FUSION_BOILER)
-                    .ticksServer(BlockEntityFusionBoiler::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionMHDT>> FUSION_MHDT =
-            be("fusion_mhdt", BlockEntityFusionMHDT::new, ModBlocks.FUSION_MHDT)
-                    .ticks(BlockEntityFusionMHDT::tickClient, BlockEntityFusionMHDT::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionCoupler>> FUSION_COUPLER =
-            be("fusion_coupler", BlockEntityFusionCoupler::new, ModBlocks.FUSION_COUPLER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionPlasmaForge>>
-            FUSION_PLASMA_FORGE =
-                    clientMachine(
+                                    Set.of(ModBlocks.MACHINE_PUF6_TANK.get()))));
+    public static final Reg.BeHandle<MicrowaveBlockEntity> MICROWAVE =
+            (Reg.<MicrowaveBlockEntity>be(
+                            "microwave", MicrowaveBlockEntity::new, ModBlocks.MACHINE_MICROWAVE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<SatLinkerBlockEntity> SATLINKER =
+            (Reg.<SatLinkerBlockEntity>be(
+                    "satlinker", SatLinkerBlockEntity::new, ModBlocks.MACHINE_SATLINKER));
+    public static final Reg.BeHandle<SatelliteLinkerBlockEntity> SATLINK =
+            (Reg.<SatelliteLinkerBlockEntity>be(
+                            "satlink", SatelliteLinkerBlockEntity::new, ModBlocks.MACHINE_SATLINK))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<KeyForgeBlockEntity> KEY_FORGE =
+            (Reg.<KeyForgeBlockEntity>be(
+                    "key_forge", KeyForgeBlockEntity::new, ModBlocks.MACHINE_KEYFORGE));
+    public static final Reg.BeHandle<ThresherBlockEntity> THRESHER =
+            (Reg.<ThresherBlockEntity>be(
+                            "thresher", ThresherBlockEntity::new, ModBlocks.MACHINE_THRESHER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<AutosawBlockEntity> AUTOSAW =
+            (Reg.<AutosawBlockEntity>be(
+                            "autosaw", AutosawBlockEntity::new, ModBlocks.MACHINE_AUTOSAW))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<TimberSawBlockEntity> SAWMILL =
+            (Reg.<TimberSawBlockEntity>be(
+                            "sawmill", TimberSawBlockEntity::new, ModBlocks.MACHINE_SAWMILL))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<StirlingGeneratorBlockEntity> STIRLING =
+            (Reg.<StirlingGeneratorBlockEntity>be(
+                            "stirling",
+                            StirlingGeneratorBlockEntity::new,
+                            ModBlocks.MACHINE_STIRLING,
+                            ModBlocks.MACHINE_STIRLING_STEEL,
+                            ModBlocks.MACHINE_STIRLING_CREATIVE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<AmmoPressBlockEntity> AMMO_PRESS =
+            (Reg.<AmmoPressBlockEntity>be(
+                            "ammo_press", AmmoPressBlockEntity::new, ModBlocks.MACHINE_AMMO_PRESS))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FusionTorusBlockEntity> FUSION_TORUS =
+            (Reg.<FusionTorusBlockEntity>be(
+                            "fusion_torus", FusionTorusBlockEntity::new, ModBlocks.FUSION_TORUS))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<DfcChamberBlockEntity> CORE_CORE =
+            (Reg.<DfcChamberBlockEntity>be("v0", DfcChamberBlockEntity::new, ModBlocks.DFC_CORE))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DfcEmitterBlockEntity> CORE_EMITTER =
+            (Reg.<DfcEmitterBlockEntity>be(
+                            "v0_emitter", DfcEmitterBlockEntity::new, ModBlocks.DFC_EMITTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DfcReceiverBlockEntity> CORE_RECEIVER =
+            (Reg.<DfcReceiverBlockEntity>be(
+                            "v0_receiver", DfcReceiverBlockEntity::new, ModBlocks.DFC_RECEIVER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DfcInjectorBlockEntity> CORE_INJECTOR =
+            (Reg.<DfcInjectorBlockEntity>be(
+                            "v0_injector", DfcInjectorBlockEntity::new, ModBlocks.DFC_INJECTOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<DfcStabilizerBlockEntity> CORE_STABILIZER =
+            (Reg.<DfcStabilizerBlockEntity>be(
+                            "v0_stabilizer",
+                            DfcStabilizerBlockEntity::new,
+                            ModBlocks.DFC_STABILIZER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FusionKlystronBlockEntity> FUSION_KLYSTRON =
+            (Reg.<FusionKlystronBlockEntity>be(
+                            "fusion_klystron",
+                            FusionKlystronBlockEntity::new,
+                            ModBlocks.FUSION_KLYSTRON))
+                    .ticksServerAt(BlockEntityTicks.SERVER_WITH_SOUND)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CreativeFusionKlystronBlockEntity> FUSION_KLYSTRON_CREATIVE =
+            (Reg.<CreativeFusionKlystronBlockEntity>be(
+                            "fusion_klystron_creative",
+                            CreativeFusionKlystronBlockEntity::new,
+                            ModBlocks.FUSION_KLYSTRON_CREATIVE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FusionNeutronBlockEntity> FUSION_BREEDER =
+            (Reg.<FusionNeutronBlockEntity>be(
+                            "fusion_breeder",
+                            FusionNeutronBlockEntity::new,
+                            ModBlocks.FUSION_BREEDER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FusionCollectorBlockEntity> FUSION_COLLECTOR =
+            (Reg.<FusionCollectorBlockEntity>be(
+                    "fusion_collector",
+                    FusionCollectorBlockEntity::new,
+                    ModBlocks.FUSION_COLLECTOR));
+    public static final Reg.BeHandle<FusionBoilerBlockEntity> FUSION_BOILER =
+            (Reg.<FusionBoilerBlockEntity>be(
+                            "fusion_boiler", FusionBoilerBlockEntity::new, ModBlocks.FUSION_BOILER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<FusionMHDTBlockEntity> FUSION_MHDT =
+            (Reg.<FusionMHDTBlockEntity>be(
+                            "fusion_mhdt", FusionMHDTBlockEntity::new, ModBlocks.FUSION_MHDT))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FusionCouplerBlockEntity> FUSION_COUPLER =
+            (Reg.<FusionCouplerBlockEntity>be(
+                    "fusion_coupler", FusionCouplerBlockEntity::new, ModBlocks.FUSION_COUPLER));
+    public static final Reg.BeHandle<FusionPlasmaForgeBlockEntity> FUSION_PLASMA_FORGE =
+            (Reg.<FusionPlasmaForgeBlockEntity>be(
                             "fusion_plasma_forge",
-                            BlockEntityFusionPlasmaForge::new,
-                            ModBlocks.FUSION_PLASMA_FORGE);
-    public static final RegistryHandle<BlockEntityType<BlockEntityFusionTorusStruct>>
-            FUSION_TORUS_STRUCT =
-                    be(
-                                    "fusion_torus_struct",
-                                    BlockEntityFusionTorusStruct::new,
-                                    ModBlocks.STRUCT_TORUS_CORE)
-                            .ticksServer(BlockEntityFusionTorusStruct::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityWatz>> WATZ =
-            machine("watz", BlockEntityWatz::new, ModBlocks.WATZ);
-    public static final RegistryHandle<BlockEntityType<BlockEntityWatzStruct>> WATZ_STRUCT =
-            be("watz_struct", BlockEntityWatzStruct::new, ModBlocks.STRUCT_WATZ_CORE)
-                    .ticksServer(BlockEntityWatzStruct::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityStorageDrum>> WASTE_STORAGE_DRUM =
-            machine("waste_storage_drum", BlockEntityStorageDrum::new, ModBlocks.STORAGE_DRUM);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineSiren>> SIREN =
-            be("siren", BlockEntityMachineSiren::new, ModBlocks.MACHINE_SIREN);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineShredder>>
-            MACHINE_SHREDDER =
-                    machine(
+                            FusionPlasmaForgeBlockEntity::new,
+                            ModBlocks.FUSION_PLASMA_FORGE))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<FusionTorusAssemblyBlockEntity> FUSION_TORUS_STRUCT =
+            (Reg.<FusionTorusAssemblyBlockEntity>be(
+                    "fusion_torus_struct",
+                    FusionTorusAssemblyBlockEntity::new,
+                    ModBlocks.STRUCT_TORUS_CORE));
+    public static final Reg.BeHandle<WatzBlockEntity> WATZ =
+            (Reg.<WatzBlockEntity>be("watz", WatzBlockEntity::new, ModBlocks.WATZ))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<WatzAssemblyBlockEntity> WATZ_STRUCT =
+            (Reg.<WatzAssemblyBlockEntity>be(
+                    "watz_struct", WatzAssemblyBlockEntity::new, ModBlocks.STRUCT_WATZ_CORE));
+    public static final Reg.BeHandle<StorageDrumBlockEntity> WASTE_STORAGE_DRUM =
+            (Reg.<StorageDrumBlockEntity>be(
+                            "waste_storage_drum",
+                            StorageDrumBlockEntity::new,
+                            ModBlocks.STORAGE_DRUM))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+
+    static {
+        Reg.afterRegistration(
+                WASTE_STORAGE_DRUM,
+                _ -> StorageDrumBlockEntity.resolveInputs());
+    }
+
+    public static final Reg.BeHandle<SirenBlockEntity> SIREN =
+            (Reg.<SirenBlockEntity>be("siren", SirenBlockEntity::new, ModBlocks.MACHINE_SIREN))
+                    .ticksServerAt(SoundEmitter.TICKER);
+    public static final Reg.BeHandle<ShredderBlockEntity> MACHINE_SHREDDER =
+            (Reg.<ShredderBlockEntity>be(
                             "machine_shredder",
-                            BlockEntityMachineShredder::new,
-                            ModBlocks.MACHINE_SHREDDER);
-    public static final RegistryHandle<BlockEntityType<BlockEntityMachineTeleporter>> TELEBLOCK =
-            be("teleblock", BlockEntityMachineTeleporter::new, ModBlocks.MACHINE_TELEPORTER)
-                    .ticks(
-                            BlockEntityMachineTeleporter::tickClient,
-                            BlockEntityMachineTeleporter::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityCargoElevator>> CARGO_ELEVATOR =
-            be("cargo_elevator", BlockEntityCargoElevator::new, ModBlocks.CARGO_ELEVATOR)
-                    .ticks(
-                            BlockEntityCargoElevator::tickClient,
-                            BlockEntityCargoElevator::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityDecon>> DECON =
-            be("decon", BlockEntityDecon::new, ModBlocks.DECON)
-                    .ticks(BlockEntityDecon::tickClient, BlockEntityDecon::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityGlyphidSpawner>> GLYPHID_SPAWNER =
-            be(
+                            ShredderBlockEntity::new,
+                            ModBlocks.MACHINE_SHREDDER))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<TeleporterBlockEntity> TELEBLOCK =
+            (Reg.<TeleporterBlockEntity>be(
+                            "teleblock", TeleporterBlockEntity::new, ModBlocks.MACHINE_TELEPORTER))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<CargoElevatorBlockEntity> CARGO_ELEVATOR =
+            (Reg.<CargoElevatorBlockEntity>be(
+                            "cargo_elevator",
+                            CargoElevatorBlockEntity::create,
+                            ModBlocks.CARGO_ELEVATOR))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<DeconBlockEntity> DECON =
+            (Reg.<DeconBlockEntity>be("decon", DeconBlockEntity::new, ModBlocks.DECON))
+                    .ticksServerAt(BlockEntityTicks.SERVER)
+                    .ticksClientAt(BlockEntityTicks.CLIENT);
+    public static final Reg.BeHandle<GlyphidSpawnerBlockEntity> GLYPHID_SPAWNER =
+            (Reg.<GlyphidSpawnerBlockEntity>be(
                             "glyphid_spawner",
-                            BlockEntityGlyphidSpawner::new,
+                            GlyphidSpawnerBlockEntity::new,
                             ModBlocks.GLYPHID_SPAWNER,
                             ModBlocks.GLYPHID_SPAWNER_INFESTED,
-                            ModBlocks.GLYPHID_SPAWNER_RAD)
-                    .ticksServer(BlockEntityGlyphidSpawner::tickServer);
-    public static final RegistryHandle<BlockEntityType<BlockEntityStatueElbF>> STATUE_ELB_F =
-            be("deco_f", BlockEntityStatueElbF::new, ModBlocks.STATUE_ELB_F)
-                    .ticksServerAt((level, pos, state, blockEntity) -> blockEntity.tickServer());
-    public static final RegistryHandle<BlockEntityType<BlockEntityLanternBehemoth>>
-            LANTERN_BEHEMOTH =
-                    be(
-                                    "lantern_behemoth",
-                                    BlockEntityLanternBehemoth::new,
-                                    ModBlocks.LANTERN_BEHEMOTH)
-                            .ticksServerAt(
-                                    (level, pos, state, blockEntity) -> blockEntity.tickServer());
-    public static final RegistryHandle<BlockEntityType<BlockEntityLantern>> LANTERN =
-            be("lantern_ordinary", BlockEntityLantern::new, ModBlocks.LANTERN)
-                    .ticksServer(BlockEntityLantern::tickServer);
+                            ModBlocks.GLYPHID_SPAWNER_RAD))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<StatueElbFBlockEntity> STATUE_ELB_F =
+            (Reg.<StatueElbFBlockEntity>be(
+                            "deco_f", StatueElbFBlockEntity::new, ModBlocks.STATUE_ELB_F))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<BehemothLanternBlockEntity> LANTERN_BEHEMOTH =
+            (Reg.<BehemothLanternBlockEntity>be(
+                            "lantern_behemoth",
+                            BehemothLanternBlockEntity::new,
+                            ModBlocks.LANTERN_BEHEMOTH))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
+    public static final Reg.BeHandle<LanternBlockEntity> LANTERN =
+            (Reg.<LanternBlockEntity>be(
+                            "lantern_ordinary", LanternBlockEntity::new, ModBlocks.LANTERN))
+                    .ticksServerAt(BlockEntityTicks.SERVER);
 
     private ModBlockEntities() {}
 
-    @SafeVarargs
-    private static <T extends BlockEntity> Reg.BeHandle<T> be(
-            String name,
-            BlockEntityType.BlockEntitySupplier<T> factory,
-            RegistryHandle<? extends Block>... blocks) {
-        return be(
-                name,
-                () ->
-                        new BlockEntityType<>(
-                                factory,
-                                Arrays.stream(blocks)
-                                        .map(RegistryHandle::get)
-                                        .collect(Collectors.toUnmodifiableSet())));
-    }
-
-    private static <T extends BlockEntity> Reg.BeHandle<T> be(
-            String name, Supplier<BlockEntityType<T>> typeFactory) {
-        return Reg.be(name, typeFactory);
-    }
-
-    @SafeVarargs
-    private static <T extends BlockEntityMachineBase> Reg.BeHandle<T> machine(
-            String name,
-            BlockEntityType.BlockEntitySupplier<T> factory,
-            RegistryHandle<? extends Block>... blocks) {
-        return be(name, factory, blocks).ticksServer(BlockEntityMachineBase::tickServer);
-    }
-
-    @SafeVarargs
-    private static <T extends BlockEntityMachineBase> Reg.BeHandle<T> clientMachine(
-            String name,
-            BlockEntityType.BlockEntitySupplier<T> factory,
-            RegistryHandle<? extends Block>... blocks) {
-        return machine(name, factory, blocks).ticksClient(BlockEntityMachineBase::tickClient);
-    }
-
-    @SafeVarargs
-    private static <T extends BlockEntityFoundryBase> Reg.BeHandle<T> foundry(
-            String name,
-            BlockEntityType.BlockEntitySupplier<T> factory,
-            RegistryHandle<? extends Block>... blocks) {
-        return be(name, factory, blocks).ticksServer(BlockEntityFoundryBase::tickServer);
-    }
-
-    @SafeVarargs
-    private static <T extends BlockEntityFoundryBase> Reg.BeHandle<T> clientFoundry(
-            String name,
-            BlockEntityType.BlockEntitySupplier<T> factory,
-            RegistryHandle<? extends Block>... blocks) {
-        return foundry(name, factory, blocks).ticksClient(BlockEntityFoundryBase::tickClient);
-    }
-
-    @SafeVarargs
-    private static <T extends BlockEntityMachinePumpBase> Reg.BeHandle<T> pump(
-            String name,
-            BlockEntityType.BlockEntitySupplier<T> factory,
-            RegistryHandle<? extends Block>... blocks) {
-        return be(name, factory, blocks)
-                .ticks(
-                        BlockEntityMachinePumpBase::tickClient,
-                        BlockEntityMachinePumpBase::tickServer);
-    }
-
-    private static Reg.BeHandle<BlockEntityCrate> crate(
+    private static Reg.BeHandle<CrateBlockEntity> crate(
             CrateType type, RegistryHandle<? extends Block> block) {
-        return be(type.id, (pos, state) -> new BlockEntityCrate(type, pos, state), block);
+        return (Reg.<CrateBlockEntity>be(
+                type.id, (pos, state) -> new CrateBlockEntity(type, pos, state), block));
     }
 }

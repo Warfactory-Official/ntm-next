@@ -1,5 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.particle;
 
@@ -21,7 +51,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-public class FoamParticleGroup extends ParticleGroup<ParticleFoam> {
+public class FoamParticleGroup extends ParticleGroup<FoamParticle> {
 
     public FoamParticleGroup(ParticleEngine engine) {
         super(engine);
@@ -33,7 +63,7 @@ public class FoamParticleGroup extends ParticleGroup<ParticleFoam> {
         List<Cluster> clusters = new ArrayList<>();
         Vec3 cam = camera.position();
 
-        for (ParticleFoam fx : this.particles) {
+        for (FoamParticle fx : this.particles) {
             if (fx.ownsVisual()) continue;
             int bubbles = fx.bubbleCount();
             float spread = fx.spread();
@@ -52,7 +82,7 @@ public class FoamParticleGroup extends ParticleGroup<ParticleFoam> {
                             fx.headBubbles()));
 
             int i = 0;
-            for (ParticleFoam.Point point : fx.trail()) {
+            for (FoamParticle.Point point : fx.trail()) {
                 if (i > 0) {
                     float fade = 1.0F - (float) i / fx.trailLength();
                     clusters.add(
@@ -103,7 +133,7 @@ public class FoamParticleGroup extends ParticleGroup<ParticleFoam> {
                             int a = Mth.clamp((int) (c.alpha * 255F), 0, 255);
 
                             for (int i = 0; i < c.bubbles; i++) {
-                                int b = i * ParticleFoam.BUBBLE_STRIDE;
+                                int b = i * FoamParticle.BUBBLE_STRIDE;
                                 int white = Mth.clamp((int) (c.data[b + 4] * 255F), 0, 255);
                                 int color = a << 24 | white << 16 | white << 8 | white;
                                 float s = c.scale * c.data[b + 3];

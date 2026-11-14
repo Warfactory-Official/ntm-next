@@ -1,11 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.model;
 
+import com.hbm.blocks.network.BaseConveyorBlock;
 import com.hbm.blocks.network.ConveyorBend;
 import com.hbm.blocks.network.ConveyorBendableBlock;
-import com.hbm.blocks.network.ConveyorBlockBase;
 import com.hbm.blocks.network.ConveyorLiftBlock;
 import com.hbm.blocks.network.ConveyorLiftPart;
 import com.mojang.math.OctahedralGroup;
@@ -95,7 +125,7 @@ public record ConveyorModel() implements SimpleBlockModel {
 
     @Override
     public BlockStateModel.UnbakedRoot root(Block block, BlockState state) {
-        Direction facing = state.getValue(ConveyorBlockBase.FACING);
+        Direction facing = state.getValue(BaseConveyorBlock.FACING);
 
         if (state.hasProperty(ConveyorLiftBlock.PART)) {
             return new Root(
@@ -169,6 +199,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                 TextureSlots slots,
                 ModelState turn) {
             if (bend == ConveyorBend.STRAIGHT) {
+                final Direction culled = Direction.DOWN;
                 final Vector3f from = new Vector3f(0F, 0F, 0F);
                 final Vector3f to = new Vector3f(16F, LIP, 16F);
                 faces(
@@ -178,7 +209,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                         slots,
                         turn,
                         ConveyorModel::beltSlot,
-                        Direction.DOWN,
+                        culled,
                         from,
                         to,
                         new UvRotation[] {
@@ -199,6 +230,7 @@ public record ConveyorModel() implements SimpleBlockModel {
             }
 
             String curve = bend == ConveyorBend.LEFT ? CURVE_LEFT : CURVE_RIGHT;
+            final Direction culled2 = Direction.DOWN;
             final Vector3f from2 = new Vector3f(0F, 0F, 0F);
             final Vector3f to2 = new Vector3f(16F, LIP, 16F);
             faces(
@@ -208,7 +240,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                     slots,
                     turn,
                     local -> local.getAxis().isVertical() ? curve : SIDE,
-                    Direction.DOWN,
+                    culled2,
                     from2,
                     to2,
                     new UvRotation[] {
@@ -228,6 +260,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                 TextureSlots slots,
                 ModelState turn) {
             if (part == ConveyorLiftPart.TOP) {
+
                 Vector3f a = new Vector3f(0F / 16F - 0.5F, 0F / 16F - 0.5F, 0F / 16F - 0.5F);
                 Vector3f b =
                         new Vector3f(INNER_MIN / 16F - 0.5F, HEAD / 16F - 0.5F, 16F / 16F - 0.5F);
@@ -279,6 +312,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                                             from.z(), 16F - to.y(), to.z(), 16F - from.y()),
                                     Quadrant.R0)
                         });
+
                 Vector3f a2 =
                         new Vector3f(INNER_MAX / 16F - 0.5F, 0F / 16F - 0.5F, 0F / 16F - 0.5F);
                 Vector3f b2 = new Vector3f(16F / 16F - 0.5F, HEAD / 16F - 0.5F, 16F / 16F - 0.5F);
@@ -332,6 +366,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                                             from2.z(), 16F - to2.y(), to2.z(), 16F - from2.y()),
                                     Quadrant.R0)
                         });
+
                 final int[] rot3 = liftRot(facing, true);
                 Vector3f a3 =
                         new Vector3f(INNER_MIN / 16F - 0.5F, 0F / 16F - 0.5F, 0F / 16F - 0.5F);
@@ -835,6 +870,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                                                 "uvRotate value " + rot4[5] + " outside 0..3");
                             }
                         });
+
                 final int[] rot5 = lipRot(turn, Direction.EAST);
                 Vector3f a5 =
                         new Vector3f(
@@ -1085,6 +1121,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                                                 "uvRotate value " + rot5[5] + " outside 0..3");
                             }
                         });
+
                 final int[] rot6 = lipRot(turn, Direction.SOUTH);
                 Vector3f a6 =
                         new Vector3f(
@@ -1379,6 +1416,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                                         from7.z(), 16F - to7.y(), to7.z(), 16F - from7.y()),
                                 Quadrant.R0)
                     });
+
             Vector3f a8 = new Vector3f(0F / 16F - 0.5F, 0F / 16F - 0.5F, INNER_MAX / 16F - 0.5F);
             Vector3f b8 = new Vector3f(INNER_MIN / 16F - 0.5F, 16F / 16F - 0.5F, 16F / 16F - 0.5F);
             turn.transformation().getMatrix().transformPosition(a8).add(0.5F, 0.5F, 0.5F).mul(16F);
@@ -1421,6 +1459,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                                         from8.z(), 16F - to8.y(), to8.z(), 16F - from8.y()),
                                 Quadrant.R0)
                     });
+
             Vector3f a9 =
                     new Vector3f(INNER_MAX / 16F - 0.5F, 0F / 16F - 0.5F, INNER_MAX / 16F - 0.5F);
             Vector3f b9 = new Vector3f(16F / 16F - 0.5F, 16F / 16F - 0.5F, 16F / 16F - 0.5F);
@@ -1464,6 +1503,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                                         from9.z(), 16F - to9.y(), to9.z(), 16F - from9.y()),
                                 Quadrant.R0)
                     });
+
             final int[] rot10 = liftRot(facing, false);
             Vector3f a10 =
                     new Vector3f(INNER_MIN / 16F - 0.5F, 0F / 16F - 0.5F, INNER_MIN / 16F - 0.5F);
@@ -1707,6 +1747,7 @@ public record ConveyorModel() implements SimpleBlockModel {
                     });
 
             if (part == ConveyorLiftPart.BOTTOM) {
+
                 Vector3f a11 =
                         new Vector3f(INNER_MIN / 16F - 0.5F, 0F / 16F - 0.5F, STRIP / 16F - 0.5F);
                 Vector3f b11 =

@@ -1,27 +1,44 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.turret.BlockEntityTurretJeremy;
+import com.hbm.blockentity.turret.TurretJeremyBlockEntity;
 import com.hbm.main.ResourceManager;
 import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
-import org.jspecify.annotations.Nullable;
 
-public final class TurretJeremyVisual extends HbmDynamicBlockEntityVisual<BlockEntityTurretJeremy>
-        implements ShaderLightVisual {
-    private static final int CONNECTORS = 8;
-    private static final float[] PLUG_ROT = {0F, 0F, 90F, 90F, 180F, 180F, 270F, 270F};
-    private static final float[] PLUG_OZ = {0F, -1F, -1F, 0F, -1F, 0F, -1F, 0F};
+public final class TurretJeremyVisual
+        extends AbstractBoundedBlockEntityVisual<TurretJeremyBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final MeshPart CONNECTOR_PART =
             MeshPart.obj(
                     ResourceManager.turret_chekhov
@@ -41,124 +58,69 @@ public final class TurretJeremyVisual extends HbmDynamicBlockEntityVisual<BlockE
                     true,
                     MeshPart.litCutout(ResourceManager.turret_jeremy_tex));
 
-    private final TransformedInstance[] connectors = new TransformedInstance[CONNECTORS];
-    private final TransformedInstance carriage;
-    private final TransformedInstance gun;
-    private final Matrix4f placement = new Matrix4f();
-    private final Matrix4f[] connectorPoses = new Matrix4f[CONNECTORS];
-    private final Matrix4f carriagePose = new Matrix4f();
-    private final Matrix4f gunPose = new Matrix4f();
-    private final Matrix4f instancePose = new Matrix4f();
-    private final double[] lightBoundsAccumulator = new double[6];
-    private final AABB baseBounds;
-    private @Nullable AABB lastLightBounds;
-    private int lastConnectorMask = Integer.MIN_VALUE;
-    private float lastYaw = Float.NaN;
-    private float lastPitch = Float.NaN;
-    private boolean initialized;
+    private static final ChainInstance.Chain[] CHAINS = {
+        TurretChains.carriage(), TurretChains.pitched(1.5F, false, 1F).end()
+    };
+
+    private final AABB lightBounds;
+    private final TurretConnectors connectors;
+    private final ChainParts parts;
 
     public TurretJeremyVisual(
-            VisualizationContext context, BlockEntityTurretJeremy blockEntity, float partialTick) {
+            VisualizationContext context, TurretJeremyBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         Vec3 offset = blockEntity.getHorizontalOffset();
-        placement.translation((float) offset.x, 0F, (float) offset.z);
-        baseBounds = LightBounds.of(ResourceManager.turret_chekhov, "Base", placement, pos);
-        for (int i = 0; i < CONNECTORS; i++) {
-            connectorPoses[i] =
-                    new Matrix4f(placement)
-                            .rotateY(PLUG_ROT[i] * Mth.DEG_TO_RAD)
-                            .translate(0F, 0F, PLUG_OZ[i]);
-            connectors[i] =
-                    instancerProvider()
-                            .instancer(InstanceTypes.TRANSFORMED, CONNECTOR_PART.model())
-                            .createInstance();
-        }
-        carriage =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, CARRIAGE_PART.model())
-                        .createInstance();
-        gun =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, GUN_PART.model())
-                        .createInstance();
-        updateMovingParts(partialTick);
+        Matrix4f placement = new Matrix4f().translation((float) offset.x, 0F, (float) offset.z);
+        AABB baseBounds = LightBounds.of(ResourceManager.turret_chekhov, "Base", placement, pos);
+        connectors = new TurretConnectors(context, visualPos, placement, CONNECTOR_PART.model());
+        parts =
+                new ChainParts(
+                        context,
+                        visualPos,
+                        placement,
+                        new Model[] {CARRIAGE_PART.model(), GUN_PART.model()},
+                        CHAINS,
+                        2);
+        double[] bounds = new double[6];
+        LightBounds.resetBounds(bounds, baseBounds.minmax(new AABB(pos).inflate(8)));
+        parts.includeLightBounds(bounds, pos);
+        connectors.includeLightBounds(bounds, pos);
+        lightBounds = new AABB(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+        connectors.update(blockEntity.connectorMask);
+        updateAim();
     }
 
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
-        updateMovingParts(context.partialTick());
+    public void frame(DynamicVisual.Context context) {
+        connectors.update(blockEntity.connectorMask);
     }
 
-    public void updateMovingParts(float partialTick) {
-        int mask = blockEntity.connectorMask;
-        float yawRadians =
-                (float)
-                        -Mth.lerp(
-                                partialTick, blockEntity.lastRotationYaw, blockEntity.rotationYaw);
-        float pitchRadians =
-                (float)
-                        Mth.lerp(
-                                partialTick,
-                                blockEntity.lastRotationPitch,
-                                blockEntity.rotationPitch);
-        boolean maskChanged = !initialized || mask != lastConnectorMask;
-        boolean mechanicalChanged =
-                !initialized
-                        || Float.compare(yawRadians, lastYaw) != 0
-                        || Float.compare(pitchRadians, lastPitch) != 0;
-        if (!maskChanged && !mechanicalChanged) return;
-        if (maskChanged)
-            for (int i = 0; i < CONNECTORS; i++) {
-                boolean present = (mask & (1 << i)) != 0;
-                connectors[i].setVisible(present);
-                if (present) write(connectors[i], connectorPoses[i]);
-            }
-        lastConnectorMask = mask;
-        lastYaw = yawRadians;
-        lastPitch = pitchRadians;
-        initialized = true;
-        carriagePose.set(placement).rotateY(yawRadians - 90F * Mth.DEG_TO_RAD);
-        gunPose.set(carriagePose)
-                .translate(0F, 1.5F, 0F)
-                .rotateZ(pitchRadians)
-                .translate(0F, -1.5F, 0F);
-        write(carriage, carriagePose);
-        write(gun, gunPose);
-        LightBounds.resetBounds(lightBoundsAccumulator, baseBounds);
-        LightBounds.includeLightBounds(
-                lightBoundsAccumulator, CARRIAGE_PART.model(), carriagePose, pos);
-        LightBounds.includeLightBounds(lightBoundsAccumulator, GUN_PART.model(), gunPose, pos);
-        for (int i = 0; i < CONNECTORS; i++)
-            if ((mask & (1 << i)) != 0)
-                LightBounds.includeLightBounds(
-                        lightBoundsAccumulator, CONNECTOR_PART.model(), connectorPoses[i], pos);
-        lastLightBounds =
-                LightBounds.sections(lightSections, lightBoundsAccumulator, lastLightBounds);
+    @Override
+    public void tick(TickableVisual.Context context) {
+        updateAim();
     }
 
-    private void write(TransformedInstance instance, Matrix4f local) {
-        instancePose.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(local);
-        instance.setTransform(instancePose).light(0).setChanged();
+    private void updateAim() {
+        TurretChains.aim(parts, blockEntity, Mth.HALF_PI);
+        parts.write();
     }
 
     @Override
     protected AABB getRenderBoundingBox() {
-        return baseBounds.minmax(new AABB(pos).inflate(8));
+        return lightBounds;
     }
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        for (TransformedInstance connector : connectors) consumer.accept(connector);
-        consumer.accept(carriage);
-        consumer.accept(gun);
+        connectors.collectCrumblingInstances(consumer);
+        parts.collectCrumblingInstances(consumer);
     }
 
     @Override
     protected void _delete() {
-        for (var connector : connectors) connector.delete();
-        carriage.delete();
-        gun.delete();
+        connectors.delete();
+        parts.delete();
     }
 }

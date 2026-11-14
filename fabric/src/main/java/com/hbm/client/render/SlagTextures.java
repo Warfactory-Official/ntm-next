@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
-import com.hbm.lib.Library;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialRegistry;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.platform.NativeImage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -18,8 +34,8 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.ARGB;
 
 public final class SlagTextures {
-    private static final Identifier SOURCE = Library.id("textures/block/slag.png");
-    private static volatile Map<NTMMaterial, Identifier> TEXTURES = Map.of();
+    private static final Identifier SOURCE = RegistryUtil.id("textures/block/slag.png");
+    private static volatile Map<Material, Identifier> TEXTURES = Map.of();
 
     private SlagTextures() {}
 
@@ -27,16 +43,16 @@ public final class SlagTextures {
         Minecraft minecraft = Minecraft.getInstance();
         assert minecraft.isSameThread();
         var textureManager = minecraft.getTextureManager();
-        Map<NTMMaterial, Identifier> previous = TEXTURES;
+        Map<Material, Identifier> previous = TEXTURES;
         TEXTURES = Map.of();
         for (Identifier texture : previous.values()) textureManager.release(texture);
 
-        Map<NTMMaterial, Identifier> next = new HashMap<>();
+        Map<Material, Identifier> next = new HashMap<>();
         try (var stream = resources.getResourceOrThrow(SOURCE).open();
                 NativeImage source = NativeImage.read(stream)) {
-            for (NTMMaterial material : Mats.orderedList) {
-                if (material.solidColorLight == material.solidColorDark) continue;
-                Identifier texture = Library.id("dynamic/slag/" + material.tagPath);
+            for (Material material : MaterialRegistry.ordered()) {
+                if (material.lightColor() == material.darkColor()) continue;
+                Identifier texture = RegistryUtil.id("dynamic/slag/" + material.name());
                 NativeImage recolored = source.mappedCopy(pixel -> recolor(pixel, material));
                 textureManager.register(
                         texture, new DynamicTexture(() -> texture.toString(), recolored));
@@ -48,28 +64,28 @@ public final class SlagTextures {
         TEXTURES = Map.copyOf(next);
     }
 
-    public static Identifier texture(NTMMaterial material) {
+    public static Identifier texture(Material material) {
         Identifier texture = TEXTURES.get(material);
         if (texture == null)
             throw new IllegalStateException("Slag textures have not been published");
         return texture;
     }
 
-    private static int recolor(int pixel, NTMMaterial material) {
+    private static int recolor(int pixel, Material material) {
         return ARGB.color(
                 ARGB.alpha(pixel),
                 channel(
                         ARGB.red(pixel),
-                        ARGB.red(material.solidColorLight),
-                        ARGB.red(material.solidColorDark)),
+                        ARGB.red(material.lightColor()),
+                        ARGB.red(material.darkColor())),
                 channel(
                         ARGB.green(pixel),
-                        ARGB.green(material.solidColorLight),
-                        ARGB.green(material.solidColorDark)),
+                        ARGB.green(material.lightColor()),
+                        ARGB.green(material.darkColor())),
                 channel(
                         ARGB.blue(pixel),
-                        ARGB.blue(material.solidColorLight),
-                        ARGB.blue(material.solidColorDark)));
+                        ARGB.blue(material.lightColor()),
+                        ARGB.blue(material.darkColor())));
     }
 
     private static int channel(int component, int lighter, int darker) {

@@ -1,66 +1,69 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.machine;
 
-import com.hbm.blockentity.machine.BlockEntityReactorResearch;
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.blockentity.machine.reactor.ResearchReactorBlockEntity;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class ResearchReactorPeripheral
-        extends SnapshotPeripheral<BlockEntityReactorResearch> {
+        extends BlockEntityPeripheral<ResearchReactorBlockEntity> {
 
-    private static final int HEAT = 0;
-    private static final int LEVEL = 1;
-    private static final int TARGET = 2;
-    private static final int FLUX = 3;
-
-    public ResearchReactorPeripheral(BlockEntityReactorResearch machine) {
-        super(machine, "research_reactor", 4, 0);
-    }
-
-    @Override
-    protected void capture(BlockEntityReactorResearch machine) {
-        put(HEAT, machine.heat);
-        put(LEVEL, machine.controlLevel);
-        put(TARGET, machine.targetLevel);
-        put(FLUX, machine.totalFlux);
+    public ResearchReactorPeripheral(ResearchReactorBlockEntity machine) {
+        super(machine, "research_reactor");
     }
 
     @LuaFunction
-    public final Object[] getTemp() {
-        return read(s -> new Object[] {s.intAt(HEAT)});
+    public Object[] getTemp() {
+        return new Object[] {(int) target.heat};
     }
 
     @LuaFunction
-    public final Object[] getLevel() {
-        return read(s -> new Object[] {s.doubleAt(LEVEL) * 100});
+    public Object[] getLevel() {
+        return new Object[] {(double) (target.rodPosition) * 100};
     }
 
     @LuaFunction
-    public final Object[] getTargetLevel() {
-        return read(s -> new Object[] {s.doubleAt(TARGET)});
+    public Object[] getTargetLevel() {
+        return new Object[] {(double) target.targetRodPosition};
     }
 
     @LuaFunction
-    public final Object[] getFlux() {
-        return read(s -> new Object[] {s.intAt(FLUX)});
+    public Object[] getFlux() {
+        return new Object[] {(int) target.totalFlux};
     }
 
     @LuaFunction
-    public final Object[] getInfo() {
-        return read(
-                s ->
-                        new Object[] {
-                            s.intAt(HEAT), s.doubleAt(LEVEL), s.doubleAt(TARGET), s.intAt(FLUX)
-                        });
+    public Object[] getInfo() {
+        return new Object[] {
+            (int) target.heat,
+            (double) target.rodPosition,
+            (double) target.targetRodPosition,
+            (int) target.totalFlux
+        };
     }
 
     @LuaFunction(mainThread = true)
-    public final Object[] setLevel(double level) {
-        BlockEntityReactorResearch machine = machine();
-        machine.targetLevel = Math.clamp(level / 100.0, 0, 1.0);
-        machine.setChanged();
+    public Object[] setLevel(double level) {
+        ResearchReactorBlockEntity machine = machine();
+        machine.requestRodPosition(Math.clamp(level / 100.0, 0, 1.0));
         return new Object[] {};
     }
 }

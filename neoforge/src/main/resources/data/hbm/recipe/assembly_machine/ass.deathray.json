@@ -11,7 +11,10 @@
       "ingredient": "#hbm:billets/plutonium_rg"
     },
     {
-      "ingredient": "hbm:battery_pack_capacitor_bismuth"
+      "ingredient": "hbm:battery_pack_capacitor_bismuth",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
     },
     {
       "count": 32,

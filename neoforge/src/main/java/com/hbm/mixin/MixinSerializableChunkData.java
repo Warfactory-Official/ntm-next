@@ -1,17 +1,37 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin;
 
 import com.hbm.blocks.multiblock.MultiblockCoreIndex;
 import com.hbm.entity.item.PendingFallers;
-import com.hbm.interfaces.injected.IChunkExtension;
-import com.hbm.util.datafix.HbmDataFixers;
+import com.hbm.explosion.FalloutJournal;
+import com.hbm.explosion.FalloutReplay;
+import com.hbm.handler.radiation.RadiationSystemNT;
+import com.hbm.interfaces.injected.ChunkExtension;
+import com.hbm.util.ChunkPayloads;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.Arrays;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.ChunkPos;
@@ -21,6 +41,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ImposterProtoChunk;
 import net.minecraft.world.level.chunk.PalettedContainerFactory;
 import net.minecraft.world.level.chunk.ProtoChunk;
+import net.minecraft.world.level.chunk.status.ChunkType;
 import net.minecraft.world.level.chunk.storage.RegionStorageInfo;
 import net.minecraft.world.level.chunk.storage.SerializableChunkData;
 import org.jspecify.annotations.Nullable;
@@ -31,121 +52,193 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SerializableChunkData.class)
-public abstract class MixinSerializableChunkData implements IChunkExtension {
-
+public abstract class MixinSerializableChunkData implements ChunkExtension {
+    @Unique private long hbm$falloutAppliedThrough;
+    @Unique private @Nullable FalloutReplay hbm$falloutReplay;
     @Unique private byte @Nullable [] hbm$radiation;
-
-    @Inject(method = "parse", at = @At("RETURN"))
-    private static void hbm$captureRadiation(
-            LevelHeightAccessor levelHeight,
-            PalettedContainerFactory containerFactory,
-            CompoundTag chunkData,
-            CallbackInfoReturnable<SerializableChunkData> cir) {
-        SerializableChunkData data = cir.getReturnValue();
-        if (data != null) {
-            data.hbm$setRadiation(
-                    chunkData.getByteArray(IChunkExtension.RADIATION_NBT_KEY).orElse(null));
-        }
-    }
-
-    @Override
-    public byte @Nullable [] hbm$getRadiation() {
-        return this.hbm$radiation;
-    }
-
-    @Override
-    public void hbm$setRadiation(byte @Nullable [] bytes) {
-        this.hbm$radiation = bytes;
-    }
-
-    @Inject(method = "read", at = @At("RETURN"))
-    private void hbm$carryRadiation(
-            ServerLevel level,
-            PoiManager poiManager,
-            RegionStorageInfo regionInfo,
-            ChunkPos pos,
-            CallbackInfoReturnable<ProtoChunk> cir) {
-        if (this.hbm$radiation == null) return;
-        ProtoChunk result = cir.getReturnValue();
-        ChunkAccess target =
-                (result instanceof ImposterProtoChunk imposter) ? imposter.getWrapped() : result;
-        target.hbm$setRadiation(this.hbm$radiation);
-    }
-
     @Unique private long @Nullable [] hbm$coreIndex;
     @Unique private int hbm$coreIndexSize;
+    @Unique private long @Nullable [] hbm$pendingFallerPositions;
+    @Unique private BlockState @Nullable [] hbm$pendingFallerStates;
+    @Unique private int hbm$pendingFallerSize;
+    @Unique private @Nullable Long2ObjectOpenHashMap<String> hbm$ductFluids;
 
     @Inject(method = "copyOf", at = @At("RETURN"))
-    private static void hbm$captureCoreIndex(
+    private static void hbm$capturePayloads(
             ServerLevel level,
             ChunkAccess chunk,
             CallbackInfoReturnable<SerializableChunkData> cir) {
         SerializableChunkData data = cir.getReturnValue();
-        if (data == null) return;
+        ChunkAccess source =
+                chunk instanceof ImposterProtoChunk imposter ? imposter.getWrapped() : chunk;
+        ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                .hbm$setFalloutAppliedThrough(
+                        FalloutJournal.persistedMarker(
+                                level,
+                                source.getPos(),
+                                ((com.hbm.interfaces.injected.ChunkExtension) (source))
+                                        .hbm$falloutAppliedThrough()));
+        FalloutReplay replay =
+                ((com.hbm.interfaces.injected.ChunkExtension) (source)).hbm$falloutReplay();
+        if (replay != null && replay.persistable())
+            ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                    .hbm$setFalloutReplay(replay.copy());
         long[] entries = MultiblockCoreIndex.copyForSave(chunk);
-        data.hbm$setCoreIndex(entries, entries == null ? 0 : entries.length);
+        ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                .hbm$setCoreIndex(entries, entries == null ? 0 : entries.length);
+        int fallers =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$pendingFallerSize();
+        if (fallers != 0) {
+            ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                    .hbm$setPendingFallers(
+                            Arrays.copyOf(
+                                    ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                                            .hbm$pendingFallerPositions(),
+                                    fallers),
+                            Arrays.copyOf(
+                                    ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                                            .hbm$pendingFallerStates(),
+                                    fallers),
+                            fallers);
+        }
+        Long2ObjectOpenHashMap<String> fluids =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$ductFluids();
+        if (fluids != null && !fluids.isEmpty())
+            ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                    .hbm$setDuctFluids(fluids.clone());
     }
 
     @Inject(method = "parse", at = @At("RETURN"))
-    private static void hbm$parseCoreIndex(
+    private static void hbm$parsePayloads(
             LevelHeightAccessor levelHeight,
             PalettedContainerFactory containerFactory,
             CompoundTag chunkData,
             CallbackInfoReturnable<SerializableChunkData> cir) {
         SerializableChunkData data = cir.getReturnValue();
         if (data == null) return;
-        long[] entries = chunkData.getLongArray(IChunkExtension.CORE_INDEX_NBT_KEY).orElse(null);
-        if (entries != null) data.hbm$setCoreIndex(entries, entries.length);
-    }
-
-    @Override
-    public long @Nullable [] hbm$coreIndex() {
-        return this.hbm$coreIndex;
-    }
-
-    @Override
-    public int hbm$coreIndexSize() {
-        return this.hbm$coreIndexSize;
-    }
-
-    @Override
-    public void hbm$setCoreIndex(long @Nullable [] entries, int size) {
-        this.hbm$coreIndex = entries;
-        this.hbm$coreIndexSize = size;
-    }
-
-    @Inject(method = "write", at = @At("RETURN"))
-    private void hbm$writeCoreIndex(CallbackInfoReturnable<CompoundTag> cir) {
-        CompoundTag tag = cir.getReturnValue();
-        if (tag == null) return;
-        HbmDataFixers.stamp(tag);
-        long[] entries = this.hbm$coreIndex;
-        if (entries == null || this.hbm$coreIndexSize == 0) return;
-        tag.putLongArray(
-                IChunkExtension.CORE_INDEX_NBT_KEY,
-                this.hbm$coreIndexSize == entries.length
-                        ? entries
-                        : Arrays.copyOf(entries, this.hbm$coreIndexSize));
+        long[] entries = chunkData.getLongArray(ChunkExtension.CORE_INDEX_NBT_KEY).orElse(null);
+        if (entries != null)
+            ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                    .hbm$setCoreIndex(entries, entries.length);
+        PendingFallers.load(chunkData.getListOrEmpty(ChunkExtension.PENDING_FALLERS_NBT_KEY), data);
+        CompoundTag ducts = chunkData.getCompound(ChunkExtension.DUCT_FLUIDS_NBT_KEY).orElse(null);
+        if (ducts != null) {
+            long[] positions = ducts.getLongArray("pos").orElseThrow();
+            ListTag ids = ducts.getListOrEmpty("fluid");
+            if (ids.size() != positions.length)
+                throw new IllegalStateException("duct fluids: " + ducts);
+            Long2ObjectOpenHashMap<String> fluids = new Long2ObjectOpenHashMap<>(positions.length);
+            for (int i = 0; i < positions.length; i++)
+                fluids.put(positions[i], ids.getStringOr(i, ""));
+            ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                    .hbm$setDuctFluids(fluids);
+        }
+        ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                .hbm$setFalloutAppliedThrough(
+                        chunkData.getLongOr(ChunkExtension.FALLOUT_APPLIED_THROUGH_NBT_KEY, 0));
+        CompoundTag replay =
+                chunkData.getCompound(ChunkExtension.FALLOUT_REPLAY_NBT_KEY).orElse(null);
+        if (replay != null) {
+            ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                    .hbm$setFalloutReplay(
+                            FalloutReplay.read(
+                                    replay,
+                                    data.chunkPos().x(),
+                                    data.chunkPos().z(),
+                                    levelHeight.getMinY(),
+                                    BuiltInRegistries.BLOCK));
+        }
+        if (!(levelHeight instanceof ServerLevel level)) return;
+        ((com.hbm.interfaces.injected.ChunkExtension) (java.lang.Object) (data))
+                .hbm$setRadiation(
+                        RadiationSystemNT.readSidecar(level.dimension(), data.chunkPos()));
+        if (data.chunkStatus().getChunkType() == ChunkType.LEVELCHUNK)
+            FalloutJournal.applyParsed(level, data);
     }
 
     @Inject(method = "read", at = @At("RETURN"))
-    private void hbm$readCoreIndex(
+    private void hbm$readPayloads(
             ServerLevel level,
             PoiManager poiManager,
             RegionStorageInfo regionInfo,
             ChunkPos pos,
             CallbackInfoReturnable<ProtoChunk> cir) {
-        if (this.hbm$coreIndex == null) return;
         ProtoChunk result = cir.getReturnValue();
         ChunkAccess target =
-                (result instanceof ImposterProtoChunk imposter) ? imposter.getWrapped() : result;
-        target.hbm$setCoreIndex(this.hbm$coreIndex, this.hbm$coreIndexSize);
-        MultiblockCoreIndex.resolveLegacy(target, level);
+                result instanceof ImposterProtoChunk imposter ? imposter.getWrapped() : result;
+        ((com.hbm.interfaces.injected.ChunkExtension) (target))
+                .hbm$setFalloutAppliedThrough(hbm$falloutAppliedThrough);
+        ((com.hbm.interfaces.injected.ChunkExtension) (target))
+                .hbm$setFalloutReplay(hbm$falloutReplay);
+        if (hbm$radiation != null)
+            ((com.hbm.interfaces.injected.ChunkExtension) (target)).hbm$setRadiation(hbm$radiation);
+        if (hbm$coreIndex != null)
+            ((com.hbm.interfaces.injected.ChunkExtension) (target))
+                    .hbm$setCoreIndex(hbm$coreIndex, hbm$coreIndexSize);
+        if (hbm$pendingFallerSize != 0) {
+            ((com.hbm.interfaces.injected.ChunkExtension) (target))
+                    .hbm$setPendingFallers(
+                            hbm$pendingFallerPositions,
+                            hbm$pendingFallerStates,
+                            hbm$pendingFallerSize);
+        }
+        if (hbm$ductFluids != null)
+            ((com.hbm.interfaces.injected.ChunkExtension) (target))
+                    .hbm$setDuctFluids(hbm$ductFluids);
+        FalloutJournal.afterRead(level, result);
     }
 
-    @Unique private long @Nullable [] hbm$pendingFallerPositions;
-    @Unique private BlockState @Nullable [] hbm$pendingFallerStates;
-    @Unique private int hbm$pendingFallerSize;
+    @ModifyReturnValue(method = "write", at = @At("RETURN"))
+    private CompoundTag hbm$writePayloads(CompoundTag tag) {
+        ChunkPayloads.write(this, tag::put);
+        return tag;
+    }
+
+    @Override
+    public long hbm$falloutAppliedThrough() {
+        return hbm$falloutAppliedThrough;
+    }
+
+    @Override
+    public void hbm$setFalloutAppliedThrough(long id) {
+        hbm$falloutAppliedThrough = id;
+    }
+
+    @Override
+    public @Nullable FalloutReplay hbm$falloutReplay() {
+        return hbm$falloutReplay;
+    }
+
+    @Override
+    public void hbm$setFalloutReplay(@Nullable FalloutReplay replay) {
+        hbm$falloutReplay = replay;
+    }
+
+    @Override
+    public byte @Nullable [] hbm$getRadiation() {
+        return hbm$radiation;
+    }
+
+    @Override
+    public void hbm$setRadiation(byte @Nullable [] bytes) {
+        hbm$radiation = bytes;
+    }
+
+    @Override
+    public long @Nullable [] hbm$coreIndex() {
+        return hbm$coreIndex;
+    }
+
+    @Override
+    public int hbm$coreIndexSize() {
+        return hbm$coreIndexSize;
+    }
+
+    @Override
+    public void hbm$setCoreIndex(long @Nullable [] entries, int size) {
+        hbm$coreIndex = entries;
+        hbm$coreIndexSize = size;
+    }
 
     @Override
     public long @Nullable [] hbm$pendingFallerPositions() {
@@ -170,129 +263,13 @@ public abstract class MixinSerializableChunkData implements IChunkExtension {
         hbm$pendingFallerSize = size;
     }
 
-    @Inject(method = "copyOf", at = @At("RETURN"))
-    private static void hbm$capturePendingFallers(
-            ServerLevel level,
-            ChunkAccess chunk,
-            CallbackInfoReturnable<SerializableChunkData> cir) {
-        SerializableChunkData data = cir.getReturnValue();
-        int size = chunk.hbm$pendingFallerSize();
-        if (data == null || size == 0) return;
-        data.hbm$setPendingFallers(
-                Arrays.copyOf(chunk.hbm$pendingFallerPositions(), size),
-                Arrays.copyOf(chunk.hbm$pendingFallerStates(), size),
-                size);
-    }
-
-    @Inject(method = "parse", at = @At("RETURN"))
-    private static void hbm$parsePendingFallers(
-            LevelHeightAccessor levelHeight,
-            PalettedContainerFactory containerFactory,
-            CompoundTag chunkData,
-            CallbackInfoReturnable<SerializableChunkData> cir) {
-        SerializableChunkData data = cir.getReturnValue();
-        if (data != null)
-            PendingFallers.load(
-                    chunkData.getListOrEmpty(IChunkExtension.PENDING_FALLERS_NBT_KEY), data);
-    }
-
-    @Inject(method = "read", at = @At("RETURN"))
-    private void hbm$readPendingFallers(
-            ServerLevel level,
-            PoiManager poiManager,
-            RegionStorageInfo regionInfo,
-            ChunkPos pos,
-            CallbackInfoReturnable<ProtoChunk> cir) {
-        int size = hbm$pendingFallerSize;
-        if (size == 0) return;
-        ProtoChunk result = cir.getReturnValue();
-        ChunkAccess target =
-                result instanceof ImposterProtoChunk imposter ? imposter.getWrapped() : result;
-        target.hbm$setPendingFallers(hbm$pendingFallerPositions, hbm$pendingFallerStates, size);
-    }
-
-    @Inject(method = "write", at = @At("RETURN"))
-    private void hbm$writePendingFallers(CallbackInfoReturnable<CompoundTag> cir) {
-        CompoundTag tag = cir.getReturnValue();
-        if (tag != null && hbm$pendingFallerSize != 0) {
-            tag.put(
-                    IChunkExtension.PENDING_FALLERS_NBT_KEY,
-                    PendingFallers.save(
-                            hbm$pendingFallerPositions,
-                            hbm$pendingFallerStates,
-                            hbm$pendingFallerSize));
-        }
-    }
-
-    @Unique private @Nullable Long2ObjectOpenHashMap<String> hbm$ductFluids;
-
     @Override
     public @Nullable Long2ObjectOpenHashMap<String> hbm$ductFluids() {
-        return this.hbm$ductFluids;
+        return hbm$ductFluids;
     }
 
     @Override
     public void hbm$setDuctFluids(@Nullable Long2ObjectOpenHashMap<String> fluids) {
-        this.hbm$ductFluids = fluids;
-    }
-
-    @Inject(method = "copyOf", at = @At("RETURN"))
-    private static void hbm$captureDuctFluids(
-            ServerLevel level,
-            ChunkAccess chunk,
-            CallbackInfoReturnable<SerializableChunkData> cir) {
-        SerializableChunkData data = cir.getReturnValue();
-        Long2ObjectOpenHashMap<String> fluids = chunk.hbm$ductFluids();
-        if (data != null && fluids != null && !fluids.isEmpty())
-            data.hbm$setDuctFluids(fluids.clone());
-    }
-
-    @Inject(method = "parse", at = @At("RETURN"))
-    private static void hbm$parseDuctFluids(
-            LevelHeightAccessor levelHeight,
-            PalettedContainerFactory containerFactory,
-            CompoundTag chunkData,
-            CallbackInfoReturnable<SerializableChunkData> cir) {
-        SerializableChunkData data = cir.getReturnValue();
-        CompoundTag tag = chunkData.getCompound(IChunkExtension.DUCT_FLUIDS_NBT_KEY).orElse(null);
-        if (data == null || tag == null) return;
-        long[] positions = tag.getLongArray("pos").orElseThrow();
-        ListTag ids = tag.getListOrEmpty("fluid");
-        if (ids.size() != positions.length) throw new IllegalStateException("duct fluids: " + tag);
-        Long2ObjectOpenHashMap<String> fluids = new Long2ObjectOpenHashMap<>(positions.length);
-        for (int i = 0; i < positions.length; i++) fluids.put(positions[i], ids.getStringOr(i, ""));
-        data.hbm$setDuctFluids(fluids);
-    }
-
-    @Inject(method = "write", at = @At("RETURN"))
-    private void hbm$writeDuctFluids(CallbackInfoReturnable<CompoundTag> cir) {
-        CompoundTag tag = cir.getReturnValue();
-        Long2ObjectOpenHashMap<String> fluids = this.hbm$ductFluids;
-        if (tag == null || fluids == null) return;
-        long[] positions = new long[fluids.size()];
-        ListTag ids = new ListTag();
-        int i = 0;
-        for (var entry : fluids.long2ObjectEntrySet()) {
-            positions[i++] = entry.getLongKey();
-            ids.add(StringTag.valueOf(entry.getValue()));
-        }
-        CompoundTag out = new CompoundTag();
-        out.putLongArray("pos", positions);
-        out.put("fluid", ids);
-        tag.put(IChunkExtension.DUCT_FLUIDS_NBT_KEY, out);
-    }
-
-    @Inject(method = "read", at = @At("RETURN"))
-    private void hbm$readDuctFluids(
-            ServerLevel level,
-            PoiManager poiManager,
-            RegionStorageInfo regionInfo,
-            ChunkPos pos,
-            CallbackInfoReturnable<ProtoChunk> cir) {
-        if (this.hbm$ductFluids == null) return;
-        ProtoChunk result = cir.getReturnValue();
-        ChunkAccess target =
-                (result instanceof ImposterProtoChunk imposter) ? imposter.getWrapped() : result;
-        target.hbm$setDuctFluids(this.hbm$ductFluids);
+        hbm$ductFluids = fluids;
     }
 }

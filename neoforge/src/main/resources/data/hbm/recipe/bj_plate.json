@@ -1,16 +1,15 @@
 {
   "type": "hbm:crafting_shaped",
+  "input_state": {
+    "S": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "C": "hbm:circuit_advanced",
     "M": "hbm:motor_desh",
     "N": "hbm:plate_armor_lunar",
-    "S": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:starmetal_plate"
-    }
+    "S": "hbm:starmetal_plate"
   },
   "pattern": [
     "N N",

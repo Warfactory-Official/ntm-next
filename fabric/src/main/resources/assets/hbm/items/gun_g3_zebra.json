@@ -38,7 +38,7 @@
       {
         "excludes_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           }
         ],
         "parts": [
@@ -94,7 +94,7 @@
         ],
         "requires_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           }
         ]
       }

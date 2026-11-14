@@ -1,122 +1,144 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineEPress;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.processing.ElectricPressBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.FramedItem;
-import com.hbm.client.render.RenderPress;
+import com.hbm.client.render.PressRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.GroupObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
-import org.jspecify.annotations.Nullable;
 
-public final class ElectricPressVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachineEPress>
-        implements ShaderLightVisual {
+public final class ElectricPressVisual
+        extends AbstractBoundedBlockEntityVisual<ElectricPressBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final MeshPart[] HEAD =
             MeshPart.objParts(
                     ResourceManager.epress_head,
                     MeshPart.litCutout(ResourceManager.epress_head_tex));
 
-    private final AABB bodyBounds;
-    private final TransformedInstance[] heads = new TransformedInstance[HEAD.length];
-    private final Matrix4f localPose = new Matrix4f();
-    private final Matrix4f headBasePose = new Matrix4f();
-    private final Matrix4f instancePose = new Matrix4f();
-    private final double[] lightBoundsAccumulator = new double[6];
-    private float lastLift = Float.NaN;
-    private @Nullable AABB lastLightBounds;
+    private static final ChainInstance.Chain HEAD_CHAIN =
+            new ChainInstance.Chain().clamp(0).slideY(0, .875F);
+    private static final float[] LIFT_LOW = {0F};
+    private static final float[] LIFT_HIGH = {1F};
+    private final ChainParts heads;
+    private final AABB lightBounds;
     private final float itemYaw;
     private final WorldItem item = new WorldItem(visualizationContext, level, pos);
     private final PoseStack itemPoses = new PoseStack();
 
     public ElectricPressVisual(
-            VisualizationContext context, BlockEntityMachineEPress blockEntity, float partialTick) {
+            VisualizationContext context, ElectricPressBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        itemYaw = 90F + RenderPress.facingYaw(BlockMultiblockCore.coreFacing(blockState));
+        itemYaw = 90F + PressRenderer.facingYaw(MultiblockCoreBlock.coreFacing(blockState));
         float bodyYaw = itemYaw * Mth.DEG_TO_RAD;
         Matrix4f bodyLocal = new Matrix4f().translation(.5F, 0F, .5F).rotateY(bodyYaw);
-        headBasePose.translation(.5F, 1F, .5F).rotateY(bodyYaw);
+        Matrix4f headBasePose = new Matrix4f().translation(.5F, 1F, .5F).rotateY(bodyYaw);
         AABB bodyExtent = new AABB(pos);
         for (GroupObject group : ResourceManager.epress_body.groups)
             bodyExtent = bodyExtent.minmax(LightBounds.of(group, bodyLocal, pos));
-        bodyBounds = bodyExtent;
-        for (int i = 0; i < HEAD.length; i++)
-            heads[i] =
-                    instancerProvider()
-                            .instancer(InstanceTypes.TRANSFORMED, HEAD[i].model())
-                            .createInstance();
-        updateMovingParts(partialTick);
+        AABB bodyBounds = bodyExtent;
+        ChainInstance.Chain[] chains = new ChainInstance.Chain[HEAD.length];
+        Model[] models = new Model[HEAD.length];
+        for (int i = 0; i < HEAD.length; i++) {
+            chains[i] = HEAD_CHAIN;
+            models[i] = HEAD[i].model();
+        }
+        heads = new ChainParts(context, visualPos, headBasePose, models, chains, 1);
+        double[] bounds = new double[6];
+        LightBounds.resetBounds(
+                bounds, bodyBounds.minmax(new AABB(pos).expandTowards(0, 2, 0).inflate(1)));
+        heads.includeLightBounds(bounds, pos, LIFT_LOW, LIFT_HIGH);
+        lightBounds = new AABB(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+        updateHead();
         updateItem(partialTick);
     }
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockEntityMachineEPress be) {
-        return !WorldItem.drawsFramed(be.getItem(BlockEntityMachineEPress.SLOT_INPUT));
+    public static boolean vanillaNeeded(ElectricPressBlockEntity be) {
+        return !WorldItem.drawsFramed(be.getItem(ElectricPressBlockEntity.SLOT_INPUT));
     }
 
     @Override
-    protected void frame(Context context) {
-        updateMovingParts(context.partialTick());
+    public void frame(DynamicVisual.Context context) {
         updateItem(context.partialTick());
+    }
+
+    @Override
+    public void tick(TickableVisual.Context context) {
+        updateHead();
+    }
+
+    private void updateHead() {
+        heads.set(
+                0,
+                (float)
+                        (1D
+                                - blockEntity.lastPress
+                                        / (double) ElectricPressBlockEntity.MAX_PROGRESS),
+                (float)
+                        (1D
+                                - blockEntity.renderPress
+                                        / (double) ElectricPressBlockEntity.MAX_PROGRESS));
+        heads.write();
     }
 
     private void updateItem(float partialTick) {
         FramedItem.Arm arm =
-                item.setFramed(blockEntity.getItem(BlockEntityMachineEPress.SLOT_INPUT), level);
+                item.setFramed(blockEntity.getItem(ElectricPressBlockEntity.SLOT_INPUT), level);
         if (arm == null) return;
         itemPoses.setIdentity();
         itemPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
-        RenderPress.EPRESS_ITEM.apply(itemPoses, itemYaw);
+        PressRenderer.EPRESS_ITEM.apply(itemPoses, itemYaw);
         FramedItem.decoArm(itemPoses, arm);
         item.write(itemPoses.last().pose(), partialTick);
     }
 
-    public void updateMovingParts(float partialTick) {
-        double progress =
-                (blockEntity.lastPress
-                                + (blockEntity.renderPress - blockEntity.lastPress) * partialTick)
-                        / (double) BlockEntityMachineEPress.MAX_PROGRESS;
-        float lift = (float) (Mth.clamp(1D - progress, 0D, 1D) * .875D);
-        if (lift == lastLift) return;
-        lastLift = lift;
-        localPose.set(headBasePose).translate(0F, lift, 0F);
-        instancePose
-                .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
-                .mul(localPose);
-        LightBounds.resetBounds(lightBoundsAccumulator, bodyBounds);
-        for (int i = 0; i < heads.length; i++) {
-            heads[i].setTransform(instancePose).light(0).setChanged();
-            LightBounds.includeLightBounds(lightBoundsAccumulator, HEAD[i].model(), localPose, pos);
-        }
-        lastLightBounds =
-                LightBounds.sections(lightSections, lightBoundsAccumulator, lastLightBounds);
-    }
-
     @Override
     protected AABB getRenderBoundingBox() {
-        return bodyBounds.minmax(new AABB(pos).expandTowards(0, 2, 0).inflate(1));
+        return lightBounds;
     }
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        for (var head : heads) consumer.accept(head);
+        heads.collectCrumblingInstances(consumer);
     }
 
     @Override
     protected void _delete() {
-        for (var head : heads) head.delete();
+        heads.delete();
         item.delete();
     }
 }

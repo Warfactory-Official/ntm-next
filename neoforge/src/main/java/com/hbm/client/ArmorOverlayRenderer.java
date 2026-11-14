@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client;
 
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ModArmorItem;
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -15,24 +31,25 @@ import net.minecraft.world.item.ItemStack;
 
 public final class ArmorOverlayRenderer {
 
-    private static final Identifier ASBESTOS = Library.id("textures/misc/overlay_asbestos.png");
-    private static final Identifier HAZMAT = Library.id("textures/misc/overlay_hazmat.png");
-    private static final Identifier DARK = Library.id("textures/misc/overlay_dark.png");
+    private static final Identifier ASBESTOS =
+            RegistryUtil.id("textures/misc/overlay_asbestos.png");
+    private static final Identifier HAZMAT = RegistryUtil.id("textures/misc/overlay_hazmat.png");
+    private static final Identifier DARK = RegistryUtil.id("textures/misc/overlay_dark.png");
     private static final Identifier[] GOGGLE_BLUR = {
-        Library.id("textures/misc/overlay_goggles_0.png"),
-                Library.id("textures/misc/overlay_goggles_1.png"),
-        Library.id("textures/misc/overlay_goggles_2.png"),
-                Library.id("textures/misc/overlay_goggles_3.png"),
-        Library.id("textures/misc/overlay_goggles_4.png"),
-                Library.id("textures/misc/overlay_goggles_5.png")
+        RegistryUtil.id("textures/misc/overlay_goggles_0.png"),
+                RegistryUtil.id("textures/misc/overlay_goggles_1.png"),
+        RegistryUtil.id("textures/misc/overlay_goggles_2.png"),
+                RegistryUtil.id("textures/misc/overlay_goggles_3.png"),
+        RegistryUtil.id("textures/misc/overlay_goggles_4.png"),
+                RegistryUtil.id("textures/misc/overlay_goggles_5.png")
     };
     private static final Identifier[] MASK_BLUR = {
-        Library.id("textures/misc/overlay_gasmask_0.png"),
-                Library.id("textures/misc/overlay_gasmask_1.png"),
-        Library.id("textures/misc/overlay_gasmask_2.png"),
-                Library.id("textures/misc/overlay_gasmask_3.png"),
-        Library.id("textures/misc/overlay_gasmask_4.png"),
-                Library.id("textures/misc/overlay_gasmask_5.png")
+        RegistryUtil.id("textures/misc/overlay_gasmask_0.png"),
+                RegistryUtil.id("textures/misc/overlay_gasmask_1.png"),
+        RegistryUtil.id("textures/misc/overlay_gasmask_2.png"),
+                RegistryUtil.id("textures/misc/overlay_gasmask_3.png"),
+        RegistryUtil.id("textures/misc/overlay_gasmask_4.png"),
+                RegistryUtil.id("textures/misc/overlay_gasmask_5.png")
     };
     private static final int OVERLAY_SIZE = 256;
 

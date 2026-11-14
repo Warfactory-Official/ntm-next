@@ -1,17 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler.radiation;
 
 import com.hbm.NuclearTech;
 import com.hbm.config.RadiationConfig;
-import com.hbm.interfaces.ServerThread;
-import com.hbm.lib.Library;
 import com.hbm.lib.TLPool;
 import com.hbm.lib.internal.Accelerator;
 import com.hbm.lib.queues.MpscUnboundedXaddArrayLongQueue;
 import com.hbm.util.DecodeException;
+import com.hbm.util.LocalBlockIndex;
 import com.hbm.util.ObjectPool;
+import com.hbm.util.SectionKeys;
 import it.unimi.dsi.fastutil.HashCommon;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleArrays;
@@ -266,9 +282,9 @@ final class WorldRadiationData {
             if (vols != null) vols[pocketIndex]++;
             if (sumXYZ != null) {
                 int base = pocketIndex * 3;
-                sumXYZ[base] += Library.getLocalX(blockIndex);
-                sumXYZ[base + 1] += Library.getLocalY(blockIndex);
-                sumXYZ[base + 2] += Library.getLocalZ(blockIndex);
+                sumXYZ[base] += LocalBlockIndex.x(blockIndex);
+                sumXYZ[base + 1] += LocalBlockIndex.y(blockIndex);
+                sumXYZ[base + 2] += LocalBlockIndex.z(blockIndex);
             }
 
             while (head != tail) {
@@ -285,9 +301,9 @@ final class WorldRadiationData {
                     if (vols != null) vols[pocketIndex]++;
                     if (sumXYZ != null) {
                         int base = pocketIndex * 3;
-                        sumXYZ[base] += Library.getLocalX(nei);
-                        sumXYZ[base + 1] += Library.getLocalY(nei);
-                        sumXYZ[base + 2] += Library.getLocalZ(nei);
+                        sumXYZ[base] += LocalBlockIndex.x(nei);
+                        sumXYZ[base + 1] += LocalBlockIndex.y(nei);
+                        sumXYZ[base + 2] += LocalBlockIndex.z(nei);
                     }
                 }
             }
@@ -1181,7 +1197,6 @@ final class WorldRadiationData {
         radiationDirtyCks = Arrays.copyOf(radiationDirtyCks, n);
     }
 
-    @ServerThread
     void queueRadiationDirty(int id) {
         if (radiationDirtyIndex[id] >= 0) return;
         ensureRadiationDirtyCapacity(radiationDirtyCount + 1);
@@ -1191,7 +1206,6 @@ final class WorldRadiationData {
         radiationDirtyIndex[id] = i;
     }
 
-    @ServerThread
     void removeRadiationDirty(int id) {
         int i = radiationDirtyIndex[id];
         if (i < 0) return;
@@ -1208,7 +1222,6 @@ final class WorldRadiationData {
         radiationDirtyIndex[id] = -1;
     }
 
-    @ServerThread
     void collectMarkedRadiationDirty() {
         for (int id = 0, n = nextId; id < n; id++) {
             if (mcChunks[id] == null || !isChunkDirty(id)) continue;
@@ -1217,7 +1230,6 @@ final class WorldRadiationData {
         }
     }
 
-    @ServerThread
     @SuppressWarnings("unchecked")
     void saveRadiationDirty(boolean flush) {
         rebuildLoadedSections();
@@ -1234,6 +1246,7 @@ final class WorldRadiationData {
             if (id < 0 || id >= nextId || cks[id] != ck) continue;
             LevelChunk chunk = mcChunks[id];
             if (chunk != null) {
+                if (backend != null) backend.ackChunkDirty(ck);
                 CompletableFuture<SidecarPayload> future = encodeSidecarIfNeeded(id, ck, chunk);
                 if (future != null) futures[count++] = future;
             }
@@ -1241,7 +1254,6 @@ final class WorldRadiationData {
         flushEncodedSidecars(futures, count, !flush);
     }
 
-    @ServerThread
     void saveRadiationDirty(LevelChunk chunk) {
         rebuildLoadedSections();
         long ck = ChunkPos.pack(chunk.getPos().x(), chunk.getPos().z());
@@ -1254,6 +1266,7 @@ final class WorldRadiationData {
         }
         if (radiationDirtyIndex[id] < 0) return;
         removeRadiationDirty(id);
+        if (backend != null) backend.ackChunkDirty(ck);
         byte[] payload;
         try {
             payload = tryEncodePayload(ck);
@@ -1264,7 +1277,6 @@ final class WorldRadiationData {
         writeSidecar(world, chunk.getPos(), payload, true);
     }
 
-    @ServerThread
     @Nullable CompletableFuture<SidecarPayload> encodeSidecarIfNeeded(
             int id, long ck, LevelChunk chunk) {
         ChunkPos pos = chunk.getPos();
@@ -1279,7 +1291,6 @@ final class WorldRadiationData {
                 RAD_POOL);
     }
 
-    @ServerThread
     void flushEncodedSidecars(
             CompletableFuture<SidecarPayload>[] futures, int count, boolean logAsyncFailure) {
         RuntimeException failure = null;
@@ -1294,7 +1305,6 @@ final class WorldRadiationData {
         if (failure != null) throw failure;
     }
 
-    @ServerThread
     void flushEncodedSidecar(CompletableFuture<SidecarPayload> future, boolean logAsyncFailure) {
         SidecarPayload encoded;
         try {
@@ -1325,7 +1335,6 @@ final class WorldRadiationData {
         writeSidecar(world, encoded.pos, encoded.payload, logAsyncFailure);
     }
 
-    @ServerThread
     void clearQueuedRadiationDirty() {
         for (int i = 0; i < radiationDirtyCount; i++) {
             int id = radiationDirtyIds[i];
@@ -1336,20 +1345,18 @@ final class WorldRadiationData {
         radiationDirtyCount = 0;
     }
 
-    @ServerThread
     void rebuildLoadedSections() {
         rebuildDirtySections();
         refreshDiffusivity();
     }
 
-    @ServerThread
     void refreshDiffusivity() {
         if (diffusivityDirty.isEmpty()) return;
         IntArrayList ids = diffusivityRefreshIds;
         ids.clear();
         for (LongIterator it = diffusivityDirty.iterator(); it.hasNext(); ) {
             long sck = it.nextLong();
-            int id = getId(Library.sectionToChunkLong(sck));
+            int id = getId(SectionPos.sectionToChunk(sck));
             int slot = slotOf(SectionPos.y(sck));
             if (id < 0 || slot < 0 || mcChunks[id] == null) continue;
             LevelChunkSection[] stor = mcChunks[id].getSections();
@@ -1395,12 +1402,18 @@ final class WorldRadiationData {
                     workEpochSalt,
                     workEpoch,
                     fogQueue::offer,
-                    tickDelay == 1 ? pk -> pocketToDestroy = pk : destructionQueue::offer);
+                    tickDelay == 1 ? pk -> pocketToDestroy = pk : destructionQueue::offer,
+                    this::backendChanged);
         } else {
             runDecayEmissionAndEffects();
             runExactExchangeSweeps();
         }
         cleanupAndLog(time);
+    }
+
+    private void backendChanged(long ck) {
+        int id = getId(ck);
+        if (id >= 0) setChunkDirty(id);
     }
 
     void cleanupAndLog(long time) {
@@ -1441,7 +1454,6 @@ final class WorldRadiationData {
         executionSampleCount = 0;
     }
 
-    @ServerThread
     void logLifetimeProfiling() {
         if (!RadiationConfig.enableDebugMode) return;
         long steps = profSteps;
@@ -1496,7 +1508,7 @@ final class WorldRadiationData {
             int maskBase = pos * wordsPerChunk;
             int batchBase = batch * wordsPerChunk;
             int any = 0;
-            long sckBase = Library.sectionToLong(ck, minSectionY);
+            long sckBase = SectionKeys.fromChunk(ck, minSectionY);
             for (int word = 0; word < wordsPerChunk; word++) {
                 int mask = dirtyCk.masks[maskBase + word];
                 dirtyChunkMasksScratchArr[batchBase + word] = mask;
@@ -1507,7 +1519,7 @@ final class WorldRadiationData {
                 for (int m = mask; m != 0; m &= m - 1) {
                     int slot = baseSlot + Integer.numberOfTrailingZeros(m);
                     if (slot < sectionsPerChunk)
-                        toRelink.add(Library.setSectionY(sckBase, minSectionY + slot));
+                        toRelink.add(SectionKeys.withY(sckBase, minSectionY + slot));
                 }
             }
             if (any != 0) dirtyChunkIdsScratch[batch++] = id;
@@ -1629,7 +1641,7 @@ final class WorldRadiationData {
     void queueSet(long sck, int local, double density) {
         int slot = slotOf(SectionPos.y(sck));
         if (slot < 0) return;
-        long ck = Library.sectionToChunkLong(sck);
+        long ck = SectionPos.sectionToChunk(sck);
         long seq = ++setSeq;
         editsFor(ck).putSet(editKey(slot, local), density, seq, slot);
         if (touchedSectionWords != null)
@@ -1639,7 +1651,7 @@ final class WorldRadiationData {
     void queueAdd(long sck, int local, double delta) {
         int slot = slotOf(SectionPos.y(sck));
         if (slot < 0) return;
-        long ck = Library.sectionToChunkLong(sck);
+        long ck = SectionPos.sectionToChunk(sck);
         editsFor(ck).addTo(editKey(slot, local), delta, slot);
         if (touchedSectionWords != null)
             touchedSectionWords[wordIndex(getId(ck), slot)] |= 1 << (slot & 31);
@@ -1648,7 +1660,7 @@ final class WorldRadiationData {
     void queueEmit(long sck, int local, double emission, double saturation) {
         int slot = slotOf(SectionPos.y(sck));
         if (slot < 0) return;
-        long ck = Library.sectionToChunkLong(sck);
+        long ck = SectionPos.sectionToChunk(sck);
         editsFor(ck).addSource(editKey(slot, local), emission, saturation, slot);
         if (touchedSectionWords != null)
             touchedSectionWords[wordIndex(getId(ck), slot)] |= 1 << (slot & 31);
@@ -1687,7 +1699,7 @@ final class WorldRadiationData {
         int touchedIndex =
                 touchedSectionWords == null
                         ? -1
-                        : wordIndex(getId(Library.sectionToChunkLong(sectionKey)), slot);
+                        : wordIndex(getId(SectionPos.sectionToChunk(sectionKey)), slot);
         int touched =
                 touchedSectionWords == null
                         ? edits.touchedSyMask
@@ -2384,17 +2396,15 @@ final class WorldRadiationData {
         outPocketData[0] = null;
 
         if (section == null || section.hasOnlyAir()) {
-            Arrays.fill(vols, 0);
             vols[0] = SectionPos.SECTION_BLOCK_COUNT;
-            Arrays.fill(sumXYZ, 0);
+            Arrays.fill(sumXYZ, 0, 3, 0L);
             return 1;
         }
 
         SectionMask resistant = scanResistantMask(section);
         if (resistant == null || resistant.isEmpty()) {
-            Arrays.fill(vols, 0);
             vols[0] = SectionPos.SECTION_BLOCK_COUNT;
-            Arrays.fill(sumXYZ, 0);
+            Arrays.fill(sumXYZ, 0, 3, 0L);
             return 1;
         }
 
@@ -2422,11 +2432,11 @@ final class WorldRadiationData {
             int slot = slotOf(absY);
             if (slot < 0) continue;
             int yzBase = absY << 4;
-            keys[n++] = Library.setSectionY(k, yzBase | 7);
-            keys[n++] = Library.setSectionY(Library.shiftSectionX(k, -1), yzBase | 1);
-            keys[n++] = Library.setSectionY(Library.shiftSectionZ(k, -1), yzBase | 2);
+            keys[n++] = SectionKeys.withY(k, yzBase | 7);
+            keys[n++] = SectionKeys.withY(SectionPos.offset(k, -1, 0, 0), yzBase | 1);
+            keys[n++] = SectionKeys.withY(SectionPos.offset(k, 0, 0, -1), yzBase | 2);
             if (slot != 0) {
-                keys[n++] = Library.setSectionY(k, ((absY - 1) << 4) | 4);
+                keys[n++] = SectionKeys.withY(k, ((absY - 1) << 4) | 4);
             }
         }
         if (n == 0) return;
@@ -3001,7 +3011,7 @@ final class WorldRadiationData {
 
         @Override
         int getPocketIndex(long pos) {
-            int blockIndex = Library.blockPosToLocal(pos);
+            int blockIndex = LocalBlockIndex.fromBlockPos(pos);
             return pocketData[blockIndex] < 0 ? -1 : 0;
         }
 
@@ -3240,7 +3250,7 @@ final class WorldRadiationData {
 
         @Override
         int getPocketIndex(long pos) {
-            int blockIndex = Library.blockPosToLocal(pos);
+            int blockIndex = LocalBlockIndex.fromBlockPos(pos);
             int pi = pocketData[blockIndex];
             if (pi < 0) return -1;
             return pi;
@@ -3442,7 +3452,7 @@ final class WorldRadiationData {
                 int absY = (int) (packedY >> 4);
                 int slot = slotOf(absY);
 
-                long ck = Library.sectionToChunkLong(k);
+                long ck = SectionPos.sectionToChunk(k);
                 if (ck != curCk) {
                     curCk = ck;
 
@@ -3588,7 +3598,7 @@ final class WorldRadiationData {
                 LevelChunk chunk = mcChunks[id];
                 if (chunk == null) continue;
                 boolean dirty = isChunkDirty(id);
-                long baseSck = Library.sectionToLong(cks[id], minSectionY);
+                long baseSck = SectionKeys.fromChunk(cks[id], minSectionY);
                 int secBase = id * N;
                 long kinds = chunkKinds[id];
                 long active = chunkActiveDirty[id];
@@ -3601,11 +3611,11 @@ final class WorldRadiationData {
                     chunkActiveDirty[id] &= ~(masks[1] & active);
                     for (long m = masks[2] & active; m != 0L; m &= m - 1L) {
                         int sy = Long.numberOfTrailingZeros(m);
-                        maybeQueueFog(Library.setSectionY(baseSck, minSectionY + sy), 0, sy);
+                        maybeQueueFog(SectionKeys.withY(baseSck, minSectionY + sy), 0, sy);
                     }
                     for (long m = masks[3] & active; m != 0L; m &= m - 1L) {
                         int sy = Long.numberOfTrailingZeros(m);
-                        maybeQueueDestroy(Library.setSectionY(baseSck, minSectionY + sy), 0, sy);
+                        maybeQueueDestroy(SectionKeys.withY(baseSck, minSectionY + sy), 0, sy);
                     }
                     clearChunkDirty(id);
                     if (dirty) chunkActiveDirty[id] |= CHUNK_DIRTY_MASK;
@@ -3620,7 +3630,7 @@ final class WorldRadiationData {
                     RadiationSystemNT.SectionSources src = sectionSources[secIdx];
                     int kind = (int) ((kinds >>> (sy << 1)) & 3);
 
-                    long sck = Library.setSectionY(baseSck, minSectionY + sy);
+                    long sck = SectionKeys.withY(baseSck, minSectionY + sy);
 
                     if (kind < KIND_MULTI) {
                         double prev = uniformRads[secIdx];
@@ -3678,7 +3688,7 @@ final class WorldRadiationData {
                 LevelChunk chunk = mcChunks[id];
                 if (chunk == null) continue;
                 boolean dirty = isChunkDirty(id);
-                long baseSck = Library.sectionToLong(cks[id], minSectionY);
+                long baseSck = SectionKeys.fromChunk(cks[id], minSectionY);
                 int metadataBase = id * wordsPerChunk;
                 for (int word = 0; word < wordsPerChunk; word++) {
                     int first = word << 5;
@@ -3704,14 +3714,14 @@ final class WorldRadiationData {
                         for (long m = masks[2] & active; m != 0L; m &= m - 1L) {
                             int sy = Long.numberOfTrailingZeros(m);
                             maybeQueueFog(
-                                    Library.setSectionY(baseSck, minSectionY + first + sy),
+                                    SectionKeys.withY(baseSck, minSectionY + first + sy),
                                     0,
                                     first + sy);
                         }
                         for (long m = masks[3] & active; m != 0L; m &= m - 1L) {
                             int sy = Long.numberOfTrailingZeros(m);
                             maybeQueueDestroy(
-                                    Library.setSectionY(baseSck, minSectionY + first + sy),
+                                    SectionKeys.withY(baseSck, minSectionY + first + sy),
                                     0,
                                     first + sy);
                         }
@@ -3726,7 +3736,7 @@ final class WorldRadiationData {
                         RadiationSystemNT.SectionSources src = sectionSources[secIdx];
                         int kind = (int) ((kinds >>> (sy << 1)) & 3);
 
-                        long sck = Library.setSectionY(baseSck, minSectionY + first + sy);
+                        long sck = SectionKeys.withY(baseSck, minSectionY + first + sy);
 
                         if (kind < KIND_MULTI) {
                             double prev = uniformRads[secIdx];

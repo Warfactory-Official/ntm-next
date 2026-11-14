@@ -4,7 +4,10 @@
     "earned": {
       "conditions": {
         "item": {
-          "items": "hbm:satellite_relay"
+          "items": [
+            "hbm:satellite_relay",
+            "hbm:sat_foeq"
+          ]
         }
       },
       "trigger": "hbm:orbit"

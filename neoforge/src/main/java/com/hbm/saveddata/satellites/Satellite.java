@@ -1,278 +1,252 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.saveddata.satellites;
 
-import com.hbm.api.redstoneoverradio.IRORInteractive;
-import com.hbm.blockentity.network.RTTYSystem;
+import com.hbm.api.redstoneoverradio.RadioCommandParser;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.missile.EntitySatellitePod;
-import com.hbm.lib.Library;
-import com.hbm.registration.OverridePoint;
+import com.hbm.entity.missile.SatellitePod;
+import com.hbm.handler.radio.RadioSystem;
+import com.hbm.items.machine.DriveType;
 import com.hbm.saveddata.SatelliteSavedData;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Supplier;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 public abstract class Satellite {
+    public static final int SURFACE = Integer.MIN_VALUE;
+    public static final String SAT_LINK = "SAT_LINK";
 
-    public static final String CHAN_SATLINK = "SAT_LINK";
-    public static final int AUTOMATIC_Y = Integer.MIN_VALUE;
+    static final Component READY = Component.translatable("satellite.ready");
+    private static final double POD_DROP_Y = 300D;
 
-    public int targetX;
-    public int targetZ;
-    public String tx = "";
-    public Optional<DriveType> driveInput = Optional.empty();
-    public Optional<DriveType> driveOutput = Optional.empty();
-    public List<ItemStack> requestableSlots = List.of();
-    public DataComponentMap components = DataComponentMap.EMPTY;
+    static final Codec<State> STATE_CODEC =
+            RecordCodecBuilder.<State>create(
+                            i ->
+                                    i.group(
+                                                    Codec.INT
+                                                            .optionalFieldOf("targetX", 0)
+                                                            .forGetter(State::targetX),
+                                                    Codec.INT
+                                                            .optionalFieldOf("targetZ", 0)
+                                                            .forGetter(State::targetZ),
+                                                    Codec.STRING
+                                                            .optionalFieldOf("tx", "")
+                                                            .forGetter(State::reply),
+                                                    DriveType.CODEC
+                                                            .optionalFieldOf("driveInput")
+                                                            .forGetter(State::driveInput),
+                                                    DriveType.CODEC
+                                                            .optionalFieldOf("driveOutput")
+                                                            .forGetter(State::driveOutput),
+                                                    ItemStack.OPTIONAL_CODEC
+                                                            .listOf()
+                                                            .optionalFieldOf(
+                                                                    "requestableSlots", List.of())
+                                                            .forGetter(State::cargo),
+                                                    DataComponentMap.CODEC
+                                                            .optionalFieldOf(
+                                                                    "components",
+                                                                    DataComponentMap.EMPTY)
+                                                            .forGetter(State::carried))
+                                            .apply(i, State::new))
+                    .validate(
+                            state ->
+                                    state.driveInput().isPresent()
+                                                    == state.driveOutput().isPresent()
+                                            ? DataResult.success(state)
+                                            : DataResult.error(
+                                                    () ->
+                                                            "driveInput and driveOutput are saved together"));
 
-    public static final OverridePoint<List<Supplier<? extends DataComponentType<?>>>> CARRIED =
-            OverridePoint.of(Library.id("satellite_carried"), List.of());
+    private @Nullable SatelliteSavedData owner;
+    private int targetX;
+    private int targetZ;
+    private String reply = "";
+    private @Nullable DriveOffer offer;
+    private final List<ItemStack> cargo = new ArrayList<>();
+    private DataComponentMap carried = DataComponentMap.EMPTY;
 
-    public static final OverridePoint<OrbitLevel> ORBIT_LEVEL =
-            OverridePoint.of(Library.id("satellite_orbit_level"), (level, type) -> level);
+    public abstract SatelliteType kind();
 
-    @FunctionalInterface
-    public interface OrbitLevel {
-        ServerLevel orbitLevel(ServerLevel level, SatelliteType type);
+    public final void attach(SatelliteSavedData registry) {
+        if (owner == registry) return;
+        if (owner != null)
+            throw new IllegalStateException(
+                    "a " + kind() + " satellite cannot join a second registry");
+        owner = registry;
     }
 
-    public static void orbit(
-            ServerLevel level, SatelliteType type, int freq, double x, double y, double z) {
-        orbit(level, new ItemStack(type.item()), freq, x, y, z);
+    protected final void changed() {
+        if (owner == null)
+            throw new IllegalStateException(
+                    "a " + kind() + " satellite outside any registry changed");
+        owner.setDirty();
     }
 
-    public static boolean orbit(
-            ServerLevel level, ItemStack part, int freq, double x, double y, double z) {
-        int bx = Mth.floor(x), bz = Mth.floor(z);
-        SatelliteSavedData data = SatelliteSavedData.at(level, bx, bz);
-        Satellite existing = data.getSatFromFreq(freq);
-        if (existing != null) {
-            existing.onPartDelivered(level, part);
-            data.setDirty();
-            return true;
+    public final int targetX() {
+        return targetX;
+    }
+
+    public final int targetZ() {
+        return targetZ;
+    }
+
+    public final void aim(int x, int z) {
+        targetX = x;
+        targetZ = z;
+    }
+
+    public final String reply() {
+        return reply;
+    }
+
+    public final void reply(String text) {
+        reply = text;
+    }
+
+    public final DataComponentMap carried() {
+        return carried;
+    }
+
+    final void carry(DataComponentMap components) {
+        carried = components;
+    }
+
+    public final List<ItemStack> cargo() {
+        return cargo;
+    }
+
+    public final boolean requestPod(ServerLevel level, int x, int y, int z) {
+        if (cargo.isEmpty()) return false;
+        var pod = new SatellitePod(ModEntities.SATELLITE_POD.get(), level).deliver(y, cargo);
+        pod.setPos(x + 0.5D, POD_DROP_Y, z + 0.5D);
+        level.addFreshEntity(pod);
+        cargo.clear();
+        changed();
+        return true;
+    }
+
+    public final void command(ServerLevel level, String... tokens) {
+        if (tokens.length == 0) return;
+        switch (tokens[0]) {
+            case "settarget" -> {
+                if (tokens.length == 3 || tokens.length == 4) {
+                    targetX = RadioCommandParser.intParam(tokens[1]);
+                    targetZ = RadioCommandParser.intParam(tokens[tokens.length - 1]);
+                }
+            }
+            case "gettarget" -> reply = targetX + ";" + targetZ;
+            case "gettargetx" -> reply = Integer.toString(targetX);
+            case "gettargetz" -> reply = Integer.toString(targetZ);
+            default -> {}
         }
-        SatelliteType type = SatelliteType.fromStack(part);
-        if (type == null) return false;
-        ServerLevel orbit = ORBIT_LEVEL.get().orbitLevel(level, type);
-        data = SatelliteSavedData.at(orbit, bx, bz);
-        Satellite sat = type.create();
-        sat.components = carried(part);
-        data.put(freq, sat);
-        sat.setTarget(bx, bz);
-        sat.onOrbit(orbit, x, y, z);
-        data.setDirty();
-        return true;
+        kindCommand(level, tokens);
     }
 
-    private static DataComponentMap carried(ItemStack stack) {
-        DataComponentMap.Builder builder = DataComponentMap.builder();
-        for (Supplier<? extends DataComponentType<?>> type : CARRIED.get())
-            carry(builder, stack, type.get());
-        return builder.build();
+    protected void kindCommand(ServerLevel level, String[] tokens) {}
+
+    protected static int index(String token, int size) {
+        return size == 0 ? -1 : RadioCommandParser.intParam(token, 1, size) - 1;
     }
 
-    private static <T> void carry(
-            DataComponentMap.Builder builder, ItemStack stack, DataComponentType<T> type) {
-        builder.set(type, stack.get(type));
-    }
+    public void designate(ServerLevel level, Player player, int x, int y, int z) {}
 
-    public static boolean copyCarried(ItemStack from, ItemStack to) {
-        boolean changed = false;
-        for (Supplier<? extends DataComponentType<?>> type : CARRIED.get())
-            changed |= copy(from, to, type.get());
-        return changed;
-    }
-
-    private static <T> boolean copy(ItemStack from, ItemStack to, DataComponentType<T> type) {
-        @Nullable T value = from.get(type);
-        if (Objects.equals(value, to.get(type))) return false;
-        to.set(type, value);
-        return true;
-    }
-
-    public abstract SatelliteType type();
-
-    public void onOrbit(ServerLevel level, double x, double y, double z) {
-        RTTYSystem.broadcast(
+    public void enterOrbit(ServerLevel level, double x, double y, double z) {
+        RadioSystem.send(
                 level,
-                CHAN_SATLINK,
+                SAT_LINK,
                 "Established connection to "
-                        + type().orbitName()
+                        + kind().orbitName()
                         + " at "
                         + targetX
                         + " / "
                         + targetZ);
     }
 
-    public void onPartDelivered(ServerLevel level, ItemStack part) {}
+    public void receivePart(ServerLevel level, ItemStack part) {}
 
-    public void setTarget(int x, int z) {
-        targetX = x;
-        targetZ = z;
+    public void tick(ServerLevel level) {}
+
+    public List<Component> info(ServerLevel level) {
+        return kind().stationInfo();
     }
 
-    public List<Component> getInfo(ServerLevel level) {
-        return List.of(Component.translatable(type().stationNameKey()));
+    public boolean dataReady(ServerLevel level) {
+        return offer != null;
     }
 
-    public void onCommand(ServerLevel level, String... command) {
-        onCommandTarget(command);
-        onCommandImpl(level, command);
+    public final @Nullable DriveOffer offer() {
+        return offer;
     }
 
-    private void onCommandTarget(String... command) {
-        if (command.length == 0) return;
-        switch (command[0]) {
-            case "settarget" -> {
-                if (command.length == 3 || command.length == 4) {
-                    targetX =
-                            IRORInteractive.parseInt(
-                                    command[1], Integer.MIN_VALUE, Integer.MAX_VALUE);
-                    targetZ =
-                            IRORInteractive.parseInt(
-                                    command[command.length - 1],
-                                    Integer.MIN_VALUE,
-                                    Integer.MAX_VALUE);
-                }
-            }
-            case "gettarget" -> tx = targetX + ";" + targetZ;
-            case "gettargetx" -> tx = Integer.toString(targetX);
-            case "gettargetz" -> tx = Integer.toString(targetZ);
-            default -> {}
-        }
+    public final @Nullable DriveType dataFor(DriveType input) {
+        var pending = offer;
+        return pending != null && pending.input() == input ? pending.output() : null;
     }
 
-    protected void onCommandImpl(ServerLevel level, String... command) {}
-
-    public boolean hasData(ServerLevel level) {
-        return driveInput.isPresent() && driveOutput.isPresent();
+    public final void offerData(DriveType input, DriveType output) {
+        offer = new DriveOffer(input, output);
     }
 
-    public void onUpdateTick(ServerLevel level) {}
-
-    public Optional<DriveType> getOutputData(DriveType input) {
-        return driveInput.filter(input::equals).flatMap(ignored -> driveOutput);
+    public final void takeData() {
+        offer = null;
     }
 
-    public void produceData(DriveType input, DriveType output) {
-        driveInput = Optional.of(input);
-        driveOutput = Optional.of(output);
+    final State state() {
+        var pending = offer;
+        var input = pending == null ? Optional.<DriveType>empty() : Optional.of(pending.input());
+        var output = pending == null ? Optional.<DriveType>empty() : Optional.of(pending.output());
+        return new State(targetX, targetZ, reply, input, output, cargo, carried);
     }
 
-    public void consumeData() {
-        driveInput = Optional.empty();
-        driveOutput = Optional.empty();
+    static Satellite restored(Satellite satellite, State state) {
+        satellite.targetX = state.targetX();
+        satellite.targetZ = state.targetZ();
+        satellite.reply = state.reply();
+        satellite.offer =
+                state.driveInput().isEmpty()
+                        ? null
+                        : new DriveOffer(
+                                state.driveInput().get(), state.driveOutput().orElseThrow());
+        satellite.cargo.addAll(state.cargo());
+        satellite.carried = state.carried();
+        return satellite;
     }
 
-    public boolean tryRequestItems(ServerLevel level, int x, int y, int z) {
-        if (requestableSlots.isEmpty()) return false;
-        EntitySatellitePod pod =
-                new EntitySatellitePod(ModEntities.SATELLITE_POD.get(), level)
-                        .setup(y, requestableSlots);
-        pod.setPos(x + 0.5D, 300D, z + 0.5D);
-        level.addFreshEntity(pod);
-        requestableSlots = List.of();
-        SatelliteSavedData.at(level, x, z).setDirty();
-        return true;
-    }
+    public record DriveOffer(DriveType input, DriveType output) {}
 
-    public State state() {
-        return new State(
-                targetX,
-                targetZ,
-                tx,
-                driveInput,
-                driveOutput,
-                List.copyOf(requestableSlots),
-                components);
-    }
-
-    public static Satellite restore(Satellite sat, State state) {
-        sat.targetX = state.targetX();
-        sat.targetZ = state.targetZ();
-        sat.tx = state.tx();
-        sat.driveInput = state.driveInput();
-        sat.driveOutput = state.driveOutput();
-        sat.requestableSlots = state.requestableSlots();
-        sat.components = state.components();
-        return sat;
-    }
-
-    public void onCoordAction(ServerLevel level, Player player, int x, int y, int z) {}
-
-    public enum DriveType implements StringRepresentable {
-        FLASH_EMPTY,
-        DISK_EMPTY,
-        FLASH_BROKEN,
-        DISK_BROKEN,
-        FLASH_FLIGHTSIM,
-        FLASH_PARTICLESIM,
-        DISK_FLIGHTDATA,
-        DISK_FLIGHTDATA_PROCESSED,
-        DISK_ORBITDATA,
-        DISK_ORBITDATA_PROCESSED,
-        KLAUS;
-
-        public static final Codec<DriveType> CODEC =
-                StringRepresentable.fromEnum(DriveType::values);
-
-        @Override
-        public String getSerializedName() {
-            return name().toLowerCase(java.util.Locale.ROOT);
-        }
-    }
-
-    public record State(
+    record State(
             int targetX,
             int targetZ,
-            String tx,
+            String reply,
             Optional<DriveType> driveInput,
             Optional<DriveType> driveOutput,
-            List<ItemStack> requestableSlots,
-            DataComponentMap components) {
-        public static final Codec<State> CODEC =
-                RecordCodecBuilder.create(
-                        i ->
-                                i.group(
-                                                Codec.INT
-                                                        .optionalFieldOf("targetX", 0)
-                                                        .forGetter(State::targetX),
-                                                Codec.INT
-                                                        .optionalFieldOf("targetZ", 0)
-                                                        .forGetter(State::targetZ),
-                                                Codec.STRING
-                                                        .optionalFieldOf("tx", "")
-                                                        .forGetter(State::tx),
-                                                DriveType.CODEC
-                                                        .optionalFieldOf("driveInput")
-                                                        .forGetter(State::driveInput),
-                                                DriveType.CODEC
-                                                        .optionalFieldOf("driveOutput")
-                                                        .forGetter(State::driveOutput),
-                                                ItemStack.OPTIONAL_CODEC
-                                                        .listOf()
-                                                        .optionalFieldOf(
-                                                                "requestableSlots", List.of())
-                                                        .forGetter(State::requestableSlots),
-                                                DataComponentMap.CODEC
-                                                        .optionalFieldOf(
-                                                                "components",
-                                                                DataComponentMap.EMPTY)
-                                                        .forGetter(State::components))
-                                        .apply(i, State::new));
-    }
+            List<ItemStack> cargo,
+            DataComponentMap carried) {}
 }

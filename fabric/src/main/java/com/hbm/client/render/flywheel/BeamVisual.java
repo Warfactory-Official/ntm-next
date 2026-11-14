@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
@@ -40,6 +56,7 @@ public final class BeamVisual extends AbstractVisual {
     private static final Map<Style, Model> MODELS = new ConcurrentHashMap<>();
     private final BlockPos anchor;
     private final boolean line;
+    private final boolean fogless;
     private final int layers;
     private final float width;
     private final Matrix4f pose = new Matrix4f();
@@ -62,7 +79,19 @@ public final class BeamVisual extends AbstractVisual {
             boolean line,
             int layers,
             float width) {
+        this(context, level, anchor, line, layers, width, false);
+    }
+
+    public BeamVisual(
+            VisualizationContext context,
+            Level level,
+            BlockPos anchor,
+            boolean line,
+            int layers,
+            float width,
+            boolean fogless) {
         super(context, level, 0);
+        this.fogless = fogless;
         this.anchor = anchor.immutable();
         this.line = line;
         this.layers = layers;
@@ -89,7 +118,10 @@ public final class BeamVisual extends AbstractVisual {
                                         ? Transparency.OPAQUE
                                         : Transparency.ORDER_INDEPENDENT_ADDITIVE)
                         .writeMask(WriteMask.COLOR)
-                        .fog(style.line ? FogShaders.LINEAR : EffectVisuals.FADE)
+                        .fog(
+                                style.fogless
+                                        ? FogShaders.NONE
+                                        : style.line ? FogShaders.LINEAR : EffectVisuals.FADE)
                         .build();
         if (style.line) return new SingleMeshModel(lineMesh(style.count, style.width), material);
         assert style.layers > 0;
@@ -211,7 +243,7 @@ public final class BeamVisual extends AbstractVisual {
             int capacity = Math.max(1, Integer.highestOneBit(count - 1) << 1);
             Model wanted =
                     MODELS.computeIfAbsent(
-                            new Style(line, layers, width, capacity), BeamVisual::model);
+                            new Style(line, layers, width, capacity, fogless), BeamVisual::model);
             if (wanted != model) {
                 if (instance != null) instance.delete();
                 model = wanted;
@@ -337,5 +369,5 @@ public final class BeamVisual extends AbstractVisual {
         }
     }
 
-    private record Style(boolean line, int layers, float width, int count) {}
+    private record Style(boolean line, int layers, float width, int count, boolean fogless) {}
 }

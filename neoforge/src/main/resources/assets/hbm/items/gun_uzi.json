@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 215
+            "id": "hbm:weapon_mod_special_skin_saturnite"
           }
         ],
         "parts": [
@@ -27,7 +27,7 @@
         ],
         "requires_mods": [
           {
-            "id": 215
+            "id": "hbm:weapon_mod_special_skin_saturnite"
           }
         ],
         "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
@@ -35,7 +35,7 @@
       {
         "excludes_mods": [
           {
-            "id": 215
+            "id": "hbm:weapon_mod_special_skin_saturnite"
           }
         ],
         "parts": [
@@ -43,7 +43,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       },
@@ -53,10 +53,10 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           },
           {
-            "id": 215
+            "id": "hbm:weapon_mod_special_skin_saturnite"
           }
         ],
         "texture": "hbm:textures/models/weapons/uzi_saturnite.png"
@@ -67,7 +67,7 @@
         "duration": 75,
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "kind": "normal",
@@ -134,7 +134,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       }

@@ -3,7 +3,13 @@
   "key": {
     "B": "hbm:struct_launcher",
     "C": "hbm:circuit_advanced",
-    "E": "hbm:battery_pack_battery_lead",
+    "E": {
+      "fabric:type": "hbm:matchers",
+      "base": "hbm:battery_pack_battery_lead",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
+    },
     "I": "minecraft:iron_bars",
     "S": "hbm:circuit_advanced"
   },

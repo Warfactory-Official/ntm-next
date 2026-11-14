@@ -1,17 +1,47 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.modules.machine;
 
-import com.hbm.api.energymk2.IEnergyHandlerMK2;
+import com.hbm.api.energymk2.EnergyHandler;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.Outputs;
-import com.hbm.items.machine.ItemBlueprints;
-import com.hbm.packet.SyncField;
+import com.hbm.items.machine.BlueprintsItem;
+import com.hbm.packet.SyncBindings;
 import com.hbm.packet.SyncSource;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
@@ -36,17 +66,24 @@ public class ModuleMachineBase implements SyncSource {
     protected final int[] outputSlots;
     protected final FluidTankNTM[] inputTanks;
     protected final FluidTankNTM[] outputTanks;
-    private final @Nullable IEnergyHandlerMK2 battery;
+    private final @Nullable EnergyHandler battery;
 
-    @SyncField protected String recipe = "";
-    @SyncField public double progress;
-    @SyncField public boolean restrictedMode;
+    protected String recipe;
+
+    {
+        hbm$syncSet$ModuleMachineBase$recipe("");
+    }
+
+    public double progress;
+    private double progressError;
+    private double progressExpected;
+    public boolean restrictedMode;
     public boolean didProcess;
     public boolean markDirty;
 
     public ModuleMachineBase(
             int index,
-            @Nullable IEnergyHandlerMK2 battery,
+            @Nullable EnergyHandler battery,
             GenericRecipes<?, ?> recipeSet,
             Container inventory,
             int[] inputSlots,
@@ -108,7 +145,7 @@ public class ModuleMachineBase implements SyncSource {
         }
     }
 
-    protected IEnergyHandlerMK2 battery() {
+    protected EnergyHandler battery() {
         return battery;
     }
 
@@ -125,8 +162,8 @@ public class ModuleMachineBase implements SyncSource {
     }
 
     public void setRecipe(String name, boolean ror) {
-        this.recipe = "null".equals(name) ? "" : name;
-        this.restrictedMode = ror;
+        this.hbm$syncSet$ModuleMachineBase$recipe("null".equals(name) ? "" : name);
+        this.hbm$syncSet$ModuleMachineBase$restrictedMode(ror);
     }
 
     public @Nullable GenericRecipe getRecipe() {
@@ -138,10 +175,10 @@ public class ModuleMachineBase implements SyncSource {
 
         if (selected != null
                 && selected.isPooled()
-                && !selected.isPartOfPool(ItemBlueprints.grabPool(blueprint))) {
+                && !selected.isPartOfPool(BlueprintsItem.grabPool(blueprint))) {
             didProcess = false;
-            progress = 0D;
-            recipe = "";
+            resetProgress();
+            hbm$syncSet$ModuleMachineBase$recipe("");
             markDirty = true;
             return;
         }
@@ -155,8 +192,8 @@ public class ModuleMachineBase implements SyncSource {
         if (match != null) {
             process(match, speed, power);
             didProcess = true;
-        } else if (progress != 0D) {
-            progress = 0D;
+        } else if (progress != 0D || progressError != 0D) {
+            resetProgress();
             markDirty = true;
         }
     }
@@ -172,7 +209,7 @@ public class ModuleMachineBase implements SyncSource {
 
         String switched = autoSwitchTarget(recipe, this.recipe);
         if (switched != null) {
-            this.recipe = switched;
+            this.hbm$syncSet$ModuleMachineBase$recipe(switched);
             markDirty = true;
             return null;
         }
@@ -193,12 +230,41 @@ public class ModuleMachineBase implements SyncSource {
         if (restrictedMode) speed *= 0.25D;
         GenericRecipe recipe = match.recipe;
         battery.setPower(battery.getPower() - consumption(recipe, power));
-        progress += Math.min(speed / recipe.duration, 1D);
+        advanceProgress(Math.min(speed / recipe.duration, 1D));
 
         if (progress >= 1D) {
             craft(match);
-            progress = canProcess(recipe, power) != null ? progress - 1D : 0D;
+            finishProgress(canProcess(recipe, power) != null);
         }
+    }
+
+    protected final void advanceProgress(double step) {
+        if (progress != progressExpected) progressError = 0D;
+        double adjusted = step - progressError;
+        double sum = progress + adjusted;
+        progressError = (sum - progress) - adjusted;
+        hbm$syncSet$ModuleMachineBase$progress(sum);
+        if (progress == Math.nextDown(1D)) {
+            hbm$syncSet$ModuleMachineBase$progress(1D);
+            progressError = 0D;
+        }
+        progressExpected = progress;
+    }
+
+    protected final void finishProgress(boolean continued) {
+        if (!continued) {
+            resetProgress();
+            return;
+        }
+        hbm$syncSet$ModuleMachineBase$progress((double) (progress - (1D)));
+        if (progress == 0D) progressError = 0D;
+        progressExpected = progress;
+    }
+
+    private void resetProgress() {
+        hbm$syncSet$ModuleMachineBase$progress(0D);
+        progressError = 0D;
+        progressExpected = 0D;
     }
 
     public void craft(Match match) {
@@ -365,19 +431,24 @@ public class ModuleMachineBase implements SyncSource {
     }
 
     public void deserialize(ByteBuf buf) {
-        progress = buf.readDouble();
-        restrictedMode = buf.readBoolean();
-        recipe = new FriendlyByteBuf(buf).readUtf();
+        hbm$syncSet$ModuleMachineBase$progress(buf.readDouble());
+        progressError = 0D;
+        progressExpected = progress;
+        hbm$syncSet$ModuleMachineBase$restrictedMode(buf.readBoolean());
+        hbm$syncSet$ModuleMachineBase$recipe(new FriendlyByteBuf(buf).readUtf());
     }
 
     public void save(ValueOutput out) {
         out.putDouble("progress" + index, progress);
+        if (progressError != 0D) out.putDouble("progressError" + index, progressError);
         if (!recipe.isEmpty()) out.putString("recipe" + index, recipe);
         if (restrictedMode) out.putBoolean("restrictedMode" + index, true);
     }
 
     public void load(ValueInput in) {
-        progress = in.getDoubleOr("progress" + index, progress);
+        hbm$syncSet$ModuleMachineBase$progress(in.getDoubleOr("progress" + index, progress));
+        progressError = in.getDoubleOr("progressError" + index, 0D);
+        progressExpected = progress;
         setRecipe(
                 in.getStringOr("recipe" + index, recipe),
                 in.getBooleanOr("restrictedMode" + index, false));
@@ -394,5 +465,80 @@ public class ModuleMachineBase implements SyncSource {
             this.debitSlot = debitSlot;
             this.debitCount = debitCount;
         }
+    }
+
+    public final void hbm$syncSet$ModuleMachineBase$recipe(String next) {
+        if (this.recipe != next) {
+            boolean changed = !java.util.Objects.equals(this.recipe, next);
+            this.recipe = next;
+            if (changed)
+                if ((0L) == 0L) syncChanged(3);
+                else syncUnitsChanged(3, 0L);
+        }
+    }
+
+    public final void hbm$syncSet$ModuleMachineBase$progress(double next) {
+        if (Double.doubleToRawLongBits(this.progress) != Double.doubleToRawLongBits(next)) {
+            this.progress = next;
+            if ((0L) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 0L);
+        }
+    }
+
+    public final void hbm$syncSet$ModuleMachineBase$restrictedMode(boolean next) {
+        if (this.restrictedMode != next) {
+            this.restrictedMode = next;
+            if ((0L) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 0L);
+        }
+    }
+
+    static {
+        com.hbm.packet.SyncBindings.field(ModuleMachineBase.class, "recipe", 3, 0L);
+    }
+
+    private SyncSource hbm$syncOwner;
+
+    private int hbm$syncMask;
+
+    private int hbm$syncBindings;
+
+    private long hbm$syncUnits;
+
+    public final boolean syncBound() {
+        return hbm$syncOwner != null;
+    }
+
+    public final void syncChanged(int mask) {
+        if (hbm$syncOwner == null) return;
+        if (hbm$syncUnits == 0) hbm$syncOwner.syncChanged(hbm$syncMask);
+        else hbm$syncOwner.syncUnitsChanged(hbm$syncMask, hbm$syncUnits);
+    }
+
+    public final void syncUnitsChanged(int mask, long units) {
+        syncChanged(mask);
+    }
+
+    public final void bindSync(SyncSource owner, int mask) {
+        bindSyncUnits(owner, mask, 0);
+    }
+
+    public final void bindSyncUnits(SyncSource owner, int mask, long units) {
+        if (hbm$syncOwner != null && hbm$syncOwner != owner) {
+            throw new IllegalStateException("Mutable sync state has two owners");
+        }
+        hbm$syncOwner = owner;
+        hbm$syncMask |= mask;
+        hbm$syncUnits |= units;
+        if (hbm$syncBindings++ == 0) SyncBindings.bindFields(this, owner);
+    }
+
+    public final void unbindSync(SyncSource owner) {
+        assert hbm$syncOwner == owner;
+        if (--hbm$syncBindings != 0) return;
+        SyncBindings.unbindFields(this, owner);
+        hbm$syncOwner = null;
+        hbm$syncMask = 0;
+        hbm$syncUnits = 0;
     }
 }

@@ -1,26 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.machine;
 
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import com.hbm.compat.computercraft.SteamTypes;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import dan200.computercraft.api.lua.LuaFunction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public abstract class TurbinePeripheral<BE extends BlockEntity> extends SnapshotPeripheral<BE> {
+public abstract class TurbinePeripheral<BE extends BlockEntity> extends BlockEntityPeripheral<BE> {
 
-    protected static final int IN_FILL = 0;
-    protected static final int IN_MAX = 1;
-    protected static final int OUT_FILL = 2;
-    protected static final int OUT_MAX = 3;
-    protected static final int STEAM = 4;
-    protected static final int POWER = 5;
-    protected static final int SLOTS = 6;
-
-    protected TurbinePeripheral(BE machine, int longs) {
-        super(machine, "ntm_turbine", longs, 0);
+    protected TurbinePeripheral(BE machine) {
+        super(machine, "ntm_turbine");
     }
 
     protected abstract FluidTankNTM input(BE machine);
@@ -29,32 +37,23 @@ public abstract class TurbinePeripheral<BE extends BlockEntity> extends Snapshot
 
     protected abstract long power(BE machine);
 
-    @Override
-    protected void capture(BE machine) {
-        put(IN_FILL, input(machine).getFill());
-        put(IN_MAX, input(machine).getMaxFill());
-        put(OUT_FILL, output(machine).getFill());
-        put(OUT_MAX, output(machine).getMaxFill());
-        put(STEAM, SteamTypes.toInt(input(machine).getTankType()));
-        put(POWER, power(machine));
-    }
-
     @LuaFunction
     public final Object[] getFluid() {
-        return read(
-                s ->
-                        new Object[] {
-                            s.intAt(IN_FILL), s.intAt(IN_MAX), s.intAt(OUT_FILL), s.intAt(OUT_MAX)
-                        });
+        return new Object[] {
+            (int) input(target).getFill(),
+            (int) input(target).getMaxFill(),
+            (int) output(target).getFill(),
+            (int) output(target).getMaxFill()
+        };
     }
 
     @LuaFunction("getType")
     public final Object[] steamType() {
-        return read(s -> new Object[] {s.intAt(STEAM)});
+        return new Object[] {(int) SteamTypes.toInt(input(target).getTankType())};
     }
 
     @LuaFunction
     public final Object[] getPower() {
-        return read(s -> new Object[] {s.longAt(POWER)});
+        return new Object[] {(long) power(target)};
     }
 }

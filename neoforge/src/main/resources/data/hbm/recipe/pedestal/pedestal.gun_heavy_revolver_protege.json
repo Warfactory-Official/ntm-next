@@ -16,7 +16,10 @@
       "ingredient": "hbm:scrap_nuclear"
     },
     "E": {
-      "ingredient": "hbm:gun_heavy_revolver"
+      "ingredient": "hbm:gun_heavy_revolver",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "F": {
       "ingredient": "hbm:scrap_nuclear"

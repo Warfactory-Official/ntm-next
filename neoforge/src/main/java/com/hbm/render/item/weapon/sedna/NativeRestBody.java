@@ -1,11 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.item.weapon.sedna;
 
 import com.hbm.client.render.FlatCutout;
 import com.hbm.client.render.WeaponRenderTypes;
 import com.hbm.main.ResourceManager;
+import com.hbm.render.item.weapon.sedna.WeaponItemRenderer;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.loader.UnitQuad;
 import com.hbm.util.GameTime;
@@ -20,15 +37,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Quaternionfc;
 import org.joml.Vector3fc;
 
-final class NativeRestBody implements RestBody {
+public final class NativeRestBody implements RestBody {
     private final PoseStack pose;
     private final SubmitNodeCollector collector;
     private final int light;
     private final PoseStack.Pose scratch = new PoseStack.Pose();
 
-    NativeRestBody(PoseStack pose, SubmitNodeCollector collector, int light) {
+    public NativeRestBody(PoseStack pose, SubmitNodeCollector collector, int light) {
         this.pose = pose;
         this.collector = collector;
         this.light = light;
@@ -44,13 +62,13 @@ final class NativeRestBody implements RestBody {
             boolean fullBright) {
         pose.pushPose();
         pose.mulPose(at);
-        ItemRenderWeaponBase.submitPart(
+        WeaponItemRenderer.submitPart(
                 collector,
                 pose,
                 RenderTypes.entityCutout(texture),
                 model,
                 part,
-                fullBright ? ItemRenderWeaponBase.FULL_BRIGHT : light,
+                fullBright ? WeaponItemRenderer.FULL_BRIGHT : light,
                 color);
         pose.popPose();
     }
@@ -72,7 +90,7 @@ final class NativeRestBody implements RestBody {
         pose.pushPose();
         pose.mulPose(at);
         for (int layer = 0; layer < 3; layer++) {
-            ItemRenderWeaponBase.submitPart(
+            WeaponItemRenderer.submitPart(
                     collector,
                     pose,
                     WeaponRenderTypes.balefireGlint(ResourceManager.glint_bf_tex, layer),
@@ -98,7 +116,7 @@ final class NativeRestBody implements RestBody {
                 Component.literal(text).getVisualOrderText(),
                 false,
                 Font.DisplayMode.NORMAL,
-                ItemRenderWeaponBase.FULL_BRIGHT,
+                WeaponItemRenderer.FULL_BRIGHT,
                 color,
                 0,
                 0);
@@ -109,7 +127,9 @@ final class NativeRestBody implements RestBody {
     public void spinZ(Matrix4fc pivot, double msPerDegree, Consumer<RestBody> turned) {
         pose.pushPose();
         pose.mulPose(pivot);
-        pose.mulPose(Axis.ZP.rotationDegrees((float) (GameTime.now() / msPerDegree % 360D)));
+        pose.mulPose(
+                (Quaternionfc)
+                        Axis.ZP.rotationDegrees((float) (GameTime.now() / msPerDegree % 360D)));
         turned.accept(this);
         pose.popPose();
     }

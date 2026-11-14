@@ -1,175 +1,175 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft;
 
-import com.hbm.api.redstoneoverradio.IRORInteractive;
-import com.hbm.blockentity.bomb.BlockEntityLaunchPad;
-import com.hbm.blockentity.bomb.BlockEntityLaunchPadLarge;
-import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
-import com.hbm.blockentity.machine.BlockEntityChungus;
-import com.hbm.blockentity.machine.BlockEntityCoreEmitter;
-import com.hbm.blockentity.machine.BlockEntityCoreInjector;
-import com.hbm.blockentity.machine.BlockEntityCoreReceiver;
-import com.hbm.blockentity.machine.BlockEntityCoreStabilizer;
-import com.hbm.blockentity.machine.BlockEntityGeiger;
-import com.hbm.blockentity.machine.BlockEntityICF;
-import com.hbm.blockentity.machine.BlockEntityMachineCombustionEngine;
-import com.hbm.blockentity.machine.BlockEntityMachineIndustrialTurbine;
-import com.hbm.blockentity.machine.BlockEntityMachineLargeTurbine;
-import com.hbm.blockentity.machine.BlockEntityMachinePWRController;
-import com.hbm.blockentity.machine.BlockEntityMachineRadar;
-import com.hbm.blockentity.machine.BlockEntityMachineRadarLarge;
-import com.hbm.blockentity.machine.BlockEntityMachineReactorBreeding;
-import com.hbm.blockentity.machine.BlockEntityMachineSatLink;
-import com.hbm.blockentity.machine.BlockEntityMachineTurbine;
-import com.hbm.blockentity.machine.BlockEntityMachineTurbineGas;
-import com.hbm.blockentity.machine.BlockEntityMicrowave;
-import com.hbm.blockentity.machine.BlockEntityReactorControl;
-import com.hbm.blockentity.machine.BlockEntityReactorResearch;
-import com.hbm.blockentity.machine.BlockEntityReactorZirnox;
-import com.hbm.blockentity.machine.BlockEntityWatz;
-import com.hbm.blockentity.machine.albion.BlockEntityPADetector;
-import com.hbm.blockentity.machine.albion.BlockEntityPADipole;
-import com.hbm.blockentity.machine.albion.BlockEntityPAQuadrupole;
-import com.hbm.blockentity.machine.albion.BlockEntityPARFC;
-import com.hbm.blockentity.machine.albion.BlockEntityPASource;
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionBoiler;
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionBreeder;
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionKlystron;
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionMHDT;
-import com.hbm.blockentity.machine.fusion.BlockEntityFusionTorus;
-import com.hbm.blockentity.machine.oil.BlockEntityMachineCoker;
-import com.hbm.blockentity.machine.pile.BlockEntityPileControl;
-import com.hbm.blockentity.machine.pile.BlockEntityPileLoader;
-import com.hbm.blockentity.machine.rbmk.BlockEntityCraneConsole;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKBoiler;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKConsole;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlAuto;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKControlManual;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKCooler;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGauge;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKGraph;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKHeater;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKIndicator;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKKeyPad;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKLever;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKNumitron;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKOutgasser;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRod;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKRodReaSim;
-import com.hbm.blockentity.machine.rbmk.BlockEntityRBMKTerminal;
-import com.hbm.blockentity.machine.storage.BlockEntityBarrel;
-import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
-import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
-import com.hbm.blockentity.machine.storage.BlockEntityMachineBattery;
-import com.hbm.blockentity.machine.storage.BlockEntityMachineBigAssTank;
-import com.hbm.blockentity.machine.storage.BlockEntityMachineCapacitor;
-import com.hbm.blockentity.machine.storage.BlockEntityMachineFENSU;
-import com.hbm.blockentity.machine.storage.BlockEntityMachineFluidTank;
-import com.hbm.blockentity.machine.storage.BlockEntityMachineOrbus;
-import com.hbm.blockentity.machine.storage.BlockEntityMassStorage;
-import com.hbm.blockentity.network.BlockEntityCableGauge;
-import com.hbm.blockentity.network.BlockEntityFluidCounterValve;
-import com.hbm.blockentity.network.BlockEntityFluidPump;
-import com.hbm.blockentity.network.BlockEntityPipeGauge;
-import com.hbm.blockentity.network.BlockEntityRadioAUTOCAL;
-import com.hbm.blockentity.network.BlockEntityRadioTelex;
-import com.hbm.blockentity.network.BlockEntityRadioTorchController;
-import com.hbm.blockentity.network.BlockEntityRadioTorchReader;
-import com.hbm.blockentity.network.BlockEntityRadioTorchReceiver;
-import com.hbm.blockentity.network.BlockEntityRadioTorchSender;
-import com.hbm.blockentity.turret.BlockEntityTurretArty;
-import com.hbm.blockentity.turret.BlockEntityTurretChekhov;
-import com.hbm.blockentity.turret.BlockEntityTurretFriendly;
-import com.hbm.blockentity.turret.BlockEntityTurretFritz;
-import com.hbm.blockentity.turret.BlockEntityTurretHIMARS;
-import com.hbm.blockentity.turret.BlockEntityTurretHoward;
-import com.hbm.blockentity.turret.BlockEntityTurretHowardDamaged;
-import com.hbm.blockentity.turret.BlockEntityTurretJeremy;
-import com.hbm.blockentity.turret.BlockEntityTurretMaxwell;
-import com.hbm.blockentity.turret.BlockEntityTurretRichard;
-import com.hbm.blockentity.turret.BlockEntityTurretSentry;
-import com.hbm.blockentity.turret.BlockEntityTurretSentryDamaged;
-import com.hbm.blockentity.turret.BlockEntityTurretTauon;
+import com.hbm.api.redstoneoverradio.RadioControlHandler;
+import com.hbm.blockentity.bomb.LaunchPadBlockEntity;
+import com.hbm.blockentity.machine.*;
+import com.hbm.blockentity.machine.*;
+import com.hbm.blockentity.machine.albion.PADetectorBlockEntity;
+import com.hbm.blockentity.machine.albion.PADipoleBlockEntity;
+import com.hbm.blockentity.machine.albion.PAQuadrupoleBlockEntity;
+import com.hbm.blockentity.machine.albion.PASourceBlockEntity;
+import com.hbm.blockentity.machine.albion.RFCavityBlockEntity;
+import com.hbm.blockentity.machine.dfc.*;
+import com.hbm.blockentity.machine.fusion.FusionBoilerBlockEntity;
+import com.hbm.blockentity.machine.fusion.FusionKlystronBlockEntity;
+import com.hbm.blockentity.machine.fusion.FusionMHDTBlockEntity;
+import com.hbm.blockentity.machine.fusion.FusionNeutronBlockEntity;
+import com.hbm.blockentity.machine.fusion.FusionTorusBlockEntity;
+import com.hbm.blockentity.machine.oil.CokerBlockEntity;
+import com.hbm.blockentity.machine.pile.PileControlBlockEntity;
+import com.hbm.blockentity.machine.pile.PileLoaderBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKBoilerBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKConsoleBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKControlAutoBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKCoolerBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKCraneConsoleBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKGaugeBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKGraphBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKHeaterBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKIndicatorBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKIrradiationColumnBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKKeyPadBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKLeverBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKManualControlBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKNumitronBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKRodBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKRodReaSimBlockEntity;
+import com.hbm.blockentity.machine.rbmk.RBMKTerminalBlockEntity;
+import com.hbm.blockentity.machine.reactor.ReactorControlBlockEntity;
+import com.hbm.blockentity.machine.reactor.ResearchReactorBlockEntity;
+import com.hbm.blockentity.machine.storage.BatteryBlockEntity;
+import com.hbm.blockentity.machine.storage.BigAssTankBlockEntity;
+import com.hbm.blockentity.machine.storage.CapacitorBlockEntity;
+import com.hbm.blockentity.machine.storage.FensuBlockEntity;
+import com.hbm.blockentity.machine.storage.FluidBarrelBlockEntity;
+import com.hbm.blockentity.machine.storage.FluidTankBlockEntity;
+import com.hbm.blockentity.machine.storage.MassStorageBlockEntity;
+import com.hbm.blockentity.machine.storage.OrbusBlockEntity;
+import com.hbm.blockentity.machine.storage.ReddBlockEntity;
+import com.hbm.blockentity.machine.storage.SocketBlockEntity;
+import com.hbm.blockentity.machine.thermal.CompactTurbineBlockEntity;
+import com.hbm.blockentity.machine.thermal.IronFurnaceBlockEntity;
+import com.hbm.blockentity.machine.thermal.LeviathanTurbineBlockEntity;
+import com.hbm.blockentity.machine.thermal.SteelFurnaceBlockEntity;
+import com.hbm.blockentity.network.CableGaugeBlockEntity;
+import com.hbm.blockentity.network.FluidCounterValveBlockEntity;
+import com.hbm.blockentity.network.FluidPumpBlockEntity;
+import com.hbm.blockentity.network.PipeGaugeBlockEntity;
+import com.hbm.blockentity.network.RadioAutocalBlockEntity;
+import com.hbm.blockentity.network.RadioReaderBlockEntity;
+import com.hbm.blockentity.network.RadioTelexBlockEntity;
+import com.hbm.blockentity.network.RadioTorchControllerBlockEntity;
+import com.hbm.blockentity.network.RadioTorchReceiverBlockEntity;
+import com.hbm.blockentity.network.RadioTorchSenderBlockEntity;
+import com.hbm.blockentity.ordnance.launch.LaunchTableBlockEntity;
+import com.hbm.blockentity.ordnance.launch.MissileErectorBlockEntity;
+import com.hbm.blockentity.turret.TurretArtyBlockEntity;
+import com.hbm.blockentity.turret.TurretChekhovBlockEntity;
+import com.hbm.blockentity.turret.TurretFriendlyBlockEntity;
+import com.hbm.blockentity.turret.TurretFritzBlockEntity;
+import com.hbm.blockentity.turret.TurretHIMARSBlockEntity;
+import com.hbm.blockentity.turret.TurretHowardBlockEntity;
+import com.hbm.blockentity.turret.TurretHowardDamagedBlockEntity;
+import com.hbm.blockentity.turret.TurretJeremyBlockEntity;
+import com.hbm.blockentity.turret.TurretMaxwellBlockEntity;
+import com.hbm.blockentity.turret.TurretRichardBlockEntity;
+import com.hbm.blockentity.turret.TurretSentryBlockEntity;
+import com.hbm.blockentity.turret.TurretSentryDamagedBlockEntity;
+import com.hbm.blockentity.turret.TurretTauonBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.machine.rbmk.RBMKBase;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.machine.rbmk.RBMKBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.capability.NtmContracts.OwnerLookup;
-import com.hbm.compat.computercraft.albion.PADetectorPeripheral;
-import com.hbm.compat.computercraft.albion.PADipolePeripheral;
+import com.hbm.compat.computercraft.albion.AcceleratorDetectorPeripheral;
+import com.hbm.compat.computercraft.albion.AcceleratorDipolePeripheral;
+import com.hbm.compat.computercraft.albion.AcceleratorSourcePeripheral;
 import com.hbm.compat.computercraft.albion.PAQuadrupolePeripheral;
 import com.hbm.compat.computercraft.albion.PARFCPeripheral;
-import com.hbm.compat.computercraft.albion.PASourcePeripheral;
-import com.hbm.compat.computercraft.bomb.LaunchPadPeripheral;
-import com.hbm.compat.computercraft.bomb.LaunchTablePeripheral;
+import com.hbm.compat.computercraft.bomb.CustomMissileLauncherPeripheral;
+import com.hbm.compat.computercraft.bomb.MissileLauncherPeripheral;
 import com.hbm.compat.computercraft.fusion.FusionBoilerPeripheral;
 import com.hbm.compat.computercraft.fusion.FusionBreederPeripheral;
 import com.hbm.compat.computercraft.fusion.FusionKlystronPeripheral;
 import com.hbm.compat.computercraft.fusion.FusionMHDTPeripheral;
-import com.hbm.compat.computercraft.fusion.FusionTorusPeripheral;
+import com.hbm.compat.computercraft.fusion.FusionReactorPeripheral;
 import com.hbm.compat.computercraft.machine.BreedingReactorPeripheral;
 import com.hbm.compat.computercraft.machine.ChungusPeripheral;
 import com.hbm.compat.computercraft.machine.CokerPeripheral;
-import com.hbm.compat.computercraft.machine.CombustionEnginePeripheral;
+import com.hbm.compat.computercraft.machine.CombustionGeneratorPeripheral;
 import com.hbm.compat.computercraft.machine.CoreEmitterPeripheral;
 import com.hbm.compat.computercraft.machine.CoreInjectorPeripheral;
 import com.hbm.compat.computercraft.machine.CoreReceiverPeripheral;
 import com.hbm.compat.computercraft.machine.CoreStabilizerPeripheral;
-import com.hbm.compat.computercraft.machine.GasTurbinePeripheral;
+import com.hbm.compat.computercraft.machine.ForceFieldPeripheral;
+import com.hbm.compat.computercraft.machine.GasTurbineGeneratorPeripheral;
 import com.hbm.compat.computercraft.machine.GeigerPeripheral;
 import com.hbm.compat.computercraft.machine.ICFPeripheral;
 import com.hbm.compat.computercraft.machine.IndustrialTurbinePeripheral;
 import com.hbm.compat.computercraft.machine.LargeTurbinePeripheral;
 import com.hbm.compat.computercraft.machine.MicrowavePeripheral;
-import com.hbm.compat.computercraft.machine.PWRControllerPeripheral;
 import com.hbm.compat.computercraft.machine.PileControlPeripheral;
 import com.hbm.compat.computercraft.machine.PileLoaderPeripheral;
+import com.hbm.compat.computercraft.machine.PressurizedReactorPeripheral;
 import com.hbm.compat.computercraft.machine.RadarPeripheral;
-import com.hbm.compat.computercraft.machine.ReactorControlPeripheral;
+import com.hbm.compat.computercraft.machine.ResearchReactorControlPeripheral;
 import com.hbm.compat.computercraft.machine.ResearchReactorPeripheral;
 import com.hbm.compat.computercraft.machine.SatLinkPeripheral;
 import com.hbm.compat.computercraft.machine.SmallTurbinePeripheral;
-import com.hbm.compat.computercraft.machine.WatzPeripheral;
-import com.hbm.compat.computercraft.machine.ZirnoxPeripheral;
+import com.hbm.compat.computercraft.machine.WatzReactorPeripheral;
+import com.hbm.compat.computercraft.machine.ZirnoxReactorPeripheral;
+import com.hbm.compat.computercraft.network.AutocalControllerPeripheral;
 import com.hbm.compat.computercraft.network.CableGaugePeripheral;
-import com.hbm.compat.computercraft.network.FluidCounterValvePeripheral;
-import com.hbm.compat.computercraft.network.FluidPumpPeripheral;
+import com.hbm.compat.computercraft.network.CountingValvePeripheral;
 import com.hbm.compat.computercraft.network.PipeGaugePeripheral;
-import com.hbm.compat.computercraft.network.RadioAutocalPeripheral;
+import com.hbm.compat.computercraft.network.PumpPeripheral;
 import com.hbm.compat.computercraft.network.RadioControllerPeripheral;
-import com.hbm.compat.computercraft.network.RadioReaderPeripheral;
-import com.hbm.compat.computercraft.network.RadioTelexPeripheral;
-import com.hbm.compat.computercraft.network.RadioTorchPeripheral;
+import com.hbm.compat.computercraft.network.RadioSignalTorchPeripheral;
+import com.hbm.compat.computercraft.network.RadioValueReaderPeripheral;
+import com.hbm.compat.computercraft.network.TelexPeripheral;
 import com.hbm.compat.computercraft.rbmk.CraneConsolePeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKBoilerPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKConsolePeripheral;
+import com.hbm.compat.computercraft.rbmk.RBMKBoilerColumnPeripheral;
 import com.hbm.compat.computercraft.rbmk.RBMKControlManualPeripheral;
 import com.hbm.compat.computercraft.rbmk.RBMKControlPeripheral;
+import com.hbm.compat.computercraft.rbmk.RBMKControlRoomPeripheral;
 import com.hbm.compat.computercraft.rbmk.RBMKCoolerPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKGaugePeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKGraphPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKHeaterPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKIndicatorPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKKeyPadPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKLeverPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKNumitronPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKOutgasserPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKRodPeripheral;
-import com.hbm.compat.computercraft.rbmk.RBMKTerminalPeripheral;
+import com.hbm.compat.computercraft.rbmk.RBMKFuelColumnPeripheral;
+import com.hbm.compat.computercraft.rbmk.RBMKHeaterColumnPeripheral;
+import com.hbm.compat.computercraft.rbmk.RBMKOutgasserColumnPeripheral;
+import com.hbm.compat.computercraft.rbmk.RBMKPanels;
+import com.hbm.compat.computercraft.rbmk.RBMKTerminalScreenPeripheral;
 import com.hbm.compat.computercraft.storage.BarrelPeripheral;
 import com.hbm.compat.computercraft.storage.BatteryREDDPeripheral;
 import com.hbm.compat.computercraft.storage.BatterySocketPeripheral;
-import com.hbm.compat.computercraft.storage.CapacitorPeripheral;
+import com.hbm.compat.computercraft.storage.CapacitorFlowPeripheral;
 import com.hbm.compat.computercraft.storage.MachineBatteryPeripheral;
 import com.hbm.compat.computercraft.storage.MachineFluidTankPeripheral;
 import com.hbm.compat.computercraft.storage.MassStoragePeripheral;
 import com.hbm.compat.computercraft.turret.ArtyPeripheral;
 import com.hbm.compat.computercraft.turret.HimarsPeripheral;
-import com.hbm.compat.computercraft.turret.TurretPeripheral;
-import com.hbm.platform.NeoForgeCaps;
-import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.compat.computercraft.turret.TurretControlPeripheral;
+import com.hbm.neoforge.compat.computercraft.machine.SmeltingFurnacePeripheral;
+import com.hbm.platform.Caps;
+import com.hbm.platform.ServerEvents;
 import com.hbm.registration.RegistryHandle;
 import dan200.computercraft.api.peripheral.IPeripheral;
 import dan200.computercraft.api.peripheral.PeripheralCapability;
@@ -177,6 +177,7 @@ import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -194,13 +195,13 @@ final class Peripherals {
 
     private static final BlockCapability<IPeripheral, Direction> TOKEN = PeripheralCapability.get();
 
-    private static final Map<BlockEntity, SnapshotPeripheral<?>> BY_MACHINE =
+    private static final Map<BlockEntity, BlockEntityPeripheral<?>> BY_MACHINE =
             new IdentityHashMap<>();
-    private static final ArrayList<SnapshotPeripheral<?>> LIVE = new ArrayList<>();
+    private static final ArrayList<BlockEntityPeripheral<?>> LIVE = new ArrayList<>();
 
     record Row<BE extends BlockEntity>(
             Class<BE> type,
-            Function<? super BE, ? extends SnapshotPeripheral<?>> factory,
+            Function<? super BE, ? extends BlockEntityPeripheral<?>> factory,
             @Nullable OwnerLookup proxies,
             @Nullable Predicate<Direction> faces,
             List<RegistryHandle<? extends Block>> blocks) {}
@@ -212,405 +213,398 @@ final class Peripherals {
                             level,
                             pos,
                             state,
-                            BlockMultiblockCore.PASSIVE_POWER_IN
-                                    | BlockMultiblockCore.PASSIVE_FLUID_IN);
+                            MultiblockCoreBlock.PASSIVE_POWER_IN
+                                    | MultiblockCoreBlock.PASSIVE_FLUID_IN);
     private static final OwnerLookup RBMK_TOP =
             (level, pos, state) ->
-                    state.hasProperty(RBMKBase.PART)
-                                    && state.getValue(RBMKBase.PART) == RBMKBase.Part.TOP
+                    state.hasProperty(RBMKBlock.PART)
+                                    && state.getValue(RBMKBlock.PART) == RBMKBlock.Part.TOP
                             ? MultiblockSurface.coreOfFoldedCell(level, pos, state)
                             : null;
     private static final Predicate<Direction> DOWN = side -> side == Direction.DOWN;
 
     static final List<Row<?>> ROWS =
             List.of(
+                    proxied(
+                            IronFurnaceBlockEntity.class,
+                            SmeltingFurnacePeripheral<IronFurnaceBlockEntity>::new,
+                            MultiblockSurface::coreOfFoldedCell,
+                            ModBlocks.FURNACE_IRON),
+                    proxied(
+                            SteelFurnaceBlockEntity.class,
+                            SmeltingFurnacePeripheral<SteelFurnaceBlockEntity>::new,
+                            MultiblockSurface::coreOfFoldedCell,
+                            ModBlocks.FURNACE_STEEL),
                     block(
-                            BlockEntityPileLoader.class,
+                            PileLoaderBlockEntity.class,
                             PileLoaderPeripheral::new,
                             ModBlocks.PILE_LOADER),
                     block(
-                            BlockEntityPileControl.class,
+                            PileControlBlockEntity.class,
                             PileControlPeripheral::new,
                             ModBlocks.PILE_CONTROL),
                     block(
-                            BlockEntityMachinePWRController.class,
-                            PWRControllerPeripheral::new,
+                            PWRControllerBlockEntity.class,
+                            PressurizedReactorPeripheral::new,
                             ModBlocks.PWR_CONTROLLER),
                     block(
-                            BlockEntityMachineTurbine.class,
+                            CompactTurbineBlockEntity.class,
                             SmallTurbinePeripheral::new,
                             ModBlocks.MACHINE_TURBINE),
                     proxied(
-                            BlockEntityMachineLargeTurbine.class,
+                            LargeTurbineBlockEntity.class,
                             LargeTurbinePeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_LARGE_TURBINE),
                     proxied(
-                            BlockEntityChungus.class,
+                            LeviathanTurbineBlockEntity.class,
                             ChungusPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_CHUNGUS),
                     proxied(
-                            BlockEntityMachineIndustrialTurbine.class,
+                            IndustrialTurbineBlockEntity.class,
                             IndustrialTurbinePeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_INDUSTRIAL_TURBINE),
                     proxied(
-                            BlockEntityMachineTurbineGas.class,
-                            GasTurbinePeripheral::new,
+                            TurbineGasBlockEntity.class,
+                            GasTurbineGeneratorPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_TURBINEGAS),
                     block(
-                            BlockEntityBarrel.class,
+                            FluidBarrelBlockEntity.class,
                             BarrelPeripheral::new,
                             ModBlocks.BARREL_PLASTIC,
                             ModBlocks.BARREL_STEEL,
                             ModBlocks.BARREL_TCALLOY,
                             ModBlocks.BARREL_ANTIMATTER),
                     proxied(
-                            BlockEntityMachineFluidTank.class,
+                            FluidTankBlockEntity.class,
                             MachineFluidTankPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_FLUID_TANK),
                     proxied(
-                            BlockEntityMachineOrbus.class,
+                            OrbusBlockEntity.class,
                             BarrelPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_ORBUS),
                     proxied(
-                            BlockEntityMachineBigAssTank.class,
+                            BigAssTankBlockEntity.class,
                             BarrelPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_BIGASSTANK),
                     block(
-                            BlockEntityMachineBattery.class,
+                            BatteryBlockEntity.class,
                             MachineBatteryPeripheral::new,
                             ModBlocks.MACHINE_BATTERY),
                     block(
-                            BlockEntityMassStorage.class,
+                            MassStorageBlockEntity.class,
                             MassStoragePeripheral::new,
                             ModBlocks.MASS_STORAGE_WOOD,
                             ModBlocks.MASS_STORAGE_IRON,
                             ModBlocks.MASS_STORAGE_DESH,
                             ModBlocks.MASS_STORAGE_TCALLOY),
                     block(
-                            BlockEntityMachineFENSU.class,
+                            FensuBlockEntity.class,
                             MachineBatteryPeripheral::new,
                             ModBlocks.MACHINE_FENSU),
                     proxied(
-                            BlockEntityBatterySocket.class,
+                            SocketBlockEntity.class,
                             BatterySocketPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_BATTERY_SOCKET),
                     proxied(
-                            BlockEntityBatteryREDD.class,
+                            ReddBlockEntity.class,
                             BatteryREDDPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_BATTERY_REDD),
                     block(
-                            BlockEntityMachineCapacitor.class,
-                            CapacitorPeripheral::new,
+                            CapacitorBlockEntity.class,
+                            CapacitorFlowPeripheral::new,
                             ModBlocks.CAPACITOR_COPPER),
                     block(
-                            BlockEntityCableGauge.class,
+                            CableGaugeBlockEntity.class,
                             CableGaugePeripheral::new,
                             ModBlocks.RED_CABLE_GAUGE),
                     block(
-                            BlockEntityPipeGauge.class,
+                            PipeGaugeBlockEntity.class,
                             PipeGaugePeripheral::new,
                             ModBlocks.FLUID_DUCT_GAUGE),
+                    block(FluidPumpBlockEntity.class, PumpPeripheral::new, ModBlocks.FLUID_PUMP),
                     block(
-                            BlockEntityFluidPump.class,
-                            FluidPumpPeripheral::new,
-                            ModBlocks.FLUID_PUMP),
-                    block(
-                            BlockEntityFluidCounterValve.class,
-                            FluidCounterValvePeripheral::new,
+                            FluidCounterValveBlockEntity.class,
+                            CountingValvePeripheral::new,
                             ModBlocks.FLUID_COUNTER_VALVE),
+                    block(RadioTelexBlockEntity.class, TelexPeripheral::new, ModBlocks.RADIO_TELEX),
                     block(
-                            BlockEntityRadioTelex.class,
-                            RadioTelexPeripheral::new,
-                            ModBlocks.RADIO_TELEX),
-                    block(
-                            BlockEntityRadioTorchSender.class,
-                            RadioTorchPeripheral::new,
+                            RadioTorchSenderBlockEntity.class,
+                            RadioSignalTorchPeripheral::new,
                             ModBlocks.RADIO_TORCH_SENDER),
                     block(
-                            BlockEntityRadioTorchReceiver.class,
-                            RadioTorchPeripheral::new,
+                            RadioTorchReceiverBlockEntity.class,
+                            RadioSignalTorchPeripheral::new,
                             ModBlocks.RADIO_TORCH_RECEIVER),
                     block(
-                            BlockEntityRadioTorchController.class,
+                            RadioTorchControllerBlockEntity.class,
                             RadioControllerPeripheral::new,
                             ModBlocks.RADIO_TORCH_CONTROLLER),
                     block(
-                            BlockEntityRadioTorchReader.class,
-                            RadioReaderPeripheral::new,
+                            RadioReaderBlockEntity.class,
+                            RadioValueReaderPeripheral::new,
                             ModBlocks.RADIO_TORCH_READER),
                     block(
-                            BlockEntityRadioAUTOCAL.class,
-                            RadioAutocalPeripheral::new,
+                            RadioAutocalBlockEntity.class,
+                            AutocalControllerPeripheral::new,
                             ModBlocks.RADIO_AUTOCAL),
                     block(
-                            BlockEntityCoreEmitter.class,
+                            DfcEmitterBlockEntity.class,
                             CoreEmitterPeripheral::new,
                             ModBlocks.DFC_EMITTER),
                     block(
-                            BlockEntityCoreReceiver.class,
+                            DfcReceiverBlockEntity.class,
                             CoreReceiverPeripheral::new,
                             ModBlocks.DFC_RECEIVER),
                     block(
-                            BlockEntityCoreInjector.class,
+                            DfcInjectorBlockEntity.class,
                             CoreInjectorPeripheral::new,
                             ModBlocks.DFC_INJECTOR),
                     block(
-                            BlockEntityCoreStabilizer.class,
+                            DfcStabilizerBlockEntity.class,
                             CoreStabilizerPeripheral::new,
                             ModBlocks.DFC_STABILIZER),
-                    block(BlockEntityGeiger.class, GeigerPeripheral::new, ModBlocks.GEIGER),
+                    block(GeigerBlockEntity.class, GeigerPeripheral::new, ModBlocks.GEIGER),
                     proxied(
-                            BlockEntityICF.class,
+                            ICFBlockEntity.class,
                             ICFPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_ICF),
                     proxied(
-                            BlockEntityMachineCombustionEngine.class,
-                            CombustionEnginePeripheral::new,
+                            CombustionEngineBlockEntity.class,
+                            CombustionGeneratorPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_COMBUSTION_ENGINE),
                     block(
-                            BlockEntityMachineReactorBreeding.class,
+                            ReactorBreedingBlockEntity.class,
                             BreedingReactorPeripheral::new,
                             ModBlocks.MACHINE_REACTOR_BREEDING),
-                    block(
-                            BlockEntityMachineRadar.class,
-                            RadarPeripheral::new,
-                            ModBlocks.MACHINE_RADAR),
+                    block(RadarBlockEntity.class, RadarPeripheral::new, ModBlocks.MACHINE_RADAR),
                     proxied(
-                            BlockEntityMachineRadarLarge.class,
+                            RadarLargeBlockEntity.class,
                             RadarPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_RADAR_LARGE),
                     proxied(
-                            BlockEntityMachineSatLink.class,
+                            SatelliteLinkerBlockEntity.class,
                             SatLinkPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_SATLINK),
                     block(
-                            BlockEntityMicrowave.class,
+                            RepulsionFieldBlockEntity.class,
+                            ForceFieldPeripheral::new,
+                            ModBlocks.MACHINE_FORCEFIELD),
+                    block(
+                            MicrowaveBlockEntity.class,
                             MicrowavePeripheral::new,
                             ModBlocks.MACHINE_MICROWAVE),
                     block(
-                            BlockEntityReactorResearch.class,
+                            ResearchReactorBlockEntity.class,
                             ResearchReactorPeripheral::new,
                             ModBlocks.REACTOR_RESEARCH),
                     block(
-                            BlockEntityReactorControl.class,
-                            ReactorControlPeripheral::new,
+                            ReactorControlBlockEntity.class,
+                            ResearchReactorControlPeripheral::new,
                             ModBlocks.MACHINE_CONTROLLER),
                     proxied(
-                            BlockEntityReactorZirnox.class,
-                            ZirnoxPeripheral::new,
+                            ReactorZirnoxBlockEntity.class,
+                            ZirnoxReactorPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.REACTOR_ZIRNOX),
                     proxied(
-                            BlockEntityWatz.class,
-                            WatzPeripheral::new,
+                            WatzBlockEntity.class,
+                            WatzReactorPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.WATZ),
                     proxied(
-                            BlockEntityPADetector.class,
-                            PADetectorPeripheral::new,
+                            PADetectorBlockEntity.class,
+                            AcceleratorDetectorPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.PA_DETECTOR),
                     proxied(
-                            BlockEntityPADipole.class,
-                            PADipolePeripheral::new,
+                            PADipoleBlockEntity.class,
+                            AcceleratorDipolePeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.PA_DIPOLE),
                     proxied(
-                            BlockEntityPAQuadrupole.class,
+                            PAQuadrupoleBlockEntity.class,
                             PAQuadrupolePeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.PA_QUADRUPOLE),
                     proxied(
-                            BlockEntityPARFC.class,
+                            RFCavityBlockEntity.class,
                             PARFCPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.PA_RFC),
                     proxied(
-                            BlockEntityPASource.class,
-                            PASourcePeripheral::new,
+                            PASourceBlockEntity.class,
+                            AcceleratorSourcePeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.PA_SOURCE),
                     proxied(
-                            BlockEntityFusionBoiler.class,
+                            FusionBoilerBlockEntity.class,
                             FusionBoilerPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.FUSION_BOILER),
                     proxied(
-                            BlockEntityFusionBreeder.class,
+                            FusionNeutronBlockEntity.class,
                             FusionBreederPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.FUSION_BREEDER),
                     proxied(
-                            BlockEntityFusionKlystron.class,
+                            FusionKlystronBlockEntity.class,
                             FusionKlystronPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.FUSION_KLYSTRON),
                     proxied(
-                            BlockEntityFusionMHDT.class,
+                            FusionMHDTBlockEntity.class,
                             FusionMHDTPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.FUSION_MHDT),
                     proxied(
-                            BlockEntityFusionTorus.class,
-                            FusionTorusPeripheral::new,
+                            FusionTorusBlockEntity.class,
+                            FusionReactorPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.FUSION_TORUS),
                     proxied(
-                            BlockEntityMachineCoker.class,
+                            CokerBlockEntity.class,
                             CokerPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.MACHINE_COKER),
                     proxied(
-                            BlockEntityLaunchPad.class,
-                            LaunchPadPeripheral::new,
+                            LaunchPadBlockEntity.class,
+                            MissileLauncherPeripheral::new,
                             PROXY_CELLS,
                             ModBlocks.LAUNCH_PAD),
                     proxied(
-                            BlockEntityLaunchPadLarge.class,
-                            LaunchPadPeripheral::new,
+                            MissileErectorBlockEntity.class,
+                            MissileLauncherPeripheral::new,
                             POWER_FLUID_CELLS,
                             ModBlocks.LAUNCH_PAD_LARGE),
                     block(
-                            BlockEntityLaunchTable.class,
-                            LaunchTablePeripheral::new,
+                            LaunchTableBlockEntity.class,
+                            CustomMissileLauncherPeripheral::new,
                             ModBlocks.LAUNCH_TABLE),
                     block(
-                            BlockEntityRBMKRod.class,
-                            RBMKRodPeripheral::new,
+                            RBMKRodBlockEntity.class,
+                            RBMKFuelColumnPeripheral::new,
                             ModBlocks.RBMK_ROD,
                             ModBlocks.RBMK_ROD_MODERATED),
                     block(
-                            BlockEntityRBMKRodReaSim.class,
-                            RBMKRodPeripheral::new,
+                            RBMKRodReaSimBlockEntity.class,
+                            RBMKFuelColumnPeripheral::new,
                             ModBlocks.RBMK_ROD_REASIM,
                             ModBlocks.RBMK_ROD_REASIM_MODERATED),
                     block(
-                            BlockEntityRBMKControlManual.class,
+                            RBMKManualControlBlockEntity.class,
                             RBMKControlManualPeripheral::new,
                             ModBlocks.RBMK_CONTROL,
                             ModBlocks.RBMK_CONTROL_MOD,
                             ModBlocks.RBMK_CONTROL_REASIM),
                     block(
-                            BlockEntityRBMKControlAuto.class,
+                            RBMKControlAutoBlockEntity.class,
                             RBMKControlPeripheral::new,
                             ModBlocks.RBMK_CONTROL_AUTO,
                             ModBlocks.RBMK_CONTROL_REASIM_AUTO),
                     proxied(
-                            BlockEntityRBMKBoiler.class,
-                            RBMKBoilerPeripheral::new,
+                            RBMKBoilerBlockEntity.class,
+                            RBMKBoilerColumnPeripheral::new,
                             RBMK_TOP,
                             ModBlocks.RBMK_BOILER),
                     proxied(
-                            BlockEntityRBMKCooler.class,
+                            RBMKCoolerBlockEntity.class,
                             RBMKCoolerPeripheral::new,
                             RBMK_TOP,
                             ModBlocks.RBMK_COOLER),
                     proxied(
-                            BlockEntityRBMKHeater.class,
-                            RBMKHeaterPeripheral::new,
+                            RBMKHeaterBlockEntity.class,
+                            RBMKHeaterColumnPeripheral::new,
                             RBMK_TOP,
                             ModBlocks.RBMK_HEATER),
                     proxied(
-                            BlockEntityRBMKOutgasser.class,
-                            RBMKOutgasserPeripheral::new,
+                            RBMKIrradiationColumnBlockEntity.class,
+                            RBMKOutgasserColumnPeripheral::new,
                             RBMK_TOP,
                             ModBlocks.RBMK_OUTGASSER),
                     block(
-                            BlockEntityRBMKConsole.class,
-                            RBMKConsolePeripheral::new,
+                            RBMKConsoleBlockEntity.class,
+                            RBMKControlRoomPeripheral::new,
                             ModBlocks.RBMK_CONSOLE),
                     block(
-                            BlockEntityCraneConsole.class,
+                            RBMKCraneConsoleBlockEntity.class,
                             CraneConsolePeripheral::new,
                             ModBlocks.RBMK_CRANE_CONSOLE),
                     block(
-                            BlockEntityRBMKTerminal.class,
-                            RBMKTerminalPeripheral::new,
+                            RBMKTerminalBlockEntity.class,
+                            RBMKTerminalScreenPeripheral::new,
                             ModBlocks.RBMK_TERMINAL),
                     block(
-                            BlockEntityRBMKNumitron.class,
-                            RBMKNumitronPeripheral::new,
+                            RBMKNumitronBlockEntity.class,
+                            RBMKPanels::numitron,
                             ModBlocks.RBMK_NUMITRON),
+                    block(RBMKLeverBlockEntity.class, RBMKPanels::lever, ModBlocks.RBMK_LEVER),
+                    block(RBMKKeyPadBlockEntity.class, RBMKPanels::keyPad, ModBlocks.RBMK_KEY_PAD),
                     block(
-                            BlockEntityRBMKLever.class,
-                            RBMKLeverPeripheral::new,
-                            ModBlocks.RBMK_LEVER),
-                    block(
-                            BlockEntityRBMKKeyPad.class,
-                            RBMKKeyPadPeripheral::new,
-                            ModBlocks.RBMK_KEY_PAD),
-                    block(
-                            BlockEntityRBMKIndicator.class,
-                            RBMKIndicatorPeripheral::new,
+                            RBMKIndicatorBlockEntity.class,
+                            RBMKPanels::indicator,
                             ModBlocks.RBMK_INDICATOR),
-                    block(
-                            BlockEntityRBMKGraph.class,
-                            RBMKGraphPeripheral::new,
-                            ModBlocks.RBMK_GRAPH),
-                    block(
-                            BlockEntityRBMKGauge.class,
-                            RBMKGaugePeripheral::new,
-                            ModBlocks.RBMK_GAUGE),
+                    block(RBMKGraphBlockEntity.class, RBMKPanels::graph, ModBlocks.RBMK_GRAPH),
+                    block(RBMKGaugeBlockEntity.class, RBMKPanels::gauge, ModBlocks.RBMK_GAUGE),
                     turret(
-                            BlockEntityTurretChekhov.class,
-                            TurretPeripheral::new,
+                            TurretChekhovBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_CHEKHOV),
                     turret(
-                            BlockEntityTurretFriendly.class,
-                            TurretPeripheral::new,
+                            TurretFriendlyBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_FRIENDLY),
                     turret(
-                            BlockEntityTurretJeremy.class,
-                            TurretPeripheral::new,
+                            TurretJeremyBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_JEREMY),
                     turret(
-                            BlockEntityTurretTauon.class,
-                            TurretPeripheral::new,
+                            TurretTauonBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_TAUON),
                     turret(
-                            BlockEntityTurretRichard.class,
-                            TurretPeripheral::new,
+                            TurretRichardBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_RICHARD),
                     turret(
-                            BlockEntityTurretHoward.class,
-                            TurretPeripheral::new,
+                            TurretHowardBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_HOWARD),
                     turret(
-                            BlockEntityTurretHowardDamaged.class,
-                            TurretPeripheral::new,
+                            TurretHowardDamagedBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_HOWARD_DAMAGED),
                     turret(
-                            BlockEntityTurretMaxwell.class,
-                            TurretPeripheral::new,
+                            TurretMaxwellBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_MAXWELL),
                     turret(
-                            BlockEntityTurretFritz.class,
-                            TurretPeripheral::new,
+                            TurretFritzBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_FRITZ),
                     turret(
-                            BlockEntityTurretSentry.class,
-                            TurretPeripheral::new,
+                            TurretSentryBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_SENTRY),
                     turret(
-                            BlockEntityTurretSentryDamaged.class,
-                            TurretPeripheral::new,
+                            TurretSentryDamagedBlockEntity.class,
+                            TurretControlPeripheral::new,
                             ModBlocks.TURRET_SENTRY_DAMAGED),
-                    turret(BlockEntityTurretArty.class, ArtyPeripheral::new, ModBlocks.TURRET_ARTY),
+                    turret(TurretArtyBlockEntity.class, ArtyPeripheral::new, ModBlocks.TURRET_ARTY),
                     turret(
-                            BlockEntityTurretHIMARS.class,
+                            TurretHIMARSBlockEntity.class,
                             HimarsPeripheral::new,
                             ModBlocks.TURRET_HIMARS));
 
@@ -622,7 +616,7 @@ final class Peripherals {
 
     static <BE extends BlockEntity> void addon(
             Class<BE> type,
-            Function<? super BE, ? extends SnapshotPeripheral<?>> factory,
+            Function<? super BE, ? extends BlockEntityPeripheral<?>> factory,
             boolean proxied,
             List<RegistryHandle<? extends Block>> blocks) {
         ADDON_ROWS.add(new Row<>(type, factory, proxied ? PROXY_CELLS : null, null, blocks));
@@ -651,7 +645,7 @@ final class Peripherals {
     @SafeVarargs
     private static <BE extends BlockEntity> Row<BE> block(
             Class<BE> type,
-            Function<? super BE, ? extends SnapshotPeripheral<?>> factory,
+            Function<? super BE, ? extends BlockEntityPeripheral<?>> factory,
             RegistryHandle<? extends Block>... blocks) {
         return new Row<>(type, factory, null, null, List.of(blocks));
     }
@@ -659,7 +653,7 @@ final class Peripherals {
     @SafeVarargs
     private static <BE extends BlockEntity> Row<BE> proxied(
             Class<BE> type,
-            Function<? super BE, ? extends SnapshotPeripheral<?>> factory,
+            Function<? super BE, ? extends BlockEntityPeripheral<?>> factory,
             OwnerLookup proxies,
             RegistryHandle<? extends Block>... blocks) {
         return new Row<>(type, factory, proxies, null, List.of(blocks));
@@ -668,18 +662,20 @@ final class Peripherals {
     @SafeVarargs
     private static <BE extends BlockEntity> Row<BE> turret(
             Class<BE> type,
-            Function<? super BE, ? extends SnapshotPeripheral<?>> factory,
+            Function<? super BE, ? extends BlockEntityPeripheral<?>> factory,
             RegistryHandle<? extends Block>... blocks) {
         return new Row<>(type, factory, null, DOWN, List.of(blocks));
     }
 
     static void init() {
-        NeoForgeServerEvents.onServerTickPost(Peripherals::tick);
-        NeoForgeServerEvents.onServerStopping(
+        final Consumer<MinecraftServer> callback = Peripherals::tick;
+        ServerEvents.TICK_POST.add(callback);
+        final Consumer<MinecraftServer> callback2 =
                 server -> {
                     BY_MACHINE.clear();
                     LIVE.clear();
-                });
+                };
+        ServerEvents.STOPPING.add(callback2);
     }
 
     static void declare(List<RegistryHandle<? extends Block>> roster) {
@@ -689,8 +685,8 @@ final class Peripherals {
                 throw new IllegalStateException(row.type.getName() + " has two peripheral rows");
             }
             for (RegistryHandle<? extends Block> block : row.blocks) {
-                NeoForgeCaps.pendingBlocks.add(
-                        new NeoForgeCaps.BlockRegistration<>(
+                Caps.pendingBlocks.add(
+                        new Caps.BlockRegistration<>(
                                 TOKEN,
                                 (Supplier<? extends Block>) block,
                                 (level, pos, state, be, side) ->
@@ -703,8 +699,8 @@ final class Peripherals {
             }
         }
         for (RegistryHandle<? extends Block> cell : ModBlocks.cellHandles()) {
-            NeoForgeCaps.pendingBlocks.add(
-                    new NeoForgeCaps.BlockRegistration<>(
+            Caps.pendingBlocks.add(
+                    new Caps.BlockRegistration<>(
                             TOKEN,
                             (Supplier<? extends Block>) cell,
                             (level, pos, state, be, side) ->
@@ -748,16 +744,18 @@ final class Peripherals {
         boolean interactiveOnly = core == null;
         if (interactiveOnly) core = MultiblockSurface.rorCoreOfCell(level, pos, state);
         BlockEntity owner = core == null ? null : level.getBlockEntity(core);
-        return row.type.isInstance(owner) && (!interactiveOnly || owner instanceof IRORInteractive)
+        return row.type.isInstance(owner)
+                        && (!interactiveOnly || owner instanceof RadioControlHandler)
                 ? of(row, owner)
                 : null;
     }
 
-    private static <BE extends BlockEntity> SnapshotPeripheral<?> of(Row<BE> row, BlockEntity be) {
-        SnapshotPeripheral<?> known = BY_MACHINE.get(be);
+    private static <BE extends BlockEntity> BlockEntityPeripheral<?> of(
+            Row<BE> row, BlockEntity be) {
+        BlockEntityPeripheral<?> known = BY_MACHINE.get(be);
         if (known != null) return known;
-        SnapshotPeripheral<?> made = row.factory.apply(row.type.cast(be));
-        made.refresh();
+        BlockEntityPeripheral<?> made = row.factory.apply(row.type.cast(be));
+        if (made instanceof SnapshotPeripheral<?> snapshot) snapshot.refresh();
         BY_MACHINE.put(be, made);
         LIVE.add(made);
         return made;
@@ -765,14 +763,14 @@ final class Peripherals {
 
     private static void tick(MinecraftServer server) {
         for (int i = LIVE.size() - 1; i >= 0; i--) {
-            SnapshotPeripheral<?> peripheral = LIVE.get(i);
-            if (peripheral.target().isRemoved()) {
-                BY_MACHINE.remove(peripheral.target());
+            BlockEntityPeripheral<?> peripheral = LIVE.get(i);
+            if (peripheral.target.isRemoved()) {
+                BY_MACHINE.remove(peripheral.target);
                 int last = LIVE.size() - 1;
                 LIVE.set(i, LIVE.get(last));
                 LIVE.remove(last);
-            } else {
-                peripheral.refresh();
+            } else if (peripheral instanceof SnapshotPeripheral<?> snapshot) {
+                snapshot.refresh();
             }
         }
     }

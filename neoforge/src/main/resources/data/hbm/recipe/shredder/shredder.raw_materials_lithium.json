@@ -7,10 +7,20 @@
   ],
   "order": 105728,
   "output_items": [
-    {
-      "chance": 0.667,
-      "count": 2,
-      "id": "hbm:powder_lithium"
-    }
+    [
+      {
+        "data": {
+          "id": "hbm:powder_lithium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:powder_lithium"
+        },
+        "weight": 1
+      }
+    ]
   ]
 }

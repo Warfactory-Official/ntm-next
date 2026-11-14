@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin;
 
@@ -8,7 +24,11 @@ import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.blockentity.ChunkPublication;
 import com.hbm.capability.CapabilityInvalidation;
 import com.hbm.capability.ResolvedCapCache;
-import com.hbm.interfaces.injected.IServerLevelExtension;
+import com.hbm.explosion.FalloutJournal;
+import com.hbm.handler.neutron.NeutronRay;
+import com.hbm.handler.pollution.PollutionSavedData;
+import com.hbm.handler.radio.RadioSystem;
+import com.hbm.interfaces.injected.ServerLevelExtension;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.uninos.graph.PhysicalGraph;
@@ -17,6 +37,8 @@ import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -33,7 +55,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerLevel.class)
-public abstract class MixinServerLevel implements IServerLevelExtension {
+public abstract class MixinServerLevel implements ServerLevelExtension {
 
     @Unique private @Nullable EndpointRegistry hbm$endpoints;
     @Unique private LevelNodeGraph<?>[] hbm$graphs = LevelNodeGraph.emptySlots();
@@ -46,6 +68,29 @@ public abstract class MixinServerLevel implements IServerLevelExtension {
     @Unique private @Nullable LongOpenHashSet hbm$publishedChunks;
     @Unique private PhysicalGraph.@Nullable Batch hbm$physicalBatch;
     @Unique private @Nullable FlushIndex hbm$flushIndex;
+    @Unique private @Nullable PollutionSavedData hbm$pollution;
+    @Unique private final List<NeutronRay> hbm$neutronRays = new ArrayList<>();
+    @Unique private final RadioSystem.Table hbm$radio = new RadioSystem.Table();
+
+    @Override
+    public @Nullable PollutionSavedData hbm$pollution() {
+        return hbm$pollution;
+    }
+
+    @Override
+    public void hbm$pollution(PollutionSavedData field) {
+        hbm$pollution = field;
+    }
+
+    @Override
+    public List<NeutronRay> hbm$neutronRays() {
+        return hbm$neutronRays;
+    }
+
+    @Override
+    public RadioSystem.Table hbm$radio() {
+        return hbm$radio;
+    }
 
     @Override
     public LongOpenHashSet hbm$publishedChunks() {
@@ -190,6 +235,11 @@ public abstract class MixinServerLevel implements IServerLevelExtension {
     @Inject(method = "onBlockEntityAdded", at = @At("TAIL"))
     private void hbm$graphResidentLoad(BlockEntity blockEntity, CallbackInfo ci) {
         ChunkPublication.added((ServerLevel) (Object) this, blockEntity);
+    }
+
+    @Inject(method = "tickChunk", at = @At("HEAD"))
+    private void hbm$falloutCores(LevelChunk chunk, int tickSpeed, CallbackInfo ci) {
+        FalloutJournal.tickCores((ServerLevel) (Object) this, chunk);
     }
 
     @Inject(method = "startTickingChunk", at = @At("HEAD"))

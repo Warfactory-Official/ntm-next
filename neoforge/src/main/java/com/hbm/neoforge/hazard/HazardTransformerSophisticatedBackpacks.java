@@ -1,24 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.neoforge.hazard;
 
 import com.hbm.hazard.HazardEntry;
 import com.hbm.hazard.HazardRegistry;
-import com.hbm.hazard.transformer.IHazardTransformer;
+import com.hbm.hazard.transformer.HazardTransformer;
 import java.util.List;
 import java.util.UUID;
 import net.minecraft.world.item.ItemStack;
-import net.p3pp3rf1y.sophisticatedbackpacks.backpack.BackpackItem;
 import net.p3pp3rf1y.sophisticatedbackpacks.backpack.BackpackStorage;
-import net.p3pp3rf1y.sophisticatedcore.init.ModCoreDataComponents;
 
-public final class HazardTransformerSophisticatedBackpacks implements IHazardTransformer {
+public final class HazardTransformerSophisticatedBackpacks implements HazardTransformer {
     @Override
     public boolean appliesTo(ItemStack stack) {
-        return stack.getItem() instanceof BackpackItem
-                && stack.has(ModCoreDataComponents.STORAGE_UUID.get())
-                && !stack.has(ModCoreDataComponents.LINKED_STORAGE_ENDPOINT.get());
+        return SophisticatedBackpackContents.id(stack) != null;
     }
 
     @Override
@@ -28,7 +40,7 @@ public final class HazardTransformerSophisticatedBackpacks implements IHazardTra
 
     @Override
     public void transform(ItemStack stack, List<HazardEntry> entries) {
-        UUID id = stack.get(ModCoreDataComponents.STORAGE_UUID.get());
+        UUID id = SophisticatedBackpackContents.id(stack);
         float radiation =
                 StorageHazardSum.sum(
                         id,

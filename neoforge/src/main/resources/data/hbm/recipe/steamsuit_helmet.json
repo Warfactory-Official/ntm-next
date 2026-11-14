@@ -1,22 +1,24 @@
 {
   "type": "hbm:crafting_shaped",
+  "input_state": {
+    "X": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "C": "#c:plates/copper",
     "D": "#c:ingots/workers_alloy",
     "F": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:gas_mask_filter",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:gas_mask_filter"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
-    "X": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:steel_helmet"
-    }
+    "X": "hbm:steel_helmet"
   },
   "pattern": [
     "DCD",

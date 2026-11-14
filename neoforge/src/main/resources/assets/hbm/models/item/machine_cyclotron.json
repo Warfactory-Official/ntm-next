@@ -198,5 +198,8 @@
     "cyclotron_coin": "hbm:block/models/machines/cyclotron_coin",
     "cyclotron_gavel": "hbm:block/models/machines/cyclotron_gavel",
     "particle": "hbm:block/models/machines/cyclotron"
-  }
+  },
+  "tiled": [
+    "Body"
+  ]
 }

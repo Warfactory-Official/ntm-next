@@ -1,10 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.mixin.compat.network.neb;
 
 import cn.ussshenzhou.notenoughbandwidth.aggregation.PacketAggregationPacket;
-import com.hbm.packet.compat.NebBuffers;
 import com.hbm.packet.compat.NebCalls;
 import com.hbm.packet.compat.NebEntry;
 import com.hbm.packet.threading.ThreadedPayload;
@@ -26,10 +41,11 @@ public abstract class MixinPacketAggregationPacket {
     @Overwrite
     public void write(RegistryFriendlyByteBuf buffer) {
         int start = buffer.writerIndex();
-        NebBuffers scratch = (NebBuffers) connection;
-        RegistryFriendlyByteBuf raw = scratch.hbm$raw(buffer.registryAccess());
+        var scratch = connection;
+        RegistryFriendlyByteBuf raw =
+                ((com.hbm.packet.compat.NebBuffers) (scratch)).hbm$raw(buffer.registryAccess());
         int count = packetsToEncode.size();
-        int[] sizes = scratch.hbm$sizes(count);
+        int[] sizes = ((com.hbm.packet.compat.NebBuffers) (scratch)).hbm$sizes(count);
         boolean sampling = NebCalls.sampling();
         int previous = 0;
         for (int i = 0; i < count; i++) {
@@ -54,7 +70,9 @@ public abstract class MixinPacketAggregationPacket {
                 }
                 payload.writeManagedBody(raw);
             } else {
-                RegistryFriendlyByteBuf encoded = scratch.hbm$packet(buffer.registryAccess());
+                RegistryFriendlyByteBuf encoded =
+                        ((com.hbm.packet.compat.NebBuffers) (scratch))
+                                .hbm$packet(buffer.registryAccess());
                 packet.hbm$encode(encoded, protocolInfo, protocolInfo.flow());
                 raw.writeVarInt(encoded.readableBytes());
                 raw.writeBytes(encoded, encoded.readerIndex(), encoded.readableBytes());

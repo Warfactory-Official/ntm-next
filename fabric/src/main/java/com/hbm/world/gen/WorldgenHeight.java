@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.gen;
 
@@ -31,20 +47,29 @@ import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import org.jspecify.annotations.Nullable;
 
 public final class WorldgenHeight {
     private WorldgenHeight() {}
 
+    public static @Nullable ChunkAccess heldChunk(LevelReader level, int x, int z) {
+        return level.getChunk(x >> 4, z >> 4, ChunkStatus.EMPTY, false);
+    }
+
     public static int lightBlocking(LevelReader level, int x, int z) {
-        return lightBlocking(level.getChunk(x >> 4, z >> 4, ChunkStatus.EMPTY, false), x, z);
+        return lightBlocking(heldChunk(level, x, z), x, z);
     }
 
     public static int lightBlocking(ChunkAccess chunk, int x, int z) {
         return scan(chunk, x, z, false);
     }
 
+    public static int lightBlocking(ChunkAccess chunk, BlockPos.MutableBlockPos pos) {
+        return scan(chunk, pos, false);
+    }
+
     public static int ground(LevelReader level, int x, int z) {
-        return scan(level.getChunk(x >> 4, z >> 4, ChunkStatus.EMPTY, false), x, z, true);
+        return scan(heldChunk(level, x, z), x, z, true);
     }
 
     public static int ground(ChunkAccess chunk, int x, int z) {
@@ -52,7 +77,10 @@ public final class WorldgenHeight {
     }
 
     public static int highestFilledSectionTop(LevelReader level, int x, int z) {
-        ChunkAccess chunk = level.getChunk(x >> 4, z >> 4, ChunkStatus.EMPTY, false);
+        return highestFilledSectionTop(heldChunk(level, x, z));
+    }
+
+    public static int highestFilledSectionTop(ChunkAccess chunk) {
         if (chunk instanceof ImposterProtoChunk imposter) chunk = imposter.getWrapped();
         int highest = chunk.getHighestFilledSectionIndex();
         return highest == -1
@@ -64,6 +92,10 @@ public final class WorldgenHeight {
     }
 
     private static int scan(ChunkAccess chunk, int x, int z, boolean ground) {
+        return scan(chunk, new BlockPos.MutableBlockPos(x, 0, z), ground);
+    }
+
+    private static int scan(ChunkAccess chunk, BlockPos.MutableBlockPos pos, boolean ground) {
         if (chunk instanceof ImposterProtoChunk imposter) chunk = imposter.getWrapped();
         int highest = chunk.getHighestFilledSectionIndex();
         int top =
@@ -73,15 +105,22 @@ public final class WorldgenHeight {
                                 SectionPos.sectionToBlockCoord(
                                         chunk.getSectionYFromSectionIndex(highest), 15),
                                 chunk.getMaxY());
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, top, z);
-        for (int y = top; y >= chunk.getMinY(); y--) {
-            BlockState state = chunk.getBlockState(pos.setY(y));
-            if (ground
-                    ? state.blocksMotion() && !state.is(BlockTags.LEAVES)
-                    : state.getLightDampening() > 0) {
-                return y + 1;
+        for (int index = highest; index >= 0; index--) {
+            var section = chunk.getSections()[index];
+            if (section.hasOnlyAir()) continue;
+            int bottom = SectionPos.sectionToBlockCoord(chunk.getSectionYFromSectionIndex(index));
+            int lowestY = Math.max(bottom, chunk.getMinY());
+            for (int y = Math.min(top, bottom + 15); y >= lowestY; y--) {
+                BlockState state = section.getBlockState(pos.getX() & 15, y & 15, pos.getZ() & 15);
+                if (ground
+                        ? (state.blocksMotion() && !state.is(BlockTags.LEAVES))
+                        : state.getLightDampening() > 0) {
+                    pos.setY(y);
+                    return y + 1;
+                }
             }
         }
+        pos.setY(chunk.getMinY());
         return chunk.getMinY();
     }
 

@@ -1,13 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.gui;
 
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
-import com.hbm.lib.Library;
-import com.hbm.packet.PacketWire;
-import com.hbm.packet.toserver.NbtControlPayload;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -20,7 +48,6 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
@@ -29,15 +56,21 @@ import org.jspecify.annotations.Nullable;
 
 public class GUIScreenRecipeSelector extends Screen {
 
+    @FunctionalInterface
+    public interface SelectionSender {
+        void send(BlockPos pos, int index, String selection);
+    }
+
     public static final String NULL_SELECTION = "null";
     private static final Identifier TEXTURE =
-            Library.id("textures/gui/processing/gui_recipe_selector.png");
+            RegistryUtil.id("textures/gui/processing/gui_recipe_selector.png");
     private final int xSize = 176;
     private final int ySize = 132;
     private final GenericRecipes<?, ?> recipeSet;
     private final List<GenericRecipe> recipes = new ArrayList<>();
     private final BlockPos tilePos;
     private final Screen previousScreen;
+    private final SelectionSender selectionSender;
     private final int index;
     private final @Nullable String installedPool;
     private int guiLeft;
@@ -53,7 +86,8 @@ public class GUIScreenRecipeSelector extends Screen {
             String currentSelection,
             int index,
             @Nullable String installedPool,
-            Screen previousScreen) {
+            Screen previousScreen,
+            SelectionSender selectionSender) {
         super(Component.translatable("gui.recipe.selector"));
         this.recipeSet = recipeSet;
         this.tilePos = tilePos;
@@ -61,6 +95,7 @@ public class GUIScreenRecipeSelector extends Screen {
         this.index = index;
         this.installedPool = installedPool;
         this.previousScreen = previousScreen;
+        this.selectionSender = selectionSender;
         regenerateRecipes();
     }
 
@@ -68,8 +103,10 @@ public class GUIScreenRecipeSelector extends Screen {
             GenericRecipes<?, ?> recipeSet,
             BlockPos tilePos,
             String currentSelection,
-            Screen previousScreen) {
-        openSelector(recipeSet, tilePos, currentSelection, 0, null, previousScreen);
+            Screen previousScreen,
+            SelectionSender selectionSender) {
+        openSelector(
+                recipeSet, tilePos, currentSelection, 0, null, previousScreen, selectionSender);
     }
 
     public static void openSelector(
@@ -78,7 +115,8 @@ public class GUIScreenRecipeSelector extends Screen {
             String currentSelection,
             int index,
             @Nullable String installedPool,
-            Screen previousScreen) {
+            Screen previousScreen,
+            SelectionSender selectionSender) {
         Minecraft.getInstance()
                 .gui
                 .setScreen(
@@ -88,7 +126,8 @@ public class GUIScreenRecipeSelector extends Screen {
                                 currentSelection,
                                 index,
                                 installedPool,
-                                previousScreen));
+                                previousScreen,
+                                selectionSender));
     }
 
     @Override
@@ -322,10 +361,7 @@ public class GUIScreenRecipeSelector extends Screen {
 
     @Override
     public void onClose() {
-        CompoundTag data = new CompoundTag();
-        data.putString("selection", selection);
-        data.putInt("index", index);
-        PacketWire.sendToServer(new NbtControlPayload(tilePos, data));
+        selectionSender.send(tilePos, index, selection);
         if (minecraft != null) minecraft.gui.setScreen(previousScreen);
         Minecraft.getInstance()
                 .getSoundManager()

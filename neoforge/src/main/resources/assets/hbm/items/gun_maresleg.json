@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 203
+            "id": "hbm:weapon_mod_special_saw/sawed_off"
           }
         ],
         "parts": [
@@ -23,7 +23,7 @@
         ],
         "requires_mods": [
           {
-            "id": 203
+            "id": "hbm:weapon_mod_special_saw/sawed_off"
           }
         ]
       }
@@ -33,7 +33,7 @@
         "duration": 75,
         "excludes_mods": [
           {
-            "id": 203
+            "id": "hbm:weapon_mod_special_saw/sawed_off"
           }
         ],
         "kind": "normal",
@@ -83,7 +83,7 @@
         "random_degrees": 90,
         "requires_mods": [
           {
-            "id": 203
+            "id": "hbm:weapon_mod_special_saw/sawed_off"
           }
         ]
       }
@@ -129,7 +129,7 @@
         ],
         "requires_mods": [
           {
-            "id": 203
+            "id": "hbm:weapon_mod_special_saw/sawed_off"
           }
         ]
       }

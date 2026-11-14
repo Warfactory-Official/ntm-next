@@ -1,30 +1,62 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
 import com.hbm.client.ClientPlayerAccess;
-import com.hbm.entity.effect.EntityFireLingering;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.entity.effect.FireLingeringEntity;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
-import com.hbm.items.weapon.sedna.impl.ItemGunChemthrower;
+import com.hbm.items.weapon.sedna.impl.GunChemthrowerItem;
 import com.hbm.items.weapon.sedna.mags.MagazineFluid;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
-import com.hbm.lib.Library;
+import com.hbm.lib.ModDamageTypes;
 import com.hbm.main.ResourceManager;
 import com.hbm.particle.helper.FlameCreator;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.platform.Platform;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.ModSounds;
-import com.hbm.util.DamageClass;
+import com.hbm.util.RegistryUtil;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -37,7 +69,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -83,39 +114,39 @@ public class XFactoryFlamer {
                             bullet.getZ(),
                             FlameCreator.META_BALEFIRE);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_IGNITE_FIRE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_IGNITE_FIRE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && entityHit.getEntity() instanceof LivingEntity living) {
-                    HbmLivingProps props = HbmLivingProps.getData(living);
+                    LivingHazards props = LivingHazards.getOrCreate(living);
                     if (props.fire < 100) props.fire = 100;
                 }
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_IGNITE_BALEFIRE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_IGNITE_BALEFIRE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && entityHit.getEntity() instanceof LivingEntity living) {
-                    HbmLivingProps props = HbmLivingProps.getData(living);
+                    LivingHazards props = LivingHazards.getOrCreate(living);
                     if (props.balefire < 200) props.balefire = 200;
                 }
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_LINGER_DIESEL =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_LINGER_DIESEL =
             (bullet, mop) -> {
                 if (!igniteIfPossible(bullet, mop))
-                    spawnFire(bullet, mop, 2F, 1F, 100, EntityFireLingering.TYPE_DIESEL);
+                    spawnFire(bullet, mop, 2F, 1F, 100, FireLingeringEntity.TYPE_DIESEL);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_LINGER_GAS =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_LINGER_GAS =
             (bullet, mop) -> {
                 igniteIfPossible(bullet, mop);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_LINGER_NAPALM =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_LINGER_NAPALM =
             (bullet, mop) -> {
                 if (!igniteIfPossible(bullet, mop))
-                    spawnFire(bullet, mop, 2.5F, 1F, 200, EntityFireLingering.TYPE_DIESEL);
+                    spawnFire(bullet, mop, 2.5F, 1F, 200, FireLingeringEntity.TYPE_DIESEL);
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_LINGER_BALEFIRE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_LINGER_BALEFIRE =
             (bullet, mop) -> {
-                spawnFire(bullet, mop, 3F, 1F, 300, EntityFireLingering.TYPE_BALEFIRE);
+                spawnFire(bullet, mop, 3F, 1F, 300, FireLingeringEntity.TYPE_BALEFIRE);
             };
 
     @SuppressWarnings("incomplete-switch")
@@ -126,9 +157,9 @@ public class XFactoryFlamer {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(-45, 0, 0, 0)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(-45, 0, 0, 0)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                     case RELOAD:
                         return ResourceManager.flamethrower_anim.get("Reload");
                     case INSPECT:
@@ -136,11 +167,11 @@ public class XFactoryFlamer {
                         return new BusAnimation()
                                 .addBus(
                                         "ROTATE",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 45, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 45, 350)
-                                                .addPos(0, 0, -15, 150, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 100, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 45, 250, IType.SIN_FULL)
+                                                .to(0, 0, 45, 350)
+                                                .to(0, 0, -15, 150, IType.SIN_FULL)
+                                                .to(0, 0, 0, 100, IType.SIN_FULL));
                 }
 
                 return null;
@@ -154,9 +185,9 @@ public class XFactoryFlamer {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(-45, 0, 0, 0)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(-45, 0, 0, 0)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                 }
 
                 return null;
@@ -167,13 +198,13 @@ public class XFactoryFlamer {
         return player != null && player.getEyePosition().distanceTo(bullet.position()) < 100;
     }
 
-    public static boolean igniteIfPossible(EntityBulletBaseMK4 bullet, HitResult mop) {
+    public static boolean igniteIfPossible(BulletBaseMK4Entity bullet, HitResult mop) {
         if (mop instanceof BlockHitResult blockHit) {
             Level world = bullet.level();
             BlockPos pos = blockHit.getBlockPos();
             Direction dir = blockHit.getDirection();
             BlockState state = world.getBlockState(pos);
-            if (state.isFlammable((BlockGetter) world, pos, dir)) {
+            if (Platform.isFlammable(world, pos, state, dir)) {
                 BlockPos target = pos.relative(dir);
                 if (world.getBlockState(target).isAir()) {
                     world.setBlockAndUpdate(target, Blocks.FIRE.defaultBlockState());
@@ -186,7 +217,7 @@ public class XFactoryFlamer {
     }
 
     public static void spawnFire(
-            EntityBulletBaseMK4 bullet,
+            BulletBaseMK4Entity bullet,
             HitResult mop,
             float width,
             float height,
@@ -194,18 +225,18 @@ public class XFactoryFlamer {
             int type) {
         if (mop instanceof BlockHitResult) {
             Vec3 hit = mop.getLocation();
-            List<EntityFireLingering> fires =
+            List<FireLingeringEntity> fires =
                     bullet.level()
                             .getEntitiesOfClass(
-                                    EntityFireLingering.class,
+                                    FireLingeringEntity.class,
                                     new AABB(hit.x, hit.y, hit.z, hit.x, hit.y, hit.z)
                                             .inflate(
                                                     width / 2 + 0.5,
                                                     height / 2 + 0.5,
                                                     width / 2 + 0.5));
             if (fires.isEmpty()) {
-                EntityFireLingering fire =
-                        new EntityFireLingering(bullet.level())
+                FireLingeringEntity fire =
+                        new FireLingeringEntity(bullet.level())
                                 .setArea(width, height)
                                 .setDuration(duration)
                                 .setType(type);
@@ -218,7 +249,8 @@ public class XFactoryFlamer {
 
     private static ItemStack plateSteel(int count) {
         return new ItemStack(
-                BuiltInRegistries.ITEM.getOptional(Library.id("plate_steel")).orElseThrow(), count);
+                BuiltInRegistries.ITEM.getOptional(RegistryUtil.id("plate_steel")).orElseThrow(),
+                count);
     }
 
     public static void init() {
@@ -226,7 +258,7 @@ public class XFactoryFlamer {
                 new BulletConfig()
                         .setItem(EnumAmmo.FLAME_DIESEL)
                         .setCasing(() -> plateSteel(2), 500)
-                        .setupDamageClass(DamageClass.FIRE)
+                        .setupDamageClass(ModDamageTypes.FIRE)
                         .setLife(100)
                         .setVel(1F)
                         .setGrav(0.02D)
@@ -240,7 +272,7 @@ public class XFactoryFlamer {
                 new BulletConfig()
                         .setItem(EnumAmmo.FLAME_GAS)
                         .setCasing(() -> plateSteel(2), 500)
-                        .setupDamageClass(DamageClass.FIRE)
+                        .setupDamageClass(ModDamageTypes.FIRE)
                         .setLife(10)
                         .setSpread(0.05F)
                         .setVel(1F)
@@ -255,7 +287,7 @@ public class XFactoryFlamer {
                 new BulletConfig()
                         .setItem(EnumAmmo.FLAME_NAPALM)
                         .setCasing(() -> plateSteel(2), 500)
-                        .setupDamageClass(DamageClass.FIRE)
+                        .setupDamageClass(ModDamageTypes.FIRE)
                         .setLife(200)
                         .setVel(1F)
                         .setGrav(0.02D)
@@ -269,7 +301,7 @@ public class XFactoryFlamer {
                 new BulletConfig()
                         .setItem(EnumAmmo.FLAME_BALEFIRE)
                         .setCasing(() -> plateSteel(2), 500)
-                        .setupDamageClass(DamageClass.FIRE)
+                        .setupDamageClass(ModDamageTypes.FIRE)
                         .setLife(200)
                         .setVel(1F)
                         .setGrav(0.02D)
@@ -306,7 +338,7 @@ public class XFactoryFlamer {
                                             6F,
                                             2F,
                                             200,
-                                            EntityFireLingering.TYPE_DIESEL);
+                                            FireLingeringEntity.TYPE_DIESEL);
                                     bullet.discard();
                                 });
         flame_daybreaker_gas =
@@ -335,7 +367,7 @@ public class XFactoryFlamer {
                                             6F,
                                             2F,
                                             300,
-                                            EntityFireLingering.TYPE_DIESEL);
+                                            FireLingeringEntity.TYPE_DIESEL);
                                     bullet.discard();
                                 });
         flame_daybreaker_balefire =
@@ -353,24 +385,24 @@ public class XFactoryFlamer {
                                             7.5F,
                                             2.5F,
                                             400,
-                                            EntityFireLingering.TYPE_BALEFIRE);
+                                            FireLingeringEntity.TYPE_BALEFIRE);
                                     bullet.discard();
                                 });
 
         ModItems.GUN_FLAMER =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_flamer",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.A_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(20_000)
                                                         .draw(10)
                                                         .inspect(17)
                                                         .crosshair(Crosshair.L_CIRCLE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(1F)
                                                                         .spreadHipfire(0F)
                                                                         .delay(1)
@@ -392,23 +424,23 @@ public class XFactoryFlamer {
                                                                         .setupStandardFire())
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_FLAMER_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_FLAMER))
+                                                        .orchestra(GunAnimationActions.FLAMER))
                                         .setDefaultAmmo(EnumAmmo.FLAME_DIESEL, 1),
                         Item.Properties::new);
         ModItems.GUN_FLAMER_TOPAZ =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_flamer_topaz",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.B_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(20_000)
                                                         .draw(10)
                                                         .inspect(17)
                                                         .crosshair(Crosshair.L_CIRCLE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(1.5F)
                                                                         .spreadHipfire(0F)
                                                                         .delay(1)
@@ -430,23 +462,23 @@ public class XFactoryFlamer {
                                                                         .setupStandardFire())
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_FLAMER_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_FLAMER))
+                                                        .orchestra(GunAnimationActions.FLAMER))
                                         .setDefaultAmmo(EnumAmmo.FLAME_DIESEL, 1),
                         Item.Properties::new);
         ModItems.GUN_FLAMER_DAYBREAKER =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_flamer_daybreaker",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.LEGENDARY,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(20_000)
                                                         .draw(10)
                                                         .inspect(17)
                                                         .crosshair(Crosshair.L_CIRCLE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(25F)
                                                                         .spreadHipfire(0F)
                                                                         .delay(10)
@@ -476,41 +508,41 @@ public class XFactoryFlamer {
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_FLAMER_ANIMS)
                                                         .orchestra(
-                                                                Orchestras
-                                                                        .ORCHESTRA_FLAMER_DAYBREAKER))
+                                                                GunAnimationActions
+                                                                        .FLAMER_DAYBREAKER))
                                         .setDefaultAmmo(EnumAmmo.FLAME_DIESEL, 1),
                         Item.Properties::new);
 
         ModItems.GUN_CHEMTHROWER =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_chemthrower",
                         props ->
-                                new ItemGunChemthrower(
+                                new GunChemthrowerItem(
                                         WeaponQuality.A_SIDE,
                                         props,
-                                        new GunConfig()
+                                        GunConfig.builder()
                                                 .dura(90_000)
                                                 .draw(10)
                                                 .inspect(17)
                                                 .crosshair(Crosshair.L_CIRCLE)
                                                 .smoke(Lego.LAMBDA_STANDARD_SMOKE)
                                                 .rec(
-                                                        new Receiver(0)
+                                                        Receiver.builder()
                                                                 .delay(1)
                                                                 .spreadHipfire(0F)
                                                                 .auto(true)
                                                                 .mag(new MagazineFluid(0, 3_000))
                                                                 .offset(0.75, -0.0625, -0.25D)
                                                                 .canFire(
-                                                                        ItemGunChemthrower
+                                                                        GunChemthrowerItem
                                                                                 .LAMBDA_CAN_FIRE)
                                                                 .fire(
-                                                                        ItemGunChemthrower
+                                                                        GunChemthrowerItem
                                                                                 .LAMBDA_FIRE))
                                                 .pp(Lego.LAMBDA_STANDARD_CLICK_PRIMARY)
                                                 .decider(GunStateDecider.LAMBDA_STANDARD_DECIDER)
                                                 .anim(LAMBDA_CHEMTHROWER_ANIMS)
-                                                .orchestra(Orchestras.ORCHESTRA_CHEMTHROWER)),
+                                                .orchestra(GunAnimationActions.CHEMTHROWER)),
                         Item.Properties::new);
     }
 }

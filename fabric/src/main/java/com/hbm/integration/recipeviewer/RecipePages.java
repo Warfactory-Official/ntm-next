@@ -1,23 +1,57 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.integration.recipeviewer;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.client.gui.*;
+import com.hbm.client.gui.*;
 import com.hbm.config.InteractionConfig;
 import com.hbm.integration.recipeviewer.GenericMachinePage.Extras;
 import com.hbm.integration.recipeviewer.GenericMachinePage.FluidView;
 import com.hbm.integration.recipeviewer.GenericMachinePage.Layout;
+import com.hbm.integration.recipeviewer.GenericMachinePage;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.machine.CustomMachineDefinitions;
 import com.hbm.inventory.recipes.*;
+import com.hbm.inventory.recipes.*;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBattery;
-import com.hbm.lib.Library;
+import com.hbm.items.machine.BatteryItem;
+import com.hbm.items.tool.GuideBookItem.BookType;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -412,56 +446,56 @@ public final class RecipePages {
 
     private static final List<ClickArea> CLICK_AREAS =
             List.of(
-                    area(ScreenAnvil.class, 34, 26, 18, 18, ANVIL_SMITHING),
-                    area(ScreenAnvil.class, 70, 26, 18, 18, ANVIL_SMITHING),
-                    area(ScreenMachineCentrifuge.class, 68, 18, 80, 38, CENTRIFUGE),
-                    area(ScreenMachinePress.class, 104, 35, 22, 14, PRESS),
-                    area(ScreenMachineEPress.class, 43, 33, 22, 15, PRESS),
-                    area(ScreenMachineShredder.class, 64, 89, 33, 13, SHREDDER),
-                    area(ScreenMachineCyclotron.class, 48, 27, 34, 34, CYCLOTRON),
-                    area(ScreenMachineExposureChamber.class, 36, 39, 41, 10, EXPOSURE_CHAMBER),
-                    area(ScreenMachineSolidifier.class, 42, 17, 38, 17, SOLIDIFICATION),
-                    area(ScreenMachineSolidifier.class, 75, 34, 8, 9, SOLIDIFICATION),
-                    area(ScreenMachineLiquefactor.class, 42, 17, 41, 17, LIQUEFACTION),
-                    area(ScreenMachineLiquefactor.class, 42, 34, 2, 18, LIQUEFACTION),
-                    area(ScreenMachineCompressor.class, 42, 26, 54, 17, COMPRESSOR),
-                    area(ScreenMachineCoker.class, 60, 22, 32, 18, COKER),
-                    area(ScreenMachineRotaryFurnace.class, 63, 30, 32, 10, ROTARY_FURNACE),
-                    area(ScreenMachineSolderingStation.class, 72, 28, 32, 14, SOLDERING),
-                    area(ScreenMachineArcWelder.class, 72, 37, 32, 14, ARC_WELDER),
-                    smelting(ScreenMachineElectricFurnace.class, 43, 36, 27, 12),
-                    smelting(ScreenFurnaceIron.class, 53, 36, 69, 5),
-                    smelting(ScreenFurnaceSteel.class, 54, 18, 68, 5),
-                    smelting(ScreenFurnaceSteel.class, 54, 36, 68, 5),
-                    smelting(ScreenFurnaceSteel.class, 54, 54, 68, 5),
-                    smelting(ScreenFurnaceBrick.class, 86, 34, 22, 16),
-                    smelting(ScreenMachineMicrowave.class, 104, 34, 23, 16),
-                    area(ScreenMachineCatalyticReformer.class, 67, 82, 24, 24, REFORMING),
-                    area(ScreenMachineHydrotreater.class, 85, 82, 24, 24, HYDROTREATING),
-                    area(ScreenMachinePUREX.class, 62, 25, 47, 9, PUREX),
-                    area(ScreenMachinePUREX.class, 62, 90, 47, 9, PUREX),
-                    area(ScreenMachineBlastFurnace.class, 117, 86, 14, 6, BLAST_FURNACE),
-                    area(ScreenMachineSuperComputer.class, 62, 81, 70, 16, SUPERCOMPUTER),
-                    area(ScreenRBMKOutgasser.class, 82, 50, 13, 6, OUTGASSER),
-                    area(ScreenMachineGasCent.class, 70, 35, 36, 13, GAS_CENTRIFUGE),
-                    area(ScreenFurnaceCombination.class, 54, 55, 18, 18, COMBINATION),
-                    area(ScreenMachineCrystallizer.class, 80, 47, 27, 12, CRYSTALLIZER),
-                    area(ScreenMachineElectrolyserFluid.class, 62, 26, 12, 41, ELECTROLYSER_FLUID),
-                    area(ScreenMachineElectrolyserMetal.class, 7, 46, 22, 25, ELECTROLYSER_METAL),
-                    area(ScreenMachineMixer.class, 71, 31, 52, 44, MIXER),
-                    area(ScreenMachinePyroOven.class, 57, 47, 27, 12, PYRO_OVEN),
-                    area(ScreenMachineRadiolysis.class, 71, 35, 26, 16, RADIOLYSIS),
-                    area(ScreenMachineRefinery.class, 39, 45, 14, 34, REFINERY),
-                    area(ScreenMachineSILEX.class, 44, 71, 60, 50, SILEX),
-                    area(ScreenBook.class, 90, 35, 22, 15, MAGIC),
-                    area(ScreenMachineArcFurnace.class, 17, 36, 7, 70, ARC_FURNACE_SOLID),
-                    area(ScreenMachineArcFurnace.class, 152, 36, 16, 70, ARC_FURNACE_FLUID),
-                    area(ScreenMachineRTG.class, 124, 11, 16, 50, RTG),
-                    area(ScreenPASource.class, 76, 36, 6, 6, PARTICLE_ACCELERATOR),
-                    area(ScreenPADetector.class, 76, 36, 6, 7, PARTICLE_ACCELERATOR),
-                    area(ScreenFusionBreeder.class, 67, 48, 42, 10, FLUID_BREEDER),
-                    area(ScreenFusionTorus.class, 99, 39, 28, 10, FUSION),
-                    area(ScreenMachinePlasmaForge.class, 62, 81, 70, 16, PLASMA_FORGE));
+                    area(AnvilScreen.class, 34, 26, 18, 18, ANVIL_SMITHING),
+                    area(AnvilScreen.class, 70, 26, 18, 18, ANVIL_SMITHING),
+                    area(CentrifugeScreen.class, 68, 18, 80, 38, CENTRIFUGE),
+                    area(PressScreen.class, 104, 35, 22, 14, PRESS),
+                    area(EPressScreen.class, 43, 33, 22, 15, PRESS),
+                    area(ShredderScreen.class, 64, 89, 33, 13, SHREDDER),
+                    area(CyclotronScreen.class, 48, 27, 34, 34, CYCLOTRON),
+                    area(ExposureChamberScreen.class, 36, 39, 41, 10, EXPOSURE_CHAMBER),
+                    area(SolidifierScreen.class, 42, 17, 38, 17, SOLIDIFICATION),
+                    area(SolidifierScreen.class, 75, 34, 8, 9, SOLIDIFICATION),
+                    area(LiquefactorScreen.class, 42, 17, 41, 17, LIQUEFACTION),
+                    area(LiquefactorScreen.class, 42, 34, 2, 18, LIQUEFACTION),
+                    area(CompressorScreen.class, 42, 26, 54, 17, COMPRESSOR),
+                    area(CokerScreen.class, 60, 22, 32, 18, COKER),
+                    area(RotaryFurnaceScreen.class, 63, 30, 32, 10, ROTARY_FURNACE),
+                    area(SolderingStationScreen.class, 72, 28, 32, 14, SOLDERING),
+                    area(ArcWelderScreen.class, 72, 37, 32, 14, ARC_WELDER),
+                    smelting(ElectricFurnaceScreen.class, 43, 36, 27, 12),
+                    smelting(FurnaceIronScreen.class, 53, 36, 69, 5),
+                    smelting(FurnaceSteelScreen.class, 54, 18, 68, 5),
+                    smelting(FurnaceSteelScreen.class, 54, 36, 68, 5),
+                    smelting(FurnaceSteelScreen.class, 54, 54, 68, 5),
+                    smelting(FurnaceBrickScreen.class, 86, 34, 22, 16),
+                    smelting(MicrowaveScreen.class, 104, 34, 23, 16),
+                    area(CatalyticReformerScreen.class, 67, 82, 24, 24, REFORMING),
+                    area(HydrotreaterScreen.class, 85, 82, 24, 24, HYDROTREATING),
+                    area(PUREXScreen.class, 62, 25, 47, 9, PUREX),
+                    area(PUREXScreen.class, 62, 90, 47, 9, PUREX),
+                    area(BlastFurnaceScreen.class, 117, 86, 14, 6, BLAST_FURNACE),
+                    area(SuperComputerScreen.class, 62, 81, 70, 16, SUPERCOMPUTER),
+                    area(RBMKOutgasserScreen.class, 82, 50, 13, 6, OUTGASSER),
+                    area(GasCentScreen.class, 70, 35, 36, 13, GAS_CENTRIFUGE),
+                    area(FurnaceCombinationScreen.class, 54, 55, 18, 18, COMBINATION),
+                    area(CrystallizerScreen.class, 80, 47, 27, 12, CRYSTALLIZER),
+                    area(ElectrolyserFluidScreen.class, 62, 26, 12, 41, ELECTROLYSER_FLUID),
+                    area(ElectrolyserMetalScreen.class, 7, 46, 22, 25, ELECTROLYSER_METAL),
+                    area(MixerScreen.class, 71, 31, 52, 44, MIXER),
+                    area(PyroOvenScreen.class, 57, 47, 27, 12, PYRO_OVEN),
+                    area(RadiolysisScreen.class, 71, 35, 26, 16, RADIOLYSIS),
+                    area(RefineryScreen.class, 39, 45, 14, 34, REFINERY),
+                    area(SILEXScreen.class, 44, 71, 60, 50, SILEX),
+                    area(BookScreen.class, 90, 35, 22, 15, MAGIC),
+                    area(ArcFurnaceScreen.class, 17, 36, 7, 70, ARC_FURNACE_SOLID),
+                    area(ArcFurnaceScreen.class, 152, 36, 16, 70, ARC_FURNACE_FLUID),
+                    area(RTGScreen.class, 124, 11, 16, 50, RTG),
+                    area(PASourceScreen.class, 76, 36, 6, 6, PARTICLE_ACCELERATOR),
+                    area(PADetectorScreen.class, 76, 36, 6, 7, PARTICLE_ACCELERATOR),
+                    area(FusionBreederScreen.class, 67, 48, 42, 10, FLUID_BREEDER),
+                    area(FusionTorusScreen.class, 99, 39, 28, 10, FUSION),
+                    area(PlasmaForgeScreen.class, 62, 81, 70, 16, PLASMA_FORGE));
 
     private static volatile List<RecipePage<?>> pages = FIXED;
     private static volatile List<ClickArea> clickAreas = CLICK_AREAS;
@@ -503,6 +537,10 @@ public final class RecipePages {
     }
 
     public static synchronized void addon(RecipePage<?> page) {
+        for (RecipePage<?> existing : pages) {
+            if (existing.id().equals(page.id()))
+                throw new IllegalArgumentException("Duplicate recipe page: " + page.id());
+        }
         List<RecipePage<?>> next = new ArrayList<>(pages);
         next.add(page);
         pages = List.copyOf(next);
@@ -540,24 +578,25 @@ public final class RecipePages {
         hidden.add(new ItemStack(ModItems.BOBMAZON_HIDDEN));
         hidden.add(new ItemStack(ModItems.COAL_ETERNAL));
         hidden.add(new ItemStack(ModItems.BOOK_LEMEGETON));
-        hidden.add(ModItems.GUIDE_BOOK.stack(com.hbm.items.tool.ItemGuideBook.BookType.TEST));
-        hidden.add(ModItems.GUIDE_BOOK.stack(com.hbm.items.tool.ItemGuideBook.BookType.HADRON));
+        hidden.add(ModItems.GUIDE_BOOK.stack(BookType.TEST));
+        hidden.add(ModItems.GUIDE_BOOK.stack(BookType.HADRON));
         hidden.add(new ItemStack(ModItems.AMS_CORE_THINGY));
-        ItemBattery memory = ModItems.MEMORY.get();
+        BatteryItem memory = ModItems.MEMORY.get();
         hidden.add(memory.empty());
         hidden.add(memory.full());
         hidden.add(new ItemStack(ModBlocks.BRICK_FORGOTTEN.get()));
         hidden.add(
                 new ItemStack(
                         BuiltInRegistries.BLOCK
-                                .getOptional(Library.id("brick_forgotten_lock"))
+                                .getOptional(RegistryUtil.id("brick_forgotten_lock"))
                                 .orElseThrow()
                                 .asItem()));
         hidden.add(
                 new ItemStack(
                         BuiltInRegistries.ITEM
-                                .getOptional(Library.id("coal_eternal"))
+                                .getOptional(RegistryUtil.id("coal_eternal"))
                                 .orElseThrow()));
+        for (var member : ModItems.INGOT_METAL) hidden.add(new ItemStack(member.get()));
         if (InteractionConfig.recipeViewerHidesSecrets) {
             for (var member : ModItems.ITEM_SECRET) hidden.add(new ItemStack(member.get()));
         }

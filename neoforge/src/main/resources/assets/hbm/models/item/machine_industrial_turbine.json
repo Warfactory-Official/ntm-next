@@ -155,19 +155,68 @@
       ]
     }
   },
+  "groups": [
+    {
+      "parts": [
+        "Turbine"
+      ],
+      "texture": "industrial_turbine"
+    },
+    {
+      "matrix": [
+        -0.70710677,
+        -0.70710677,
+        0.0,
+        1.0606601,
+        0.70710677,
+        -0.70710677,
+        0.0,
+        2.5606601,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Gauge"
+      ],
+      "texture": "industrial_turbine"
+    },
+    {
+      "matrix": [
+        -0.70710677,
+        -0.70710677,
+        0.0,
+        1.0606601,
+        0.70710677,
+        -0.70710677,
+        0.0,
+        2.5606601,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "parts": [
+        "Flywheel"
+      ],
+      "texture": "industrial_turbine"
+    }
+  ],
   "gui_light": "side",
   "loader": "hbm:obj",
   "model": "hbm:models/machines/industrial_turbine.obj",
   "offset_y": -1.0,
-  "skins": {
-    "all": [
-      "Flywheel",
-      "Gauge",
-      "Turbine"
-    ]
-  },
   "textures": {
-    "all": "hbm:block/models/machines/industrial_turbine",
+    "industrial_turbine": "hbm:block/models/machines/industrial_turbine",
     "particle": "hbm:block/models/machines/industrial_turbine"
   }
 }

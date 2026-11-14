@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.multiblock;
 
@@ -17,7 +33,7 @@ import org.jspecify.annotations.Nullable;
 public final class MultiblockFootprint {
     private MultiblockFootprint() {}
 
-    static Layout layout(BlockMultiblockCore block, Direction facing, long[] offsets) {
+    static Layout layout(MultiblockCoreBlock block, Direction facing, long[] offsets) {
         BlockState[] states = new BlockState[offsets.length];
         BlockState[] swapped = null;
         for (int i = 0; i < offsets.length; i++) {
@@ -80,7 +96,7 @@ public final class MultiblockFootprint {
                     && z <= ((core.getZ() + maxZ) >> 4);
         }
 
-        public void visit(BlockPos core, BlockMultiblockCore.FootprintVisitor visitor) {
+        public void visit(BlockPos core, MultiblockCoreBlock.FootprintVisitor visitor) {
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
             for (long offset : offsets) {
                 visitor.cell(
@@ -94,7 +110,7 @@ public final class MultiblockFootprint {
     }
 
     public static boolean hasDetailedShape(BlockState coreState) {
-        BlockMultiblockCore block = (BlockMultiblockCore) coreState.getBlock();
+        MultiblockCoreBlock block = (MultiblockCoreBlock) coreState.getBlock();
         return block.hasBounding()
                 || !block.usesSharedCells()
                 || block.cellsOpen()
@@ -106,8 +122,8 @@ public final class MultiblockFootprint {
             BlockPos core,
             BlockState coreState,
             BiConsumer<BlockPos, BlockState> visitor) {
-        BlockMultiblockCore block = (BlockMultiblockCore) coreState.getBlock();
-        Direction facing = coreState.getValue(BlockMultiblockCore.FACING);
+        MultiblockCoreBlock block = (MultiblockCoreBlock) coreState.getBlock();
+        Direction facing = coreState.getValue(MultiblockCoreBlock.FACING);
         visitor.accept(core, coreState);
         if (!block.hasVariableFootprint()) {
             Layout layout = block.footprint(facing);
@@ -162,8 +178,8 @@ public final class MultiblockFootprint {
                         BlockState swapped = block.swappedCellStateFor(lx, dy, lz, facing);
                         if (swapped == null || !matches(state, swapped)) {
                             if (!state.is(expected.getBlock())) return;
-                            if (state.getBlock() instanceof BlockMultiblockGeometryCell
-                                    && BlockMultiblockGeometryCell.shapeId(state) != shape) return;
+                            if (state.getBlock() instanceof MultiblockGeometryCellBlock
+                                    && MultiblockGeometryCellBlock.shapeId(state) != shape) return;
                         }
                     }
                     visitor.accept(pos, state);
@@ -172,8 +188,8 @@ public final class MultiblockFootprint {
 
     public static boolean matches(BlockState actual, BlockState expected) {
         return actual.is(expected.getBlock())
-                && (!(actual.getBlock() instanceof BlockMultiblockGeometryCell)
-                        || BlockMultiblockGeometryCell.shapeId(actual)
-                                == BlockMultiblockGeometryCell.shapeId(expected));
+                && (!(actual.getBlock() instanceof MultiblockGeometryCellBlock)
+                        || MultiblockGeometryCellBlock.shapeId(actual)
+                                == MultiblockGeometryCellBlock.shapeId(expected));
     }
 }

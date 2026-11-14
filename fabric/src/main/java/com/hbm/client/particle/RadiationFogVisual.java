@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.particle;
 
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.instance.Instancer;
 import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.model.Model;
@@ -32,7 +48,7 @@ public final class RadiationFogVisual
                     .build();
     private static final Model MODEL = new SingleMeshModel(FogQuadMesh.INSTANCE, MATERIAL);
     private static final SpriteId SPRITE_ID =
-            new SpriteId(TextureAtlas.LOCATION_PARTICLES, Library.id("rad_fog"));
+            new SpriteId(TextureAtlas.LOCATION_PARTICLES, RegistryUtil.id("rad_fog"));
     private final RadiationFogEffect effect;
     private final BillboardInstance[] instances =
             new BillboardInstance[RadiationFogEffect.QUAD_COUNT];

@@ -14,7 +14,10 @@
       "ingredient": "#hbm:plates_cast/aluminum"
     },
     "E": {
-      "ingredient": "hbm:gun_amat"
+      "ingredient": "hbm:gun_amat",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "F": {
       "ingredient": "#hbm:plates_cast/aluminum"

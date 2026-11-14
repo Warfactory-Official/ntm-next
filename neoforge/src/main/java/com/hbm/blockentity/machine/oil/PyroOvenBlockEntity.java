@@ -1,0 +1,611 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
+
+package com.hbm.blockentity.machine.oil;
+
+import com.hbm.api.energymk2.EnergyHandler;
+import com.hbm.api.energymk2.EnergyItem;
+import com.hbm.api.energymk2.ItemEnergyTransfer;
+import com.hbm.api.fluidmk2.FluidFlushOutputs;
+import com.hbm.api.fluidmk2.FluidTankHandler;
+import com.hbm.api.fluidmk2.FlushFaces;
+import com.hbm.api.fluidmk2.FlushLanes;
+import com.hbm.blockentity.AudioLoop;
+import com.hbm.blockentity.FluidSettingsHandler;
+import com.hbm.blockentity.PollutingMachineBlockEntity;
+import com.hbm.blockentity.SoundEmitter;
+import com.hbm.blockentity.UpgradeInfoProvider;
+import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.handler.pollution.PollutionHandler;
+import com.hbm.handler.pollution.PollutionType;
+import com.hbm.inventory.container.PyroOvenMenu;
+import com.hbm.inventory.fluid.FluidStackNTM;
+import com.hbm.inventory.fluid.NTMFluids;
+import com.hbm.inventory.fluid.tank.FluidTankAccess;
+import com.hbm.inventory.fluid.tank.FluidTankNTM;
+import com.hbm.inventory.recipes.PyroOvenRecipe;
+import com.hbm.inventory.recipes.PyroOvenRecipes;
+import com.hbm.inventory.recipes.ingredient.CountIngredient;
+import com.hbm.inventory.recipes.loader.Outputs;
+import com.hbm.items.machine.FluidIdentifierItem;
+import com.hbm.items.machine.upgrade.MachineUpgradeItem;
+import com.hbm.items.machine.upgrade.UpgradeInfo;
+import com.hbm.items.machine.upgrade.UpgradeLimits;
+import com.hbm.items.machine.upgrade.UpgradeManager;
+import com.hbm.items.machine.upgrade.UpgradeType;
+import com.hbm.packet.SyncUnitSchema;
+import com.hbm.particle.CoolingTowerParticleOptions;
+import com.hbm.sound.AudioSystem;
+import com.hbm.sound.ModSounds;
+import com.hbm.sound.SoundHandle;
+import com.hbm.sound.WorldSounds;
+import com.hbm.util.TickPhase;
+import io.netty.buffer.ByteBuf;
+import java.util.List;
+import java.util.function.Consumer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
+
+public class PyroOvenBlockEntity extends PollutingMachineBlockEntity
+        implements SoundEmitter,
+                FluidTankAccess,
+                AudioLoop,
+                EnergyHandler,
+                FluidTankHandler,
+                MenuProvider,
+                UpgradeInfoProvider,
+                FluidSettingsHandler,
+                SyncUnitSchema {
+
+    public static final int SLOT_BATTERY = 0;
+    public static final int SLOT_ITEM_INPUT = 1;
+    public static final int SLOT_ITEM_OUTPUT = 2;
+    public static final int SLOT_FLUID_ID = 3;
+    public static final int SLOT_UPGRADE_START = 4;
+    public static final int SLOT_UPGRADE_END = 5;
+    public static final int SLOT_COUNT = 6;
+
+    public static final long MAX_POWER = 10_000_000L;
+    public static final int CONSUMPTION = 10_000;
+
+    private static final int[] ACCESSIBLE_SLOTS = {SLOT_ITEM_INPUT, SLOT_ITEM_OUTPUT};
+
+    private static final UpgradeLimits VALID_UPGRADES =
+            UpgradeLimits.of(UpgradeType.SPEED, 3)
+                    .and(UpgradeType.POWER, 3)
+                    .and(UpgradeType.OVERDRIVE, 3);
+    public static @Nullable Consumer<PyroOvenBlockEntity> CLIENT_SOUND;
+    public final FluidTankNTM[] tanks = new FluidTankNTM[2];
+    private final FluidTankNTM[] receiving;
+    private final FluidTankNTM[] sending;
+    private final UpgradeManager upgradeManager = new UpgradeManager(this);
+    private final FluidFlushOutputs flush = new FluidFlushOutputs();
+    public long power;
+    public boolean isVenting;
+    public boolean isProgressing;
+    public float progress;
+    public int prevAnim;
+    public int anim;
+    private @Nullable PyroOvenRecipe lastValidRecipe;
+
+    public PyroOvenBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.PYROOVEN.get(), pos, state, SLOT_COUNT, 50);
+        hbm$syncArraySet$PyroOvenBlockEntity$tanks(
+                tanks, 0, new FluidTankNTM(NTMFluids.NONE, 24_000));
+        hbm$syncArraySet$PyroOvenBlockEntity$tanks(
+                tanks, 1, new FluidTankNTM(NTMFluids.NONE, 24_000));
+        receiving = new FluidTankNTM[] {tanks[0]};
+        sending = new FluidTankNTM[] {tanks[1], smoke};
+    }
+
+    public static int getConsumption(int speed, int powerSaving) {
+        return (int) (CONSUMPTION * Math.pow(speed + 1, 2)) / (powerSaving + 1);
+    }
+
+    @Override
+    protected Component getDefaultName() {
+        return Component.translatable("container.machinePyroOven");
+    }
+
+    private Direction facing() {
+        return MultiblockCoreBlock.coreFacing(getBlockState());
+    }
+
+    @Override
+    public void setItem(int slot, ItemStack stack) {
+        super.setItem(slot, stack);
+        if (level == null || level.isClientSide()) return;
+        if (slot >= SLOT_UPGRADE_START
+                && slot <= SLOT_UPGRADE_END
+                && MachineUpgradeItem.isUpgrade(stack)) {
+            WorldSounds.machine(
+                    level,
+                    null,
+                    worldPosition,
+                    ModSounds.UPGRADE_PLUG.get(),
+                    SoundSource.BLOCKS,
+                    1.0F,
+                    1.0F);
+        }
+    }
+
+    @Override
+    public void tickServer() {
+        ServerLevel server = (ServerLevel) level;
+        hbm$syncSet$PyroOvenBlockEntity$power(
+                (long)
+                        (power
+                                + (ItemEnergyTransfer.extract(
+                                        this, SLOT_BATTERY, MAX_POWER - power, false))));
+        if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) markChanged();
+
+        flush.provide(server, this);
+
+        upgradeManager.scan(this, SLOT_UPGRADE_START, SLOT_UPGRADE_END);
+        int speed = upgradeManager.getLevel(UpgradeType.SPEED);
+        int powerSaving = upgradeManager.getLevel(UpgradeType.POWER);
+        int overdrive = upgradeManager.getLevel(UpgradeType.OVERDRIVE);
+
+        hbm$syncSet$PyroOvenBlockEntity$isProgressing(false);
+        hbm$syncSet$PyroOvenBlockEntity$isVenting(false);
+
+        if (canProcess()) {
+            PyroOvenRecipe recipe = getMatchingRecipe();
+            hbm$syncSet$PyroOvenBlockEntity$progress(
+                    (float)
+                            (progress
+                                    + (1F
+                                            / Math.max(
+                                                    (recipe.duration
+                                                                    - speed * (recipe.duration / 4))
+                                                            / (overdrive * 2 + 1),
+                                                    1))));
+            hbm$syncSet$PyroOvenBlockEntity$isProgressing(true);
+            hbm$syncSet$PyroOvenBlockEntity$power(
+                    (long) (power - (getConsumption(speed + overdrive * 2, powerSaving))));
+            markChanged();
+
+            if (progress >= 1F) {
+                hbm$syncSet$PyroOvenBlockEntity$progress(0F);
+                finishRecipe(recipe);
+                setChanged();
+            }
+
+            pollute(PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND);
+        } else {
+            if (progress != 0F) markChanged();
+            hbm$syncSet$PyroOvenBlockEntity$progress(0F);
+        }
+
+        networkPackNT(50);
+    }
+
+    @Override
+    public void declareFlush(FlushLanes out) {
+        out.add(tanks[1], FlushFaces.activePlane((cell, side) -> side.getAxis().isHorizontal()));
+        out.add(smoke, FlushFaces.activePlane((cell, side) -> side == Direction.UP));
+    }
+
+    @Override
+    public void tickClient() {
+        prevAnim = anim;
+        Direction dir = facing();
+        Direction rot = dir.getCounterClockWise();
+
+        if (CLIENT_SOUND != null) CLIENT_SOUND.accept(this);
+
+        if (isProgressing) {
+            anim++;
+
+            if (level.getNearestPlayer(
+                            worldPosition.getX() + 0.5,
+                            worldPosition.getY() + 3,
+                            worldPosition.getZ() + 0.5,
+                            50,
+                            EntitySelector.ENTITY_STILL_ALIVE)
+                    != null) {
+                for (double d : new double[] {0.875, 2.375}) {
+                    for (int s = -1; s <= 1; s += 2) {
+                        if (level.getRandom().nextInt(20) == 0) {
+                            level.addParticle(
+                                    ParticleTypes.CLOUD,
+                                    worldPosition.getX()
+                                            + 0.5
+                                            - rot.getStepX()
+                                            + dir.getStepX() * d * s,
+                                    worldPosition.getY() + 3,
+                                    worldPosition.getZ()
+                                            + 0.5
+                                            - rot.getStepZ()
+                                            + dir.getStepZ() * d * s,
+                                    0.0,
+                                    0.05,
+                                    0.0);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isVenting && TickPhase.every(this, 2)) {
+            CoolingTowerParticleOptions opts =
+                    new CoolingTowerParticleOptions.Builder()
+                            .setLift(10F)
+                            .setBaseScale(0.25F)
+                            .setMaxScale(2.5F)
+                            .setLife(100 + level.getRandom().nextInt(20))
+                            .setColor(0x202020)
+                            .build();
+            level.addParticle(
+                    opts,
+                    worldPosition.getX() + 0.5 - rot.getStepX(),
+                    worldPosition.getY() + 3,
+                    worldPosition.getZ() + 0.5 - rot.getStepZ(),
+                    0,
+                    0,
+                    0);
+        }
+    }
+
+    public @Nullable PyroOvenRecipe getMatchingRecipe() {
+        if (lastValidRecipe != null && doesRecipeMatch(lastValidRecipe)) return lastValidRecipe;
+        for (PyroOvenRecipe rec : PyroOvenRecipes.INSTANCE.recipes()) {
+            if (doesRecipeMatch(rec)) {
+                lastValidRecipe = rec;
+                return rec;
+            }
+        }
+        return null;
+    }
+
+    public boolean doesRecipeMatch(PyroOvenRecipe recipe) {
+        FluidStackNTM inputFluid = recipe.inFluid();
+        if (inputFluid != null && tanks[0].getTankType() != inputFluid.type()) return false;
+        ItemStack in = inventory.get(SLOT_ITEM_INPUT);
+        CountIngredient inputItem = recipe.inItem();
+        if (inputItem != null) {
+            if (in.isEmpty()) return false;
+            return inputItem.matchesItem(in);
+        } else return in.isEmpty();
+    }
+
+    public boolean canProcess() {
+        int speed = upgradeManager.getLevel(UpgradeType.SPEED);
+        int powerSaving = upgradeManager.getLevel(UpgradeType.POWER);
+        if (power < getConsumption(speed, powerSaving)) return false;
+
+        PyroOvenRecipe recipe = getMatchingRecipe();
+        if (recipe == null) return false;
+        FluidStackNTM inputFluid = recipe.inFluid();
+        CountIngredient inputItem = recipe.inItem();
+        FluidStackNTM outputFluid = recipe.outFluid();
+        if (inputFluid != null && tanks[0].getFill() < inputFluid.amount()) return false;
+        if (inputItem != null && inventory.get(SLOT_ITEM_INPUT).getCount() < inputItem.count())
+            return false;
+        if (outputFluid != null
+                && outputFluid.type() == tanks[1].getTankType()
+                && outputFluid.amount() + tanks[1].getFill() > tanks[1].getMaxFill()) return false;
+
+        return Outputs.fits(inventory.get(SLOT_ITEM_OUTPUT), recipe.outputItems(), 0);
+    }
+
+    public void finishRecipe(PyroOvenRecipe recipe) {
+        ItemStack outputItem = recipe.outItem();
+        if (!outputItem.isEmpty()) {
+            ItemStack out = inventory.get(SLOT_ITEM_OUTPUT);
+            if (out.isEmpty()) inventory.set(SLOT_ITEM_OUTPUT, outputItem.copy());
+            else out.grow(outputItem.getCount());
+        }
+        FluidStackNTM outputFluid = recipe.outFluid();
+        if (outputFluid != null) {
+            tanks[1].setTankType(outputFluid.type());
+            tanks[1].setFill(tanks[1].getFill() + (int) outputFluid.amount());
+        }
+        CountIngredient inputItem = recipe.inItem();
+        FluidStackNTM inputFluid = recipe.inFluid();
+        if (inputItem != null) inventory.get(SLOT_ITEM_INPUT).shrink(inputItem.count());
+        if (inputFluid != null) tanks[0].setFill(tanks[0].getFill() - (int) inputFluid.amount());
+    }
+
+    @Override
+    public void pollute(PollutionType type, float amount) {
+        FluidTankNTM tank =
+                type == PollutionType.SOOT
+                        ? smoke
+                        : type == PollutionType.HEAVYMETAL ? smokeLeaded : smokePoison;
+        int fluidAmount = (int) Math.ceil(amount * 100);
+        int accepted = tank.fill(tank.getTankType(), fluidAmount, true);
+        if (accepted > 0) markChanged();
+        int overflow = fluidAmount - accepted;
+        if (overflow > 0) {
+            PollutionHandler.add(level, worldPosition, type, overflow / 100F);
+            hbm$syncSet$PyroOvenBlockEntity$isVenting(true);
+        }
+    }
+
+    public SoundHandle createAudioLoop() {
+        return AudioSystem.getLoopedSound(
+                ModSounds.PYRO_OVEN_LOOP.get(),
+                SoundSource.BLOCKS,
+                worldPosition.getX(),
+                worldPosition.getY(),
+                worldPosition.getZ(),
+                1.0F,
+                15F,
+                1.0F,
+                20);
+    }
+
+    @Override
+    public long getPower() {
+        return power;
+    }
+
+    @Override
+    public void setPower(long p) {
+        hbm$syncSet$PyroOvenBlockEntity$power(Math.max(0L, Math.min(p, MAX_POWER)));
+    }
+
+    @Override
+    public long getMaxPower() {
+        return MAX_POWER;
+    }
+
+    @Override
+    public FluidTankNTM[] getReceivingTanks() {
+        return receiving;
+    }
+
+    @Override
+    public FluidTankNTM[] getSendingTanks() {
+        return sending;
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+        return ACCESSIBLE_SLOTS;
+    }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return switch (slot) {
+            case SLOT_BATTERY -> EnergyItem.matches(stack);
+            case SLOT_FLUID_ID -> stack.getItem() instanceof FluidIdentifierItem;
+            case SLOT_UPGRADE_START, SLOT_UPGRADE_END -> MachineUpgradeItem.isUpgrade(stack);
+            case SLOT_ITEM_INPUT -> true;
+            default -> false;
+        };
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
+        return slot == SLOT_ITEM_INPUT;
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        return slot == SLOT_ITEM_OUTPUT;
+    }
+
+    @Override
+    public void appendUpgradeInfo(UpgradeType type, int level, List<Component> tooltip) {
+        if (type == UpgradeType.SPEED)
+            UpgradeInfo.speedAndPower(tooltip, -level * 25, ((level + 1) * (level + 1) - 1) * 100);
+        else
+            UpgradeInfo.percent(
+                    tooltip, "upgrade.consumption", UpgradeInfo.reduction(level + 1), true);
+    }
+
+    @Override
+    public UpgradeLimits upgradeCaps() {
+        return VALID_UPGRADES;
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return getName();
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(
+            int containerId, Inventory playerInventory, Player player) {
+        return new PyroOvenMenu(containerId, playerInventory, this);
+    }
+
+    @Override
+    public int tankCount() {
+        return 3;
+    }
+
+    @Override
+    public FluidTankNTM tank(int index) {
+        return switch (index) {
+            case 0 -> tanks[0];
+            case 1 -> tanks[1];
+            case 2 -> smoke;
+            default -> throw new IndexOutOfBoundsException(index);
+        };
+    }
+
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        input.getLong("power").ifPresent(v -> hbm$syncSet$PyroOvenBlockEntity$power(v));
+        hbm$syncSet$PyroOvenBlockEntity$progress(input.getFloatOr("progress", progress));
+        input.child("t0").ifPresent(tanks[0]::deserialize);
+        input.child("t1").ifPresent(tanks[1]::deserialize);
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putLong("power", power);
+        output.putFloat("progress", progress);
+        tanks[0].serialize(output.child("t0"));
+        tanks[1].serialize(output.child("t1"));
+    }
+
+    private void writeTanks(ByteBuf output) {
+        for (int i = 0; i < 2; i++) tanks[i].packetSerialize(output);
+    }
+
+    private void readTanks(ByteBuf input) {
+        for (int i = 0; i < 2; i++) tanks[i].packetDeserialize(input);
+    }
+
+    @Override
+    public long syncUnitMask() {
+        return super.syncUnitMask() | 0x1fL;
+    }
+
+    @Override
+    public void writeSyncUnit(int unit, ByteBuf output) {
+        switch (unit) {
+            case 0 -> writeTanks(output);
+            case 1 -> output.writeLong(power);
+            case 2 -> output.writeBoolean(isVenting);
+            case 3 -> output.writeBoolean(isProgressing);
+            case 4 -> output.writeFloat(progress);
+            default -> super.writeSyncUnit(unit, output);
+        }
+    }
+
+    @Override
+    public void readSyncUnit(int unit, ByteBuf input) {
+        switch (unit) {
+            case 0 -> readTanks(input);
+            case 1 -> hbm$syncSet$PyroOvenBlockEntity$power(input.readLong());
+            case 2 -> hbm$syncSet$PyroOvenBlockEntity$isVenting(input.readBoolean());
+            case 3 -> hbm$syncSet$PyroOvenBlockEntity$isProgressing(input.readBoolean());
+            case 4 -> hbm$syncSet$PyroOvenBlockEntity$progress(input.readFloat());
+            default -> super.readSyncUnit(unit, input);
+        }
+    }
+
+    @Override
+    public boolean tickSound() {
+        return isProgressing;
+    }
+
+    public final FluidTankNTM hbm$syncArraySet$PyroOvenBlockEntity$tanks(
+            FluidTankNTM[] array, int index, FluidTankNTM next) {
+        if (array[index] != next) {
+            if (array == this.tanks && syncBound())
+                com.hbm.packet.SyncBindings.unbind(this, array[index]);
+            array[index] = next;
+            if (array == this.tanks) {
+                syncArrayChanged(array, index, 3, 1L << 0);
+            }
+        }
+        return next;
+    }
+
+    public final void hbm$syncSet$PyroOvenBlockEntity$power(long next) {
+        if (this.power != next) {
+            this.power = next;
+            if ((1L << 1) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 1);
+        }
+    }
+
+    public final void hbm$syncSet$PyroOvenBlockEntity$isVenting(boolean next) {
+        if (this.isVenting != next) {
+            this.isVenting = next;
+            if ((1L << 2) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 2);
+        }
+    }
+
+    public final void hbm$syncSet$PyroOvenBlockEntity$isProgressing(boolean next) {
+        if (this.isProgressing != next) {
+            this.isProgressing = next;
+            if ((1L << 3) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 3);
+        }
+    }
+
+    public final void hbm$syncSet$PyroOvenBlockEntity$progress(float next) {
+        if (Float.floatToRawIntBits(this.progress) != Float.floatToRawIntBits(next)) {
+            this.progress = next;
+            if ((1L << 4) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 4);
+        }
+    }
+
+    static {
+        com.hbm.packet.SyncBindings.field(PyroOvenBlockEntity.class, "tanks", 3, 1L << 0);
+    }
+
+    private boolean hbm$soundActive;
+
+    public boolean soundStarted(boolean active) {
+        boolean started = active && !hbm$soundActive;
+        hbm$soundActive = active;
+        return started;
+    }
+
+    private SoundHandle hbm$audio;
+
+    public void audioLoop(boolean running, float volume) {
+        hbm$audio = AudioLoop.loop(this, hbm$audio, running, volume, 0F, false);
+    }
+
+    public void audioLoop(boolean running, float volume, float pitch) {
+        hbm$audio = AudioLoop.loop(this, hbm$audio, running, volume, pitch, true);
+    }
+
+    private void hbm$audioRemove() {
+        audioLoop(false, 0F);
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        hbm$audioRemove();
+    }
+}

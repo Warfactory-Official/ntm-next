@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.entity.logic.EntityDeathBlast;
+import com.hbm.entity.logic.DeathBlastEntity;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import net.minecraft.util.ARGB;
@@ -11,7 +27,7 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public final class DeathBlastVisual extends LaserColumnVisual<EntityDeathBlast> {
+public final class DeathBlastVisual extends LaserColumnVisual<DeathBlastEntity> {
     private static final int SHELLS = 8;
     private static final float REACH = reach();
 
@@ -20,7 +36,7 @@ public final class DeathBlastVisual extends LaserColumnVisual<EntityDeathBlast> 
     private final Matrix4f pose = new Matrix4f();
     private final Vector3f position = new Vector3f();
 
-    public DeathBlastVisual(VisualizationContext ctx, EntityDeathBlast entity, float partialTick) {
+    public DeathBlastVisual(VisualizationContext ctx, DeathBlastEntity entity, float partialTick) {
         super(ctx, entity, partialTick, 0x00FF00, 0xFF00FF);
         core = instance(NukeCloudVisual.SPHERE_TRANSLUCENT, 0xFFFFFFFF);
         for (int i = 0; i < SHELLS; i++)
@@ -57,7 +73,7 @@ public final class DeathBlastVisual extends LaserColumnVisual<EntityDeathBlast> 
     }
 
     private void writeSpheres(float partialTick) {
-        float age = (entity.tickCount + partialTick) / EntityDeathBlast.maxAge;
+        float age = (entity.tickCount + partialTick) / DeathBlastEntity.maxAge;
         float scale = Math.max(10F - 10F * age, 0F);
 
         Vector3f visualPos = getVisualPosition(partialTick, position);

@@ -924,6 +924,20 @@
       {
         "model": {
           "type": "minecraft:model",
+          "model": "hbm:item/scraps_netherite"
+        },
+        "when": "netherite"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "hbm:item/scraps_netherite_scrap"
+        },
+        "when": "netherite_scrap"
+      },
+      {
+        "model": {
+          "type": "minecraft:model",
           "model": "hbm:item/scraps_rare_earth"
         },
         "when": "rare_earth"

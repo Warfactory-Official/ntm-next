@@ -8,7 +8,10 @@
       "ingredient": "#c:plates/gold"
     },
     "C": {
-      "ingredient": "hbm:gun_light_revolver"
+      "ingredient": "hbm:gun_light_revolver",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "D": {
       "ingredient": "#c:plates/gold"

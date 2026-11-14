@@ -1,56 +1,44 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.anim;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 
 public class BusAnimation {
 
-    private final HashMap<String, BusAnimationSequence> animationBuses =
-            new HashMap<String, BusAnimationSequence>();
+    private final HashMap<String, AnimationSequence> animationBuses = new HashMap<>();
+    private int totalTime;
 
-    private int totalTime = 0;
-
-    public BusAnimation addBus(String name, BusAnimationSequence bus) {
-
+    public BusAnimation addBus(String name, AnimationSequence bus) {
         animationBuses.put(name, bus);
-
-        int duration = bus.getTotalTime();
-
-        if (duration > totalTime) totalTime = duration;
-
+        totalTime = Math.max(totalTime, bus.getDuration());
         return this;
     }
 
-    public void updateTime() {
-
-        for (Entry<String, BusAnimationSequence> sequence : animationBuses.entrySet()) {
-
-            int time = sequence.getValue().getTotalTime();
-
-            if (time > totalTime) totalTime = time;
-        }
-    }
-
-    public BusAnimationSequence getBus(String name) {
+    public AnimationSequence getBus(String name) {
         return animationBuses.get(name);
     }
 
-    public void setTimeMult(double mult) {
-        for (Entry<String, BusAnimationSequence> sequence : animationBuses.entrySet()) {
-            sequence.getValue().multiplyTime(mult);
-        }
-    }
-
-    public double[] getTimedTransformation(String name, int millis) {
-
-        if (this.animationBuses.containsKey(name))
-            return animationBuses.get(name).getTransformation(millis);
-
-        return null;
+    public void forEachBus(BiConsumer<String, AnimationSequence> action) {
+        animationBuses.forEach(action);
     }
 
     public int getDuration() {

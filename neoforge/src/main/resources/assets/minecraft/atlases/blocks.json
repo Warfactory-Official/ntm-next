@@ -6,6 +6,10 @@
     },
     {
       "type": "minecraft:single",
+      "resource": "hbm:models/soyuz_capsule/module_propulsion"
+    },
+    {
+      "type": "minecraft:single",
       "resource": "hbm:models/soyuz_launcher/launcher_leg"
     },
     {
@@ -1291,6 +1295,18 @@
     {
       "type": "hbm:padded",
       "resource": "hbm:models/projectiles/himars_standard"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/soyuz_capsule/module_dome"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/soyuz_capsule/module_lander"
+    },
+    {
+      "type": "hbm:padded",
+      "resource": "hbm:models/soyuz_capsule/module_solar"
     },
     {
       "type": "hbm:padded",

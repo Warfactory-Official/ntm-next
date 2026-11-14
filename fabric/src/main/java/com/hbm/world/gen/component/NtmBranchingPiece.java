@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.gen.component;
 
@@ -8,6 +24,7 @@ import java.util.List;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
@@ -26,10 +43,6 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
         super(type, context, tag);
     }
 
-    private static int coordModeOf(Direction direction) {
-        return direction.get2DDataValue();
-    }
-
     protected static BoundingBox anchorBoundingBox(
             int x,
             int y,
@@ -41,74 +54,18 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
             int sizeX,
             int sizeY,
             int sizeZ) {
-        int mode = coordModeOf(direction);
-        return switch (mode) {
-            case 0 ->
-                    new BoundingBox(
-                            x + offsetX,
-                            y + offsetY,
-                            z + offsetZ,
-                            x + sizeX - 1 + offsetX,
-                            y + sizeY - 1 + offsetY,
-                            z + sizeZ - 1 + offsetZ);
-            case 1 ->
-                    new BoundingBox(
-                            x - sizeZ + 1 - offsetZ,
-                            y + offsetY,
-                            z + offsetX,
-                            x - offsetZ,
-                            y + sizeY - 1 + offsetY,
-                            z + sizeX - 1 + offsetX);
-            case 2 ->
-                    new BoundingBox(
-                            x - sizeX + 1 - offsetX,
-                            y + offsetY,
-                            z - sizeZ + 1 - offsetZ,
-                            x - offsetX,
-                            y + sizeY - 1 + offsetY,
-                            z + offsetZ);
-            default ->
-                    new BoundingBox(
-                            x + offsetZ,
-                            y + offsetY,
-                            z - sizeX + 1 - offsetX,
-                            x + sizeZ - 1 + offsetZ,
-                            y + sizeY - 1 + offsetY,
-                            z - offsetX);
-        };
-    }
-
-    private static @Nullable StructurePiece generatePiece(
-            NtmBranchingStart start,
-            StructurePieceAccessor accessor,
-            RandomSource random,
-            int x,
-            int y,
-            int z,
-            Direction direction) {
-        List<PieceWeight> weights = start.availablePieces;
-        for (int attempt = 0; attempt < 5; attempt++) {
-            int totalWeight = 0;
-            for (PieceWeight w : weights) {
-                if (w.maxPlaceCount < 0 || w.placeCount < w.maxPlaceCount) totalWeight += w.weight;
-            }
-            if (totalWeight <= 0) return null;
-
-            int roll = random.nextInt(totalWeight);
-            for (PieceWeight w : weights) {
-                if (w.maxPlaceCount >= 0 && w.placeCount >= w.maxPlaceCount) continue;
-                roll -= w.weight;
-                if (roll < 0) {
-                    StructurePiece piece = w.factory.create(accessor, random, x, y, z, direction);
-                    if (piece != null) {
-                        w.placeCount++;
-                        return piece;
-                    }
-                    break;
-                }
-            }
-        }
-        return null;
+        var across = direction.getCounterClockWise();
+        int nearX = x + across.getStepX() * offsetX + direction.getStepX() * offsetZ;
+        int nearZ = z + across.getStepZ() * offsetX + direction.getStepZ() * offsetZ;
+        int farX = nearX + across.getStepX() * (sizeX - 1) + direction.getStepX() * (sizeZ - 1);
+        int farZ = nearZ + across.getStepZ() * (sizeX - 1) + direction.getStepZ() * (sizeZ - 1);
+        return new BoundingBox(
+                Math.min(nearX, farX),
+                y + offsetY,
+                Math.min(nearZ, farZ),
+                Math.max(nearX, farX),
+                y + offsetY + sizeY - 1,
+                Math.max(nearZ, farZ));
     }
 
     public void buildComponent(
@@ -120,46 +77,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
             RandomSource random,
             int offset,
             int offsetY) {
-        BoundingBox box = this.getBoundingBox();
-        int mode = coordModeOf(this.getOrientation());
-        return switch (mode) {
-            case 0 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() + offset,
-                            box.minY() + offsetY,
-                            box.maxZ() + 1,
-                            Direction.SOUTH);
-            case 1 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() - 1,
-                            box.minY() + offsetY,
-                            box.minZ() + offset,
-                            Direction.WEST);
-            case 2 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() - offset,
-                            box.minY() + offsetY,
-                            box.minZ() - 1,
-                            Direction.NORTH);
-            default ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() + 1,
-                            box.minY() + offsetY,
-                            box.maxZ() - offset,
-                            Direction.EAST);
-        };
+        return branch(start, accessor, random, Rotation.NONE, offset, offsetY);
     }
 
     protected final @Nullable StructurePiece generateChildAntiNormal(
@@ -168,46 +86,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
             RandomSource random,
             int offset,
             int offsetY) {
-        BoundingBox box = this.getBoundingBox();
-        int mode = coordModeOf(this.getOrientation());
-        return switch (mode) {
-            case 0 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() - offset,
-                            box.minY() + offsetY,
-                            box.minZ() - 1,
-                            Direction.NORTH);
-            case 1 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() + 1,
-                            box.minY() + offsetY,
-                            box.maxZ() - offset,
-                            Direction.EAST);
-            case 2 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() + offset,
-                            box.minY() + offsetY,
-                            box.maxZ() + 1,
-                            Direction.SOUTH);
-            default ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() - 1,
-                            box.minY() + offsetY,
-                            box.minZ() + offset,
-                            Direction.WEST);
-        };
+        return branch(start, accessor, random, Rotation.CLOCKWISE_180, offset, offsetY);
     }
 
     protected final @Nullable StructurePiece generateChildWest(
@@ -216,46 +95,7 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
             RandomSource random,
             int offset,
             int offsetY) {
-        BoundingBox box = this.getBoundingBox();
-        int mode = coordModeOf(this.getOrientation());
-        return switch (mode) {
-            case 0 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() - 1,
-                            box.minY() + offsetY,
-                            box.minZ() + offset,
-                            Direction.WEST);
-            case 1 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() - offset,
-                            box.minY() + offsetY,
-                            box.minZ() - 1,
-                            Direction.NORTH);
-            case 2 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() + 1,
-                            box.minY() + offsetY,
-                            box.maxZ() - offset,
-                            Direction.EAST);
-            default ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() + offset,
-                            box.minY() + offsetY,
-                            box.maxZ() + 1,
-                            Direction.SOUTH);
-        };
+        return branch(start, accessor, random, Rotation.CLOCKWISE_90, offset, offsetY);
     }
 
     protected final @Nullable StructurePiece generateChildEast(
@@ -264,67 +104,27 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
             RandomSource random,
             int offset,
             int offsetY) {
-        BoundingBox box = this.getBoundingBox();
-        int mode = coordModeOf(this.getOrientation());
-        return switch (mode) {
-            case 0 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() + 1,
-                            box.minY() + offsetY,
-                            box.maxZ() - offset,
-                            Direction.EAST);
-            case 1 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() + offset,
-                            box.minY() + offsetY,
-                            box.maxZ() + 1,
-                            Direction.SOUTH);
-            case 2 ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.minX() - 1,
-                            box.minY() + offsetY,
-                            box.minZ() + offset,
-                            Direction.WEST);
-            default ->
-                    generateAndAddPiece(
-                            start,
-                            accessor,
-                            random,
-                            box.maxX() - offset,
-                            box.minY() + offsetY,
-                            box.minZ() - 1,
-                            Direction.NORTH);
-        };
+        return branch(start, accessor, random, Rotation.COUNTERCLOCKWISE_90, offset, offsetY);
     }
 
-    private @Nullable StructurePiece generateAndAddPiece(
+    private @Nullable StructurePiece branch(
             NtmBranchingStart start,
             StructurePieceAccessor accessor,
             RandomSource random,
-            int x,
-            int y,
-            int z,
-            Direction direction) {
-        if (start.componentCount >= start.sizeLimit) return null;
-        if (Math.abs(x - start.originX) > start.distanceLimit
-                || Math.abs(z - start.originZ) > start.distanceLimit) return null;
+            Rotation turn,
+            int offset,
+            int offsetY) {
+        var heading = turn.rotate(this.getOrientation());
+        var across = heading.getCounterClockWise();
+        BoundingBox box = this.getBoundingBox();
+        int x = exit(box.minX(), box.maxX(), heading.getStepX(), across.getStepX(), offset);
+        int z = exit(box.minZ(), box.maxZ(), heading.getStepZ(), across.getStepZ(), offset);
+        return start.grow(accessor, random, x, box.minY() + offsetY, z, heading);
+    }
 
-        StructurePiece piece = generatePiece(start, accessor, random, x, y, z, direction);
-        if (piece != null) {
-            accessor.addPiece(piece);
-            start.pendingChildren.add(piece);
-            start.componentCount++;
-        }
-        return piece;
+    private static int exit(int min, int max, int forward, int sideways, int offset) {
+        if (forward != 0) return forward > 0 ? max + 1 : min - 1;
+        return sideways > 0 ? min + offset : max - offset;
     }
 
     @FunctionalInterface
@@ -349,9 +149,15 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
             this.maxPlaceCount = maxPlaceCount;
             this.factory = factory;
         }
+
+        boolean open() {
+            return maxPlaceCount < 0 || placeCount < maxPlaceCount;
+        }
     }
 
     public static final class NtmBranchingStart {
+        private static final int ATTEMPTS = 5;
+
         public final List<StructurePiece> pendingChildren = new ArrayList<>();
         public final List<PieceWeight> availablePieces;
         public final int sizeLimit;
@@ -371,6 +177,49 @@ public abstract class NtmBranchingPiece extends NtmComponentPiece {
             this.distanceLimit = distanceLimit;
             this.originX = originX;
             this.originZ = originZ;
+        }
+
+        @Nullable StructurePiece grow(
+                StructurePieceAccessor accessor,
+                RandomSource random,
+                int x,
+                int y,
+                int z,
+                Direction heading) {
+            boolean crowded = componentCount >= sizeLimit;
+            if (crowded || Math.max(Math.abs(x - originX), Math.abs(z - originZ)) > distanceLimit)
+                return null;
+            var piece = pick(accessor, random, x, y, z, heading);
+            if (piece == null) return null;
+            accessor.addPiece(piece);
+            pendingChildren.add(piece);
+            componentCount++;
+            return piece;
+        }
+
+        private @Nullable StructurePiece pick(
+                StructurePieceAccessor accessor,
+                RandomSource random,
+                int x,
+                int y,
+                int z,
+                Direction heading) {
+            for (int attempt = 0; attempt < ATTEMPTS; attempt++) {
+                var open = availablePieces.stream().filter(PieceWeight::open).toList();
+                int total = open.stream().mapToInt(w -> w.weight).sum();
+                if (total <= 0) return null;
+                int remaining = random.nextInt(total);
+                int first = 0;
+                while ((remaining -= open.get(first).weight) >= 0) first++;
+                for (int i = first; i < open.size(); i++) {
+                    var weight = open.get(i);
+                    var piece = weight.factory.create(accessor, random, x, y, z, heading);
+                    if (piece == null) continue;
+                    weight.placeCount++;
+                    return piece;
+                }
+            }
+            return null;
         }
     }
 }

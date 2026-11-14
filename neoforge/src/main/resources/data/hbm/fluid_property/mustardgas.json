@@ -27,7 +27,7 @@
           "damage": "hbm:cloud",
           "delay": 10,
           "full_body": false,
-          "hazard": "GAS_BLISTERING",
+          "hazard": "gas_blistering",
           "kind": "direct_damage"
         },
         {
@@ -45,7 +45,7 @@
             }
           ],
           "full_body": true,
-          "hazard": "GAS_BLISTERING",
+          "hazard": "gas_blistering",
           "kind": "effects"
         }
       ]

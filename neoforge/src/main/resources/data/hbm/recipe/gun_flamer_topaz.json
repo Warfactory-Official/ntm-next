@@ -1,7 +1,13 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "A": "hbm:gun_flamer",
+    "A": {
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:gun_flamer",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
+    },
     "M": "#hbm:gun_mechanisms/weapon_steel"
   },
   "pattern": [

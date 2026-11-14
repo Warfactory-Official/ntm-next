@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
 import com.hbm.client.InfoSystem;
 import com.hbm.client.WiringReadout;
 import com.hbm.items.ModDataComponents;
-import com.hbm.items.tool.ItemRebarPlacer;
+import com.hbm.items.tool.RebarPlacerItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -39,7 +55,7 @@ public final class RebarPlacerPreview {
         Long corner = null;
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack held = player.getItemInHand(hand);
-            if (held.getItem() instanceof ItemRebarPlacer
+            if (held.getItem() instanceof RebarPlacerItem
                     && (corner = held.get(ModDataComponents.REBAR_CORNER.get())) != null) break;
         }
         if (corner == null) return null;
@@ -75,7 +91,7 @@ public final class RebarPlacerPreview {
         AABB span = span();
         LocalPlayer player = Minecraft.getInstance().player;
         if (span == null || player == null) return;
-        int left = ItemRebarPlacer.countRebar(player);
+        int left = RebarPlacerItem.countRebar(player);
         int required = (int) Math.round(span.getXsize() * span.getYsize() * span.getZsize());
         InfoSystem.push(
                 new InfoSystem.InfoEntry(

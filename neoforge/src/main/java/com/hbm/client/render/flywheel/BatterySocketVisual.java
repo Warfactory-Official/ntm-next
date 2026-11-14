@@ -1,22 +1,38 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.storage.BlockEntityBatterySocket;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.storage.SocketBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.render.BatterySocketRenderer;
 import com.hbm.client.render.FramedItem;
-import com.hbm.client.render.RenderBatterySocket;
 import com.hbm.client.render.SocketCentrepieces;
-import com.hbm.items.machine.EnumBatteryPack;
-import com.hbm.items.machine.ItemBatteryCreative;
-import com.hbm.items.machine.ItemBatteryPack;
-import com.hbm.items.machine.ItemBatterySC;
-import com.hbm.lib.Library;
+import com.hbm.items.machine.BatteryCreativeItem;
+import com.hbm.items.machine.BatteryPackItem;
+import com.hbm.items.machine.BatteryPackType;
+import com.hbm.items.machine.BatterySCItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import com.hbm.util.Facing;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
@@ -29,6 +45,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,8 +59,8 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<BlockEntityBatterySocket>
-        implements ShaderLightVisual {
+public final class BatterySocketVisual extends AbstractBoundedBlockEntityVisual<SocketBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final double UNICORN_SCALE = .75D;
     private static final float UNICORN_DEGREES_PER_TICK = 25F;
     private static final double ARC_OFFSET = .4375D;
@@ -115,9 +133,9 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
     private boolean initialized;
 
     public BatterySocketVisual(
-            VisualizationContext context, BlockEntityBatterySocket blockEntity, float partialTick) {
+            VisualizationContext context, SocketBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        Direction bodyFacing = blockEntity.getBlockState().getValue(BlockMultiblockCore.FACING);
+        Direction bodyFacing = blockEntity.getBlockState().getValue(MultiblockCoreBlock.FACING);
         rootPose.translation(.5F, 0F, .5F)
                 .rotateY(Facing.yaw(bodyFacing, 90) * Mth.DEG_TO_RAD)
                 .translate(-.5F, 0F, .5F);
@@ -136,28 +154,28 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockEntityBatterySocket be) {
-        ItemStack stack = be.syncStack;
+    public static boolean vanillaNeeded(SocketBlockEntity be) {
+        ItemStack stack = be.getShownItem();
         if (stack.isEmpty()
                 || SocketCentrepieces.of(stack) != null
-                || stack.getItem() instanceof ItemBatteryPack
-                || stack.getItem() instanceof ItemBatterySC
-                || stack.getItem() instanceof ItemBatteryCreative) return false;
+                || stack.getItem() instanceof BatteryPackItem
+                || stack.getItem() instanceof BatterySCItem
+                || stack.getItem() instanceof BatteryCreativeItem) return false;
         return !WorldItem.drawsFramed(stack);
     }
 
     private static MeshPart[] buildBatteryParts() {
         int bodyId = SOCKET_MODEL.partId("Battery");
         int capacitorId = SOCKET_MODEL.partId("Capacitor");
-        MeshPart[] parts = new MeshPart[EnumBatteryPack.VALUES.length + 1];
-        for (int i = 0; i < EnumBatteryPack.VALUES.length; i++) {
-            EnumBatteryPack tier = EnumBatteryPack.VALUES[i];
+        MeshPart[] parts = new MeshPart[BatteryPackType.VALUES.length + 1];
+        for (int i = 0; i < BatteryPackType.VALUES.length; i++) {
+            BatteryPackType tier = BatteryPackType.VALUES[i];
             parts[i] =
                     MeshPart.obj(
                             SOCKET_MODEL.groups[tier.isCapacitor() ? capacitorId : bodyId],
                             SOCKET_MODEL.smoothing(),
                             MeshPart.litCutout(
-                                    Library.id(
+                                    RegistryUtil.id(
                                             "textures/block/models/machines/"
                                                     + tier.tex
                                                     + ".png")));
@@ -182,15 +200,15 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 
     private void writeFrame(float partialTick) {
         int body = -1;
-        ItemStack stack = blockEntity.syncStack;
-        if (stack.getItem() instanceof ItemBatteryPack pack) body = pack.tier.ordinal();
-        else if (stack.getItem() instanceof ItemBatterySC) body = batteries.length - 1;
+        ItemStack stack = blockEntity.getShownItem();
+        if (stack.getItem() instanceof BatteryPackItem pack) body = pack.tier.ordinal();
+        else if (stack.getItem() instanceof BatterySCItem) body = batteries.length - 1;
         boolean frameChanged = !initialized || blockEntity.frame != lastFrame;
         boolean bodyChanged = !initialized || body != lastBody;
         if (frameChanged) supports.write(blockEntity.frame, rootPose);
@@ -198,7 +216,7 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
             for (int i = 0; i < batteries.length; i++) batteries[i].write(i == body, rootPose);
         }
 
-        boolean unicorn = stack.getItem() instanceof ItemBatteryCreative;
+        boolean unicorn = stack.getItem() instanceof BatteryCreativeItem;
         SocketCentrepieces.Centrepiece piece = SocketCentrepieces.of(stack);
         boolean generic = !stack.isEmpty() && body < 0 && !unicorn && piece == null;
         float spin = (float) (level.getGameTime() % 360L) + partialTick;
@@ -207,7 +225,7 @@ public final class BatterySocketVisual extends HbmDynamicBlockEntityVisual<Block
             itemPoses.setIdentity();
             itemPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
             itemPoses.mulPose(rootPose);
-            RenderBatterySocket.itemPose(itemPoses, spin, arm);
+            BatterySocketRenderer.itemPose(itemPoses, spin, arm);
             item.write(itemPoses.last().pose(), partialTick);
         }
         if (unicorn) {

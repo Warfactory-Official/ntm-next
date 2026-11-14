@@ -1,12 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.util;
 
-import com.hbm.api.block.ICrucibleAcceptor;
+import com.hbm.api.block.MoltenMetalHandler;
 import com.hbm.capability.NtmContracts;
-import com.hbm.inventory.material.Mats.MaterialStack;
-import com.hbm.inventory.material.NTMMaterial.SmeltingBehavior;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialStack;
+import com.hbm.inventory.material.SmeltingBehavior;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,92 +36,57 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class CrucibleUtil {
-    public static @Nullable MaterialStack pourSingleStack(
-            Level level,
-            double x,
-            double y,
-            double z,
-            double range,
-            boolean safe,
-            MaterialStack stack,
-            int quanta,
-            ImpactPos impact) {
+public final class CrucibleUtil {
+    public record Pour(Material material, int amount, Vec3 impact) {}
+
+    private CrucibleUtil() {}
+
+    public static @Nullable Pour pourStack(
+            Level level, double x, double y, double z, double range, MaterialStack stack) {
         BlockHitResult hit = traceDown(level, x, y, z, y - range);
-        ICrucibleAcceptor acc = getPouringTarget(level, hit);
-
-        if (acc == null) {
-            spill(hit, safe, stack, quanta, impact);
-            return stack;
-        }
-
-        MaterialStack ret = tryPourStack(level, acc, hit, stack, impact);
-        if (ret != null) return ret;
-
-        spill(hit, safe, stack, quanta, impact);
-        return stack;
+        MoltenMetalHandler target = getPouringTarget(level, hit);
+        return target == null ? null : offer(level, target, hit, stack, Integer.MAX_VALUE);
     }
 
-    public static @Nullable MaterialStack pourFullStack(
+    public static @Nullable Pour pourFirst(
             Level level,
             double x,
             double y,
             double z,
             double range,
-            boolean safe,
             List<MaterialStack> stacks,
-            int quanta,
-            ImpactPos impact) {
+            int quanta) {
         if (stacks.isEmpty()) return null;
-
         BlockHitResult hit = traceDown(level, x, y, z, y - range);
-        ICrucibleAcceptor acc = getPouringTarget(level, hit);
-
-        if (acc == null) {
-            return spill(hit, safe, stacks, quanta, impact);
-        }
-
+        MoltenMetalHandler target = getPouringTarget(level, hit);
+        if (target == null) return null;
         for (MaterialStack stack : stacks) {
-            if (stack.material == null) continue;
-
-            int amountToPour = Math.min(stack.amount, quanta);
-            MaterialStack toPour = new MaterialStack(stack.material, amountToPour);
-            MaterialStack left = tryPourStack(level, acc, hit, toPour, impact);
-
-            if (left != null) {
-                stack.amount -= (amountToPour - left.amount);
-                return new MaterialStack(stack.material, stack.amount - left.amount);
-            }
+            Pour pour = offer(level, target, hit, stack, quanta);
+            if (pour != null) return pour;
         }
-
-        return spill(hit, safe, stacks, quanta, impact);
-    }
-
-    public static @Nullable MaterialStack tryPourStack(
-            Level level,
-            ICrucibleAcceptor acc,
-            BlockHitResult hit,
-            MaterialStack stack,
-            ImpactPos impact) {
-        if (stack.material.smeltable != SmeltingBehavior.SMELTABLE) return null;
-
-        Vec3 loc = hit.getLocation();
-        BlockPos pos = hit.getBlockPos();
-
-        if (acc.canAcceptPartialPour(level, pos, loc, hit.getDirection(), stack)) {
-            MaterialStack left = acc.pour(level, pos, loc, hit.getDirection(), stack);
-            if (left == null) left = new MaterialStack(stack.material, 0);
-
-            impact.x = loc.x;
-            impact.y = loc.y;
-            impact.z = loc.z;
-            return left;
-        }
-
         return null;
     }
 
-    public static @Nullable ICrucibleAcceptor getPouringTarget(Level level, BlockHitResult hit) {
+    private static @Nullable Pour offer(
+            Level level,
+            MoltenMetalHandler target,
+            BlockHitResult hit,
+            MaterialStack source,
+            int cap) {
+        if (source.material == null || source.material.behaviour() != SmeltingBehavior.SMELTABLE)
+            return null;
+        int size = Math.min(source.amount, cap);
+        MaterialStack offered = new MaterialStack(source.material, size);
+        BlockPos pos = hit.getBlockPos();
+        Vec3 impact = hit.getLocation();
+        if (!target.canAcceptPour(level, pos, impact, hit.getDirection(), offered)) return null;
+        MaterialStack rest = target.acceptPour(level, pos, impact, hit.getDirection(), offered);
+        int taken = size - (rest == null ? 0 : rest.amount);
+        source.hbm$syncSet$MaterialStack$amount((int) (source.amount - (taken)));
+        return new Pour(source.material, taken, impact);
+    }
+
+    public static @Nullable MoltenMetalHandler getPouringTarget(Level level, BlockHitResult hit) {
         if (hit.getType() != HitResult.Type.BLOCK) return null;
         return NtmContracts.CRUCIBLE_ACCEPTOR.at(level, hit.getBlockPos());
     }
@@ -154,38 +136,5 @@ public class CrucibleUtil {
 
         return BlockHitResult.miss(
                 new Vec3(x, endY, z), Direction.DOWN, BlockPos.containing(x, endY, z));
-    }
-
-    public static @Nullable MaterialStack spill(
-            BlockHitResult hit,
-            boolean safe,
-            List<MaterialStack> stacks,
-            int quanta,
-            ImpactPos impact) {
-        MaterialStack top = stacks.get(0);
-        MaterialStack ret = spill(hit, safe, top, quanta, impact);
-        stacks.removeIf(o -> o.amount <= 0);
-        return ret;
-    }
-
-    public static @Nullable MaterialStack spill(
-            BlockHitResult hit, boolean safe, MaterialStack stack, int quanta, ImpactPos impact) {
-        if (safe) return null;
-
-        MaterialStack toWaste = new MaterialStack(stack.material, Math.min(stack.amount, quanta));
-        stack.amount -= toWaste.amount;
-
-        if (impact != null && hit != null) {
-            Vec3 loc = hit.getLocation();
-            impact.x = loc.x;
-            impact.y = loc.y;
-            impact.z = loc.z;
-        }
-
-        return toWaste;
-    }
-
-    public static final class ImpactPos {
-        public double x, y, z;
     }
 }

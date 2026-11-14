@@ -1,9 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.world.feature;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.util.SectionAccess;
 import com.hbm.world.LocationIsValidSpawn;
 import com.hbm.world.gen.WorldgenHeight;
 import java.util.List;
@@ -17,6 +48,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jspecify.annotations.Nullable;
@@ -63,6 +95,7 @@ public final class OilSurfaceScarring {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos sub = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
+        var reader = new SectionAccess.WorldgenReader(level);
 
         for (int i = 0; i < SPOT_COUNT; i++) {
             Spot spot = spot(rand);
@@ -87,16 +120,18 @@ public final class OilSurfaceScarring {
                 continue;
             }
 
-            int top = WorldgenHeight.highestFilledSectionTop(level, absX, absZ);
+            var chunk = reader.chunkAt(absX, absZ);
+            if (chunk == null) continue;
+            int top = WorldgenHeight.highestFilledSectionTop(chunk);
             int bottom = level.getMinY();
             for (int y = top; y >= bottom; y--) {
                 pos.set(absX, y, absZ);
-                BlockState state = level.getBlockState(pos);
-                if (!isFullCube(level, pos, state)) continue;
+                BlockState state = reader.read(pos);
+                if (!state.isSolidRender()) continue;
 
                 for (int oy = 1; oy > -3; oy--) {
                     sub.set(absX, y + oy, absZ);
-                    BlockState subState = level.getBlockState(sub);
+                    BlockState subState = reader.read(sub);
                     Block b = subState.getBlock();
 
                     if (b == Blocks.GRASS_BLOCK || LocationIsValidSpawn.isDirtFamily(subState)) {
@@ -133,7 +168,9 @@ public final class OilSurfaceScarring {
             if (clip != null
                     && (x < clip.minX() || x > clip.maxX() || z < clip.minZ() || z > clip.maxZ()))
                 continue;
-            int top = WorldgenHeight.highestFilledSectionTop(level, x, z);
+            var chunk = reader.chunkAt(x, z);
+            if (chunk == null) continue;
+            int top = WorldgenHeight.highestFilledSectionTop(chunk);
             int bottom = level.getMinY();
             cutHoleColumn(level, write, x, z, top, bottom, i > 1);
         }
@@ -172,18 +209,12 @@ public final class OilSurfaceScarring {
             LevelAccessor level, RandomSource rand, int x, int z, int width, int count) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos adjacent = new BlockPos.MutableBlockPos();
-        int top = level.getMaxY();
-        int bottom = level.getMinY();
 
         for (int i = 0; i < count; i++) {
             int rx = x + (int) (rand.nextGaussian() * width);
             int rz = z + (int) (rand.nextGaussian() * width);
 
-            int ry = top;
-            for (; ry >= bottom; ry--) {
-                pos.set(rx, ry, rz);
-                if (!level.getBlockState(pos).isAir()) break;
-            }
+            int ry = level.getHeight(Heightmap.Types.MOTION_BLOCKING, rx, rz);
 
             for (int y = ry; y > ry - 4; y--) {
                 pos.set(rx, y, rz);
@@ -198,7 +229,7 @@ public final class OilSurfaceScarring {
 
                 adjacent.set(rx, y - 1, rz);
                 if (ground != ModBlocks.PLANT_DEAD.get()
-                        && isFullCube(level, adjacent, level.getBlockState(adjacent))) {
+                        && level.getBlockState(adjacent).isSolidRender()) {
                     if (ground instanceof TallGrassBlock) {
                         if (rand.nextInt(10) == 0) {
                             boolean fern =
@@ -265,6 +296,7 @@ public final class OilSurfaceScarring {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos sub = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
+        var reader = new SectionAccess.WorldgenReader(level);
         int bottom = level.getMinY();
 
         for (int i = 0; i < count; i++) {
@@ -280,16 +312,18 @@ public final class OilSurfaceScarring {
                                     (int) (rand.nextGaussian() * width),
                                     -MAX_SAFE_OFFSET,
                                     MAX_SAFE_OFFSET);
-            int top = WorldgenHeight.highestFilledSectionTop(level, rx, rz);
+            var chunk = reader.chunkAt(rx, rz);
+            if (chunk == null) continue;
+            int top = WorldgenHeight.highestFilledSectionTop(chunk);
 
             for (int y = top; y >= bottom; y--) {
                 pos.set(rx, y, rz);
-                BlockState state = level.getBlockState(pos);
-                if (!isFullCube(level, pos, state)) continue;
+                BlockState state = reader.read(pos);
+                if (!state.isSolidRender()) continue;
 
                 for (int oy = 1; oy > -3; oy--) {
                     sub.set(rx, y + oy, rz);
-                    BlockState subState = level.getBlockState(sub);
+                    BlockState subState = reader.read(sub);
                     Block b = subState.getBlock();
 
                     if (b == Blocks.GRASS_BLOCK || LocationIsValidSpawn.isDirtFamily(subState)) {
@@ -350,9 +384,5 @@ public final class OilSurfaceScarring {
             case 4 -> ModBlocks.PLANT_DEAD_FERN.get().defaultBlockState();
             default -> ModBlocks.PLANT_DEAD.get().defaultBlockState();
         };
-    }
-
-    private static boolean isFullCube(LevelAccessor level, BlockPos pos, BlockState state) {
-        return state.isSolidRender();
     }
 }

@@ -1,22 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
-import com.hbm.api.energymk2.IEnergyHandlerMK2;
-import com.hbm.blockentity.network.BlockEntityCableDiode;
+import com.hbm.blockentity.network.CableDiodeBlockEntity;
 import com.hbm.blocks.CapabilityDependentShape;
-import com.hbm.blocks.ITickingBlock;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.capability.ICapabilityBlock;
+import com.hbm.blocks.TickingEntityBlock;
+import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.interfaces.ILookOverlay;
-import com.hbm.interfaces.IToolable;
+import com.hbm.interfaces.LookOverlay;
+import com.hbm.interfaces.LookOverlayProvider;
+import com.hbm.interfaces.ToolInteractionHandler;
+import com.hbm.interfaces.ToolType;
+import com.hbm.inventory.BlockMenus;
 import com.hbm.uninos.graph.PhysicalGraph;
-import com.hbm.util.BobMathUtil;
-import java.util.function.Consumer;
+import com.hbm.util.NumberFormatter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -29,14 +47,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
@@ -45,73 +61,36 @@ import org.jspecify.annotations.Nullable;
 
 public class CableDiodeBlock extends Block
         implements CapabilityDependentShape.Endpoint,
-                ITickingBlock,
-                IToolable,
-                ILookOverlay,
-                ICapabilityBlock {
+                TickingEntityBlock,
+                ToolInteractionHandler,
+                LookOverlayProvider,
+                CapabilityBlock {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
-    public static Consumer<BlockEntityCableDiode> OPEN_SCREEN = diode -> {};
 
     public CableDiodeBlock(BlockBehaviour.Properties props) {
         super(CapabilityDependentShape.deferShapeToFullChunk(props));
-        BlockState def = stateDefinition.any().setValue(FACING, Direction.NORTH);
-        for (Direction dir : Direction.VALUES) def = def.setValue(connectionFor(dir), false);
-        registerDefaultState(def);
-    }
-
-    public static BooleanProperty connectionFor(Direction dir) {
-        return PipeBlock.PROPERTY_BY_DIRECTION.get(dir);
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(
-                FACING,
-                BlockStateProperties.NORTH,
-                BlockStateProperties.EAST,
-                BlockStateProperties.SOUTH,
-                BlockStateProperties.WEST,
-                BlockStateProperties.UP,
-                BlockStateProperties.DOWN);
+        builder.add(FACING);
     }
 
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext ctx) {
-        BlockState state =
-                defaultBlockState()
-                        .setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
-        for (Direction dir : Direction.VALUES) {
-            BlockPos npos = ctx.getClickedPos().relative(dir);
-            state =
-                    state.setValue(
-                            connectionFor(dir),
-                            PhysicalGraph.powerContact(ctx.getLevel(), npos, dir.getOpposite()));
-        }
-        return state;
+        return defaultBlockState().setValue(FACING, ctx.getNearestLookingDirection().getOpposite());
     }
 
     @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {
-        BlockState result = state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
-        for (Direction dir : Direction.VALUES) {
-            result =
-                    result.setValue(
-                            connectionFor(rotation.rotate(dir)),
-                            state.getValue(connectionFor(dir)));
-        }
-        return result;
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
-        BlockState result = state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
-        for (Direction dir : Direction.VALUES) {
-            result =
-                    result.setValue(
-                            connectionFor(mirror.mirror(dir)), state.getValue(connectionFor(dir)));
-        }
-        return result;
+        return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
     }
 
     @Override
@@ -124,10 +103,12 @@ public class CableDiodeBlock extends Block
             BlockPos neighbourPos,
             BlockState neighbourState,
             RandomSource random) {
-        boolean joins = PhysicalGraph.powerContact(level, pos.relative(dir), dir.getOpposite());
-        if (level.isClientSide())
-            return PhysicalGraph.predictArm(state, connectionFor(dir), neighbourState, joins);
-        return state.setValue(connectionFor(dir), joins);
+        if (level instanceof Level world
+                && world.getBlockEntity(pos) instanceof CableDiodeBlockEntity diode) {
+            boolean joins = PhysicalGraph.powerContact(world, neighbourPos, dir.getOpposite());
+            diode.updateContact(dir, joins, neighbourState.isAir());
+        }
+        return state;
     }
 
     @Override
@@ -139,14 +120,15 @@ public class CableDiodeBlock extends Block
             @Nullable Orientation orientation,
             boolean movedByPiston) {
         super.neighborChanged(state, level, pos, block, orientation, movedByPiston);
-        if (level instanceof ServerLevel sl) {
-            PhysicalGraph.redraw(state, sl, pos);
+        if (level instanceof ServerLevel sl
+                && level.getBlockEntity(pos) instanceof CableDiodeBlockEntity diode) {
+            diode.refreshContacts(sl);
         }
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityCableDiode(pos, state);
+        return new CableDiodeBlockEntity(pos, state);
     }
 
     @Override
@@ -158,7 +140,7 @@ public class CableDiodeBlock extends Block
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-        IToolable.ToolType tool = IToolable.ToolType.getType(stack);
+        ToolType tool = ToolType.getType(stack);
         if (tool == ToolType.SCREWDRIVER
                 || tool == ToolType.HAND_DRILL
                 || tool == ToolType.DEFUSER) {
@@ -171,22 +153,22 @@ public class CableDiodeBlock extends Block
     protected InteractionResult useWithoutItem(
             BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (player.isShiftKeyDown()) return InteractionResult.PASS;
-        if (level.isClientSide()
-                && level.getBlockEntity(pos) instanceof BlockEntityCableDiode diode) {
-            OPEN_SCREEN.accept(diode);
+        if (!level.isClientSide()
+                && level.getBlockEntity(pos) instanceof CableDiodeBlockEntity diode) {
+            BlockMenus.open(player, diode);
         }
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public boolean onScrew(
+    public boolean onToolUse(
             Level level,
             Player player,
             BlockPos pos,
             @Nullable Direction side,
             Vec3 hit,
             ToolType tool) {
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityCableDiode diode)) return false;
+        if (!(level.getBlockEntity(pos) instanceof CableDiodeBlockEntity diode)) return false;
         if (level.isClientSide())
             return tool == ToolType.SCREWDRIVER
                     || tool == ToolType.HAND_DRILL
@@ -194,30 +176,32 @@ public class CableDiodeBlock extends Block
 
         switch (tool) {
             case SCREWDRIVER -> {
-                diode.stepLimitUp();
+                diode.increaseLimit();
             }
             case HAND_DRILL -> {
-                diode.stepLimitDown();
+                diode.decreaseLimit();
             }
             case DEFUSER -> {
-                int p = diode.priority.ordinal() + 1;
-                if (p > 4) p = 0;
-                diode.priority = IEnergyHandlerMK2.ConnectionPriority.VALUES[p];
+                diode.cyclePriority();
             }
             default -> {
                 return false;
             }
         }
-        diode.settingsChanged();
         return true;
     }
 
     @Override
-    public void buildLookOverlay(Level level, BlockPos pos, ILookOverlay.LookInfo info) {
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityCableDiode diode)) return;
-        info.title(getName().getString(), 0xffff00, 0x404000)
-                .line("Max.: " + BobMathUtil.getShortNumber(diode.getMaxPower()) + "HE/t")
-                .line("Priority: " + diode.priority.name());
+    public void buildLookOverlay(Level level, BlockPos pos, LookOverlay info) {
+        if (!(level.getBlockEntity(pos) instanceof CableDiodeBlockEntity diode)) return;
+        info.title(getName())
+                .row(
+                        Component.translatable(
+                                "overlay.hbm.max_rate",
+                                NumberFormatter.formatCompact(diode.getMaxPower())))
+                .row(
+                        Component.translatable(
+                                "overlay.hbm.priority", diode.receiverPriority().name()));
     }
 
     @Override
@@ -230,6 +214,6 @@ public class CableDiodeBlock extends Block
         return MachineCaps.of(ModBlockEntities.CABLE_DIODE)
                 .powerIn()
                 .powerOut()
-                .roleFaces(BlockEntityCableDiode.class, BlockEntityCableDiode::acceptsFace);
+                .roleFaces(CableDiodeBlockEntity.class, CableDiodeBlockEntity::acceptsFace);
     }
 }

@@ -1,32 +1,64 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.projectile.EntityBoxcar;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.entity.projectile.EntityTorpedo;
-import com.hbm.items.EnumCasingType;
+import com.hbm.entity.projectile.BoxcarEntity;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.entity.projectile.TorpedoEntity;
 import com.hbm.items.ModItems;
+import com.hbm.items.variant.CasingType;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.GunState;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.GunState;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleReload;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
-import com.hbm.lib.Library;
-import com.hbm.particle.SpentCasing.CasingType;
-import com.hbm.particle.SpentCasing;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.particle.casing.Casing;
+import com.hbm.particle.casing.CasingShape;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.ModSounds;
+import com.hbm.sound.WorldSounds;
+import com.hbm.util.RegistryUtil;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -39,7 +71,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class XFactory44 {
 
-    public static final Identifier scope_lilmac = Library.id("textures/misc/scope_44.png");
+    public static final Identifier scope_lilmac = RegistryUtil.id("textures/misc/scope_44.png");
 
     public static BulletConfig m44_bp;
     public static BulletConfig m44_sp;
@@ -50,29 +82,28 @@ public class XFactory44 {
     public static BulletConfig m44_equestrian_pip;
     public static BulletConfig m44_equestrian_mn7;
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_BOXCAR =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_BOXCAR =
             (bullet, mop) -> {
-                EntityBoxcar pippo = new EntityBoxcar(ModEntities.BOXCAR.get(), bullet.level());
+                BoxcarEntity pippo = new BoxcarEntity(ModEntities.BOXCAR.get(), bullet.level());
                 Vec3 hit = mop.getLocation();
                 pippo.setPos(hit.x, hit.y + 50, hit.z);
                 bullet.level().addFreshEntity(pippo);
-                bullet.level()
-                        .playSound(
-                                null,
-                                pippo.getX(),
-                                pippo.getY() + 50,
-                                pippo.getZ(),
-                                ModSounds.GUN_GO_GO_GADGET_FUCK_EVERYTHING_IN_THIS_GENERAL_DIRECTION
-                                        .get(),
-                                SoundSource.RECORDS,
-                                100F,
-                                1F);
+                WorldSounds.play(
+                        bullet.level(),
+                        null,
+                        pippo.getX(),
+                        pippo.getY() + 50,
+                        pippo.getZ(),
+                        ModSounds.GUN_GO_GO_GADGET_FUCK_EVERYTHING_IN_THIS_GENERAL_DIRECTION.get(),
+                        SoundSource.RECORDS,
+                        100F,
+                        1F);
                 bullet.discard();
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_TORPEDO =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_TORPEDO =
             (bullet, mop) -> {
-                EntityTorpedo murky = new EntityTorpedo(ModEntities.TORPEDO.get(), bullet.level());
+                TorpedoEntity murky = new TorpedoEntity(ModEntities.TORPEDO.get(), bullet.level());
                 Vec3 hit = mop.getLocation();
                 murky.setPos(hit.x, hit.y + 50, hit.z);
                 bullet.level().addFreshEntity(murky);
@@ -86,30 +117,30 @@ public class XFactory44 {
             };
     public static BiConsumer<ItemStack, LambdaContext> SMACK_A_FUCKER =
             (stack, ctx) -> {
-                if (ItemGunBaseNT.getState(stack, ctx.configIndex()) == GunState.IDLE
-                        || ItemGunBaseNT.getLastAnim(stack, ctx.configIndex())
+                if (GunBaseNTItem.getState(stack, ctx.configIndex()) == GunState.IDLE
+                        || GunBaseNTItem.getLastAnim(stack, ctx.configIndex())
                                 == GunAnimation.CYCLE) {
-                    ItemGunBaseNT.setIsAiming(stack, false);
-                    ItemGunBaseNT.setState(stack, ctx.configIndex(), GunState.DRAWING);
-                    ItemGunBaseNT.setTimer(
+                    GunBaseNTItem.setIsAiming(stack, false);
+                    GunBaseNTItem.setState(stack, ctx.configIndex(), GunState.DRAWING);
+                    GunBaseNTItem.setTimer(
                             stack, ctx.configIndex(), ctx.config().getInspectDuration(stack));
-                    ItemGunBaseNT.playAnimation(
+                    GunBaseNTItem.playAnimation(
                             ctx.getPlayer(), stack, GunAnimation.INSPECT, ctx.configIndex());
                 }
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_HENRY =
             (stack, ctx) -> {
-                ItemGunBaseNT.setupRecoil(
+                GunBaseNTItem.setupRecoil(
                         5, (float) (ctx.getPlayer().getRandom().nextGaussian() * 1));
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_NOPIP =
             (stack, ctx) -> {
-                ItemGunBaseNT.setupRecoil(
+                GunBaseNTItem.setupRecoil(
                         10, (float) (ctx.getPlayer().getRandom().nextGaussian() * 1.5));
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_HANGMAN =
             (stack, ctx) -> {
-                ItemGunBaseNT.setupRecoil(
+                GunBaseNTItem.setupRecoil(
                         5, (float) (ctx.getPlayer().getRandom().nextGaussian() * 1));
             };
 
@@ -121,169 +152,169 @@ public class XFactory44 {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(-90, 0, 0, 0)
-                                                .addPos(0, 0, -3, 350, IType.SIN_DOWN))
+                                        new AnimationSequence()
+                                                .to(-90, 0, 0, 0)
+                                                .to(0, 0, -3, 350, IType.SIN_DOWN))
                                 .addBus(
                                         "SIGHT",
-                                        new BusAnimationSequence()
-                                                .addPos(80, 0, 0, 0)
-                                                .addPos(80, 0, 0, 500)
-                                                .addPos(0, 0, -3, 250, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(80, 0, 0, 0)
+                                                .to(80, 0, 0, 500)
+                                                .to(0, 0, -3, 250, IType.SIN_DOWN));
                     case CYCLE:
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 50)
-                                                .addPos(0, 0, -1, 50)
-                                                .addPos(0, 0, 0, 250))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 50)
+                                                .to(0, 0, -1, 50)
+                                                .to(0, 0, 0, 250))
                                 .addBus(
                                         "SIGHT",
-                                        new BusAnimationSequence()
-                                                .addPos(35, 0, 0, 100, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 100, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(35, 0, 0, 100, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 100, IType.SIN_FULL))
                                 .addBus(
                                         "LEVER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 600)
-                                                .addPos(-90, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 600)
+                                                .to(-90, 0, 0, 200)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "TURN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 600)
-                                                .addPos(0, 0, 45, 200, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 200, IType.SIN_UP))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 600)
+                                                .to(0, 0, 45, 200, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 200, IType.SIN_UP))
                                 .addBus(
                                         "HAMMER",
-                                        new BusAnimationSequence()
-                                                .addPos(30, 0, 0, 50)
-                                                .addPos(30, 0, 0, 550)
-                                                .addPos(0, 0, 0, 200));
+                                        new AnimationSequence()
+                                                .to(30, 0, 0, 50)
+                                                .to(30, 0, 0, 550)
+                                                .to(0, 0, 0, 200));
                     case CYCLE_DRY:
                         return new BusAnimation()
                                 .addBus(
                                         "LEVER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 600)
-                                                .addPos(-90, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 600)
+                                                .to(-90, 0, 0, 200)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "TURN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 600)
-                                                .addPos(0, 0, 45, 200, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 200, IType.SIN_UP))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 600)
+                                                .to(0, 0, 45, 200, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 200, IType.SIN_UP))
                                 .addBus(
                                         "HAMMER",
-                                        new BusAnimationSequence()
-                                                .addPos(30, 0, 0, 50)
-                                                .addPos(30, 0, 0, 550)
-                                                .addPos(0, 0, 0, 200));
+                                        new AnimationSequence()
+                                                .to(30, 0, 0, 50)
+                                                .to(30, 0, 0, 550)
+                                                .to(0, 0, 0, 200));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "LIFT",
-                                        new BusAnimationSequence()
-                                                .addPos(-60, 0, 0, 400, IType.SIN_FULL))
+                                        new AnimationSequence().to(-60, 0, 0, 400, IType.SIN_FULL))
                                 .addBus(
                                         "TWIST",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(0, 0, -90, 200, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(0, 0, -90, 200, IType.SIN_FULL))
                                 .addBus(
                                         "BULLET",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 700)
-                                                .addPos(3, 0, -6, 0)
-                                                .addPos(0, 0, 1, 300, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 700)
+                                                .to(3, 0, -6, 0)
+                                                .to(0, 0, 1, 300, IType.SIN_FULL)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL));
                     case RELOAD_CYCLE:
                         return new BusAnimation()
-                                .addBus("LIFT", new BusAnimationSequence().addPos(-60, 0, 0, 0))
-                                .addBus("TWIST", new BusAnimationSequence().addPos(0, 0, -90, 0))
+                                .addBus("LIFT", new AnimationSequence().to(-60, 0, 0, 0))
+                                .addBus("TWIST", new AnimationSequence().to(0, 0, -90, 0))
                                 .addBus(
                                         "BULLET",
-                                        new BusAnimationSequence()
-                                                .addPos(3, 0, -6, 0)
-                                                .addPos(0, 0, 1, 300, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(3, 0, -6, 0)
+                                                .to(0, 0, 1, 300, IType.SIN_FULL)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL));
                     case RELOAD_END:
                         boolean empty =
-                                ((ItemGunBaseNT) stack.getItem())
+                                ((GunBaseNTItem) stack.getItem())
                                                 .getConfig(stack, 0)
-                                                .getReceivers(stack)[0]
+                                                .getReceivers(stack)
+                                                .get(0)
                                                 .getMagazine(stack)
                                                 .getAmountBeforeReload(stack)
                                         <= 0;
                         return new BusAnimation()
                                 .addBus(
                                         "LIFT",
-                                        new BusAnimationSequence()
-                                                .addPos(-60, 0, 0, 0)
-                                                .addPos(-60, 0, 0, 300)
-                                                .addPos(0, 0, 0, 400, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(-60, 0, 0, 0)
+                                                .to(-60, 0, 0, 300)
+                                                .to(0, 0, 0, 400, IType.SIN_FULL))
                                 .addBus(
                                         "TWIST",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, -90, 0)
-                                                .addPos(0, 0, 0, 200, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, -90, 0)
+                                                .to(0, 0, 0, 200, IType.SIN_FULL))
                                 .addBus(
                                         "LEVER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 700)
-                                                .addPos(empty ? -90 : 0, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 700)
+                                                .to(empty ? -90 : 0, 0, 0, 200)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "TURN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 700)
-                                                .addPos(0, 0, empty ? 45 : 0, 200, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 200, IType.SIN_UP));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 700)
+                                                .to(0, 0, empty ? 45 : 0, 200, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 200, IType.SIN_UP));
                     case JAMMED:
                         return new BusAnimation()
                                 .addBus(
                                         "LIFT",
-                                        new BusAnimationSequence()
-                                                .addPos(-60, 0, 0, 0)
-                                                .addPos(-60, 0, 0, 300)
-                                                .addPos(0, 0, 0, 400, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(-60, 0, 0, 0)
+                                                .to(-60, 0, 0, 300)
+                                                .to(0, 0, 0, 400, IType.SIN_FULL))
                                 .addBus(
                                         "TWIST",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, -90, 0)
-                                                .addPos(0, 0, 0, 200, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, -90, 0)
+                                                .to(0, 0, 0, 200, IType.SIN_FULL))
                                 .addBus(
                                         "LEVER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 700)
-                                                .addPos(-90, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(-90, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(-90, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 700)
+                                                .to(-90, 0, 0, 200)
+                                                .to(0, 0, 0, 200)
+                                                .to(0, 0, 0, 500)
+                                                .to(-90, 0, 0, 200)
+                                                .to(0, 0, 0, 200)
+                                                .to(0, 0, 0, 200)
+                                                .to(-90, 0, 0, 200)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "TURN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 700)
-                                                .addPos(0, 0, 45, 200, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 200, IType.SIN_UP)
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(0, 0, 45, 200, IType.SIN_FULL)
-                                                .addPos(0, 0, 45, 600)
-                                                .addPos(0, 0, 0, 200, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 700)
+                                                .to(0, 0, 45, 200, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 200, IType.SIN_UP)
+                                                .to(0, 0, 0, 500)
+                                                .to(0, 0, 45, 200, IType.SIN_FULL)
+                                                .to(0, 0, 45, 600)
+                                                .to(0, 0, 0, 200, IType.SIN_FULL));
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "YEET",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 2, 0, 200, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 200, IType.SIN_UP))
-                                .addBus("ROLL", new BusAnimationSequence().addPos(0, 0, 360, 400));
+                                        new AnimationSequence()
+                                                .to(0, 2, 0, 200, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 200, IType.SIN_UP))
+                                .addBus("ROLL", new AnimationSequence().to(0, 0, 360, 400));
                 }
 
                 return null;
@@ -297,110 +328,106 @@ public class XFactory44 {
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 50)
-                                                .addPos(0, 0, -3, 50)
-                                                .addPos(0, 0, 0, 250))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 50)
+                                                .to(0, 0, -3, 50)
+                                                .to(0, 0, 0, 250))
                                 .addBus(
                                         "HAMMER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 1, 50)
-                                                .addPos(0, 0, 1, 400)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 1, 50)
+                                                .to(0, 0, 1, 400)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "DRUM",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 450)
-                                                .addPos(0, 0, 1, 200));
+                                        new AnimationSequence().to(0, 0, 0, 450).to(0, 0, 1, 200));
                     case CYCLE_DRY:
                         return new BusAnimation()
                                 .addBus(
                                         "HAMMER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 1, 50)
-                                                .addPos(0, 0, 1, 300 + 100)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(0, 0, 1, 50)
+                                                .to(0, 0, 1, 300 + 100)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "DRUM",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 450)
-                                                .addPos(0, 0, 1, 200));
+                                        new AnimationSequence().to(0, 0, 0, 450).to(0, 0, 1, 200));
                     case EQUIP:
                         return new BusAnimation()
                                 .addBus(
                                         "ROTATE",
-                                        new BusAnimationSequence()
-                                                .addPos(90, 0, 0, 0)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(90, 0, 0, 0)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "RELAOD_TILT",
-                                        new BusAnimationSequence()
-                                                .addPos(-15, 0, 0, 100)
-                                                .addPos(65, 0, 0, 100)
-                                                .addPos(45, 0, 0, 50)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(0, 0, 0, 1450)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(-15, 0, 0, 100)
+                                                .to(65, 0, 0, 100)
+                                                .to(45, 0, 0, 50)
+                                                .to(0, 0, 0, 200)
+                                                .to(0, 0, 0, 1450)
+                                                .to(-80, 0, 0, 100)
+                                                .to(-80, 0, 0, 100)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "RELOAD_CYLINDER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(90, 0, 0, 100)
-                                                .addPos(90, 0, 0, 1700)
-                                                .addPos(0, 0, 0, 70))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 200)
+                                                .to(90, 0, 0, 100)
+                                                .to(90, 0, 0, 1700)
+                                                .to(0, 0, 0, 70))
                                 .addBus(
                                         "RELOAD_LIFT",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 350)
-                                                .addPos(-45, 0, 0, 250)
-                                                .addPos(-45, 0, 0, 350)
-                                                .addPos(-15, 0, 0, 200)
-                                                .addPos(-15, 0, 0, 1050)
-                                                .addPos(0, 0, 0, 100))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 350)
+                                                .to(-45, 0, 0, 250)
+                                                .to(-45, 0, 0, 350)
+                                                .to(-15, 0, 0, 200)
+                                                .to(-15, 0, 0, 1050)
+                                                .to(0, 0, 0, 100))
                                 .addBus(
                                         "RELOAD_JOLT",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 600)
-                                                .addPos(2, 0, 0, 50)
-                                                .addPos(0, 0, 0, 100))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 600)
+                                                .to(2, 0, 0, 50)
+                                                .to(0, 0, 0, 100))
                                 .addBus(
                                         "RELOAD_BULLETS",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 650)
-                                                .addPos(10, 0, 0, 300)
-                                                .addPos(10, 0, 0, 200)
-                                                .addPos(0, 0, 0, 700))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 650)
+                                                .to(10, 0, 0, 300)
+                                                .to(10, 0, 0, 200)
+                                                .to(0, 0, 0, 700))
                                 .addBus(
                                         "RELOAD_BULLETS_CON",
-                                        new BusAnimationSequence()
-                                                .addPos(1, 0, 0, 0)
-                                                .addPos(1, 0, 0, 950)
-                                                .addPos(0, 0, 0, 1));
+                                        new AnimationSequence()
+                                                .to(1, 0, 0, 0)
+                                                .to(1, 0, 0, 950)
+                                                .to(0, 0, 0, 1));
                     case INSPECT:
                     case JAMMED:
                         return new BusAnimation()
                                 .addBus(
                                         "RELAOD_TILT",
-                                        new BusAnimationSequence()
-                                                .addPos(-15, 0, 0, 100)
-                                                .addPos(65, 0, 0, 100)
-                                                .addPos(45, 0, 0, 50)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(-80, 0, 0, 100)
-                                                .addPos(0, 0, 0, 200))
+                                        new AnimationSequence()
+                                                .to(-15, 0, 0, 100)
+                                                .to(65, 0, 0, 100)
+                                                .to(45, 0, 0, 50)
+                                                .to(0, 0, 0, 200)
+                                                .to(0, 0, 0, 200)
+                                                .to(-80, 0, 0, 100)
+                                                .to(-80, 0, 0, 100)
+                                                .to(0, 0, 0, 200))
                                 .addBus(
                                         "RELOAD_CYLINDER",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 200)
-                                                .addPos(90, 0, 0, 100)
-                                                .addPos(90, 0, 0, 450)
-                                                .addPos(0, 0, 0, 70));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 200)
+                                                .to(90, 0, 0, 100)
+                                                .to(90, 0, 0, 450)
+                                                .to(0, 0, 0, 70));
                 }
 
                 return null;
@@ -412,7 +439,7 @@ public class XFactory44 {
                 switch (type) {
                     case EQUIP:
                         return new BusAnimation()
-                                .addBus("SPIN", new BusAnimationSequence().addPos(-360, 0, 0, 350));
+                                .addBus("SPIN", new AnimationSequence().to(-360, 0, 0, 350));
                 }
 
                 return LAMBDA_NOPIP_ANIMS.apply(stack, type);
@@ -426,170 +453,162 @@ public class XFactory44 {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(60, 0, 0, 0)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(60, 0, 0, 0)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                     case CYCLE:
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 50)
-                                                .addPos(0, 0, -3, 50)
-                                                .addPos(0, 0, 0, 250));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 50)
+                                                .to(0, 0, -3, 50)
+                                                .to(0, 0, 0, 250));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "LID",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, -90, 250)
-                                                .addPos(0, 0, -90, 1500)
-                                                .addPos(0, 0, 0, 250))
+                                        new AnimationSequence()
+                                                .to(0, 0, -90, 250)
+                                                .to(0, 0, -90, 1500)
+                                                .to(0, 0, 0, 250))
                                 .addBus(
                                         "MAG",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 250)
-                                                .addPos(0, -10, 0, 250, IType.SIN_UP)
-                                                .addPos(0, -10, 0, 500)
-                                                .addPos(0, 0, 0, 350, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 250)
+                                                .to(0, -10, 0, 250, IType.SIN_UP)
+                                                .to(0, -10, 0, 500)
+                                                .to(0, 0, 0, 350, IType.SIN_FULL))
                                 .addBus(
                                         "BULLETS",
-                                        new BusAnimationSequence()
-                                                .addPos(1, 1, 1, 0)
-                                                .addPos(0, 0, 0, 500))
+                                        new AnimationSequence().to(1, 1, 1, 0).to(0, 0, 0, 500))
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(-15, 0, 0, 500, IType.SIN_FULL)
-                                                .addPos(-15, 0, 0, 850)
-                                                .addPos(-25, 0, 0, 100, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 350, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(-15, 0, 0, 500, IType.SIN_FULL)
+                                                .to(-15, 0, 0, 850)
+                                                .to(-25, 0, 0, 100, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 350, IType.SIN_FULL))
                                 .addBus(
                                         "ROLL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(0, 0, 25, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 25, 1000)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(0, 0, 25, 250, IType.SIN_FULL)
+                                                .to(0, 0, 25, 1000)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL));
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "TURN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 170, 0, 500, IType.SIN_UP)
-                                                .addPos(0, 170, 0, 550)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 170, 0, 500, IType.SIN_UP)
+                                                .to(0, 170, 0, 550)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL))
                                 .addBus(
                                         "ROLL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 110, 500, IType.SIN_FULL)
-                                                .addPos(0, 0, 110, 550)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 110, 500, IType.SIN_FULL)
+                                                .to(0, 0, 110, 550)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL))
                                 .addBus(
                                         "SMACK",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(0, 0, 1, 150, IType.SIN_DOWN)
-                                                .addPos(0, 0, -3, 150, IType.SIN_UP)
-                                                .addPos(0, 0, 0, 350, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(0, 0, 1, 150, IType.SIN_DOWN)
+                                                .to(0, 0, -3, 150, IType.SIN_UP)
+                                                .to(0, 0, 0, 350, IType.SIN_FULL));
                     case JAMMED:
                         return new BusAnimation()
                                 .addBus(
                                         "LID",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(0, 0, -90, 250)
-                                                .addPos(0, 0, -90, 300)
-                                                .addPos(0, 0, 0, 250))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(0, 0, -90, 250)
+                                                .to(0, 0, -90, 300)
+                                                .to(0, 0, 0, 250))
                                 .addBus(
                                         "MAG",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(0, 0, 0, 250)
-                                                .addPos(0, -3, 0, 150, IType.SIN_UP)
-                                                .addPos(0, 0, 0, 150, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(0, 0, 0, 250)
+                                                .to(0, -3, 0, 150, IType.SIN_UP)
+                                                .to(0, 0, 0, 150, IType.SIN_FULL))
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 1000)
-                                                .addPos(-10, 0, 0, 100, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 350, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 1000)
+                                                .to(-10, 0, 0, 100, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 350, IType.SIN_FULL))
                                 .addBus(
                                         "ROLL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(0, 0, 25, 250, IType.SIN_FULL)
-                                                .addPos(0, 0, 25, 300)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(0, 0, 25, 250, IType.SIN_FULL)
+                                                .to(0, 0, 25, 300)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL));
                 }
 
                 return null;
             };
 
     public static void init() {
-        SpentCasing casing44 =
-                new SpentCasing(CasingType.STRAIGHT)
-                        .setColor(SpentCasing.COLOR_CASE_BRASS)
-                        .setupSmoke(1F, 0.5D, 60, 20);
+        Casing.Template casing44 = Casing.template(CasingShape.STRAIGHT).tints(Casing.BRASS);
         m44_bp =
                 new BulletConfig()
                         .setItem(EnumAmmo.M44_BP)
-                        .setCasing(EnumCasingType.SMALL, 12)
+                        .setCasing(CasingType.SMALL, 12)
                         .setDamage(0.75F)
                         .setBlackPowder(true)
-                        .setCasing(casing44.clone().register("m44bp"));
+                        .setCasing(casing44.copy().register("m44bp"));
         m44_sp =
                 new BulletConfig()
                         .setItem(EnumAmmo.M44_SP)
-                        .setCasing(EnumCasingType.SMALL, 6)
-                        .setCasing(casing44.clone().register("m44"));
+                        .setCasing(CasingType.SMALL, 6)
+                        .setCasing(casing44.copy().register("m44"));
         m44_fmj =
                 new BulletConfig()
                         .setItem(EnumAmmo.M44_FMJ)
-                        .setCasing(EnumCasingType.SMALL, 6)
+                        .setCasing(CasingType.SMALL, 6)
                         .setDamage(0.8F)
                         .setThresholdNegation(3F)
                         .setArmorPiercing(0.1F)
-                        .setCasing(casing44.clone().register("m44fmj"));
+                        .setCasing(casing44.copy().register("m44fmj"));
         m44_jhp =
                 new BulletConfig()
                         .setItem(EnumAmmo.M44_JHP)
-                        .setCasing(EnumCasingType.SMALL, 6)
+                        .setCasing(CasingType.SMALL, 6)
                         .setDamage(1.5F)
                         .setHeadshot(1.5F)
                         .setArmorPiercing(-0.25F)
-                        .setCasing(casing44.clone().register("m44jhp"));
+                        .setCasing(casing44.copy().register("m44jhp"));
         m44_ap =
                 new BulletConfig()
                         .setItem(EnumAmmo.M44_AP)
-                        .setCasing(EnumCasingType.SMALL_STEEL, 6)
+                        .setCasing(CasingType.SMALL_STEEL, 6)
                         .setDoesPenetrate(true)
                         .setDamageFalloffByPen(false)
                         .setDamage(1.25F)
                         .setThresholdNegation(7.5F)
                         .setArmorPiercing(0.15F)
-                        .setCasing(
-                                casing44.clone()
-                                        .setColor(SpentCasing.COLOR_CASE_44)
-                                        .register("m44ap"));
+                        .setCasing(casing44.copy().tints(Casing.MAGNUM_44).register("m44ap"));
         m44_express =
                 new BulletConfig()
                         .setItem(EnumAmmo.M44_EXPRESS)
-                        .setCasing(EnumCasingType.SMALL, 6)
+                        .setCasing(CasingType.SMALL, 6)
                         .setDoesPenetrate(true)
                         .setDamage(1.5F)
                         .setThresholdNegation(3F)
                         .setArmorPiercing(0.1F)
                         .setWear(1.5F)
-                        .setCasing(casing44.clone().register("m44express"));
+                        .setCasing(casing44.copy().register("m44express"));
         m44_equestrian_pip =
                 new BulletConfig()
                         .setItem(GunFactory.EnumAmmoSecret.M44_EQUESTRIAN)
                         .setDamage(0F)
                         .setOnImpact(LAMBDA_BOXCAR)
                         .setCasing(
-                                casing44.clone()
-                                        .setColor(SpentCasing.COLOR_CASE_EQUESTRIAN)
+                                casing44.copy()
+                                        .tints(Casing.EQUESTRIAN)
                                         .register("m44equestrianPip"));
         m44_equestrian_mn7 =
                 new BulletConfig()
@@ -597,18 +616,18 @@ public class XFactory44 {
                         .setDamage(0F)
                         .setOnImpact(LAMBDA_TORPEDO)
                         .setCasing(
-                                casing44.clone()
-                                        .setColor(SpentCasing.COLOR_CASE_EQUESTRIAN)
+                                casing44.copy()
+                                        .tints(Casing.EQUESTRIAN)
                                         .register("m44equestrianMn7"));
 
         ModItems.GUN_HENRY =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_henry",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.A_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(300)
                                                         .draw(15)
                                                         .inspect(23)
@@ -616,7 +635,7 @@ public class XFactory44 {
                                                         .crosshair(Crosshair.CIRCLE)
                                                         .smoke(Lego.LAMBDA_STANDARD_SMOKE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(10F)
                                                                         .delay(20)
                                                                         .reload(25, 11, 14, 8)
@@ -647,18 +666,18 @@ public class XFactory44 {
                                                                                 LAMBDA_RECOIL_HENRY))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_HENRY_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_HENRY))
+                                                        .orchestra(GunAnimationActions.HENRY))
                                         .setDefaultAmmo(EnumAmmo.M44_SP, 14),
                         Item.Properties::new);
 
         ModItems.GUN_HENRY_LINCOLN =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_henry_lincoln",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.B_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(300)
                                                         .draw(15)
                                                         .inspect(23)
@@ -666,7 +685,7 @@ public class XFactory44 {
                                                         .crosshair(Crosshair.CIRCLE)
                                                         .smoke(Lego.LAMBDA_STANDARD_SMOKE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(20F)
                                                                         .spreadHipfire(0F)
                                                                         .delay(20)
@@ -698,25 +717,25 @@ public class XFactory44 {
                                                                                 LAMBDA_RECOIL_HENRY))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_HENRY_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_HENRY))
+                                                        .orchestra(GunAnimationActions.HENRY))
                                         .setDefaultAmmo(EnumAmmo.M44_JHP, 14),
                         Item.Properties::new);
 
         ModItems.GUN_HEAVY_REVOLVER =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_heavy_revolver",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.A_SIDE,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(600)
                                                         .draw(10)
                                                         .inspect(23)
                                                         .crosshair(Crosshair.L_CLASSIC)
                                                         .smoke(Lego.LAMBDA_STANDARD_SMOKE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(15F)
                                                                         .delay(14)
                                                                         .reload(46)
@@ -747,19 +766,19 @@ public class XFactory44 {
                                                                                 LAMBDA_RECOIL_NOPIP))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_NOPIP_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_NOPIP))
+                                                        .orchestra(GunAnimationActions.NOPIP))
                                         .setDefaultAmmo(EnumAmmo.M44_SP, 12)
                                         .setNameMutator(LAMBDA_NAME_NOPIP),
                         Item.Properties::new);
 
         ModItems.GUN_HEAVY_REVOLVER_LILMAC =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_heavy_revolver_lilmac",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.LEGENDARY,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(31_000)
                                                         .draw(10)
                                                         .inspect(23)
@@ -767,7 +786,7 @@ public class XFactory44 {
                                                         .scopeTexture(scope_lilmac)
                                                         .smoke(Lego.LAMBDA_STANDARD_SMOKE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(30F)
                                                                         .delay(14)
                                                                         .reload(46)
@@ -799,25 +818,25 @@ public class XFactory44 {
                                                                                 LAMBDA_RECOIL_NOPIP))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_LILMAC_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_NOPIP))
+                                                        .orchestra(GunAnimationActions.NOPIP))
                                         .setDefaultAmmo(EnumAmmo.M44_JHP, 12),
                         Item.Properties::new);
 
         ModItems.GUN_HEAVY_REVOLVER_PROTEGE =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_heavy_revolver_protege",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.LEGENDARY,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(31_000)
                                                         .draw(10)
                                                         .inspect(23)
                                                         .crosshair(Crosshair.L_CLASSIC)
                                                         .smoke(Lego.LAMBDA_STANDARD_SMOKE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(30F)
                                                                         .delay(14)
                                                                         .reload(46)
@@ -849,18 +868,18 @@ public class XFactory44 {
                                                                                 LAMBDA_RECOIL_NOPIP))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_LILMAC_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_NOPIP))
+                                                        .orchestra(GunAnimationActions.NOPIP))
                                         .setDefaultAmmo(EnumAmmo.M44_JHP, 12),
                         Item.Properties::new);
 
         ModItems.GUN_HANGMAN =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_hangman",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.LEGENDARY,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(600)
                                                         .draw(10)
                                                         .inspect(31)
@@ -868,7 +887,7 @@ public class XFactory44 {
                                                         .crosshair(Crosshair.CIRCLE)
                                                         .smoke(Lego.LAMBDA_STANDARD_SMOKE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(25F)
                                                                         .delay(10)
                                                                         .reload(46)
@@ -901,7 +920,7 @@ public class XFactory44 {
                                                         .setupStandardConfiguration()
                                                         .ps(SMACK_A_FUCKER)
                                                         .anim(LAMBDA_HANGMAN_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_HANGMAN))
+                                                        .orchestra(GunAnimationActions.HANGMAN))
                                         .setDefaultAmmo(EnumAmmo.M44_FMJ, 16),
                         Item.Properties::new);
     }

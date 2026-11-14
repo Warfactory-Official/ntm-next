@@ -1,14 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.RandomAccess;
 import java.util.Spliterator;
 import java.util.function.Predicate;
@@ -94,7 +112,7 @@ public final class SlotList extends ArrayList<ItemStack> {
 
     @Override
     protected void removeRange(int first, int end) {
-        java.util.Objects.checkFromToIndex(first, end, size());
+        Objects.checkFromToIndex(first, end, size());
         int old = size();
         for (int slot = first; slot < end; slot++)
             InventorySlotBinding.unbind(get(slot), source, slot);
@@ -110,11 +128,9 @@ public final class SlotList extends ArrayList<ItemStack> {
     @Override
     public boolean removeIf(Predicate<? super ItemStack> predicate) {
         ItemStack[] previous = toArray(ItemStack[]::new);
-        try {
-            return super.removeIf(predicate);
-        } finally {
-            bulkChanged(previous);
-        }
+        boolean changed = super.removeIf(predicate);
+        bulkChanged(previous);
+        return changed;
     }
 
     @Override
@@ -151,7 +167,7 @@ public final class SlotList extends ArrayList<ItemStack> {
         return new SlotView(super.subList(first, end), first);
     }
 
-    private final class SlotView extends java.util.AbstractList<ItemStack> implements RandomAccess {
+    private final class SlotView extends AbstractList<ItemStack> implements RandomAccess {
         private final List<ItemStack> view;
         private final int first;
 
@@ -235,11 +251,9 @@ public final class SlotList extends ArrayList<ItemStack> {
         @Override
         public boolean removeIf(Predicate<? super ItemStack> predicate) {
             ItemStack[] previous = SlotList.this.toArray(ItemStack[]::new);
-            try {
-                return view.removeIf(predicate);
-            } finally {
-                bulkChanged(previous);
-            }
+            boolean changed = view.removeIf(predicate);
+            bulkChanged(previous);
+            return changed;
         }
 
         @Override

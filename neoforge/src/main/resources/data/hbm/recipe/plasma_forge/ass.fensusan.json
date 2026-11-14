@@ -14,7 +14,10 @@
       "ingredient": "hbm:ingot_electronium"
     },
     {
-      "ingredient": "hbm:battery_pack_battery_quantum"
+      "ingredient": "hbm:battery_pack_battery_quantum",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
     },
     {
       "count": 64,
@@ -45,7 +48,10 @@
       "ingredient": "hbm:powder_magic"
     },
     {
-      "ingredient": "hbm:ingot_u238m2"
+      "ingredient": "hbm:ingot_u238m2",
+      "predicates": {
+        "hbm:consume_component": "hbm:unstable_at"
+      }
     },
     {
       "count": 64,

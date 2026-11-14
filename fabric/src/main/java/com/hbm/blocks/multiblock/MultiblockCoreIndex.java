@@ -1,9 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.multiblock;
 
-import com.hbm.blocks.machine.BlockCMPort;
+import com.hbm.blocks.machine.CMPortBlock;
+import com.hbm.interfaces.injected.ChunkExtension;
 import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -77,9 +94,16 @@ public final class MultiblockCoreIndex {
     }
 
     public static void resolveLegacy(ChunkAccess chunk, LevelHeightAccessor level) {
-        long[] entries = chunk.hbm$coreIndex();
+        long[] entries = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
         boolean changed = false;
-        for (int i = 0, n = entries == null ? 0 : chunk.hbm$coreIndexSize(); i < n; i++) {
+        for (int i = 0,
+                        n =
+                                entries == null
+                                        ? 0
+                                        : ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                                                .hbm$coreIndexSize();
+                i < n;
+                i++) {
             long entry = entries[i];
             if (populationOf(entry) != LEGACY) continue;
             Block block =
@@ -88,7 +112,7 @@ public final class MultiblockCoreIndex {
             int population =
                     block instanceof AssembledMembers.Member
                             ? MEMBER
-                            : block instanceof BlockCMPort ? PORT : FOLDED;
+                            : block instanceof CMPortBlock ? PORT : FOLDED;
             entries[i] = entry & ~(3L << POPULATION_SHIFT) | (long) population << POPULATION_SHIFT;
             changed = true;
         }
@@ -169,7 +193,8 @@ public final class MultiblockCoreIndex {
         return -lo - 1;
     }
 
-    public static long lookup(ChunkAccess chunk, LevelHeightAccessor level, int x, int y, int z) {
+    public static long lookup(
+            ChunkExtension chunk, LevelHeightAccessor level, int x, int y, int z) {
         long[] entries = chunk.hbm$coreIndex();
         if (entries == null) return NO_ENTRY;
         int at = indexOf(entries, chunk.hbm$coreIndexSize(), key(level, x, y, z));
@@ -177,7 +202,7 @@ public final class MultiblockCoreIndex {
     }
 
     public static int size(ChunkAccess chunk) {
-        int size = chunk.hbm$coreIndexSize();
+        int size = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndexSize();
         for (RemovalBatch batch = REMOVALS.get(); batch != null; batch = batch.previous)
             size -= batch.removed(chunk);
         return size;
@@ -193,8 +218,12 @@ public final class MultiblockCoreIndex {
         if (count == 0) return;
         Arrays.sort(packed, 0, count);
 
-        long[] entries = chunk.hbm$coreIndex();
-        int size = entries == null ? 0 : chunk.hbm$coreIndexSize();
+        long[] entries = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
+        int size =
+                entries == null
+                        ? 0
+                        : ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                                .hbm$coreIndexSize();
         if (allRecorded(entries, size, packed, count)) return;
         count = dedupeKeepingLast(packed, count);
 
@@ -216,7 +245,7 @@ public final class MultiblockCoreIndex {
         int start = write + 1;
         size = size + count - start;
         if (start > 0) System.arraycopy(entries, start, entries, 0, size);
-        chunk.hbm$setCoreIndex(entries, size);
+        ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$setCoreIndex(entries, size);
         resetRemovals(chunk);
         chunk.markUnsaved();
     }
@@ -232,9 +261,9 @@ public final class MultiblockCoreIndex {
     }
 
     public static void remove(ChunkAccess chunk, int key) {
-        long[] entries = chunk.hbm$coreIndex();
+        long[] entries = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
         if (entries == null) return;
-        int size = chunk.hbm$coreIndexSize();
+        int size = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndexSize();
         int at = indexOf(entries, size, key);
         if (at < 0 || entries[at] < 0) return;
         chunk.markUnsaved();
@@ -245,7 +274,8 @@ public final class MultiblockCoreIndex {
             return;
         }
         System.arraycopy(entries, at + 1, entries, at, size - at - 1);
-        chunk.hbm$setCoreIndex(size == 1 ? null : entries, size - 1);
+        ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                .hbm$setCoreIndex(size == 1 ? null : entries, size - 1);
     }
 
     public static RemovalBatch removalBatch() {
@@ -255,9 +285,9 @@ public final class MultiblockCoreIndex {
     }
 
     public static long[] copyForSave(ChunkAccess chunk) {
-        long[] entries = chunk.hbm$coreIndex();
+        long[] entries = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
         if (entries == null) return null;
-        int count = chunk.hbm$coreIndexSize();
+        int count = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndexSize();
         long[] copy = new long[count];
         int write = 0;
         for (int i = 0; i < count; i++) if (entries[i] >= 0) copy[write++] = entries[i];
@@ -308,12 +338,19 @@ public final class MultiblockCoreIndex {
                 for (int c = 0; c < count; c++) {
                     if (removed[c] == 0) continue;
                     ChunkAccess chunk = chunks[c];
-                    long[] entries = chunk.hbm$coreIndex();
+                    long[] entries =
+                            ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
                     int write = 0;
-                    for (int read = 0, size = chunk.hbm$coreIndexSize(); read < size; read++) {
+                    for (int read = 0,
+                                    size =
+                                            ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                                                    .hbm$coreIndexSize();
+                            read < size;
+                            read++) {
                         if (entries[read] >= 0) entries[write++] = entries[read];
                     }
-                    chunk.hbm$setCoreIndex(write == 0 ? null : entries, write);
+                    ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                            .hbm$setCoreIndex(write == 0 ? null : entries, write);
                     resetRemovals(chunk);
                 }
             } finally {

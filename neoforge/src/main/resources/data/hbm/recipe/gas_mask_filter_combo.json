@@ -3,11 +3,14 @@
   "key": {
     "C": "hbm:catalyst_clay",
     "F": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:gas_mask_filter",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:gas_mask_filter"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "Z": "#c:ingots/zirconium"
   },

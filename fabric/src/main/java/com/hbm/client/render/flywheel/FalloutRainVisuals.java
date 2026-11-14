@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.render.FalloutRainColumns;
-import com.hbm.client.render.RenderFallout;
-import com.hbm.entity.effect.EntityFalloutRain;
+import com.hbm.client.render.FalloutRenderer;
+import com.hbm.entity.effect.FalloutRainEntity;
 import java.util.Arrays;
 import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
@@ -37,7 +53,7 @@ public final class FalloutRainVisuals {
         }
     }
 
-    public static boolean ready(EntityFalloutRain entity) {
+    public static boolean ready(FalloutRainEntity entity) {
         for (FalloutRainVisual visual : active) {
             if (visual.entity() == entity && visual.hasFrame()) return true;
         }
@@ -47,10 +63,10 @@ public final class FalloutRainVisuals {
     public static void capture(Camera camera, DeltaTracker deltaTracker, ClientLevel level) {
         Vec3 cameraPos = camera.position();
         for (FalloutRainVisual visual : active) {
-            EntityFalloutRain entity = visual.entity();
+            FalloutRainEntity entity = visual.entity();
             if (entity.isRemoved()
                     || entity.level() != level
-                    || !RenderFallout.withinRenderDistance(
+                    || !FalloutRenderer.withinRenderDistance(
                             entity, cameraPos.x, cameraPos.y, cameraPos.z)) {
                 visual.publishFrame(null);
                 continue;

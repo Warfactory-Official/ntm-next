@@ -1,9 +1,10 @@
 {
   "required": true,
-  "minVersion": "0.8.5",
+  "minVersion": "0.8.7",
   "package": "com.hbm.mixin.compat",
   "plugin": "com.hbm.mixin.compat.IrisCompatMixinPlugin",
   "client": [
+    "iris.ProgramFallbackResolverAccessor",
     "iris.MixinChunkVertexConsumer",
     "iris.MixinVertex",
     "iris.MixinGlDevice",

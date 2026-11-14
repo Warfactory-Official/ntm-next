@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.particle;
 
 import com.hbm.client.render.flywheel.EffectVisuals;
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.CutoutShader;
 import dev.engine_room.flywheel.api.material.Transparency;
@@ -20,28 +36,37 @@ import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.Identifier;
 
-final class ParticleModels {
+public final class ParticleModels {
     private static final CutoutShader EFFECT_RENDERER_CUTOUT =
-            new SimpleCutoutShader(Library.id("cutout/particle.glsl"));
+            new SimpleCutoutShader(RegistryUtil.id("cutout/particle.glsl"));
     private static final CutoutShader ZERO_CUTOUT =
-            new SimpleCutoutShader(Library.id("cutout/zero.glsl"));
+            new SimpleCutoutShader(RegistryUtil.id("cutout/zero.glsl"));
     static final Model LIT = build(ParticleLayers.TRANSLUCENT, true);
     static final Model LIT_PARTICLE_BASE =
             build(
                     ParticleLayers.TRANSLUCENT,
                     true,
-                    Library.id("textures/particle/particle_base.png"));
+                    RegistryUtil.id("textures/particle/particle_base.png"));
     static final Model LIT_DEAD_LEAF =
-            build(ParticleLayers.TRANSLUCENT, true, Library.id("textures/particle/dead_leaf.png"));
+            build(
+                    ParticleLayers.TRANSLUCENT,
+                    true,
+                    RegistryUtil.id("textures/particle/dead_leaf.png"));
     static final Model MUKE_CLOUD =
-            build(ParticleLayers.ADDITIVE, true, Library.id("textures/particle/explosion.png"));
+            build(
+                    ParticleLayers.ADDITIVE,
+                    true,
+                    RegistryUtil.id("textures/particle/explosion.png"));
     static final Model MUKE_CLOUD_BALEFIRE =
-            build(ParticleLayers.ADDITIVE, true, Library.id("textures/particle/explosion_bf.png"));
+            build(
+                    ParticleLayers.ADDITIVE,
+                    true,
+                    RegistryUtil.id("textures/particle/explosion_bf.png"));
     static final Model RBMK_STEAM =
             new SingleMeshModel(
                     AdditiveParticleModels.RBMK_QUAD,
                     SimpleMaterial.builder()
-                            .texture(Library.id("textures/particle/rbmk_jet_steam.png"))
+                            .texture(RegistryUtil.id("textures/particle/rbmk_jet_steam.png"))
                             .mipmap(false)
                             .useOverlay(false)
                             .useLight(false)
@@ -55,7 +80,7 @@ final class ParticleModels {
                             .fog(FogShaders.NONE)
                             .build());
     static final Model UNLIT = build(ParticleLayers.TRANSLUCENT, false);
-    static final Model ADDITIVE = build(ParticleLayers.ADDITIVE, false);
+    public static final Model ADDITIVE = build(ParticleLayers.ADDITIVE, false);
     static final Model ADDITIVE_NO_FOG = build(ParticleLayers.ADDITIVE_NO_FOG, false);
 
     private ParticleModels() {}

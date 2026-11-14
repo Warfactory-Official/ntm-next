@@ -1,30 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.model.Meshes;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.item.EntityParachuteCrate;
-import com.hbm.entity.logic.EntityBomber;
-import com.hbm.entity.logic.EntityC130;
-import com.hbm.entity.missile.EntityBobmazon;
-import com.hbm.entity.missile.EntitySatellitePod;
-import com.hbm.entity.missile.EntitySoyuz;
-import com.hbm.entity.missile.EntitySoyuzCapsule;
-import com.hbm.entity.projectile.EntityBoxcar;
-import com.hbm.entity.projectile.EntityBuilding;
-import com.hbm.entity.projectile.EntityCoin;
-import com.hbm.entity.projectile.EntityDuchessGambit;
-import com.hbm.entity.projectile.EntityRBMKDebris;
-import com.hbm.entity.projectile.EntityZirnoxDebris;
-import com.hbm.entity.train.EntityRailCarBase;
+import com.hbm.entity.item.ParachuteCrateEntity;
+import com.hbm.entity.logic.BomberEntity;
+import com.hbm.entity.logic.C130Entity;
+import com.hbm.entity.missile.BobmazonEntity;
+import com.hbm.entity.missile.SatellitePod;
+import com.hbm.entity.missile.SoyuzCapsule;
+import com.hbm.entity.missile.SoyuzEntity;
+import com.hbm.entity.projectile.BoxcarEntity;
+import com.hbm.entity.projectile.BuildingEntity;
+import com.hbm.entity.projectile.CoinEntity;
+import com.hbm.entity.projectile.DuchessGambitEntity;
+import com.hbm.entity.projectile.RBMKDebrisEntity;
+import com.hbm.entity.projectile.ZirnoxDebrisEntity;
+import com.hbm.entity.train.RailCarBaseEntity;
 import com.hbm.entity.train.TrainCargoTram;
 import com.hbm.entity.train.TrainCargoTramTrailer;
-import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.GameTime;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.lib.visualization.SimpleEntityVisualizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,8 +116,8 @@ public final class VehicleVisuals {
                 .apply();
     }
 
-    private static ObjEntityVisual.Spec<EntityBoxcar> boxcar() {
-        return ObjEntityVisual.Spec.<EntityBoxcar>of(
+    private static ObjEntityVisual.Spec<BoxcarEntity> boxcar() {
+        return ObjEntityVisual.Spec.<BoxcarEntity>of(
                         ResourceManager.boxcar, ResourceManager.boxcar_tex, "Cube_Cube.001")
                 .pose(
                         (pose, entity, partialTick) -> {
@@ -127,7 +143,7 @@ public final class VehicleVisuals {
                 .unculled();
     }
 
-    private static void railCar(Matrix4f pose, EntityRailCarBase car, float partialTick) {
+    private static void railCar(Matrix4f pose, RailCarBaseEntity car, float partialTick) {
         pose.translate(
                 (float)
                         (Mth.lerp(partialTick, car.lastRenderX, car.renderX)
@@ -142,30 +158,30 @@ public final class VehicleVisuals {
         pose.rotateX(-Mth.lerp(partialTick, car.xRotO, car.getXRot()) * Mth.DEG_TO_RAD);
     }
 
-    private static ObjEntityVisual.Spec<EntityDuchessGambit> duchessGambit() {
-        return ObjEntityVisual.Spec.<EntityDuchessGambit>of(
+    private static ObjEntityVisual.Spec<DuchessGambitEntity> duchessGambit() {
+        return ObjEntityVisual.Spec.<DuchessGambitEntity>of(
                         ResourceManager.duchessgambit,
                         ResourceManager.duchessgambit_tex,
                         "Cube_Cube.001")
                 .pose((pose, entity, partialTick) -> pose.translate(0F, 0F, -1F));
     }
 
-    private static ObjEntityVisual.Spec<EntityBuilding> building() {
-        return ObjEntityVisual.Spec.<EntityBuilding>of(
+    private static ObjEntityVisual.Spec<BuildingEntity> building() {
+        return ObjEntityVisual.Spec.<BuildingEntity>of(
                         ResourceManager.building, ResourceManager.building_tex, "Cube")
                 .pose(VehicleVisuals::asAuthored)
                 .unculled();
     }
 
-    private static ObjEntityVisual.Spec<EntityBobmazon> bobmazon() {
-        return ObjEntityVisual.Spec.<EntityBobmazon>of(
+    private static ObjEntityVisual.Spec<BobmazonEntity> bobmazon() {
+        return ObjEntityVisual.Spec.<BobmazonEntity>of(
                         ResourceManager.miner_rocket, ResourceManager.bobmazon_tex, "Cylinder")
                 .pose((pose, entity, partialTick) -> pose.rotateX(180F * Mth.DEG_TO_RAD))
                 .unculled();
     }
 
-    private static ObjEntityVisual.Spec<EntityCoin> coin() {
-        return ObjEntityVisual.Spec.<EntityCoin>of(Rigs.CHIP, Rigs.CHIP_TEX, "Cylinder")
+    private static ObjEntityVisual.Spec<CoinEntity> coin() {
+        return ObjEntityVisual.Spec.<CoinEntity>of(Rigs.CHIP, Rigs.CHIP_TEX, "Cylinder")
                 .scale(0.125F)
                 .pose(
                         (pose, entity, partialTick) -> {
@@ -200,10 +216,11 @@ public final class VehicleVisuals {
         private static final int SOYUZ_BOOSTER_SIDE = 10;
 
         static final HFRWavefrontObject CHIP =
-                Meshes.flatShaded(Meshes.load(Library.id("models/trinkets/chip.obj")));
-        static final Identifier CHIP_TEX = Library.id("textures/models/trinkets/chip_gold.png");
-        static final CraftVisual.Rig<EntityC130> C130 = c130();
-        static final CraftVisual.Rig<EntitySoyuzCapsule> SOYUZ_CAPSULE =
+                Meshes.flatShaded(Meshes.load(RegistryUtil.id("models/trinkets/chip.obj")));
+        static final Identifier CHIP_TEX =
+                RegistryUtil.id("textures/models/trinkets/chip_gold.png");
+        static final CraftVisual.Rig<C130Entity> C130 = c130();
+        static final CraftVisual.Rig<SoyuzCapsule> SOYUZ_CAPSULE =
                 new CraftVisual.Rig<>(
                         (pose, entity, partialTick) -> swing(pose, entity.level().getGameTime()),
                         List.of(
@@ -215,26 +232,23 @@ public final class VehicleVisuals {
                                         ResourceManager.soyuz_lander,
                                         "Chute",
                                         ResourceManager.soyuz_chute_tex)));
-        static final CraftVisual.Rig<EntitySatellitePod> DROPSHIP = dropship();
+        static final CraftVisual.Rig<SatellitePod> DROPSHIP = dropship();
 
-        private static CraftVisual.Rig<EntitySatellitePod> dropship() {
-            List<CraftVisual.Part<EntitySatellitePod>> parts = new ArrayList<>();
+        private static CraftVisual.Rig<SatellitePod> dropship() {
+            List<CraftVisual.Part<SatellitePod>> parts = new ArrayList<>();
             parts.add(
                     CraftVisual.Part.of(
                             ResourceManager.dropship, "Pod", ResourceManager.dropship_tex));
             for (int i = 0; i < 4; i++) {
                 int leg = i;
                 parts.add(
-                        CraftVisual.Part.<EntitySatellitePod>of(
+                        CraftVisual.Part.<SatellitePod>of(
                                         ResourceManager.dropship,
                                         "Leg",
                                         ResourceManager.dropship_tex)
                                 .at(
                                         (pose, entity, partialTick) -> {
-                                            float extension =
-                                                    entity.prevLegs
-                                                            + (entity.legs - entity.prevLegs)
-                                                                    * partialTick;
+                                            float extension = entity.legExtension(partialTick);
                                             pose.rotateY((float) Math.toRadians(45F + 90F * leg));
                                             pose.translate(0.5F, 1.75F, 0F);
                                             pose.rotateZ(
@@ -247,7 +261,7 @@ public final class VehicleVisuals {
             return new CraftVisual.Rig<>(null, List.copyOf(parts));
         }
 
-        static final CraftVisual.Rig<EntityParachuteCrate> PARACHUTE_CRATE =
+        static final CraftVisual.Rig<ParachuteCrateEntity> PARACHUTE_CRATE =
                 new CraftVisual.Rig<>(
                         (pose, entity, partialTick) -> swing(pose, entity.level().getGameTime()),
                         List.of(
@@ -255,25 +269,25 @@ public final class VehicleVisuals {
                                         ResourceManager.conservecrate,
                                         "Cube.001",
                                         ResourceManager.supply_crate_tex),
-                                CraftVisual.Part.<EntityParachuteCrate>of(
+                                CraftVisual.Part.<ParachuteCrateEntity>of(
                                                 ResourceManager.soyuz_lander,
                                                 "Chute",
                                                 ResourceManager.soyuz_chute_tex)
                                         .at(
                                                 (pose, entity, partialTick) ->
                                                         pose.translate(0F, -1F, 0F))));
-        private static final List<CraftVisual.Rig<EntitySoyuz>> SOYUZ = soyuzRigs();
-        private static final CraftVisual.Rig<EntityBomber>[] BOMBER = bomberRigs();
-        private static final CraftVisual.Rig<EntityRBMKDebris>[] RBMK =
-                new CraftVisual.Rig[EntityRBMKDebris.DebrisType.VALUES.length];
-        private static final CraftVisual.Rig<EntityZirnoxDebris>[] ZIRNOX =
-                new CraftVisual.Rig[EntityZirnoxDebris.DebrisType.VALUES.length];
+        private static final List<CraftVisual.Rig<SoyuzEntity>> SOYUZ = soyuzRigs();
+        private static final CraftVisual.Rig<BomberEntity>[] BOMBER = bomberRigs();
+        private static final CraftVisual.Rig<RBMKDebrisEntity>[] RBMK =
+                new CraftVisual.Rig[RBMKDebrisEntity.DebrisType.VALUES.length];
+        private static final CraftVisual.Rig<ZirnoxDebrisEntity>[] ZIRNOX =
+                new CraftVisual.Rig[ZirnoxDebrisEntity.DebrisType.VALUES.length];
 
         static {
-            for (EntityRBMKDebris.DebrisType type : EntityRBMKDebris.DebrisType.VALUES) {
+            for (RBMKDebrisEntity.DebrisType type : RBMKDebrisEntity.DebrisType.VALUES) {
                 RBMK[type.ordinal()] = rbmkRig(type);
             }
-            for (EntityZirnoxDebris.DebrisType type : EntityZirnoxDebris.DebrisType.VALUES) {
+            for (ZirnoxDebrisEntity.DebrisType type : ZirnoxDebrisEntity.DebrisType.VALUES) {
                 ZIRNOX[type.ordinal()] = zirnoxRig(type);
             }
         }
@@ -282,25 +296,25 @@ public final class VehicleVisuals {
 
         static void init() {}
 
-        private static CraftVisual.Rig<EntityBomber>[] bomberRigs() {
+        private static CraftVisual.Rig<BomberEntity>[] bomberRigs() {
             var rigs = new CraftVisual.Rig[9];
             for (int i = 0; i < rigs.length; i++) rigs[i] = bomberRig(i);
             return rigs;
         }
 
-        static CraftVisual.Rig<EntitySoyuz> soyuz(EntitySoyuz entity) {
+        static CraftVisual.Rig<SoyuzEntity> soyuz(SoyuzEntity entity) {
             return SOYUZ.get(Math.floorMod(entity.getSkin(), SOYUZ.size()));
         }
 
-        static CraftVisual.Rig<EntityBomber> bomber(EntityBomber entity) {
+        static CraftVisual.Rig<BomberEntity> bomber(BomberEntity entity) {
             return BOMBER[entity.getStyle()];
         }
 
-        static CraftVisual.Rig<EntityRBMKDebris> rbmkDebris(EntityRBMKDebris entity) {
+        static CraftVisual.Rig<RBMKDebrisEntity> rbmkDebris(RBMKDebrisEntity entity) {
             return RBMK[entity.getDebrisType().ordinal()];
         }
 
-        static CraftVisual.Rig<EntityZirnoxDebris> zirnoxDebris(EntityZirnoxDebris entity) {
+        static CraftVisual.Rig<ZirnoxDebrisEntity> zirnoxDebris(ZirnoxDebrisEntity entity) {
             return ZIRNOX[entity.getDebrisType().ordinal()];
         }
 
@@ -317,8 +331,8 @@ public final class VehicleVisuals {
             pose.rotate(rot * Mth.DEG_TO_RAD, DIAG, DIAG, DIAG);
         }
 
-        private static CraftVisual.Rig<EntityC130> c130() {
-            List<CraftVisual.Part<EntityC130>> parts = new ArrayList<>();
+        private static CraftVisual.Rig<C130Entity> c130() {
+            List<CraftVisual.Part<C130Entity>> parts = new ArrayList<>();
             parts.add(
                     CraftVisual.Part.of(ResourceManager.c130, "Plane", ResourceManager.c130_0_tex));
             for (int i = 0; i < C130_PROPS.length; i++) {
@@ -326,7 +340,7 @@ public final class VehicleVisuals {
                 float py = C130_PROPS[i][1];
                 float pz = C130_PROPS[i][2];
                 parts.add(
-                        CraftVisual.Part.<EntityC130>of(
+                        CraftVisual.Part.<C130Entity>of(
                                         ResourceManager.c130,
                                         "Prop" + (i + 1),
                                         ResourceManager.c130_0_tex)
@@ -353,7 +367,7 @@ public final class VehicleVisuals {
                     List.copyOf(parts));
         }
 
-        private static CraftVisual.Rig<EntityBomber> bomberRig(int style) {
+        private static CraftVisual.Rig<BomberEntity> bomberRig(int style) {
             Identifier texture =
                     switch (style) {
                         case 2 -> ResourceManager.dornier_2_tex;
@@ -364,16 +378,16 @@ public final class VehicleVisuals {
                         case 8 -> ResourceManager.b29_3_tex;
                         default -> ResourceManager.dornier_1_tex;
                     };
-            CraftVisual.Part<EntityBomber> airframe =
+            CraftVisual.Part<BomberEntity> airframe =
                     style >= 0 && style <= 4
-                            ? CraftVisual.Part.<EntityBomber>of(
+                            ? CraftVisual.Part.<BomberEntity>of(
                                             ResourceManager.dornier, "Cube", texture)
                                     .at(
                                             (pose, entity, partialTick) -> {
                                                 pose.scale(5F);
                                                 pose.rotateY(-90F * Mth.DEG_TO_RAD);
                                             })
-                            : CraftVisual.Part.<EntityBomber>of(
+                            : CraftVisual.Part.<BomberEntity>of(
                                             ResourceManager.b29, "Cube", texture)
                                     .at(
                                             (pose, entity, partialTick) -> {
@@ -398,10 +412,10 @@ public final class VehicleVisuals {
                     List.of(airframe));
         }
 
-        private static List<CraftVisual.Rig<EntitySoyuz>> soyuzRigs() {
-            List<CraftVisual.Rig<EntitySoyuz>> rigs = new ArrayList<>();
+        private static List<CraftVisual.Rig<SoyuzEntity>> soyuzRigs() {
+            List<CraftVisual.Rig<SoyuzEntity>> rigs = new ArrayList<>();
             for (Identifier[] skin : ResourceManager.soyuz_skin_tex) {
-                List<CraftVisual.Part<EntitySoyuz>> parts = new ArrayList<>();
+                List<CraftVisual.Part<SoyuzEntity>> parts = new ArrayList<>();
                 for (int i = 0; i < SOYUZ_SINGLE.length; i++) {
                     parts.add(CraftVisual.Part.of(ResourceManager.soyuz, SOYUZ_SINGLE[i], skin[i]));
                 }
@@ -426,13 +440,13 @@ public final class VehicleVisuals {
                                     "BoosterSide" + tag,
                                     skin[SOYUZ_BOOSTER_SIDE]));
                 }
-                rigs.add(new CraftVisual.Rig<EntitySoyuz>(null, List.copyOf(parts)));
+                rigs.add(new CraftVisual.Rig<SoyuzEntity>(null, List.copyOf(parts)));
             }
             return List.copyOf(rigs);
         }
 
-        private static CraftVisual.Rig<EntityRBMKDebris> rbmkRig(EntityRBMKDebris.DebrisType type) {
-            CraftVisual.Part<EntityRBMKDebris> chunk =
+        private static CraftVisual.Rig<RBMKDebrisEntity> rbmkRig(RBMKDebrisEntity.DebrisType type) {
+            CraftVisual.Part<RBMKDebrisEntity> chunk =
                     switch (type) {
                         case BLANK ->
                                 CraftVisual.Part.of(
@@ -474,9 +488,9 @@ public final class VehicleVisuals {
                     List.of(chunk));
         }
 
-        private static CraftVisual.Rig<EntityZirnoxDebris> zirnoxRig(
-                EntityZirnoxDebris.DebrisType type) {
-            CraftVisual.Part<EntityZirnoxDebris> chunk =
+        private static CraftVisual.Rig<ZirnoxDebrisEntity> zirnoxRig(
+                ZirnoxDebrisEntity.DebrisType type) {
+            CraftVisual.Part<ZirnoxDebrisEntity> chunk =
                     switch (type) {
                         case BLANK ->
                                 CraftVisual.Part.of(

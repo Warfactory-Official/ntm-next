@@ -1,7 +1,13 @@
 {
   "type": "hbm:crafting_shaped",
   "key": {
-    "G": "hbm:gun_henry",
+    "G": {
+      "fabric:type": "hbm:matchers",
+      "base": "hbm:gun_henry",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
+    },
     "M": "#hbm:gun_mechanisms/weapon_steel",
     "P": "#hbm:plates_cast/gold"
   },

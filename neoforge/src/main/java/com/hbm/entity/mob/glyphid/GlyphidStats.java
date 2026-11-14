@@ -1,10 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.entity.mob.glyphid;
 
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.lib.ModDamageTypes;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,9 +53,9 @@ public abstract class GlyphidStats {
     protected StatBundle statsBrawler;
     protected StatBundle statsDigger;
     protected StatBundle statsBlaster;
-    protected StatBundle statsBehemoth;
-    protected StatBundle statsBrenda;
-    protected StatBundle statsNuclear;
+    public StatBundle statsBehemoth;
+    public StatBundle statsBrenda;
+    public StatBundle statsNuclear;
     protected StatBundle statsScout;
 
     public static class StatBundle {
@@ -61,7 +90,7 @@ public abstract class GlyphidStats {
         }
     }
 
-    public abstract boolean handleAttack(EntityGlyphid glyphid, DamageSource source, float amount);
+    public abstract boolean handleAttack(GlyphidEntity glyphid, DamageSource source, float amount);
 
     public StatBundle getGrunt() {
         return statsGrunt;
@@ -114,11 +143,11 @@ public abstract class GlyphidStats {
         }
 
         @Override
-        public boolean handleAttack(EntityGlyphid glyphid, DamageSource source, float amount) {
+        public boolean handleAttack(GlyphidEntity glyphid, DamageSource source, float amount) {
 
             if (!source.is(DamageTypeTags.BYPASSES_ARMOR)
                     && !glyphid.level().isClientSide()
-                    && !EntityGlyphid.isFireDamage(source)
+                    && !GlyphidEntity.isFireDamage(source)
                     && !source.is(ModDamageTypes.ICE)) {
                 byte armor = glyphid.armor();
 
@@ -136,7 +165,7 @@ public abstract class GlyphidStats {
                 }
             }
 
-            if (EntityGlyphid.isFireDamage(source)) {
+            if (GlyphidEntity.isFireDamage(source)) {
                 amount *= 0.7F;
             } else if (source.is(DamageTypes.PLAYER_ATTACK)) {
                 amount *=
@@ -149,7 +178,7 @@ public abstract class GlyphidStats {
                 amount *= 15F;
             }
 
-            HbmLivingProps props = HbmLivingProps.peek(glyphid);
+            LivingHazards props = LivingHazards.getIfPresent(glyphid);
             if (props != null && props.phosphorus > 0) {
                 amount *= 1.5F;
             }
@@ -173,9 +202,9 @@ public abstract class GlyphidStats {
         }
 
         @Override
-        public boolean handleAttack(EntityGlyphid glyphid, DamageSource source, float amount) {
+        public boolean handleAttack(GlyphidEntity glyphid, DamageSource source, float amount) {
             if (source.is(ModDamageTypes.ACID_PLAYER)
-                    && source.getEntity() instanceof EntityGlyphid) return false;
+                    && source.getEntity() instanceof GlyphidEntity) return false;
             return glyphid.attackSuperclass(source, amount);
         }
     }

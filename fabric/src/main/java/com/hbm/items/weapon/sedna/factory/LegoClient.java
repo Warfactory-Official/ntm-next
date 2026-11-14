@@ -1,26 +1,55 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
+import com.hbm.client.render.BeamRenderer;
+import com.hbm.client.render.BulletMK4Renderer;
 import com.hbm.client.render.FlatCutout;
 import com.hbm.client.render.ParticleRenderTypes;
-import com.hbm.client.render.RenderBeam;
-import com.hbm.client.render.RenderBulletMK4;
 import com.hbm.client.render.RibbonPass;
 import com.hbm.client.render.WeaponRenderTypes;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.hud.HUDComponentAmmoCounter;
 import com.hbm.items.weapon.sedna.hud.HUDComponentDurabilityBar;
-import com.hbm.items.weapon.sedna.impl.ItemGunChargeThrower;
-import com.hbm.lib.Library;
+import com.hbm.items.weapon.sedna.impl.GunChargeThrowerItem;
 import com.hbm.main.ResourceManager;
-import com.hbm.render.item.weapon.sedna.ItemRenderFatMan;
-import com.hbm.render.item.weapon.sedna.ItemRenderWeaponBase;
+import com.hbm.render.item.weapon.sedna.FatManItemRenderer;
+import com.hbm.render.item.weapon.sedna.WeaponItemRenderer;
 import com.hbm.render.util.BeamPronter;
 import com.hbm.render.util.Vertices;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -37,10 +66,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionfc;
 
 public class LegoClient {
     private static final int GRENADE = ResourceManager.projectiles.partId("Grenade");
-    public static final RenderBulletMK4.Tracer RENDER_GRAPHITE =
+    public static final BulletMK4Renderer.Tracer RENDER_GRAPHITE =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(2F, 2F, 2F);
@@ -60,7 +90,7 @@ public class LegoClient {
     private static final int CT_HOOK = ResourceManager.charge_thrower.partId("Hook");
     private static final int MISSILE = ResourceManager.missile_launcher.partId("Missile");
 
-    private static final Identifier FLARE_TEX = Library.id("textures/particle/flare.png");
+    private static final Identifier FLARE_TEX = RegistryUtil.id("textures/particle/flare.png");
     public static HUDComponentDurabilityBar HUD_COMPONENT_DURABILITY =
             new HUDComponentDurabilityBar();
     public static HUDComponentDurabilityBar HUD_COMPONENT_DURABILITY_MIRROR =
@@ -72,26 +102,29 @@ public class LegoClient {
             new HUDComponentAmmoCounter(0).noCounter();
     public static HUDComponentAmmoCounter HUD_COMPONENT_AMMO_SECOND =
             new HUDComponentAmmoCounter(1);
-    public static RenderBulletMK4.Tracer RENDER_STANDARD_BULLET = tracer(0xFFBF00, 0xFFFFFF, false);
-    public static RenderBulletMK4.Tracer RENDER_FLECHETTE_BULLET =
+    public static BulletMK4Renderer.Tracer RENDER_STANDARD_BULLET =
+            tracer(0xFFBF00, 0xFFFFFF, false);
+    public static BulletMK4Renderer.Tracer RENDER_FLECHETTE_BULLET =
             tracer(0x8C8C8C, 0xCACACA, false);
-    public static RenderBulletMK4.Tracer RENDER_AP_BULLET = tracer(0xFF6A00, 0xFFE28D, false);
-    public static RenderBulletMK4.Tracer RENDER_FRAGMENTATION = tracer(0xFF6A00, 0xFFE28D, true);
-    public static RenderBulletMK4.Tracer RENDER_EXPRESS_BULLET = tracer(0x9E082E, 0xFF8A79, false);
-    public static RenderBulletMK4.Tracer RENDER_DU_BULLET = tracer(0x5CCD41, 0xE9FF8D, false);
-    public static RenderBulletMK4.Tracer RENDER_HE_BULLET = tracer(0xD8CA00, 0xFFF19D, true);
-    public static RenderBulletMK4.Tracer RENDER_SM_BULLET = tracer(0x42A8DD, 0xFFFFFF, true);
-    public static RenderBulletMK4.Tracer RENDER_BLACK_BULLET = tracer(0x000000, 0x7F006E, true);
-    public static RenderBulletMK4.Tracer RENDER_TRACER_BULLET = tracer(0x9E082E, 0xFF8A79, true);
-    public static RenderBulletMK4.Tracer RENDER_LEGENDARY_BULLET = tracer(0x7F006E, 0xFF7FED, true);
-    public static RenderBulletMK4.Tracer RENDER_FLARE = flare(1F, 0.5F, 0.5F);
-    public static RenderBulletMK4.Tracer RENDER_FLARE_SUPPLY = flare(0.5F, 0.5F, 1F);
-    public static RenderBulletMK4.Tracer RENDER_FLARE_WEAPON = flare(0.5F, 1F, 0.5F);
-    public static RenderBulletMK4.Tracer RENDER_GRENADE =
+    public static BulletMK4Renderer.Tracer RENDER_AP_BULLET = tracer(0xFF6A00, 0xFFE28D, false);
+    public static BulletMK4Renderer.Tracer RENDER_FRAGMENTATION = tracer(0xFF6A00, 0xFFE28D, true);
+    public static BulletMK4Renderer.Tracer RENDER_EXPRESS_BULLET =
+            tracer(0x9E082E, 0xFF8A79, false);
+    public static BulletMK4Renderer.Tracer RENDER_DU_BULLET = tracer(0x5CCD41, 0xE9FF8D, false);
+    public static BulletMK4Renderer.Tracer RENDER_HE_BULLET = tracer(0xD8CA00, 0xFFF19D, true);
+    public static BulletMK4Renderer.Tracer RENDER_SM_BULLET = tracer(0x42A8DD, 0xFFFFFF, true);
+    public static BulletMK4Renderer.Tracer RENDER_BLACK_BULLET = tracer(0x000000, 0x7F006E, true);
+    public static BulletMK4Renderer.Tracer RENDER_TRACER_BULLET = tracer(0x9E082E, 0xFF8A79, true);
+    public static BulletMK4Renderer.Tracer RENDER_LEGENDARY_BULLET =
+            tracer(0x7F006E, 0xFF7FED, true);
+    public static BulletMK4Renderer.Tracer RENDER_FLARE = flare(1F, 0.5F, 0.5F);
+    public static BulletMK4Renderer.Tracer RENDER_FLARE_SUPPLY = flare(0.5F, 0.5F, 1F);
+    public static BulletMK4Renderer.Tracer RENDER_FLARE_WEAPON = flare(0.5F, 1F, 0.5F);
+    public static BulletMK4Renderer.Tracer RENDER_GRENADE =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.25F, 0.25F, 0.25F);
-                pose.mulPose(Axis.ZP.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
                 collector.submitCustomGeometry(
                         pose,
                         RenderTypes.entityCutout(ResourceManager.grenade_tex),
@@ -100,11 +133,11 @@ public class LegoClient {
                                         p, buf, state.light, -1, GRENADE));
                 pose.popPose();
             };
-    public static RenderBulletMK4.Tracer RENDER_NUKE =
+    public static BulletMK4Renderer.Tracer RENDER_NUKE =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, 1F);
                 collector.submitCustomGeometry(
                         pose,
@@ -114,11 +147,11 @@ public class LegoClient {
                                         p, buf, state.light, -1, MINI_NUKE));
                 pose.popPose();
             };
-    public static RenderBulletMK4.Tracer RENDER_BOMB =
+    public static BulletMK4Renderer.Tracer RENDER_BOMB =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.0625F, 0.0625F, 0.0625F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, 1F);
                 collector.submitCustomGeometry(
                         pose,
@@ -128,11 +161,11 @@ public class LegoClient {
                                         p, buf, state.light, -1, MINI_NUKE));
                 pose.popPose();
             };
-    public static RenderBulletMK4.Tracer RENDER_BIG_NUKE =
+    public static BulletMK4Renderer.Tracer RENDER_BIG_NUKE =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.5F, 0.5F, 0.5F);
-                pose.mulPose(Axis.ZP.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
                 collector.submitCustomGeometry(
                         pose,
                         RenderTypes.entityCutout(ResourceManager.rocket_mirv_tex),
@@ -141,12 +174,12 @@ public class LegoClient {
                                         p, buf, state.light, -1, MISSILE_MIRV));
                 pose.popPose();
             };
-    public static RenderBulletMK4.Tracer RENDER_CT_MORTAR =
+    public static BulletMK4Renderer.Tracer RENDER_CT_MORTAR =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
-                pose.mulPose(Axis.ZP.rotationDegrees(180));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
                 pose.translate(0, 0, -6F);
                 collector.submitCustomGeometry(
                         pose,
@@ -156,12 +189,12 @@ public class LegoClient {
                                         p, buf, state.light, -1, CT_MORTAR));
                 pose.popPose();
             };
-    public static RenderBulletMK4.Tracer RENDER_CT_MORTAR_CHARGE =
+    public static BulletMK4Renderer.Tracer RENDER_CT_MORTAR_CHARGE =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
-                pose.mulPose(Axis.ZP.rotationDegrees(180));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
                 pose.translate(0, 0, -6F);
                 collector.submitCustomGeometry(
                         pose,
@@ -176,20 +209,20 @@ public class LegoClient {
             };
     private static final int WIRE_SEGMENTS = 10;
     private static final double WIRE_GIRTH = 0.03125D;
-    public static RenderBulletMK4.Tracer RENDER_CT_HOOK =
-            new RenderBulletMK4.Tracer() {
+    public static BulletMK4Renderer.Tracer RENDER_CT_HOOK =
+            new BulletMK4Renderer.Tracer() {
 
                 @Override
                 public void extract(
-                        EntityBulletBaseMK4 bullet,
-                        RenderBulletMK4.State state,
+                        BulletBaseMK4Entity bullet,
+                        BulletMK4Renderer.State state,
                         float partialTicks) {
                     state.wire = false;
                     LivingEntity thrower = bullet.getThrower();
                     if (!(thrower instanceof Player player)) return;
                     ItemStack held = player.getMainHandItem();
                     if (held.getItem() != ModItems.GUN_CHARGE_THROWER.get()) return;
-                    if (ItemGunChargeThrower.getLastHook(held) != bullet.getId()) return;
+                    if (GunChargeThrowerItem.getLastHook(held) != bullet.getId()) return;
 
                     double bx = Mth.lerp(partialTicks, bullet.xOld, bullet.getX());
                     double by = Mth.lerp(partialTicks, bullet.yOld, bullet.getY());
@@ -200,23 +233,17 @@ public class LegoClient {
                     float eyaw = Mth.lerp(partialTicks, player.yRotO, player.getYRot());
                     float epitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
 
-                    double ox = 0.125D;
-                    double oy = 0.25D;
-                    double oz = -0.75D;
-                    float ax = (float) (-epitch / 180F * Math.PI);
-                    double cx = Math.cos(ax);
-                    double sx = Math.sin(ax);
-                    double ry = oy * cx + oz * sx;
-                    double rz = oz * cx - oy * sx;
-                    float ay = (float) (-eyaw / 180F * Math.PI);
-                    double cy = Math.cos(ay);
-                    double sy = Math.sin(ay);
-                    double rx = ox * cy + rz * sy;
-                    rz = rz * cy - ox * sy;
-
-                    double tx = ex - rx;
-                    double ty = ey + player.getEyeHeight() - ry;
-                    double tz = ez - rz;
+                    float pitch = -epitch / 180F * (float) Math.PI;
+                    float pitchCos = Mth.cos(pitch), pitchSin = Mth.sin(pitch);
+                    double offsetY = .25D * pitchCos - .75D * pitchSin;
+                    double offsetZ = -.75D * pitchCos - .25D * pitchSin;
+                    float yaw = -eyaw / 180F * (float) Math.PI;
+                    float yawCos = Mth.cos(yaw), yawSin = Mth.sin(yaw);
+                    double offsetX = .125D * yawCos + offsetZ * yawSin;
+                    offsetZ = offsetZ * yawCos - .125D * yawSin;
+                    double tx = ex - offsetX;
+                    double ty = ey + player.getEyeHeight() - offsetY;
+                    double tz = ez - offsetZ;
 
                     state.wireX = tx - bx;
                     state.wireY = ty - by;
@@ -250,15 +277,15 @@ public class LegoClient {
 
                 @Override
                 public void draw(
-                        RenderBulletMK4.State state,
+                        BulletMK4Renderer.State state,
                         PoseStack pose,
                         SubmitNodeCollector collector) {
                     pose.pushPose();
-                    pose.mulPose(Axis.YP.rotationDegrees(state.yaw - 90.0F));
-                    pose.mulPose(Axis.ZP.rotationDegrees(state.pitch + 180));
+                    pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90.0F));
+                    pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180));
                     pose.scale(0.125F, 0.125F, 0.125F);
-                    pose.mulPose(Axis.YN.rotationDegrees(90));
-                    pose.mulPose(Axis.ZP.rotationDegrees(180));
+                    pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                    pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
                     pose.translate(0, 0, -6F);
                     collector.submitCustomGeometry(
                             pose,
@@ -273,7 +300,7 @@ public class LegoClient {
             };
 
     private static void drawWire(
-            RenderBulletMK4.State state, PoseStack pose, SubmitNodeCollector collector) {
+            BulletMK4Renderer.State state, PoseStack pose, SubmitNodeCollector collector) {
         double dx = state.wireX;
         double dy = state.wireY;
         double dz = state.wireZ;
@@ -365,20 +392,20 @@ public class LegoClient {
         Vertices.emit(buf, p, (float) x, (float) y, (float) z, 0xFF606060, u, v, light, 0F, 1F, 0F);
     }
 
-    public static RenderBulletMK4.Tracer RENDER_NUKE_BALEFIRE =
+    public static BulletMK4Renderer.Tracer RENDER_NUKE_BALEFIRE =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, 1F);
-                ItemRenderFatMan.renderBalefire(collector, pose, state.light);
+                FatManItemRenderer.renderBalefire(collector, pose, state.light);
                 pose.popPose();
             };
-    public static RenderBulletMK4.Tracer RENDER_HIVE =
+    public static BulletMK4Renderer.Tracer RENDER_HIVE =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, 0, 3.5F);
                 collector.submitCustomGeometry(
                         pose,
@@ -388,11 +415,11 @@ public class LegoClient {
                                         p, buf, state.light, -1, PANZERSCHRECK_ROCKET));
                 pose.popPose();
             };
-    public static RenderBulletMK4.Tracer RENDER_RPZB =
+    public static BulletMK4Renderer.Tracer RENDER_RPZB =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, 0, 3.5F);
                 collector.submitCustomGeometry(
                         pose,
@@ -412,10 +439,10 @@ public class LegoClient {
                             true,
                             state.light);
             };
-    public static RenderBulletMK4.Tracer RENDER_QD =
+    public static BulletMK4Renderer.Tracer RENDER_QD =
             (state, pose, collector) -> {
                 pose.pushPose();
-                pose.mulPose(Axis.ZP.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
                 collector.submitCustomGeometry(
                         pose,
                         RenderTypes.entityCutout(ResourceManager.rocket_tex),
@@ -434,11 +461,11 @@ public class LegoClient {
                             true,
                             state.light);
             };
-    public static RenderBulletMK4.Tracer RENDER_ML =
+    public static BulletMK4Renderer.Tracer RENDER_ML =
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.25F, 0.25F, 0.25F);
-                pose.mulPose(Axis.YN.rotationDegrees(90));
+                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, -4.5F);
                 collector.submitCustomGeometry(
                         pose,
@@ -458,15 +485,16 @@ public class LegoClient {
                             true,
                             state.light);
             };
-    public static RenderBeam.BeamDrawer RENDER_NI4NI_BOLT = bolt(0xAAD2E5, 0xFFFFFF);
-    public static RenderBeam.BeamDrawer RENDER_CRACKLE = bolt(0xE3D692, 0xFFFFFF);
-    public static RenderBeam.BeamDrawer RENDER_BLACK_LIGHTNING = bolt(0x4C3093, 0x000000);
-    public static RenderBeam.BeamDrawer RENDER_FOLLY =
+    public static BeamRenderer.BeamDrawer RENDER_NI4NI_BOLT = bolt(0xAAD2E5, 0xFFFFFF);
+    public static BeamRenderer.BeamDrawer RENDER_CRACKLE = bolt(0xE3D692, 0xFFFFFF);
+    public static BeamRenderer.BeamDrawer RENDER_BLACK_LIGHTNING = bolt(0x4C3093, 0x000000);
+    public static BeamRenderer.BeamDrawer RENDER_FOLLY =
             (state, pose, collector) -> {
                 double age = beamAge(state);
 
                 pose.pushPose();
-                if (state.cameraOrientation != null) pose.mulPose(state.cameraOrientation);
+                if (state.cameraOrientation != null)
+                    pose.mulPose((Quaternionfc) state.cameraOrientation);
                 float outer = (float) ((1 - age) * 7.5 + 1.5);
                 float outerAlpha = 0.5F * (float) age;
                 float innerAlpha = 0.75F * (float) age;
@@ -480,8 +508,8 @@ public class LegoClient {
                 pose.popPose();
 
                 pose.pushPose();
-                pose.mulPose(Axis.YP.rotationDegrees(180 - state.yaw));
-                pose.mulPose(Axis.XP.rotationDegrees(-state.pitch - 90));
+                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
                 pose.scale((float) ((1 - age) * 25 + 2.5), 1F, (float) ((1 - age) * 25 + 2.5));
                 int shade = (int) (0x20 * age);
                 int colorInner = (shade << 16) | (shade << 8) | shade;
@@ -499,45 +527,46 @@ public class LegoClient {
                         0.0625F);
                 pose.popPose();
             };
-    public static RenderBeam.BeamDrawer RENDER_LIGHTNING = lightning(0.5F);
-    public static RenderBeam.BeamDrawer RENDER_LIGHTNING_SUB = lightning(0.15F);
-    public static RenderBeam.BeamDrawer RENDER_TAU = tau(0x30, 0x25, 0x10, 0xFFBF00);
-    public static RenderBeam.BeamDrawer RENDER_TAU_CHARGE = tau(0x60, 0x50, 0x30, 0xFFF0A0);
-    public static RenderBeam.BeamDrawer RENDER_LASER_RED = laser(0x80, 0x15, 0x15);
-    public static RenderBeam.BeamDrawer RENDER_LASER_EMERALD = laser(0x15, 0x80, 0x15);
-    public static RenderBeam.BeamDrawer RENDER_LASER_CYAN = laser(0x15, 0x15, 0x80);
-    public static RenderBeam.BeamDrawer RENDER_LASER_PURPLE = laser(0x60, 0x15, 0x80);
-    public static RenderBeam.BeamDrawer RENDER_LASER_WHITE = laser(0x15, 0x15, 0x15);
+    public static BeamRenderer.BeamDrawer RENDER_LIGHTNING = lightning(0.5F);
+    public static BeamRenderer.BeamDrawer RENDER_LIGHTNING_SUB = lightning(0.15F);
+    public static BeamRenderer.BeamDrawer RENDER_TAU = tau(0x30, 0x25, 0x10, 0xFFBF00);
+    public static BeamRenderer.BeamDrawer RENDER_TAU_CHARGE = tau(0x60, 0x50, 0x30, 0xFFF0A0);
+    public static BeamRenderer.BeamDrawer RENDER_LASER_RED = laser(0x80, 0x15, 0x15);
+    public static BeamRenderer.BeamDrawer RENDER_LASER_EMERALD = laser(0x15, 0x80, 0x15);
+    public static BeamRenderer.BeamDrawer RENDER_LASER_CYAN = laser(0x15, 0x15, 0x80);
+    public static BeamRenderer.BeamDrawer RENDER_LASER_PURPLE = laser(0x60, 0x15, 0x80);
+    public static BeamRenderer.BeamDrawer RENDER_LASER_WHITE = laser(0x15, 0x15, 0x15);
 
-    private static double beamAge(RenderBeam.State state) {
+    private static double beamAge(BeamRenderer.State state) {
         return Mth.clamp(
                 1D - ((double) state.age - 2 + state.partialTicks) / (double) state.config.expires,
                 0,
                 1);
     }
 
-    private static RenderBeam.BeamDrawer bolt(int dark, int light) {
+    private static BeamRenderer.BeamDrawer bolt(int dark, int light) {
         return (state, pose, collector) -> {
             double age = beamAge(state);
             pose.pushPose();
-            pose.mulPose(Axis.YP.rotationDegrees(180 - state.yaw));
-            pose.mulPose(Axis.XP.rotationDegrees(-state.pitch - 90));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
             pose.scale((float) (age * 5), 1F, (float) (age * 5));
             pose.translate(0, state.beamLength, 0);
-            pose.mulPose(Axis.ZN.rotationDegrees(90));
+            pose.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
             renderBeamTracer(pose, collector, dark, light, state.beamLength);
             pose.popPose();
         };
     }
 
-    private static RenderBulletMK4.Tracer flare(float r, float g, float b) {
+    private static BulletMK4Renderer.Tracer flare(float r, float g, float b) {
         return (state, pose, collector) -> {
             if (state.age < 2) return;
             float scale =
                     (float) (Math.min(5, (state.age - 2) * 0.5) * (0.8 + Math.random() * 0.4));
 
             pose.pushPose();
-            if (state.cameraOrientation != null) pose.mulPose(state.cameraOrientation);
+            if (state.cameraOrientation != null)
+                pose.mulPose((Quaternionfc) state.cameraOrientation);
             float outer = scale;
             float inner = scale * 0.5F;
             collector.submitCustomGeometry(
@@ -561,7 +590,7 @@ public class LegoClient {
         Vertices.emit(buf, p, s, -s, 0, color, 0, 1, light, 0, 0, 1);
     }
 
-    private static RenderBeam.BeamDrawer tau(int r, int g, int b, int tracerDark) {
+    private static BeamRenderer.BeamDrawer tau(int r, int g, int b, int tracerDark) {
         return (state, pose, collector) -> {
             double age =
                     Mth.clamp(
@@ -571,8 +600,8 @@ public class LegoClient {
                             0,
                             1);
             pose.pushPose();
-            pose.mulPose(Axis.YP.rotationDegrees(180 - state.yaw));
-            pose.mulPose(Axis.XP.rotationDegrees(-state.pitch - 90));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
 
             pose.pushPose();
             Vec3 delta = new Vec3(0, state.beamLength, 0);
@@ -594,14 +623,14 @@ public class LegoClient {
 
             pose.scale((float) (age * 2), 1F, (float) (age * 2));
             pose.translate(0, state.beamLength, 0);
-            pose.mulPose(Axis.ZN.rotationDegrees(90));
+            pose.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
             renderBeamTracer(pose, collector, tracerDark, 0xFFFFFF, state.beamLength);
 
             pose.popPose();
         };
     }
 
-    private static RenderBeam.BeamDrawer lightning(float baseScale) {
+    private static BeamRenderer.BeamDrawer lightning(float baseScale) {
         return (state, pose, collector) -> {
             double age =
                     Mth.clamp(
@@ -611,8 +640,8 @@ public class LegoClient {
                             0,
                             1);
             pose.pushPose();
-            pose.mulPose(Axis.YP.rotationDegrees(180 - state.yaw));
-            pose.mulPose(Axis.XP.rotationDegrees(-state.pitch - 90));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
             Vec3 delta = new Vec3(0, state.beamLength, 0);
             pose.scale((float) (age / 2 + baseScale), 1F, (float) (age / 2 + baseScale));
             float scale = 0.075F;
@@ -661,38 +690,46 @@ public class LegoClient {
         };
     }
 
-    private static RenderBeam.BeamDrawer laser(int r, int g, int b) {
-        return (state, pose, collector) -> {
-            pose.pushPose();
-            pose.mulPose(Axis.YP.rotationDegrees(180 - state.yaw));
-            pose.mulPose(Axis.XP.rotationDegrees(-state.pitch - 90));
-            Vec3 delta = new Vec3(0, state.beamLength, 0);
-            double age =
-                    Mth.clamp(
-                            1D
-                                    - ((double) state.age - 2 + state.partialTicks)
-                                            / (double) state.config.expires,
-                            0,
-                            1);
-            pose.scale((float) (age / 2 + 0.5), 1F, (float) (age / 2 + 0.5));
-            int colorInner = ((int) (r * age) << 16) | ((int) (g * age) << 8) | (int) (b * age);
-            BeamPronter.prontBeamNoFog(
-                    pose,
-                    collector,
-                    delta,
-                    BeamPronter.EnumWaveType.RANDOM,
-                    colorInner,
-                    colorInner,
-                    state.age / 3,
-                    (int) (state.beamLength / 2 + 1),
-                    0F,
-                    4,
-                    0.025F);
-            pose.popPose();
-        };
+    private static BeamRenderer.BeamDrawer laser(int r, int g, int b) {
+        return (state, pose, collector) -> renderStandardLaser(state, pose, collector, r, g, b);
     }
 
-    private static RenderBulletMK4.Tracer tracer(int dark, int light, boolean fullbright) {
+    public static void renderStandardLaser(
+            BeamRenderer.State state,
+            PoseStack pose,
+            SubmitNodeCollector collector,
+            int r,
+            int g,
+            int b) {
+        pose.pushPose();
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
+        Vec3 delta = new Vec3(0, state.beamLength, 0);
+        double age =
+                Mth.clamp(
+                        1D
+                                - ((double) state.age - 2 + state.partialTicks)
+                                        / (double) state.config.expires,
+                        0,
+                        1);
+        pose.scale((float) (age / 2 + 0.5), 1F, (float) (age / 2 + 0.5));
+        int colorInner = ((int) (r * age) << 16) | ((int) (g * age) << 8) | (int) (b * age);
+        BeamPronter.prontBeamNoFog(
+                pose,
+                collector,
+                delta,
+                BeamPronter.EnumWaveType.RANDOM,
+                colorInner,
+                colorInner,
+                state.age / 3,
+                (int) (state.beamLength / 2 + 1),
+                0F,
+                4,
+                0.025F);
+        pose.popPose();
+    }
+
+    private static BulletMK4Renderer.Tracer tracer(int dark, int light, boolean fullbright) {
         return (state, pose, collector) -> {
             if (state.length <= 0) return;
             renderBulletStandard(
@@ -739,7 +776,7 @@ public class LegoClient {
                 length,
                 widthF,
                 widthB,
-                fullbright ? ItemRenderWeaponBase.FULL_BRIGHT : packedLight);
+                fullbright ? WeaponItemRenderer.FULL_BRIGHT : packedLight);
     }
 
     private static void renderBeamTracer(
@@ -753,7 +790,7 @@ public class LegoClient {
                 length,
                 0.03125D,
                 0.03125D * 0.25D,
-                ItemRenderWeaponBase.FULL_BRIGHT);
+                WeaponItemRenderer.FULL_BRIGHT);
     }
 
     private static void submitRibbon(

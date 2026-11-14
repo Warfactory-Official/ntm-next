@@ -1,23 +1,54 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
-import com.hbm.particle.SpentCasing.CasingType;
-import com.hbm.particle.SpentCasing;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.particle.casing.Casing;
+import com.hbm.particle.casing.CasingShape;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.ModSounds;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -33,7 +64,7 @@ public class XFactory75Bolt {
     public static BulletConfig b75_inc;
     public static BulletConfig b75_exp;
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_TINY_EXPLODE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_TINY_EXPLODE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
@@ -41,15 +72,15 @@ public class XFactory75Bolt {
                 Lego.tinyExplode(bullet, mop, 2F);
                 bullet.discard();
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_INC =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_INC =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && entityHit.getEntity() instanceof LivingEntity living) {
-                    HbmLivingProps data = HbmLivingProps.getData(living);
+                    LivingHazards data = LivingHazards.getOrCreate(living);
                     if (data.phosphorus < 300) data.phosphorus = 300;
                 }
             };
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_STANDARD_EXPLODE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_STANDARD_EXPLODE =
             (bullet, mop) -> {
                 Lego.standardExplode(bullet, mop, 5F);
                 bullet.discard();
@@ -60,7 +91,7 @@ public class XFactory75Bolt {
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_BOLT =
             (stack, ctx) -> {
-                ItemGunBaseNT.setupRecoil(
+                GunBaseNTItem.setupRecoil(
                         (float) (ctx.getPlayer().getRandom().nextGaussian() * 1.5),
                         (float) (ctx.getPlayer().getRandom().nextGaussian() * 1.5));
             };
@@ -73,84 +104,80 @@ public class XFactory75Bolt {
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(1, 0, 0, 25)
-                                                .addPos(0, 0, 0, 75));
+                                        new AnimationSequence().to(1, 0, 0, 25).to(0, 0, 0, 75));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "TILT",
-                                        new BusAnimationSequence()
-                                                .addPos(1, 0, 0, 250)
-                                                .addPos(1, 0, 0, 1500)
-                                                .addPos(0, 0, 0, 250))
+                                        new AnimationSequence()
+                                                .to(1, 0, 0, 250)
+                                                .to(1, 0, 0, 1500)
+                                                .to(0, 0, 0, 250))
                                 .addBus(
                                         "MAG",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 1, 500)
-                                                .addPos(1, 0, 1, 500)
-                                                .addPos(0, 0, 0, 500));
+                                        new AnimationSequence()
+                                                .to(0, 0, 1, 500)
+                                                .to(1, 0, 1, 500)
+                                                .to(0, 0, 0, 500));
                     case JAMMED:
                         return new BusAnimation()
                                 .addBus(
                                         "TILT",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 500)
-                                                .addPos(1, 0, 0, 250)
-                                                .addPos(1, 0, 0, 700)
-                                                .addPos(0, 0, 0, 250))
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 500)
+                                                .to(1, 0, 0, 250)
+                                                .to(1, 0, 0, 700)
+                                                .to(0, 0, 0, 250))
                                 .addBus(
                                         "MAG",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, 0, 750)
-                                                .addPos(0.6, 0, 0, 250)
-                                                .addPos(0, 0, 0, 250));
+                                        new AnimationSequence()
+                                                .to(0, 0, 0, 750)
+                                                .to(0.6, 0, 0, 250)
+                                                .to(0, 0, 0, 250));
                 }
 
                 return null;
             };
 
     public static void init() {
-        SpentCasing casing75 =
-                new SpentCasing(CasingType.STRAIGHT)
-                        .setColor(SpentCasing.COLOR_CASE_BRASS)
-                        .setScale(2F, 2F, 1.5F);
+        Casing.Template casing75 =
+                Casing.template(CasingShape.STRAIGHT).tints(Casing.BRASS).scale(2F, 2F, 1.5F);
 
         b75 =
                 new BulletConfig()
                         .setItem(EnumAmmo.B75)
-                        .setCasing(casing75.clone().register("b75"))
+                        .setCasing(casing75.copy().register("b75"))
                         .setOnImpact(LAMBDA_TINY_EXPLODE);
         b75_inc =
                 new BulletConfig()
                         .setItem(EnumAmmo.B75_INC)
                         .setDamage(0.8F)
                         .setArmorPiercing(0.1F)
-                        .setCasing(casing75.clone().register("b75inc"))
+                        .setCasing(casing75.copy().register("b75inc"))
                         .setOnImpact(LAMBDA_INC);
         b75_exp =
                 new BulletConfig()
                         .setItem(EnumAmmo.B75_EXP)
                         .setDamage(1.5F)
                         .setArmorPiercing(-0.25F)
-                        .setCasing(casing75.clone().register("b75exp"))
+                        .setCasing(casing75.copy().register("b75exp"))
                         .setOnImpact(LAMBDA_STANDARD_EXPLODE);
 
         ModItems.GUN_BOLTER =
-                FabricRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_bolter",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                                 WeaponQuality.SPECIAL,
                                                 props,
-                                                new GunConfig()
+                                                GunConfig.builder()
                                                         .dura(3_000)
                                                         .draw(20)
                                                         .inspect(31)
                                                         .crosshair(Crosshair.L_CIRCLE)
                                                         .smoke(LAMBDA_SMOKE)
                                                         .rec(
-                                                                new Receiver(0)
+                                                                Receiver.builder()
                                                                         .dmg(15F)
                                                                         .delay(2)
                                                                         .auto(true)
@@ -180,7 +207,7 @@ public class XFactory75Bolt {
                                                                         .recoil(LAMBDA_RECOIL_BOLT))
                                                         .setupStandardConfiguration()
                                                         .anim(LAMBDA_BOLTER_ANIMS)
-                                                        .orchestra(Orchestras.ORCHESTRA_BOLTER))
+                                                        .orchestra(GunAnimationActions.BOLTER))
                                         .setDefaultAmmo(EnumAmmo.B75, 15),
                         Item.Properties::new);
     }

@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachinePumpBase;
-import com.hbm.blockentity.machine.BlockEntityMachinePumpElectric;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.ElectricPumpBlockEntity;
+import com.hbm.blockentity.machine.PumpBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -20,6 +36,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -27,8 +45,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class PumpVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachinePumpBase>
-        implements ShaderLightVisual {
+public final class PumpVisual extends AbstractBoundedBlockEntityVisual<PumpBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int ROTOR = ResourceManager.pump.partId("Rotor");
     private static final int ARMS = ResourceManager.pump.partId("Arms");
     private static final int PISTON = ResourceManager.pump.partId("Piston");
@@ -47,16 +65,14 @@ public final class PumpVisual extends HbmDynamicBlockEntityVisual<BlockEntityMac
     private @Nullable AABB lastLightBounds;
 
     public PumpVisual(
-            VisualizationContext context,
-            BlockEntityMachinePumpBase blockEntity,
-            float partialTick) {
+            VisualizationContext context, PumpBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         basePose.translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 270)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 270)
                                 * Mth.DEG_TO_RAD);
         bodyBounds = LightBounds.of(MODEL, "Base", basePose, pos);
-        parts = blockEntity instanceof BlockEntityMachinePumpElectric ? ELECTRIC : STEAM;
+        parts = blockEntity instanceof ElectricPumpBlockEntity ? ELECTRIC : STEAM;
         instances = new TransformedInstance[parts.length];
         for (int i = 0; i < parts.length; i++) {
             instances[i] =
@@ -88,7 +104,7 @@ public final class PumpVisual extends HbmDynamicBlockEntityVisual<BlockEntityMac
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 

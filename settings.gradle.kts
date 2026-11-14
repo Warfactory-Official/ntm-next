@@ -8,6 +8,5 @@ pluginManagement {
 
 rootProject.name = "ntm-next"
 
-include("processor")
 include("fabric")
 include("neoforge")

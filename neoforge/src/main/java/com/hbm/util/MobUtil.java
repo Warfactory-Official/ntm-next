@@ -1,15 +1,45 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.util;
 
 import com.hbm.data.MobData;
-import com.hbm.entity.mob.ai.EntityAIFireGun;
+import com.hbm.entity.mob.ai.FireGunGoal;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionType;
 import com.hbm.items.ModItems;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import com.hbm.registration.RegistryHandle;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -227,8 +257,7 @@ public final class MobUtil {
 
     public static void decorateMob(Mob mob, Random random) {
         if (!MobData.ENABLE_MOB_GEAR.get() || mob.isBaby()) return;
-        float soot =
-                PollutionHandler.getPollution(mob.level(), mob.blockPosition(), PollutionType.SOOT);
+        float soot = PollutionHandler.read(mob.level(), mob.blockPosition(), PollutionType.SOOT);
         if (mob instanceof Zombie) {
             if (random.nextFloat() < 0.005F && soot > 2) {
                 mob.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModItems.HAZMAT_HELMET.get()));
@@ -265,7 +294,7 @@ public final class MobUtil {
     public static void onEntityLoad(Entity entity) {
         if (entity instanceof Mob mob
                 && !mob.level().isClientSide()
-                && mob.getMainHandItem().getItem() instanceof ItemGunBaseNT) addFireTask(mob);
+                && mob.getMainHandItem().getItem() instanceof GunBaseNTItem) addFireTask(mob);
     }
 
     public static void equipArmorPool(
@@ -339,14 +368,14 @@ public final class MobUtil {
     }
 
     public static void addFireTask(Mob entity) {
-        addFireTask(entity, new EntityAIFireGun(entity));
+        addFireTask(entity, new FireGunGoal(entity));
     }
 
-    public static void addFireTask(Mob entity, EntityAIFireGun gunTask) {
+    public static void addFireTask(Mob entity, FireGunGoal gunTask) {
         entity.setDropChance(EquipmentSlot.MAINHAND, 0F);
         GoalSelector goalSelector = entity.getGoalSelector();
         if (goalSelector.getAvailableGoals().stream()
-                .anyMatch(goal -> goal.getGoal() instanceof EntityAIFireGun)) return;
+                .anyMatch(goal -> goal.getGoal() instanceof FireGunGoal)) return;
         goalSelector.addGoal(3, gunTask);
     }
 

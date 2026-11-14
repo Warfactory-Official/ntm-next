@@ -1,17 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntitySoyuzLauncher;
+import com.hbm.blockentity.machine.SoyuzLauncherBlockEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.model.Model;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -19,8 +38,9 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class SoyuzLauncherVisual extends HbmDynamicBlockEntityVisual<BlockEntitySoyuzLauncher>
-        implements ShaderLightVisual {
+public final class SoyuzLauncherVisual
+        extends AbstractBoundedBlockEntityVisual<SoyuzLauncherBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final float OPEN = 45F;
     private static final int SWING_TICKS = 20;
     private static final double MESH_DROP = 4D;
@@ -58,6 +78,18 @@ public final class SoyuzLauncherVisual extends HbmDynamicBlockEntityVisual<Block
                     ResourceManager.soyuz_launcher_support,
                     0,
                     ResourceManager.soyuz_launcher_support_tex);
+    private static final ChainInstance.Chain TOWER_CHAIN =
+            new ChainInstance.Chain()
+                    .translate(0F, (float) TOWER_PIVOT_Y, (float) TOWER_PIVOT_Z)
+                    .rotateX(0, Mth.DEG_TO_RAD)
+                    .translate(0F, (float) -TOWER_PIVOT_Y, (float) -TOWER_PIVOT_Z)
+                    .rotationMultiplyDivide(0, OPEN, SWING_TICKS);
+    private static final ChainInstance.Chain SUPPORT_CHAIN =
+            new ChainInstance.Chain()
+                    .translate(0F, (float) TOWER_PIVOT_Y, (float) SUPPORT_PIVOT_Z)
+                    .rotateX(0, -Mth.DEG_TO_RAD)
+                    .translate(0F, (float) -TOWER_PIVOT_Y, (float) -SUPPORT_PIVOT_Z)
+                    .rotationMultiplyDivide(0, OPEN, SWING_TICKS);
     private static final PackedQuadMesh[] ROCKET_MESHES = buildRocketMeshes();
     private static final MeshPart[][] ROCKETS = buildRockets();
 
@@ -65,26 +97,19 @@ public final class SoyuzLauncherVisual extends HbmDynamicBlockEntityVisual<Block
         return ROCKETS[skin];
     }
 
-    private final Piece tower;
-    private final Piece support;
+    private final ChainParts arms;
     private final AABB bodyBounds;
-    private final Matrix4f basePose = new Matrix4f();
-    private final Matrix4f towerPose = new Matrix4f();
-    private final Matrix4f supportPose = new Matrix4f();
     private final Matrix4f rocketPose = new Matrix4f();
-    private final Matrix4f instancePose = new Matrix4f();
-    private final double[] lightBoundsAccumulator = new double[6];
-    private @Nullable AABB lastLightBounds;
-    private RocketSet rocket;
-    private float lastSwing = Float.NaN;
+    private @Nullable RocketSet rocket;
     private int lastRocketType = Integer.MIN_VALUE;
+    private int lastCountdown;
+    private boolean lastStarting;
     private boolean initialized;
 
     public SoyuzLauncherVisual(
-            VisualizationContext context, BlockEntitySoyuzLauncher blockEntity, float partialTick) {
+            VisualizationContext context, SoyuzLauncherBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         Matrix4f bodyPose = new Matrix4f().translate(.5F, (float) -MESH_DROP, .5F);
-        basePose.set(bodyPose);
         HFRWavefrontObject[] body = {
             ResourceManager.soyuz_launcher_legs,
             ResourceManager.soyuz_launcher_table,
@@ -95,8 +120,25 @@ public final class SoyuzLauncherVisual extends HbmDynamicBlockEntityVisual<Block
         for (HFRWavefrontObject mesh : body)
             extent = extent.minmax(LightBounds.of(mesh.groups[0], bodyPose, pos));
         bodyBounds = extent;
-        tower = piece(SOYUZ_LAUNCHER_TOWER);
-        support = piece(SOYUZ_LAUNCHER_SUPPORT);
+        arms =
+                new ChainParts(
+                        context,
+                        visualPos,
+                        bodyPose,
+                        new Model[] {SOYUZ_LAUNCHER_TOWER.model(), SOYUZ_LAUNCHER_SUPPORT.model()},
+                        new ChainInstance.Chain[] {TOWER_CHAIN, SUPPORT_CHAIN},
+                        1);
+        Matrix4f localRocketPose = new Matrix4f(bodyPose).translate(0F, (float) ROCKET_LIFT, 0F);
+        rocketPose
+                .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
+                .mul(localRocketPose);
+        double[] lightBounds = new double[6];
+        LightBounds.resetBounds(lightBounds, bodyBounds);
+        arms.includeLightBounds(lightBounds, pos);
+        for (MeshPart part : ROCKETS[0]) {
+            LightBounds.includeLightBounds(lightBounds, part.model(), localRocketPose, pos);
+        }
+        LightBounds.sections(lightSections, lightBounds, null);
         updateMovingParts(partialTick);
     }
 
@@ -157,18 +199,16 @@ public final class SoyuzLauncherVisual extends HbmDynamicBlockEntityVisual<Block
 
     public static void initModels() {}
 
-    private Piece piece(MeshPart part) {
-        TransformedInstance instance =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, part.model())
-                        .createInstance();
-        return new Piece(part, instance);
+    private TransformedInstance piece(MeshPart part) {
+        return instancerProvider()
+                .instancer(InstanceTypes.TRANSFORMED, part.model())
+                .createInstance();
     }
 
     private @Nullable RocketSet rocket(int skinIndex) {
         if (skinIndex < 0 || skinIndex >= ROCKETS.length) return null;
         MeshPart[] parts = ROCKETS[skinIndex];
-        Piece[] pieces = new Piece[parts.length];
+        TransformedInstance[] pieces = new TransformedInstance[parts.length];
         for (int i = 0; i < parts.length; i++) pieces[i] = piece(parts[i]);
         return new RocketSet(skinIndex, pieces);
     }
@@ -177,56 +217,37 @@ public final class SoyuzLauncherVisual extends HbmDynamicBlockEntityVisual<Block
         if (rocket != null && rocket.skin == skinIndex) return;
         if (rocket != null) rocket.delete();
         rocket = rocket(skinIndex);
+        if (rocket != null) {
+            for (TransformedInstance piece : rocket.pieces) {
+                piece.setTransform(rocketPose).light(0).setChanged();
+            }
+        }
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
         int rocketType = blockEntity.rocketType;
+        int countdown = blockEntity.countdown;
+        boolean starting = blockEntity.starting;
         boolean rocketChanged = !initialized || rocketType != lastRocketType;
         if (rocketChanged) syncRocket(rocketType);
-        float swing = blockEntity.rocketType >= 0 ? 0F : OPEN;
-        if (blockEntity.starting && blockEntity.countdown < SWING_TICKS)
-            swing = (SWING_TICKS - blockEntity.countdown + partialTick) * OPEN / SWING_TICKS;
-        if (!rocketChanged && Float.compare(swing, lastSwing) == 0) return;
+        if (!rocketChanged && countdown == lastCountdown && starting == lastStarting) return;
         lastRocketType = rocketType;
-        lastSwing = swing;
+        lastCountdown = countdown;
+        lastStarting = starting;
         initialized = true;
-
-        towerPose
-                .set(basePose)
-                .translate(0F, (float) TOWER_PIVOT_Y, (float) TOWER_PIVOT_Z)
-                .rotateX((swing) * Mth.DEG_TO_RAD)
-                .translate(0F, (float) -TOWER_PIVOT_Y, (float) -TOWER_PIVOT_Z);
-        write(tower, towerPose);
-        LightBounds.resetBounds(lightBoundsAccumulator, bodyBounds);
-        LightBounds.includeLightBounds(lightBoundsAccumulator, tower.part.model(), towerPose, pos);
-        supportPose
-                .set(basePose)
-                .translate(0F, (float) TOWER_PIVOT_Y, (float) SUPPORT_PIVOT_Z)
-                .rotateX(-(swing) * Mth.DEG_TO_RAD)
-                .translate(0F, (float) -TOWER_PIVOT_Y, (float) -SUPPORT_PIVOT_Z);
-        write(support, supportPose);
-        LightBounds.includeLightBounds(
-                lightBoundsAccumulator, support.part.model(), supportPose, pos);
-        if (rocket != null) {
-            rocketPose.set(basePose).translate(0F, (float) ROCKET_LIFT, 0F);
-            for (Piece piece : rocket.pieces) {
-                write(piece, rocketPose);
-                LightBounds.includeLightBounds(
-                        lightBoundsAccumulator, piece.part.model(), rocketPose, pos);
-            }
+        float from = rocketType >= 0 ? 0F : SWING_TICKS;
+        float to = from;
+        if (starting && countdown < SWING_TICKS) {
+            from = SWING_TICKS - countdown;
+            to = from + 1F;
         }
-        lastLightBounds =
-                LightBounds.sections(lightSections, lightBoundsAccumulator, lastLightBounds);
-    }
-
-    private void write(Piece piece, Matrix4f pose) {
-        instancePose.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(pose);
-        piece.instance.setTransform(instancePose).light(0).setChanged();
+        arms.set(0, from, to);
+        arms.write();
     }
 
     @Override
@@ -244,43 +265,27 @@ public final class SoyuzLauncherVisual extends HbmDynamicBlockEntityVisual<Block
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        consumer.accept(tower.instance);
-        consumer.accept(support.instance);
-        if (rocket != null) for (Piece piece : rocket.pieces) consumer.accept(piece.instance);
+        arms.collectCrumblingInstances(consumer);
+        if (rocket != null) for (TransformedInstance piece : rocket.pieces) consumer.accept(piece);
     }
 
     @Override
     protected void _delete() {
-        tower.delete();
-        support.delete();
+        arms.delete();
         if (rocket != null) rocket.delete();
-    }
-
-    private static final class Piece {
-        private final MeshPart part;
-        private final TransformedInstance instance;
-
-        private Piece(MeshPart part, TransformedInstance instance) {
-            this.part = part;
-            this.instance = instance;
-        }
-
-        private void delete() {
-            instance.delete();
-        }
     }
 
     private static final class RocketSet {
         private final int skin;
-        private final Piece[] pieces;
+        private final TransformedInstance[] pieces;
 
-        private RocketSet(int skin, Piece[] pieces) {
+        private RocketSet(int skin, TransformedInstance[] pieces) {
             this.skin = skin;
             this.pieces = pieces;
         }
 
         private void delete() {
-            for (Piece piece : pieces) piece.delete();
+            for (TransformedInstance piece : pieces) piece.delete();
         }
     }
 }

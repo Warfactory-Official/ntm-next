@@ -55,7 +55,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ],
         "texture": "hbm:textures/models/weapons/lilmac_scope.png"
@@ -127,7 +127,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ]
       }

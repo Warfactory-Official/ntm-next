@@ -1,19 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.storage.BlockEntityMachineFluidTank;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.storage.FluidTankBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
 import com.hbm.inventory.fluid.NTMFluids;
-import com.hbm.inventory.fluid.trait.FT_Corrosive;
+import com.hbm.inventory.fluid.trait.CorrosiveTrait;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_Amat;
-import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.model.Model;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
@@ -22,6 +38,8 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -34,10 +52,11 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class FluidTankVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachineFluidTank>
-        implements ShaderLightVisual {
+public final class FluidTankVisual
+        extends AbstractDynamicExtentBlockEntityVisual<FluidTankBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Identifier NONE_TEXTURE =
-            Library.id("textures/block/models/tank/tank_none.png");
+            RegistryUtil.id("textures/block/models/tank/tank_none.png");
     private static final HFRWavefrontObject[] SOURCES = {
         ResourceManager.fluidtank, ResourceManager.fluidtank_exploded
     };
@@ -60,14 +79,12 @@ public final class FluidTankVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     private boolean initialized;
 
     public FluidTankVisual(
-            VisualizationContext context,
-            BlockEntityMachineFluidTank blockEntity,
-            float partialTick) {
+            VisualizationContext context, FluidTankBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         hazards = new HazardDiamondVisual(context, level, pos, 2);
         base.translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(blockState.getValue(BlockMultiblockCore.FACING), 180)
+                        Facing.yaw(blockState.getValue(MultiblockCoreBlock.FACING), 180)
                                 * Mth.DEG_TO_RAD);
         bodyFluid = blockEntity.tank.getTankType();
         installBody(new BodyKey(texture(bodyFluid), blockEntity.isDamaged()));
@@ -87,13 +104,13 @@ public final class FluidTankVisual extends HbmDynamicBlockEntityVisual<BlockEnti
 
     private static Identifier bodyTexture(@Nullable Fluid fluid) {
         if (fluid == null || fluid == Fluids.EMPTY) return NONE_TEXTURE;
-        FT_Corrosive corrosive = NTMFluidProperties.getTrait(fluid, FT_Corrosive.class);
+        CorrosiveTrait corrosive = NTMFluidProperties.getTrait(fluid, CorrosiveTrait.class);
         boolean danger =
                 NTMFluidProperties.hasTrait(fluid, FT_Amat.class)
-                        || corrosive != null && corrosive.isHighlyCorrosive();
+                        || corrosive != null && corrosive.severe();
         Identifier texture =
                 danger
-                        ? Library.id("textures/models/tank/tank_danger.png")
+                        ? RegistryUtil.id("textures/models/tank/tank_danger.png")
                         : NTMFluids.sprite(fluid, "textures/models/tank/tank_", ".png");
         return Minecraft.getInstance().getResourceManager().getResource(texture).isPresent()
                 ? texture
@@ -109,7 +126,7 @@ public final class FluidTankVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 

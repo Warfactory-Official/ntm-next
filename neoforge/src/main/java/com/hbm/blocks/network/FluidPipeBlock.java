@@ -1,10 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.blocks.network;
 
 import com.hbm.api.fluidmk2.*;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockMaskTable;
 import com.hbm.capability.MachineCaps;
 import com.hbm.capability.NtmCapabilities.CapRole;
@@ -13,13 +43,17 @@ import com.hbm.items.ModDataComponents;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.uninos.graph.PhysicalGraph;
-import com.hbm.util.AutoRotate;
 import com.hbm.util.ChunkUtil;
+import com.hbm.world.bulk.BulkAction;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,8 +81,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-@AutoRotate
-public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterloggedBlock {
+public class FluidPipeBlock extends FluidDuctBlock implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -93,8 +126,12 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         VoxelShape[] shapes = new VoxelShape[64];
         for (int mask = 0; mask < 64; mask++) {
             VoxelShape shape = core;
-            for (int o = 0; o < 6; o++) {
-                if (mask == 0 || (mask & (1 << o)) != 0) shape = Shapes.or(shape, arm[o]);
+            boolean straight = Integer.bitCount(mask) == 1;
+            for (Direction side : Direction.VALUES) {
+                if (mask == 0
+                        || (mask & (1 << side.ordinal())) != 0
+                        || straight && (mask & (1 << side.getOpposite().ordinal())) != 0)
+                    shape = Shapes.or(shape, arm[side.ordinal()]);
             }
             shapes[mask] = shape;
         }
@@ -171,8 +208,8 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         BlockPos origin = owner.getBlockPos();
         int domains = MachineCaps.declaredDomains(owner);
         if ((domains & (MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT)) != 0
-                && owner.getBlockState().getBlock() instanceof BlockMultiblockCore core) {
-            Direction facing = owner.getBlockState().getValue(BlockMultiblockCore.FACING);
+                && owner.getBlockState().getBlock() instanceof MultiblockCoreBlock core) {
+            Direction facing = owner.getBlockState().getValue(MultiblockCoreBlock.FACING);
             for (long contact : fluidContacts(core, facing, domains)) {
                 BlockPos position =
                         origin.offset(
@@ -186,7 +223,8 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
             for (Direction side : Direction.VALUES)
                 ChunkDuctNodes.schedule(level, origin.relative(side));
         }
-        level.hbm$endpoints()
+        ((com.hbm.interfaces.injected.ServerLevelExtension) (level))
+                .hbm$endpoints()
                 .forEachRemoteCell(
                         origin.asLong(),
                         MachineCaps.FLUID_IN | MachineCaps.FLUID_OUT,
@@ -201,7 +239,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                         });
     }
 
-    private static long[] fluidContacts(BlockMultiblockCore core, Direction facing, int domains) {
+    private static long[] fluidContacts(MultiblockCoreBlock core, Direction facing, int domains) {
         long[][] byFacing = core.fluidContactCache();
         long[] contacts = byFacing[facing.get2DDataValue()];
         if (contacts != null) return contacts;
@@ -220,7 +258,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                                                         ly,
                                                         dz,
                                                         side,
-                                                        BlockMultiblockCore.PASSIVE_FLUID_IN,
+                                                        MultiblockCoreBlock.PASSIVE_FLUID_IN,
                                                         CapRole.FLUID_IN);
                                 boolean provides =
                                         (domains & MachineCaps.FLUID_OUT) != 0
@@ -230,7 +268,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
                                                         ly,
                                                         dz,
                                                         side,
-                                                        BlockMultiblockCore.PASSIVE_NONE,
+                                                        MultiblockCoreBlock.PASSIVE_NONE,
                                                         CapRole.FLUID_OUT);
                                 if (receives || provides) {
                                     out.add(
@@ -289,7 +327,7 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
             long[] touched = retyped.toLongArray();
             FluidPipeGraph.get(level, fluid).compactAround(touched);
             fromGraph.compactAround(touched);
-            FluidPipeTintData.sync(level, retyped.toLongArray(), fluid);
+            FluidPipeTintData.sync(level, touched, fluid);
         }
     }
 
@@ -385,6 +423,10 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         if (!(level instanceof ServerLevel sl)) return;
         Fluid fluid = stampedFluid(stack);
         if (fluid == Fluids.EMPTY) return;
+        if (BulkAction.active()) {
+            BulkAction.typed(sl, pos, fluid);
+            return;
+        }
         createNodes(sl, pos, state);
         if (!retypeNode(sl, pos.asLong(), fluid)) {
             PhysicalGraph.redraw(sl.getBlockState(pos), sl, pos);
@@ -408,5 +450,60 @@ public class FluidPipeBlock extends FluidDuctBlockBase implements SimpleWaterlog
         return state.getValue(WATERLOGGED)
                 ? Fluids.WATER.getSource(false)
                 : super.getFluidState(state);
+    }
+
+    public boolean captureBulkFluid(
+            ServerLevel level,
+            BlockPos pos,
+            BlockState ignoredState,
+            CompoundTag data,
+            Consumer<BlockPos> ignoredCells) {
+        var fluid = pipeFluidAt(level, pos);
+        data.putString("fluid", BuiltInRegistries.FLUID.getKey(fluid).toString());
+        return false;
+    }
+
+    public void publishBulkFluid(
+            ServerLevel level, BlockPos pos, BlockState ignoredState, CompoundTag data) {
+        var id = data.getStringOr("fluid", "");
+        if (!id.isEmpty())
+            retypeNode(
+                    level,
+                    pos.asLong(),
+                    BuiltInRegistries.FLUID.getOptional(Identifier.parse(id)).orElseThrow());
+    }
+
+    @java.lang.Override
+    protected net.minecraft.world.level.block.state.BlockState rotate(
+            net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.block.Rotation rotation) {
+        if (rotation == net.minecraft.world.level.block.Rotation.CLOCKWISE_90)
+            return state.setValue(NORTH, state.getValue(WEST))
+                    .setValue(EAST, state.getValue(NORTH))
+                    .setValue(SOUTH, state.getValue(EAST))
+                    .setValue(WEST, state.getValue(SOUTH));
+        if (rotation == net.minecraft.world.level.block.Rotation.CLOCKWISE_180)
+            return state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(EAST, state.getValue(WEST))
+                    .setValue(SOUTH, state.getValue(NORTH))
+                    .setValue(WEST, state.getValue(EAST));
+        if (rotation == net.minecraft.world.level.block.Rotation.COUNTERCLOCKWISE_90)
+            return state.setValue(NORTH, state.getValue(EAST))
+                    .setValue(EAST, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(WEST))
+                    .setValue(WEST, state.getValue(NORTH));
+        return state;
+    }
+
+    @java.lang.Override
+    protected net.minecraft.world.level.block.state.BlockState mirror(
+            net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.block.Mirror mirror) {
+        if (mirror == net.minecraft.world.level.block.Mirror.LEFT_RIGHT)
+            return state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(NORTH));
+        if (mirror == net.minecraft.world.level.block.Mirror.FRONT_BACK)
+            return state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
+        return state;
     }
 }

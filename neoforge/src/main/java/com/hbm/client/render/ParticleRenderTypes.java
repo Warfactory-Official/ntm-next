@@ -1,13 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
+import com.mojang.blaze3d.pipeline.RenderPipeline.Snippet;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.platform.BlendFactor;
 import com.mojang.blaze3d.platform.CompareOp;
@@ -23,25 +40,27 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 
 public final class ParticleRenderTypes {
-    public static final Identifier ENTITY_NO_FOG = Library.id("core/entity_nofog");
+    public static final Identifier ENTITY_NO_FOG = RegistryUtil.id("core/entity_nofog");
 
-    public static final Identifier PARTICLE_NO_FOG = Library.id("core/particle_nofog");
+    public static final Identifier PARTICLE_NO_FOG = RegistryUtil.id("core/particle_nofog");
 
-    public static final Identifier LIGHTNING_NO_FOG = Library.id("core/rendertype_lightning_nofog");
+    public static final Identifier LIGHTNING_NO_FOG =
+            RegistryUtil.id("core/rendertype_lightning_nofog");
 
-    public static final Identifier LINES_NO_FOG = Library.id("core/rendertype_lines_nofog");
+    public static final Identifier LINES_NO_FOG = RegistryUtil.id("core/rendertype_lines_nofog");
 
-    public static final Identifier ENTITY_FADE = Library.id("core/entity_fade");
-    public static final Identifier PARTICLE_FADE = Library.id("core/particle_fade");
-    public static final Identifier PARTICLE_CUTOUT = Library.id("core/particle_cutout");
-    public static final Identifier TEXT_FADE = Library.id("core/text_fade");
+    public static final Identifier ENTITY_FADE = RegistryUtil.id("core/entity_fade");
+    public static final Identifier PARTICLE_FADE = RegistryUtil.id("core/particle_fade");
+    public static final Identifier PARTICLE_CUTOUT = RegistryUtil.id("core/particle_cutout");
+    public static final Identifier TEXT_FADE = RegistryUtil.id("core/text_fade");
 
-    public static final RenderPipeline.Snippet MATRICES_NO_FOG_SNIPPET =
+    public static final Snippet MATRICES_NO_FOG_SNIPPET =
             RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                    .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                    .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                    .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                     .buildSnippet();
 
-    public static final RenderPipeline.Snippet PARTICLE_NO_FOG_SNIPPET =
+    public static final Snippet PARTICLE_NO_FOG_SNIPPET =
             RenderPipeline.builder(MATRICES_NO_FOG_SNIPPET)
                     .withVertexShader(PARTICLE_NO_FOG)
                     .withFragmentShader(PARTICLE_NO_FOG)
@@ -51,7 +70,7 @@ public final class ParticleRenderTypes {
                     .withDepthStencilState(DepthStencilState.DEFAULT)
                     .buildSnippet();
 
-    public static final RenderPipeline.Snippet LINES_NO_FOG_SNIPPET =
+    public static final Snippet LINES_NO_FOG_SNIPPET =
             RenderPipeline.builder(MATRICES_NO_FOG_SNIPPET)
                     .withVertexShader(LINES_NO_FOG)
                     .withFragmentShader(LINES_NO_FOG)

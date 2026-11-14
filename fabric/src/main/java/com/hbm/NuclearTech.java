@@ -1,16 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm;
 
 import com.hbm.advancement.HbmCriteria;
 import com.hbm.api.energymk2.PowerNetwork;
 import com.hbm.api.fluidmk2.FluidNetwork;
-import com.hbm.blockentity.BlockEntityPedestal;
 import com.hbm.blockentity.ChunkPublication;
-import com.hbm.blockentity.machine.BlockEntityMachineRadar;
-import com.hbm.blockentity.network.RTTYSystem;
-import com.hbm.blockentity.network.RequestNetwork;
+import com.hbm.blockentity.StructureAssemblyBlockEntity;
+import com.hbm.blockentity.machine.RadarBlockEntity;
+import com.hbm.blockentity.prop.PedestalBlockEntity;
 import com.hbm.blocks.FlammableBlocks;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
@@ -24,17 +39,20 @@ import com.hbm.config.*;
 import com.hbm.data.*;
 import com.hbm.entity.LoadedEntities;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.train.EntityRailCarBase;
+import com.hbm.entity.train.RailCarBaseEntity;
+import com.hbm.explosion.FalloutJournal;
 import com.hbm.extprop.ModEntityData;
 import com.hbm.handler.*;
 import com.hbm.handler.neutron.NeutronHandler;
-import com.hbm.handler.neutron.NeutronNodeWorld;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.radiation.*;
+import com.hbm.handler.radio.RadioSystem;
+import com.hbm.handler.resistance.DamageResistanceHandler;
 import com.hbm.hazard.HazardAssignment;
 import com.hbm.hazard.HazardSystem;
 import com.hbm.hazard.TravelersEquipmentHazards;
 import com.hbm.hazard.TrinketsHazards;
+import com.hbm.inventory.ItemContents;
 import com.hbm.inventory.TrinketsAccessories;
 import com.hbm.inventory.WornAccessories;
 import com.hbm.inventory.container.ModMenus;
@@ -42,7 +60,9 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.machine.CustomMachineDefinition;
 import com.hbm.inventory.machine.CustomMachineDefinitions;
 import com.hbm.inventory.recipes.ModRecipes;
+import com.hbm.inventory.recipes.ingredient.ConsumedComponentPredicate;
 import com.hbm.inventory.recipes.ingredient.FluidContentPredicate;
+import com.hbm.inventory.recipes.ingredient.UnmodifiedGunPredicate;
 import com.hbm.itempool.ItemPool;
 import com.hbm.items.ModCreativeTabs;
 import com.hbm.items.ModDataComponents;
@@ -50,31 +70,34 @@ import com.hbm.items.ModItems;
 import com.hbm.items.armor.ArmorSuitEffects;
 import com.hbm.items.food.ConsumableTreatment;
 import com.hbm.items.food.ConsumableTreatments;
+import com.hbm.items.machine.ICFPelletItem;
 import com.hbm.items.special.Autogen;
-import com.hbm.items.special.ItemBetaFeatures;
-import com.hbm.items.tool.ItemRTTYPager;
+import com.hbm.items.special.BetaFeaturesItem;
+import com.hbm.items.tool.RTTYPagerItem;
 import com.hbm.items.weapon.sedna.AkimboGhost;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
+import com.hbm.logistics.courier.CourierEndpointRegistry;
 import com.hbm.main.Polaroid;
 import com.hbm.packet.BeSyncTable;
 import com.hbm.packet.ChunkTrackerIndex;
 import com.hbm.packet.PacketWire;
 import com.hbm.packet.SyncWire;
 import com.hbm.particle.HbmParticles;
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.platform.Platform;
+import com.hbm.platform.PlayerLevelChange;
+import com.hbm.platform.ServerEvents;
 import com.hbm.potion.HbmPotion;
-import com.hbm.registration.FabricRegistrar;
 import com.hbm.registration.Reg;
+import com.hbm.registration.Registrar;
 import com.hbm.saveddata.SatelliteSavedData;
 import com.hbm.saveddata.TomSaveData;
-import com.hbm.saveddata.satellites.SatelliteDetector;
+import com.hbm.saveddata.satellites.RadiationBursts;
 import com.hbm.saveddata.satellites.SatelliteRayEvents;
 import com.hbm.sound.ModSounds;
 import com.hbm.stats.ModStats;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.ChunkUtil;
-import com.hbm.util.DamageResistanceHandler;
 import com.hbm.world.HbmFeatures;
 import com.hbm.world.HbmWorldgen;
 import com.hbm.world.gen.nbt.HbmStructureProcessors;
@@ -82,7 +105,9 @@ import com.hbm.world.loot.ConfigScaledNumberProvider;
 import com.hbm.world.loot.EntityEnchantmentLevel;
 import com.hbm.world.ore.OreGeneration;
 import com.hbm.world.structure.HbmStructureTypes;
+import java.util.function.Consumer;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -100,7 +125,7 @@ public final class NuclearTech {
     public static void init() {
         LOGGER.info("NTM common init on {}", "Fabric");
         Polaroid.roll();
-        com.hbm.handler.JoinGreeting.register();
+        JoinGreeting.register();
 
         ModDataComponents.registerBlockItemStates();
         load(ModBlocks.class);
@@ -108,6 +133,8 @@ public final class NuclearTech {
         ModStats.register();
         HbmCriteria.register();
         FluidContentPredicate.register();
+        ConsumedComponentPredicate.register();
+        UnmodifiedGunPredicate.register();
         ModEntityData.register();
         GeneratedConductors.init();
         load(ModItems.class);
@@ -124,41 +151,36 @@ public final class NuclearTech {
         HbmStructureTypes.register();
         HbmFeatures.register();
         HbmStructureProcessors.register();
-        FabricRegistrar.registerLootNumberProviderType(
+        Registrar.registerLootNumberProviderType(
                 "config_scaled", ConfigScaledNumberProvider.MAP_CODEC);
-        FabricRegistrar.registerLootNumberProviderType(
+        Registrar.registerLootNumberProviderType(
                 "entity_enchantment_level", EntityEnchantmentLevel.MAP_CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(
-                HazardAssignment.REGISTRY, HazardAssignment.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(
-                HazmatProtection.REGISTRY, HazmatProtection.CODEC);
-        FabricRegistrar.registerDataPackRegistry(BiomeRadiation.REGISTRY, BiomeRadiation.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(
+        Registrar.registerSyncedDataPackRegistry(HazardAssignment.REGISTRY, HazardAssignment.CODEC);
+        Registrar.registerSyncedDataPackRegistry(HazmatProtection.REGISTRY, HazmatProtection.CODEC);
+        Registrar.registerDataPackRegistry(BiomeRadiation.REGISTRY, BiomeRadiation.CODEC);
+        Registrar.registerSyncedDataPackRegistry(
                 EquipmentProtection.REGISTRY, EquipmentProtection.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(
-                SuitProtection.REGISTRY, SuitProtection.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(
+        Registrar.registerSyncedDataPackRegistry(SuitProtection.REGISTRY, SuitProtection.CODEC);
+        Registrar.registerSyncedDataPackRegistry(
                 ConsumableTreatment.REGISTRY, ConsumableTreatment.CODEC);
-        FabricRegistrar.registerDataPackRegistry(
+        Registrar.registerDataPackRegistry(
                 IrradiationTransformation.REGISTRY, IrradiationTransformation.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(
+        Registrar.registerSyncedDataPackRegistry(
                 CustomMachineDefinition.REGISTRY, CustomMachineDefinition.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(MachineData.REGISTRY, MachineConfig.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(ExplosionData.REGISTRY, DataGroup.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(MobData.REGISTRY, DataGroup.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(WorldData.REGISTRY, DataGroup.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(ItemData.REGISTRY, DataGroup.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(EnergyData.REGISTRY, DataGroup.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(RadiationData.REGISTRY, DataGroup.CODEC);
-        FabricRegistrar.registerDataPackRegistry(
-                RadiationSettings.REGISTRY, RadiationSettings.CODEC);
-        FabricRegistrar.registerDataPackRegistry(
+        Registrar.registerSyncedDataPackRegistry(MachineData.REGISTRY, MachineConfig.CODEC);
+        Registrar.registerSyncedDataPackRegistry(ExplosionData.REGISTRY, DataGroup.CODEC);
+        Registrar.registerSyncedDataPackRegistry(MobData.REGISTRY, DataGroup.CODEC);
+        Registrar.registerSyncedDataPackRegistry(WorldData.REGISTRY, DataGroup.CODEC);
+        Registrar.registerSyncedDataPackRegistry(ItemData.REGISTRY, DataGroup.CODEC);
+        Registrar.registerSyncedDataPackRegistry(EnergyData.REGISTRY, DataGroup.CODEC);
+        Registrar.registerSyncedDataPackRegistry(RadiationData.REGISTRY, DataGroup.CODEC);
+        Registrar.registerDataPackRegistry(RadiationSettings.REGISTRY, RadiationSettings.CODEC);
+        Registrar.registerDataPackRegistry(
                 RadiationDiffusivity.REGISTRY, RadiationDiffusivity.CODEC);
-        FabricRegistrar.registerDataPackRegistry(RadSourceRule.REGISTRY, RadSourceRule.CODEC);
-        FabricRegistrar.registerSyncedDataPackRegistry(
+        Registrar.registerDataPackRegistry(RadSourceRule.REGISTRY, RadSourceRule.CODEC);
+        Registrar.registerSyncedDataPackRegistry(
                 RadResistanceRule.REGISTRY, RadResistanceRule.CODEC);
-        FabricRegistrar.registerDataPackRegistry(
-                FalloutConfigJSON.REGISTRY, FalloutConfigJSON.CODEC);
+        Registrar.registerDataPackRegistry(FalloutConfigJSON.REGISTRY, FalloutConfigJSON.CODEC);
         NtmCapabilities.registerTokens();
         NTMFluids.init();
         LevelNodeGraph.init();
@@ -167,16 +189,18 @@ public final class NuclearTech {
         HazardSystem.init();
         RadiationSystemNT.init();
         RadVisServer.init();
-        PollutionHandler.init();
+        PollutionHandler.install();
         UnstableFuses.init();
         LoadedEntities.init();
         DamageResistanceHandler.init();
         BossSpawnHandler.init();
         ImpactWorldHandler.init();
-        BlockEntityPedestal.init();
+        PedestalBlockEntity.init();
         ArmorSuitEffects.init();
         ChunkUtil.init();
         ChunkPublication.init();
+        FalloutJournal.init();
+        StructureAssemblyBlockEntity.init();
         AssembledMembers.init();
         ResolvedCapCache.init();
         EndpointRegistry.init();
@@ -184,60 +208,79 @@ public final class NuclearTech {
         ComputerCraft.init();
         HbmWorldgen.register();
 
-        FabricServerEvents.onServerTickPost(
+        final Consumer<MinecraftServer> callback =
                 server -> {
-                    if (server.getTickCount() % 20 == 0 && FabricHbmConfig.pollForExternalEdit()) {
+                    if (server.getTickCount() % 20 == 0 && HbmConfig.pollForExternalEdit()) {
                         deriveLiveConfigFacades();
                         if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT)
                             deriveClientConfigFacades();
                     }
-                });
+                };
+        ServerEvents.TICK_POST.add(callback);
 
-        FabricServerEvents.onServerTickPost(NeutronHandler::onServerTick);
-        FabricServerEvents.onServerStopping(server -> NeutronNodeWorld.removeAllWorlds());
+        NeutronHandler.install();
 
-        FabricServerEvents.onServerTickPost(
+        final Consumer<MinecraftServer> callback2 =
                 server -> {
                     for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                         AkimboGhost.tick(player);
                     }
-                });
+                };
+        ServerEvents.TICK_POST.add(callback2);
 
-        FabricServerEvents.onLevelLoad(TomSaveData::publish);
-        FabricServerEvents.onServerStopping(server -> TomSaveData.onServerStopping());
-        FabricServerEvents.onServerTickPre(ItemBetaFeatures::tick);
-        FabricServerEvents.onServerTickPre(RTTYSystem::updateBroadcastQueue);
-        FabricServerEvents.onServerTickPre(RequestNetwork::updateEntries);
-        BlockEntityMachineRadar.registerScanSystem();
-        FabricServerEvents.onServerStopping(server -> RTTYSystem.onServerStopping());
-        FabricServerEvents.onServerTickPre(SatelliteDetector::tick);
-        FabricServerEvents.onServerTickPre(
+        final Consumer<ServerLevel> callback3 = TomSaveData::publish;
+        ServerLevelEvents.LOAD.register((server2, level2) -> callback3.accept(level2));
+        final Consumer<MinecraftServer> callback4 = server -> TomSaveData.onServerStopping();
+        ServerEvents.STOPPING.add(callback4);
+        final Consumer<MinecraftServer> callback5 = BetaFeaturesItem::tick;
+        ServerEvents.TICK_PRE.add(callback5);
+        final Consumer<MinecraftServer> callback6 = RadioSystem::publish;
+        ServerEvents.TICK_PRE.add(callback6);
+        final Consumer<MinecraftServer> callback7 = CourierEndpointRegistry::preTick;
+        ServerEvents.TICK_PRE.add(callback7);
+        RadarBlockEntity.registerScanSystem();
+        final Consumer<MinecraftServer> callback8 = RadiationBursts::expire;
+        ServerEvents.TICK_PRE.add(callback8);
+        final Consumer<MinecraftServer> callback9 =
                 server -> {
                     for (ServerLevel level : server.getAllLevels()) {
                         SatelliteSavedData data = SatelliteSavedData.get(level);
-                        for (var satellite : data.sats.values()) satellite.onUpdateTick(level);
+                        for (var satellite : data.sats.values()) satellite.tick(level);
                     }
-                });
-        FabricServerEvents.onServerTickPre(SatelliteRayEvents::tick);
-        FabricServerEvents.onServerStopping(server -> SatelliteRayEvents.clear());
-        FabricServerEvents.onServerStopping(server -> SatelliteDetector.clear());
-        FabricServerEvents.onServerStopping(server -> RequestNetwork.onServerStopping());
-        FabricServerEvents.onServerTickPost(ItemRTTYPager::tickInventory);
-        FabricServerEvents.onServerTickPost(server -> BeSyncTable.pump());
-        FabricServerEvents.onServerTickPre(server -> SyncWire.beforeTick());
-        FabricServerEvents.onServerTickPost(EntityRailCarBase::updateTrains);
-        FabricServerEvents.onPlayerDisconnect(
+                };
+        ServerEvents.TICK_PRE.add(callback9);
+        final Consumer<MinecraftServer> callback10 = SatelliteRayEvents::tick;
+        ServerEvents.TICK_PRE.add(callback10);
+        final Consumer<MinecraftServer> callback11 = server -> SatelliteRayEvents.clear();
+        ServerEvents.STOPPING.add(callback11);
+        final Consumer<MinecraftServer> callback12 = server -> RadiationBursts.clear();
+        ServerEvents.STOPPING.add(callback12);
+        final Consumer<MinecraftServer> callback13 = server -> CourierEndpointRegistry.clear();
+        ServerEvents.STOPPING.add(callback13);
+        final Consumer<MinecraftServer> callback14 = RTTYPagerItem::tickInventory;
+        ServerEvents.TICK_POST.add(callback14);
+        final Consumer<MinecraftServer> callback15 = server -> BeSyncTable.pump();
+        ServerEvents.TICK_POST.add(callback15);
+        final Consumer<MinecraftServer> callback16 = server -> SyncWire.beforeTick();
+        ServerEvents.TICK_PRE.add(callback16);
+        final Consumer<MinecraftServer> callback17 = RailCarBaseEntity::updateTrains;
+        ServerEvents.TICK_POST.add(callback17);
+        final Consumer<ServerPlayer> callback18 =
                 player -> {
                     ChunkTrackerIndex.forget(player, player.level());
                     BeSyncTable.forget(player.getUUID());
-                });
-        FabricServerEvents.onPlayerRespawn(ChunkTrackerIndex::respawn);
-        FabricServerEvents.onPlayerChangeLevel(
+                };
+        ServerEvents.DISCONNECT.add(callback18);
+        final Consumer<ServerPlayer> callback19 = ChunkTrackerIndex::respawn;
+        ServerEvents.RESPAWN.add(callback19);
+        final PlayerLevelChange callback20 =
                 (player, origin, destination) -> {
                     ChunkTrackerIndex.forget(player, origin);
                     BeSyncTable.forgetIn(origin, player.getUUID());
-                });
-        FabricServerEvents.onServerTickPost(server -> PacketWire.flushPending());
+                };
+        ServerEvents.LEVEL_CHANGE.add(callback20);
+        final Consumer<MinecraftServer> callback21 = server -> PacketWire.flushPending();
+        ServerEvents.TICK_POST.add(callback21);
     }
 
     private static void load(Class<?>... holders) {
@@ -252,19 +295,19 @@ public final class NuclearTech {
     }
 
     public static void deriveConfigFacades() {
-        BalanceConfig.loadFrom(FabricHbmConfig.content().store());
+        BalanceConfig.loadFrom(((ContentConfig) HbmConfig.CONTENT).store());
         deriveLiveConfigFacades();
         if (clientFacades) deriveClientConfigFacades();
     }
 
     public static void deriveLiveConfigFacades() {
-        ConfigStore runtime = FabricHbmConfig.runtime().store();
+        ConfigStore runtime = ((RuntimeConfig) HbmConfig.RUNTIME).store();
         RadiationConfig.loadFrom(runtime);
         BombConfig.loadFrom(runtime);
     }
 
     public static void deriveClientConfigFacades() {
-        ConfigStore client = FabricHbmConfig.STORE;
+        ConfigStore client = HbmConfig.STORE;
         RenderConfig.loadFrom(client);
         HudConfig.loadFrom(client);
         GunVisualConfig.loadFrom(client);
@@ -279,13 +322,14 @@ public final class NuclearTech {
         RadiationSystemNT.onLoadComplete();
         Reg.runAfterRegistration();
         NTMFluids.bake();
-        com.hbm.inventory.ItemContents.bootstrap();
+        ICFPelletItem.init();
+        ItemContents.bootstrap();
         XWeaponModManager.init();
         HazardSystem.registerContent();
-        if (FabricLoader.getInstance().isModLoaded("travelersbackpack")) {
+        if (Platform.isModLoaded("travelersbackpack")) {
             HazardSystem.addExternalEquipmentApplicator(TravelersEquipmentHazards::apply);
         }
-        if (FabricLoader.getInstance().isModLoaded("trinkets_updated")) {
+        if (Platform.isModLoaded("trinkets_updated")) {
             HazardSystem.addExternalEquipmentApplicator(TrinketsHazards::apply);
             WornAccessories.register(TrinketsAccessories::collect);
         }
@@ -316,6 +360,7 @@ public final class NuclearTech {
     }
 
     public static void serverStopped() {
+        PedestalBlockEntity.clearLeases();
         HazmatRegistry.clear();
         BiomeRadiation.clear();
         EquipmentProtections.clear();

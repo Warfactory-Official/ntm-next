@@ -1,11 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.itempool;
 
 import com.hbm.items.ModItems;
-import com.hbm.items.special.ItemBookLore;
-import com.hbm.lib.Library;
+import com.hbm.items.special.BookLoreItem;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +51,7 @@ public final class LoreBooks {
     public record Book(String key, int pages, int coverColor, int titleColor) {
 
         public ItemStack stack() {
-            return ItemBookLore.createBook(key, pages, coverColor, titleColor);
+            return BookLoreItem.createBook(key, pages, coverColor, titleColor);
         }
     }
 
@@ -87,7 +117,7 @@ public final class LoreBooks {
 
     private static Item byId(String path) {
         return BuiltInRegistries.ITEM
-                .getOptional(Library.id(path))
+                .getOptional(RegistryUtil.id(path))
                 .orElseThrow(
                         () ->
                                 new IllegalStateException(
@@ -140,7 +170,7 @@ public final class LoreBooks {
             }
         }
         ItemStack stack = book.stack();
-        ItemBookLore.addArgs(stack, book.pages() - 1, String.valueOf(slot));
+        BookLoreItem.addArgs(stack, book.pages() - 1, String.valueOf(slot));
         return stack;
     }
 

@@ -2,11 +2,14 @@
   "type": "hbm:crafting_shaped",
   "key": {
     "I": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:insert_du",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:insert_du"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "Y": "hbm:billet_yharonite"
   },

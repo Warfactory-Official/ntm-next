@@ -1,14 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.advancement;
 
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public final class HbmCriteria {
@@ -30,33 +45,25 @@ public final class HbmCriteria {
     private HbmCriteria() {}
 
     public static void register() {
-        RADIATION =
-                NeoForgeRegistrar.registerCriterionTrigger("radiation", new ContaminationTrigger());
-        DIGAMMA = NeoForgeRegistrar.registerCriterionTrigger("digamma", new ContaminationTrigger());
-        DETONATION =
-                NeoForgeRegistrar.registerCriterionTrigger("detonation", new DetonationTrigger());
-        SMOKED = NeoForgeRegistrar.registerCriterionTrigger("smoked", new SmokedTrigger());
-        ROOM_OPENED =
-                NeoForgeRegistrar.registerCriterionTrigger("room_opened", new RoomOpenedTrigger());
+        RADIATION = Registrar.registerCriterionTrigger("radiation", new ContaminationTrigger());
+        DIGAMMA = Registrar.registerCriterionTrigger("digamma", new ContaminationTrigger());
+        DETONATION = Registrar.registerCriterionTrigger("detonation", new DetonationTrigger());
+        SMOKED = Registrar.registerCriterionTrigger("smoked", new SmokedTrigger());
+        ROOM_OPENED = Registrar.registerCriterionTrigger("room_opened", new RoomOpenedTrigger());
         PARTICLE_PRODUCED =
-                NeoForgeRegistrar.registerCriterionTrigger(
+                Registrar.registerCriterionTrigger(
                         "particle_produced", new ParticleProducedTrigger());
         ITEM_DISSOLVED =
-                NeoForgeRegistrar.registerCriterionTrigger(
-                        "item_dissolved", new ItemDissolvedTrigger());
+                Registrar.registerCriterionTrigger("item_dissolved", new ItemDissolvedTrigger());
         ITEM_PICKED_UP =
-                NeoForgeRegistrar.registerCriterionTrigger(
-                        "item_picked_up", new ItemPickedUpTrigger());
-        ITEM_CRAFTED =
-                NeoForgeRegistrar.registerCriterionTrigger(
-                        "item_crafted", new ItemCraftedTrigger());
-        ORBIT = NeoForgeRegistrar.registerCriterionTrigger("orbit", new OrbitTrigger());
+                Registrar.registerCriterionTrigger("item_picked_up", new ItemPickedUpTrigger());
+        ITEM_CRAFTED = Registrar.registerCriterionTrigger("item_crafted", new ItemCraftedTrigger());
+        ORBIT = Registrar.registerCriterionTrigger("orbit", new OrbitTrigger());
         SATELLITE_ACTION =
-                NeoForgeRegistrar.registerCriterionTrigger(
+                Registrar.registerCriterionTrigger(
                         "satellite_action", new SatelliteActionTrigger());
-        BOSS_KILLED =
-                NeoForgeRegistrar.registerCriterionTrigger("boss_killed", new BossKilledTrigger());
-        BLED_OUT = NeoForgeRegistrar.registerCriterionTrigger("bled_out", new BledOutTrigger());
+        BOSS_KILLED = Registrar.registerCriterionTrigger("boss_killed", new BossKilledTrigger());
+        BLED_OUT = Registrar.registerCriterionTrigger("bled_out", new BledOutTrigger());
     }
 
     public static void orbit(ServerPlayer player, ItemStack stack) {
@@ -105,9 +112,10 @@ public final class HbmCriteria {
 
     public static void bossKilled(Entity boss, BossKilledTrigger.Kind kind, double radius) {
         if (!(boss.level() instanceof ServerLevel level)) return;
-        for (Player player : level.getPlayers(p -> p.distanceToSqr(boss) <= radius * radius)) {
-            if (player instanceof ServerPlayer serverPlayer)
-                BOSS_KILLED.get().trigger(serverPlayer, kind);
+        for (ServerPlayer player :
+                level.getEntitiesOfClass(
+                        ServerPlayer.class, boss.getBoundingBox().inflate(radius))) {
+            BOSS_KILLED.get().trigger(player, kind);
         }
     }
 }

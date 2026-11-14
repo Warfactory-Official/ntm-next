@@ -1,6 +1,6 @@
 {
   "fabric:type": "hbm:obj",
-  "ambientocclusion": true,
+  "ambientocclusion": false,
   "gui_light": "side",
   "model": "hbm:models/blocks/spikes.obj",
   "skins": {

@@ -1,13 +1,12 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:starmetal_boots"
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:starmetal_boots",
     "D": "#hbm:billets/polonium_210",
     "P": "hbm:plate_armor_fau"
   },

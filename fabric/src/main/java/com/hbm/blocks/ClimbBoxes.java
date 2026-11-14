@@ -1,9 +1,24 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks;
 
-import com.hbm.interfaces.injected.IClimbBoxSection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
@@ -20,7 +35,9 @@ public final class ClimbBoxes {
     private ClimbBoxes() {}
 
     public static boolean counts(BlockState state) {
-        return state.getBlock() instanceof ClimbBox block && block.climbBox(state) != null;
+        var block = state.getBlock();
+        return ((com.hbm.interfaces.injected.ClimbBoxBlockAccess) (block)).hbm$mayHaveClimbBox()
+                && ((ClimbBox) block).climbBox(state) != null;
     }
 
     public static @Nullable BlockPos find(Level level, AABB bb) {
@@ -42,7 +59,9 @@ public final class ClimbBoxes {
                     int index = chunk.getSectionIndexFromSectionY(sy);
                     if (index < 0 || index >= sections.length) continue;
                     LevelChunkSection section = sections[index];
-                    if (((IClimbBoxSection) section).hbm$climbBoxes() == 0) continue;
+                    if (((com.hbm.interfaces.injected.ClimbBoxSectionAccess) (section))
+                                    .hbm$climbBoxes()
+                            == 0) continue;
                     int bx = SectionPos.sectionToBlockCoord(sx),
                             by = SectionPos.sectionToBlockCoord(sy);
                     int bz = SectionPos.sectionToBlockCoord(sz);
@@ -69,8 +88,10 @@ public final class ClimbBoxes {
             for (int x = x0; x <= x1; x++) {
                 for (int z = z0; z <= z1; z++) {
                     BlockState state = section.getBlockState(x & 15, y & 15, z & 15);
-                    if (!(state.getBlock() instanceof ClimbBox block)) continue;
-                    AABB box = block.climbBox(state);
+                    var block = state.getBlock();
+                    if (!((com.hbm.interfaces.injected.ClimbBoxBlockAccess) (block))
+                            .hbm$mayHaveClimbBox()) continue;
+                    AABB box = ((ClimbBox) block).climbBox(state);
                     if (box != null
                             && bb.intersects(
                                     x + box.minX,

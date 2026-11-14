@@ -1,21 +1,5 @@
 {
   "type": "minecraft:block",
-  "pools": [
-    {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "hbm:barrel_corroded"
-        }
-      ],
-      "rolls": 1.0
-    }
-  ],
+  "pools": [],
   "random_sequence": "hbm:blocks/barrel_corroded"
 }

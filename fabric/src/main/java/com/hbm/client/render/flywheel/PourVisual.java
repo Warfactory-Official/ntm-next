@@ -1,20 +1,47 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.render.FoundryFaces;
 import com.hbm.util.GameTime;
+import dev.engine_room.flywheel.api.instance.InstanceType;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.AffineUvTransformedInstance;
+import dev.engine_room.flywheel.lib.instance.SimpleInstanceType;
 import dev.engine_room.flywheel.lib.visual.AbstractVisual;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.Level;
 import org.joml.Matrix4f;
 
 public final class PourVisual extends AbstractVisual {
+    private static final InstanceType<AffineUvTransformedInstance> TYPE =
+            SimpleInstanceType.builder(AffineUvTransformedInstance::new)
+                    .layout(AffineUvTransformedInstance.TYPE.layout())
+                    .seed(AffineUvTransformedInstance.TYPE.seed())
+                    .transform(AffineUvTransformedInstance.TYPE.transform())
+                    .vertexShader(Identifier.fromNamespaceAndPath("hbm", "instance/pour.vert"))
+                    .cullShader(AffineUvTransformedInstance.TYPE.cullShader())
+                    .build();
     private static final MeshPart SHARED_MODEL = buildModel();
     private final BlockPos anchor;
     private final AffineUvTransformedInstance[] triangles = new AffineUvTransformedInstance[18];
@@ -107,8 +134,7 @@ public final class PourVisual extends AbstractVisual {
             float v2) {
         float ax = x1 - x0, ay = y1 - y0, az = z1 - z0, bx = x2 - x0, by = y2 - y0, bz = z2 - z0;
         float nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx;
-        float length = (float) Math.sqrt(nx * nx + ny * ny + nz * nz);
-        if (length == 0) return;
+        if (nx * nx + ny * ny + nz * nz == 0) return;
         local.identity()
                 .m00(ax)
                 .m01(ay)
@@ -116,9 +142,6 @@ public final class PourVisual extends AbstractVisual {
                 .m10(bx)
                 .m11(by)
                 .m12(bz)
-                .m20(nx / length)
-                .m21(ny / length)
-                .m22(nz / length)
                 .m30(x + x0)
                 .m31(y + y0)
                 .m32(z + z0);
@@ -129,9 +152,7 @@ public final class PourVisual extends AbstractVisual {
                 .mul(local);
         if (triangles[used] == null) {
             triangles[used] =
-                    instancerProvider()
-                            .instancer(AffineUvTransformedInstance.TYPE, SHARED_MODEL.model())
-                            .createInstance();
+                    instancerProvider().instancer(TYPE, SHARED_MODEL.model()).createInstance();
             visible[used] = true;
         }
         var triangle = triangles[used];
@@ -142,6 +163,12 @@ public final class PourVisual extends AbstractVisual {
         triangle.setTransform(pose).colorArgb(tint).light(LightCoordsUtil.pack(15, 0));
         triangle.uv(u1 - u0, u2 - u0, v1 - v0, v2 - v0, u0, v0).setChanged();
         used++;
+    }
+
+    public void hide() {
+        for (int i = 0; i < used; i++) hide(i);
+        used = 0;
+        lastAge = Float.NaN;
     }
 
     private void hide(int i) {

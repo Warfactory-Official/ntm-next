@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
 import com.google.common.base.Suppliers;
-import com.hbm.items.special.ItemHot;
+import com.hbm.items.special.HotItem;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.platform.Transparency;
 import com.mojang.serialization.MapCodec;
@@ -74,7 +90,7 @@ public class HotItemRenderer implements ItemModel {
             int seed) {
         output.appendModelIdentityElement(this);
         long gameTime = level != null ? level.getGameTime() : GameTime.ticks();
-        int tint = ARGB.white(Mth.clamp((float) ItemHot.getHeat(item, gameTime), 0.0F, 1.0F));
+        int tint = ARGB.white(Mth.clamp((float) HotItem.getHeat(item, gameTime), 0.0F, 1.0F));
         output.appendModelIdentityElement(tint);
 
         ItemStackRenderState.LayerRenderState base = layer(output, displayContext, icon);

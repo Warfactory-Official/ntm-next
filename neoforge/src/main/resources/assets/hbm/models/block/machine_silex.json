@@ -11,6 +11,5 @@
   "textures": {
     "all": "hbm:block/models/machines/silex",
     "particle": "hbm:block/models/machines/silex"
-  },
-  "translucent": true
+  }
 }

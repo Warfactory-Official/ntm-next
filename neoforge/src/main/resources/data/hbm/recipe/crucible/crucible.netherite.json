@@ -1,0 +1,24 @@
+{
+  "type": "hbm:crucible",
+  "frequency": 8,
+  "icon": {
+    "id": "minecraft:netherite_ingot"
+  },
+  "input_materials": [
+    {
+      "amount": 288,
+      "material": "netherite_scrap"
+    },
+    {
+      "amount": 288,
+      "material": "gold"
+    }
+  ],
+  "order": 3328,
+  "output_materials": [
+    {
+      "amount": 72,
+      "material": "netherite"
+    }
+  ]
+}

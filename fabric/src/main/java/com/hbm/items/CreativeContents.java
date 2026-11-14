@@ -1,12 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.bomb.BlockVolcano;
-import com.hbm.blocks.generic.BlockPlatemetal;
-import com.hbm.blocks.generic.BlockSellafield;
+import com.hbm.blocks.bomb.VolcanoBlock;
+import com.hbm.blocks.generic.PlatemetalBlock;
+import com.hbm.blocks.generic.SellafieldBlock;
 import com.hbm.blocks.network.FluidPipeBlockItem;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluids;
@@ -14,28 +44,32 @@ import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_LeadContainer;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.FT_NoID;
 import com.hbm.inventory.machine.CustomMachineDefinition;
 import com.hbm.inventory.machine.CustomMachineDefinitions;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialRegistry;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.MaterialStack;
+import com.hbm.inventory.material.SmeltingBehavior;
 import com.hbm.inventory.recipes.crafting.GrenadeCraftingRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
-import com.hbm.items.block.ItemCustomMachine;
-import com.hbm.items.food.ItemMarshmallow;
+import com.hbm.items.block.CustomMachineItem;
+import com.hbm.items.food.MarshmallowItem;
 import com.hbm.items.machine.*;
-import com.hbm.items.machine.ItemICFPellet.EnumICFFuel;
+import com.hbm.items.machine.*;
+import com.hbm.items.machine.ICFPelletItem.EnumICFFuel;
 import com.hbm.items.special.*;
-import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
-import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
-import com.hbm.items.tool.ItemModMinecart;
-import com.hbm.items.weapon.ItemCustomMissile;
-import com.hbm.items.weapon.ItemDisperser;
-import com.hbm.items.weapon.grenade.ItemGrenadeExtra.EnumGrenadeExtra;
-import com.hbm.items.weapon.grenade.ItemGrenadeFilling.EnumGrenadeFilling;
-import com.hbm.items.weapon.grenade.ItemGrenadeFuze.EnumGrenadeFuze;
-import com.hbm.items.weapon.grenade.ItemGrenadeShell.EnumGrenadeShell;
-import com.hbm.items.weapon.grenade.ItemGrenadeUniversal;
-import com.hbm.lib.Library;
+import com.hbm.items.special.*;
+import com.hbm.items.special.BedrockOreNewItem.BedrockOreGrade;
+import com.hbm.items.special.BedrockOreNewItem.BedrockOreType;
+import com.hbm.items.tool.ModMinecartItem;
+import com.hbm.items.weapon.CustomMissileItem;
+import com.hbm.items.weapon.DisperserItem;
+import com.hbm.items.weapon.grenade.GrenadeExtraItem.EnumGrenadeExtra;
+import com.hbm.items.weapon.grenade.GrenadeFillings;
+import com.hbm.items.weapon.grenade.GrenadeFuzeItem.EnumGrenadeFuze;
+import com.hbm.items.weapon.grenade.GrenadeShellItem.EnumGrenadeShell;
+import com.hbm.items.weapon.grenade.GrenadeUniversalItem;
 import com.hbm.main.Polaroid;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -174,12 +208,12 @@ public final class CreativeContents {
                 "rail_highspeed",
                 "rail_booster",
                 "boat_rubber");
-        for (ItemModMinecart.EnumMinecart cart : ItemModMinecart.EnumMinecart.VALUES) {
-            for (ItemModMinecart.EnumCartBase base : ItemModMinecart.EnumCartBase.VALUES) {
+        for (ModMinecartItem.EnumMinecart cart : ModMinecartItem.EnumMinecart.VALUES) {
+            for (ModMinecartItem.EnumCartBase base : ModMinecartItem.EnumCartBase.VALUES) {
                 if (cart.supportsBase(base)) {
                     out.accept(
                             CreativeModeTabs.TOOLS_AND_UTILITIES,
-                            () -> ItemModMinecart.createCartItem(base, cart));
+                            () -> ModMinecartItem.createCartItem(base, cart));
                 }
             }
         }
@@ -2477,10 +2511,10 @@ public final class CreativeContents {
                 "ladder_copper",
                 "ladder_steel",
                 "trapdoor_steel");
-        out.accept(ItemFluidBucket.make(NTMFluids.WATZ_MUD));
+        out.accept(FluidBucketItem.make(NTMFluids.WATZ_MUD));
         items(out, "bucket_acid", "bucket_toxic");
-        out.accept(ItemFluidBucket.make(NTMFluids.SCHRABIDIC));
-        out.accept(ItemFluidBucket.make(NTMFluids.SULFURIC_ACID));
+        out.accept(FluidBucketItem.make(NTMFluids.SCHRABIDIC));
+        out.accept(FluidBucketItem.make(NTMFluids.SULFURIC_ACID));
         items(out, "door_metal", "door_office", "door_bunker");
     }
 
@@ -3800,7 +3834,7 @@ public final class CreativeContents {
 
     private static Item item(String id) {
         return BuiltInRegistries.ITEM
-                .getOptional(Library.id(id))
+                .getOptional(RegistryUtil.id(id))
                 .orElseThrow(() -> new IllegalStateException("no item hbm:" + id));
     }
 
@@ -3817,7 +3851,7 @@ public final class CreativeContents {
 
     private static void charged(Consumer<ItemStack> out, String... ids) {
         for (String id : ids) {
-            ItemBattery battery = (ItemBattery) item(id);
+            BatteryItem battery = (BatteryItem) item(id);
             if (battery.chargeRate > 0) out.accept(battery.empty());
             if (battery.dischargeRate > 0) out.accept(battery.full());
         }
@@ -3825,7 +3859,7 @@ public final class CreativeContents {
 
     private static void withHot(Consumer<ItemStack> out, String... ids) {
         for (String id : ids) {
-            ItemDepletedFuel fuel = (ItemDepletedFuel) item(id);
+            DepletedFuelItem fuel = (DepletedFuelItem) item(id);
             out.accept(new ItemStack(fuel));
             out.accept(fuel.hot());
         }
@@ -3833,10 +3867,10 @@ public final class CreativeContents {
 
     private static void pellets(Consumer<ItemStack> out, String... ids) {
         for (String id : ids) {
-            ItemRBMKPellet pellet = (ItemRBMKPellet) item(id);
+            RBMKPelletItem pellet = (RBMKPelletItem) item(id);
             int variants = pellet.isXenonEnabled() ? 10 : 5;
             for (int meta = 0; meta < variants; meta++)
-                out.accept(pellet.of(ItemRBMKPellet.Stage.ofLegacy(meta)));
+                out.accept(pellet.of(RBMKPelletItem.Stage.ofLegacy(meta)));
         }
     }
 
@@ -3860,17 +3894,17 @@ public final class CreativeContents {
     private static void bedrockOres(Consumer<ItemStack> out) {
         for (BedrockOreType type : BedrockOreType.VALUES) {
             for (BedrockOreGrade grade : BedrockOreGrade.VALUES) {
-                out.accept(ItemBedrockOreNew.make(grade, type));
+                out.accept(BedrockOreNewItem.make(grade, type));
             }
         }
     }
 
     private static void scraps(Consumer<ItemStack> out) {
-        for (NTMMaterial mat : Mats.orderedList) {
-            if (mat.smeltable == NTMMaterial.SmeltingBehavior.SMELTABLE
-                    || mat.smeltable == NTMMaterial.SmeltingBehavior.ADDITIVE) {
+        for (Material mat : MaterialRegistry.ordered()) {
+            if (mat.behaviour() == SmeltingBehavior.SMELTABLE
+                    || mat.behaviour() == SmeltingBehavior.ADDITIVE) {
                 out.accept(
-                        ItemScraps.create(new Mats.MaterialStack(mat, MaterialShapes.INGOT.q(1))));
+                        ScrapsItem.create(new MaterialStack(mat, MaterialShape.INGOT.amount(1))));
             }
         }
     }
@@ -3885,24 +3919,24 @@ public final class CreativeContents {
 
     private static void acceptICFPellet(
             Consumer<ItemStack> out, EnumICFFuel type1, EnumICFFuel type2, boolean muon) {
-        out.accept(ItemICFPellet.setup(new ItemStack(ModItems.ICF_PELLET), type1, type2, muon));
+        out.accept(ICFPelletItem.setup(new ItemStack(ModItems.ICF_PELLET), type1, type2, muon));
     }
 
     private static void blueprints(Consumer<ItemStack> out) {
         for (String pool : GenericRecipes.poolNames()) {
             if (!pool.startsWith(GenericRecipes.POOL_PREFIX_SECRET))
-                out.accept(ItemBlueprints.make(pool));
+                out.accept(BlueprintsItem.make(pool));
         }
     }
 
     private static void grenades(Consumer<ItemStack> out) {
         for (EnumGrenadeShell shell : EnumGrenadeShell.values()) {
-            for (EnumGrenadeFilling filling : EnumGrenadeFilling.values()) {
+            for (var filling : GrenadeFillings.values()) {
                 if (!GrenadeCraftingRecipe.compatible(shell, filling)) continue;
                 for (EnumGrenadeFuze fuze : EnumGrenadeFuze.values()) {
-                    out.accept(ItemGrenadeUniversal.make(shell, filling, fuze));
+                    out.accept(GrenadeUniversalItem.make(shell, filling, fuze));
                     for (EnumGrenadeExtra extra : EnumGrenadeExtra.values())
-                        out.accept(ItemGrenadeUniversal.make(shell, filling, fuze, extra));
+                        out.accept(GrenadeUniversalItem.make(shell, filling, fuze, extra));
                 }
             }
         }
@@ -4002,7 +4036,7 @@ public final class CreativeContents {
             String stability,
             String thruster) {
         ItemStack missile =
-                ItemCustomMissile.buildMissile(
+                CustomMissileItem.buildMissile(
                         item(chip),
                         item(warhead),
                         item(fuselage),
@@ -4014,29 +4048,29 @@ public final class CreativeContents {
 
     private static void marshmallows(Consumer<ItemStack> out) {
         out.accept(new ItemStack(ModItems.MARSHMALLOW));
-        out.accept(ItemMarshmallow.roasted(ModItems.MARSHMALLOW.get()));
+        out.accept(MarshmallowItem.roasted(ModItems.MARSHMALLOW.get()));
     }
 
     private static void platemetal(Consumer<ItemStack> out) {
-        for (BlockPlatemetal.Variant variant : BlockPlatemetal.Variant.VALUES) {
+        for (PlatemetalBlock.Variant variant : PlatemetalBlock.Variant.VALUES) {
             out.accept(ModBlocks.PLATEMETAL.get().stackFor(variant));
         }
     }
 
     private static void sellafield(Consumer<ItemStack> out) {
-        for (int level = 0; level < BlockSellafield.LEVELS; level++) {
+        for (int level = 0; level < SellafieldBlock.LEVELS; level++) {
             out.accept(ModBlocks.SELLAFIELD.get().stackFor(level));
         }
     }
 
-    private static void volcano(Consumer<ItemStack> out, BlockVolcano volcano) {
-        for (BlockVolcano.Mode mode : BlockVolcano.Mode.values())
+    private static void volcano(Consumer<ItemStack> out, VolcanoBlock volcano) {
+        for (VolcanoBlock.Mode mode : VolcanoBlock.Mode.values())
             out.accept(volcano.stackFor(mode));
     }
 
     private static void customMachines(Consumer<ItemStack> out) {
         for (ResourceKey<CustomMachineDefinition> key : CustomMachineDefinitions.all().keySet()) {
-            out.accept(ItemCustomMachine.of(ModBlocks.CUSTOM_MACHINE.get(), key));
+            out.accept(CustomMachineItem.of(ModBlocks.CUSTOM_MACHINE.get(), key));
         }
     }
 
@@ -4048,7 +4082,7 @@ public final class CreativeContents {
         return stack;
     }
 
-    private static void acceptDisperser(Consumer<ItemStack> out, ItemDisperser item) {
+    private static void acceptDisperser(Consumer<ItemStack> out, DisperserItem item) {
         for (Fluid fluid : NTMFluids.displayOrder()) {
             if (!item.isCreativeVariant(fluid)) continue;
             out.accept(item.make(fluid, item.capacity));
@@ -4063,7 +4097,7 @@ public final class CreativeContents {
         }
     }
 
-    private static void acceptContainerFamily(Consumer<ItemStack> out, ItemFluidTank item) {
+    private static void acceptContainerFamily(Consumer<ItemStack> out, FluidTankItem item) {
         out.accept(new ItemStack(item));
         for (Fluid fluid : NTMFluids.displayOrder()) {
             if (!item.canStore(fluid)) continue;

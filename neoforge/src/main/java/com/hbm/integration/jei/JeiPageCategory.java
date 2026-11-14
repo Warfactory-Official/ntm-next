@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.integration.jei;
 
@@ -10,6 +26,7 @@ import com.hbm.inventory.fluid.trait.FluidTraitTooltip;
 import java.util.ArrayList;
 import java.util.List;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
@@ -143,10 +160,61 @@ final class JeiPageCategory<T> implements IRecipeCategory<T> {
         }
 
         @Override
+        public PageSlot lookupInput() {
+            return new LookupSlot(builder.addInvisibleIngredients(RecipeIngredientRole.INPUT));
+        }
+
+        @Override
+        public PageSlot lookupOutput() {
+            return new LookupSlot(builder.addInvisibleIngredients(RecipeIngredientRole.OUTPUT));
+        }
+
+        @Override
         public void arrow(int x, int y) {}
 
         @Override
         public void text(Component text, int x, int y, int width, int height) {}
+    }
+
+    private final class LookupSlot implements PageSlot {
+        private final IIngredientAcceptor<?> ingredients;
+
+        LookupSlot(IIngredientAcceptor<?> ingredients) {
+            this.ingredients = ingredients;
+        }
+
+        @Override
+        public PageSlot background() {
+            throw new IllegalStateException("Lookup ingredient has no background");
+        }
+
+        @Override
+        public PageSlot item(ItemStack stack) {
+            ingredients.add(stack);
+            return this;
+        }
+
+        @Override
+        public PageSlot items(List<ItemStack> stacks) {
+            ingredients.addItemStacks(stacks);
+            return this;
+        }
+
+        @Override
+        public PageSlot fluid(Fluid fluid, long milliBuckets, int pressure) {
+            ingredients.add(fluid, milliBuckets * unitsPerMilliBucket);
+            return this;
+        }
+
+        @Override
+        public PageSlot fluid(Fluid fluid) {
+            return fluid(fluid, 1000, 0);
+        }
+
+        @Override
+        public PageSlot tooltip(Tooltip tooltip) {
+            return this;
+        }
     }
 
     private final class Slot implements PageSlot {
@@ -181,8 +249,7 @@ final class JeiPageCategory<T> implements IRecipeCategory<T> {
             slot.setFluidRenderer(units, false, 16, 16).add(fluid, units);
             if (pressure > 0) {
                 slot.addRichTooltipCallback(
-                        (view, tooltip) ->
-                                FluidTraitTooltip.addPressureInfo(pressure, tooltip::add));
+                        (view, tooltip) -> FluidTraitTooltip.pressure(pressure, tooltip::add));
             }
             return this;
         }
@@ -262,6 +329,16 @@ final class JeiPageCategory<T> implements IRecipeCategory<T> {
 
         @Override
         public PageSlot display(int x, int y) {
+            return IGNORED;
+        }
+
+        @Override
+        public PageSlot lookupInput() {
+            return IGNORED;
+        }
+
+        @Override
+        public PageSlot lookupOutput() {
             return IGNORED;
         }
 
@@ -348,6 +425,16 @@ final class JeiPageCategory<T> implements IRecipeCategory<T> {
 
         @Override
         public PageSlot output(int x, int y) {
+            return collect(outputs);
+        }
+
+        @Override
+        public PageSlot lookupInput() {
+            return collect(inputs);
+        }
+
+        @Override
+        public PageSlot lookupOutput() {
             return collect(outputs);
         }
 

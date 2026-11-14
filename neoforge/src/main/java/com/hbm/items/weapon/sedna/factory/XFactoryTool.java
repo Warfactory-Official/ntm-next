@@ -1,34 +1,65 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.weapon.sedna.factory;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.multiblock.MultiblockSurface;
+import com.hbm.capability.NtmContracts;
 import com.hbm.client.ClientEffects;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
-import com.hbm.explosion.vanillant.ExplosionVNT;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
+import com.hbm.explosion.vanillant.ComposableExplosion;
 import com.hbm.explosion.vanillant.standard.*;
-import com.hbm.interfaces.IRepairable.EnumExtinguishType;
-import com.hbm.interfaces.IRepairable;
-import com.hbm.items.ItemAmmoEnums.AmmoFireExt;
+import com.hbm.interfaces.Extinguishable;
+import com.hbm.items.AmmoTypes.AmmoFireExt;
 import com.hbm.items.ModItems;
 import com.hbm.items.weapon.sedna.*;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.LambdaContext;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT.WeaponQuality;
+import com.hbm.items.weapon.sedna.*;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.LambdaContext;
+import com.hbm.items.weapon.sedna.GunBaseNTItem.WeaponQuality;
+import com.hbm.items.weapon.sedna.factory.GunAnimationActions;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
-import com.hbm.items.weapon.sedna.impl.ItemGunChargeThrower;
+import com.hbm.items.weapon.sedna.impl.GunChargeThrowerItem;
 import com.hbm.items.weapon.sedna.mags.MagazineFullReload;
-import com.hbm.lib.Library;
 import com.hbm.particle.helper.ExplosionCreator;
-import com.hbm.registration.NeoForgeRegistrar;
 import com.hbm.registration.Reg;
+import com.hbm.registration.Registrar;
 import com.hbm.render.anim.AnimationEnums.GunAnimation;
+import com.hbm.render.anim.AnimationSequence;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.anim.BusAnimationKeyframe.IType;
-import com.hbm.render.anim.BusAnimationSequence;
 import com.hbm.sound.ModSounds;
+import com.hbm.sound.WorldSounds;
+import com.hbm.util.RegistryUtil;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -54,7 +85,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class XFactoryTool {
 
-    public static final Identifier scope = Library.id("textures/misc/scope_tool.png");
+    public static final Identifier scope = RegistryUtil.id("textures/misc/scope_tool.png");
 
     public static BulletConfig fext_water;
     public static BulletConfig fext_foam;
@@ -64,18 +95,15 @@ public class XFactoryTool {
     public static BulletConfig ct_mortar;
     public static BulletConfig ct_mortar_charge;
 
-    private static boolean extinguishCore(Level world, BlockPos pos, EnumExtinguishType type) {
+    private static boolean extinguishCore(Level world, BlockPos pos, Extinguishable.Agent type) {
         if (!(world instanceof ServerLevel server)) return false;
-        BlockState state = server.getBlockState(pos);
-        if (!(MultiblockSurface.resolveOwner(server, pos, state, null)
-                instanceof IRepairable repairable)) {
-            return false;
-        }
-        repairable.tryExtinguish(server, pos, type);
+        Extinguishable extinguishable = NtmContracts.EXTINGUISHABLE.at(server, pos);
+        if (extinguishable == null) return false;
+        extinguishable.tryExtinguish(server, pos, type);
         return true;
     }
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_WATER_HIT =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_WATER_HIT =
             (bullet, mop) -> {
                 if (!bullet.level().isClientSide() && mop instanceof BlockHitResult blockHit) {
                     BlockPos hitPos = blockHit.getBlockPos();
@@ -93,26 +121,30 @@ public class XFactoryTool {
                                     fizz = true;
                                 }
                             }
-                    extinguishCore(bullet.level(), hitPos, EnumExtinguishType.WATER);
+                    extinguishCore(bullet.level(), hitPos, Extinguishable.Agent.WATER);
                     if (fizz)
-                        bullet.level()
-                                .playSound(
-                                        null,
-                                        bullet.getX(),
-                                        bullet.getY(),
-                                        bullet.getZ(),
-                                        SoundEvents.FIRE_EXTINGUISH,
-                                        SoundSource.BLOCKS,
-                                        1.0F,
-                                        1.5F + bullet.level().getRandom().nextFloat() * 0.5F);
+                        WorldSounds.play(
+                                bullet.level(),
+                                null,
+                                bullet.getX(),
+                                bullet.getY(),
+                                bullet.getZ(),
+                                SoundEvents.FIRE_EXTINGUISH,
+                                SoundSource.BLOCKS,
+                                1.0F,
+                                1.5F + bullet.level().getRandom().nextFloat() * 0.5F);
                     bullet.discard();
                 }
             };
 
+    private static Vec3 flightDirection(Entity projectile) {
+        return ((BulletBaseMK4Entity) projectile).getFlightDirection();
+    }
+
     public static Consumer<Entity> LAMBDA_WATER_UPDATE =
             (bullet) -> {
                 if (bullet.level().isClientSide()) {
-                    Vec3 motion = bullet.getDeltaMovement();
+                    Vec3 motion = flightDirection(bullet);
                     ClientEffects.spawnExtBlockDust(
                             bullet.level(),
                             bullet.getX(),
@@ -133,7 +165,7 @@ public class XFactoryTool {
                 }
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_FOAM_HIT =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_FOAM_HIT =
             (bullet, mop) -> {
                 if (!bullet.level().isClientSide() && mop instanceof BlockHitResult blockHit) {
                     Level world = bullet.level();
@@ -148,7 +180,7 @@ public class XFactoryTool {
                                     fizz = true;
                                 }
                             }
-                    if (extinguishCore(world, hitPos, EnumExtinguishType.FOAM)) return;
+                    if (extinguishCore(world, hitPos, Extinguishable.Agent.FOAM)) return;
                     BlockPos target = hitPos;
                     if (world.getRandom().nextBoolean()) {
                         target = target.relative(blockHit.getDirection());
@@ -169,7 +201,8 @@ public class XFactoryTool {
                         }
                     }
                     if (fizz)
-                        world.playSound(
+                        WorldSounds.play(
+                                world,
                                 null,
                                 bullet.getX(),
                                 bullet.getY(),
@@ -184,7 +217,7 @@ public class XFactoryTool {
     public static Consumer<Entity> LAMBDA_FOAM_UPDATE =
             (bullet) -> {
                 if (bullet.level().isClientSide()) {
-                    Vec3 motion = bullet.getDeltaMovement();
+                    Vec3 motion = flightDirection(bullet);
                     ClientEffects.spawnExtBlockDust(
                             bullet.level(),
                             bullet.getX(),
@@ -197,12 +230,12 @@ public class XFactoryTool {
                 }
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_SAND_HIT =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_SAND_HIT =
             (bullet, mop) -> {
                 if (!bullet.level().isClientSide() && mop instanceof BlockHitResult blockHit) {
                     Level world = bullet.level();
                     BlockPos target = blockHit.getBlockPos();
-                    if (extinguishCore(world, target, EnumExtinguishType.SAND)) return;
+                    if (extinguishCore(world, target, Extinguishable.Agent.SAND)) return;
                     if (world.getRandom().nextBoolean()) {
                         target = target.relative(blockHit.getDirection());
                     }
@@ -223,7 +256,8 @@ public class XFactoryTool {
                                         target, ModBlocks.SAND_BORON.get().defaultBlockState());
                         }
                         if (wasFire)
-                            world.playSound(
+                            WorldSounds.play(
+                                    world,
                                     null,
                                     bullet.getX(),
                                     bullet.getY(),
@@ -239,7 +273,7 @@ public class XFactoryTool {
     public static Consumer<Entity> LAMBDA_SAND_UPDATE =
             (bullet) -> {
                 if (bullet.level().isClientSide()) {
-                    Vec3 motion = bullet.getDeltaMovement();
+                    Vec3 motion = flightDirection(bullet);
                     ClientEffects.spawnExtBlockDust(
                             bullet.level(),
                             bullet.getX(),
@@ -254,83 +288,80 @@ public class XFactoryTool {
 
     public static Consumer<Entity> LAMBDA_SET_HOOK =
             (entity) -> {
-                EntityBulletBaseMK4 bullet = (EntityBulletBaseMK4) entity;
+                BulletBaseMK4Entity bullet = (BulletBaseMK4Entity) entity;
                 if (!bullet.level().isClientSide()
                         && bullet.tickCount < 2
                         && bullet.getThrower() instanceof Player player) {
                     ItemStack held = player.getMainHandItem();
                     if (!held.isEmpty() && held.getItem() == ModItems.GUN_CHARGE_THROWER.get()) {
-                        ItemGunChargeThrower.setLastHook(held, bullet.getId());
+                        GunChargeThrowerItem.setLastHook(held, bullet.getId());
                     }
                 }
                 bullet.ignoreFrustum = true;
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_HOOK =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_HOOK =
             (bullet, mop) -> {
                 if (mop instanceof BlockHitResult blockHit) {
                     Vec3 hit = mop.getLocation();
-                    Vec3 vec = bullet.getDeltaMovement().scale(-1).normalize().scale(0.05);
+                    Vec3 vec = bullet.getFlightDirection().scale(-1).normalize().scale(0.05);
                     bullet.setPos(hit.x + vec.x, hit.y + vec.y, hit.z + vec.z);
                     bullet.getStuck(
                             blockHit.getBlockPos(), blockHit.getDirection().get3DDataValue());
                 }
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_MORTAR =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_MORTAR =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
                         && entityHit.getEntity() == bullet.getThrower()) return;
                 Vec3 hit = mop.getLocation();
-                ExplosionVNT vnt =
-                        new ExplosionVNT(
+                ComposableExplosion vnt =
+                        new ComposableExplosion(
                                 bullet.level(), hit.x, hit.y, hit.z, 5, bullet.getThrower());
-                vnt.setBlockAllocator(new BlockAllocatorBulkie(60, 8));
-                vnt.setBlockProcessor(new BlockProcessorStandard());
-                vnt.setEntityProcessor(
-                        new EntityProcessorCrossSmooth(1, bullet.damage)
-                                .setupPiercing(
+                vnt.blockSelector(new LimitedRayBlockSelector(60, 8));
+                vnt.blockProcessor(CellDestruction.decay());
+                vnt.entityProcessor(
+                        new WeaponExplosionEntityProcessor(1, bullet.damage)
+                                .piercing(
                                         bullet.config.armorThresholdNegation,
                                         bullet.config.armorPiercingPercent));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
-                vnt.setSFX(new ExplosionEffectWeapon(10, 2.5F, 1F));
+                vnt.effects(new SmallExplosionEffect(10, 2.5F, 1F));
                 vnt.explode();
                 bullet.discard();
             };
 
-    public static BiConsumer<EntityBulletBaseMK4, HitResult> LAMBDA_MORTAR_CHARGE =
+    public static BiConsumer<BulletBaseMK4Entity, HitResult> LAMBDA_MORTAR_CHARGE =
             (bullet, mop) -> {
                 if (mop instanceof EntityHitResult entityHit
                         && bullet.tickCount < 3
                         && entityHit.getEntity() == bullet.getThrower()) return;
                 Vec3 hit = mop.getLocation();
-                ExplosionVNT vnt =
-                        new ExplosionVNT(
+                ComposableExplosion vnt =
+                        new ComposableExplosion(
                                 bullet.level(), hit.x, hit.y, hit.z, 15, bullet.getThrower());
-                vnt.setBlockAllocator(new BlockAllocatorStandard());
-                vnt.setBlockProcessor(
-                        new BlockProcessorStandard()
-                                .setNoDrop()
-                                .withBlockEffect(
+                vnt.blockSelector(new AttenuatedRayBlockSelector());
+                vnt.blockProcessor(
+                        CellDestruction.noDrops()
+                                .transform(
                                         new BlockMutatorDebris(
                                                 () ->
                                                         ModBlocks.BLOCK_SLAG
                                                                 .get()
                                                                 .defaultBlockState())));
-                vnt.setEntityProcessor(
-                        new EntityProcessorCrossSmooth(1, bullet.damage)
-                                .setupPiercing(
+                vnt.entityProcessor(
+                        new WeaponExplosionEntityProcessor(1, bullet.damage)
+                                .piercing(
                                         bullet.config.armorThresholdNegation,
                                         bullet.config.armorPiercingPercent));
-                vnt.setPlayerProcessor(new PlayerProcessorStandard());
                 ExplosionCreator.composeEffectSmall(bullet.level(), hit.x, hit.y + 0.5, hit.z);
                 vnt.explode();
                 bullet.discard();
             };
     public static BiConsumer<ItemStack, LambdaContext> LAMBDA_RECOIL_CT =
             (stack, ctx) -> {
-                ItemGunBaseNT.setupRecoil(
+                GunBaseNTItem.setupRecoil(
                         10, (float) (ctx.getPlayer().getRandom().nextGaussian() * 1.5));
             };
 
@@ -342,53 +373,53 @@ public class XFactoryTool {
                         return new BusAnimation()
                                 .addBus(
                                         "EQUIP",
-                                        new BusAnimationSequence()
-                                                .addPos(-45, 0, 0, 0)
-                                                .addPos(0, 0, 0, 500, IType.SIN_DOWN));
+                                        new AnimationSequence()
+                                                .to(-45, 0, 0, 0)
+                                                .to(0, 0, 0, 500, IType.SIN_DOWN));
                     case CYCLE:
                         return new BusAnimation()
                                 .addBus(
                                         "RECOIL",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 0, -1, 100, IType.SIN_DOWN)
-                                                .addPos(0, 0, 0, 250, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .to(0, 0, -1, 100, IType.SIN_DOWN)
+                                                .to(0, 0, 0, 250, IType.SIN_FULL));
                     case RELOAD:
                         return new BusAnimation()
                                 .addBus(
                                         "RAISE",
-                                        new BusAnimationSequence()
-                                                .addPos(-45, 0, 0, 500, IType.SIN_FULL)
-                                                .hold(2000)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(-45, 0, 0, 500, IType.SIN_FULL)
+                                                .stay(2000)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL))
                                 .addBus(
                                         "AMMO",
-                                        new BusAnimationSequence()
-                                                .setPos(0, -10, -5)
-                                                .hold(500)
-                                                .addPos(0, 0, 5, 750, IType.SIN_FULL)
-                                                .addPos(0, 0, 0, 500, IType.SIN_UP)
-                                                .hold(4000))
+                                        new AnimationSequence()
+                                                .jump(0, -10, -5)
+                                                .stay(500)
+                                                .to(0, 0, 5, 750, IType.SIN_FULL)
+                                                .to(0, 0, 0, 500, IType.SIN_UP)
+                                                .stay(4000))
                                 .addBus(
                                         "TWIST",
-                                        new BusAnimationSequence()
-                                                .setPos(0, 0, 25)
-                                                .hold(2000)
-                                                .addPos(0, 0, 0, 150));
+                                        new AnimationSequence()
+                                                .jump(0, 0, 25)
+                                                .stay(2000)
+                                                .to(0, 0, 0, 150));
                     case INSPECT:
                         return new BusAnimation()
                                 .addBus(
                                         "TURN",
-                                        new BusAnimationSequence()
-                                                .addPos(0, 60, 0, 500, IType.SIN_FULL)
-                                                .hold(1750)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL))
+                                        new AnimationSequence()
+                                                .to(0, 60, 0, 500, IType.SIN_FULL)
+                                                .stay(1750)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL))
                                 .addBus(
                                         "ROLL",
-                                        new BusAnimationSequence()
-                                                .hold(750)
-                                                .addPos(0, 0, -90, 500, IType.SIN_FULL)
-                                                .hold(1000)
-                                                .addPos(0, 0, 0, 500, IType.SIN_FULL));
+                                        new AnimationSequence()
+                                                .stay(750)
+                                                .to(0, 0, -90, 500, IType.SIN_FULL)
+                                                .stay(1000)
+                                                .to(0, 0, 0, 500, IType.SIN_FULL));
                 }
 
                 return null;
@@ -484,10 +515,10 @@ public class XFactoryTool {
                 Reg.item(
                         "gun_fireext",
                         props ->
-                                new ItemGunBaseNT(
+                                new GunBaseNTItem(
                                         WeaponQuality.UTILITY,
                                         props,
-                                        new GunConfig()
+                                        GunConfig.builder()
                                                 .dura(5_000)
                                                 .draw(10)
                                                 .inspect(55)
@@ -495,7 +526,7 @@ public class XFactoryTool {
                                                 .hideCrosshair(false)
                                                 .crosshair(Crosshair.L_CIRCLE)
                                                 .rec(
-                                                        new Receiver(0)
+                                                        Receiver.builder()
                                                                 .dmg(0F)
                                                                 .delay(1)
                                                                 .dry(0)
@@ -521,18 +552,18 @@ public class XFactoryTool {
                                                                 .offset(1, -0.0625 * 2.5, -0.25D)
                                                                 .setupStandardFire())
                                                 .setupStandardConfiguration()
-                                                .orchestra(Orchestras.ORCHESTRA_FIREEXT)),
+                                                .orchestra(GunAnimationActions.FIREEXT)),
                         Item.Properties::new);
 
         ModItems.GUN_CHARGE_THROWER =
-                NeoForgeRegistrar.registerItem(
+                Registrar.registerItem(
                         "gun_charge_thrower",
                         props ->
-                                (ItemGunChargeThrower)
-                                        new ItemGunChargeThrower(
+                                (GunChargeThrowerItem)
+                                        new GunChargeThrowerItem(
                                                         WeaponQuality.UTILITY,
                                                         props,
-                                                        new GunConfig()
+                                                        GunConfig.builder()
                                                                 .dura(3_000)
                                                                 .draw(10)
                                                                 .inspect(55)
@@ -540,7 +571,7 @@ public class XFactoryTool {
                                                                 .hideCrosshair(false)
                                                                 .crosshair(Crosshair.L_CIRCUMFLEX)
                                                                 .rec(
-                                                                        new Receiver(0)
+                                                                        Receiver.builder()
                                                                                 .dmg(10F)
                                                                                 .delay(4)
                                                                                 .dry(10)
@@ -575,8 +606,8 @@ public class XFactoryTool {
                                                                 .setupStandardConfiguration()
                                                                 .anim(LAMBDA_CT_ANIMS)
                                                                 .orchestra(
-                                                                        Orchestras
-                                                                                .ORCHESTRA_CHARGE_THROWER))
+                                                                        GunAnimationActions
+                                                                                .CHARGE_THROWER))
                                                 .setDefaultAmmo(EnumAmmo.CT_MORTAR, 3),
                         Item.Properties::new);
     }

@@ -1,11 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.material;
 
 import com.hbm.NuclearTech;
-import com.hbm.inventory.material.Mats.MaterialStack;
-import com.hbm.inventory.recipes.loader.INamedRecipe;
+import com.hbm.inventory.recipes.loader.NamedRecipe;
 import com.hbm.inventory.recipes.loader.NtmRecipeInput;
 import com.hbm.util.DataCodecs;
 import com.mojang.serialization.DataResult;
@@ -14,6 +29,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +37,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,15 +46,19 @@ import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
 public record MaterialDistributionRecipe(HolderSet<Item> targets, List<MaterialStack> materials)
-        implements Recipe<NtmRecipeInput>, INamedRecipe {
+        implements Recipe<NtmRecipeInput>, NamedRecipe {
 
     public static final MapCodec<MaterialDistributionRecipe> MAP_CODEC =
             DataCodecs.recipe(
                     RecordCodecBuilder.<MaterialDistributionRecipe>mapCodec(
                                     i ->
                                             i.group(
-                                                            RegistryCodecs.homogeneousList(
-                                                                            Registries.ITEM)
+                                                            RegistryCodecs.<Item>homogeneousList(
+                                                                            (ResourceKey<
+                                                                                            ? extends
+                                                                                                    Registry<
+                                                                                                            Item>>)
+                                                                                    Registries.ITEM)
                                                                     .fieldOf("targets")
                                                                     .forGetter(
                                                                             MaterialDistributionRecipe
@@ -122,7 +143,7 @@ public record MaterialDistributionRecipe(HolderSet<Item> targets, List<MaterialS
 
     @Override
     public RecipeBookCategory recipeBookCategory() {
-        return INamedRecipe.BOOK_CATEGORY;
+        return NamedRecipe.BOOK_CATEGORY;
     }
 
     @Override

@@ -3,10 +3,13 @@
   "ingredients": [
     "hbm:injector_5htp",
     {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "minecraft:iron_sword",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     }
   ],

@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.blockentity.BlockEntityPlushie;
-import com.hbm.blocks.generic.BlockPlushie.Plushie;
-import com.hbm.blocks.generic.BlockPlushie.PlushieType;
+import com.hbm.blockentity.PlushieBlockEntity;
+import com.hbm.blocks.generic.PlushieBlock.Plushie;
+import com.hbm.blocks.generic.PlushieBlock.PlushieType;
 import com.hbm.client.render.flywheel.ItemVisuals;
 import com.hbm.client.render.flywheel.PlushieItemVisual;
 import com.hbm.main.ResourceManager;
@@ -37,10 +53,10 @@ import org.jspecify.annotations.Nullable;
 public class PlushieItemRenderer
         implements SpecialModelRenderer<Plushie>, ItemVisuals.Factory<Plushie> {
 
-    private final RenderPlushie geometry;
+    private final PlushieRenderer geometry;
     private final float[] bounds;
 
-    private PlushieItemRenderer(RenderPlushie geometry) {
+    private PlushieItemRenderer(PlushieRenderer geometry) {
         this.geometry = geometry;
         List<HFRWavefrontObject> meshes =
                 new ArrayList<>(
@@ -49,7 +65,7 @@ public class PlushieItemRenderer
                                 ResourceManager.hundun,
                                 ResourceManager.derg,
                                 ResourceManager.horse));
-        for (RenderPlushie.Figure figure : PlushieFigures.all()) meshes.addAll(figure.meshes());
+        for (PlushieRenderer.Figure figure : PlushieFigures.all()) meshes.addAll(figure.meshes());
         this.bounds = union(meshes);
     }
 
@@ -69,7 +85,7 @@ public class PlushieItemRenderer
 
     @Override
     public @Nullable Plushie extractArgument(ItemStack stack) {
-        return BlockEntityPlushie.typeOf(stack);
+        return PlushieBlockEntity.typeOf(stack);
     }
 
     @Override
@@ -82,7 +98,7 @@ public class PlushieItemRenderer
             boolean hasFoil,
             int outlineColor) {
         Plushie resolved = type == null ? PlushieType.NONE : type;
-        RenderPlushie.itemPose(resolved, ps);
+        PlushieRenderer.itemPose(resolved, ps);
         ItemStackRenderState cigarette = null;
         if (resolved == PlushieType.NUMBERNINE) {
             cigarette = new ItemStackRenderState();
@@ -127,10 +143,11 @@ public class PlushieItemRenderer
         @Override
         public ItemModel bake(ItemModel.BakingContext context, Matrix4fc transformation) {
             return new DynamicSpecialWrapper<>(
-                    new PlushieItemRenderer(RenderPlushie.forItem()),
-                    (stack, ctx, owner) -> BlockEntityPlushie.typeOf(stack),
+                    new PlushieItemRenderer(PlushieRenderer.forItem()),
+                    (stack, ctx, owner) -> PlushieBlockEntity.typeOf(stack),
                     false,
-                    DynamicSpecialWrapper.properties(context, base));
+                    DynamicSpecialWrapper.properties(context, base),
+                    transformation);
         }
 
         @Override

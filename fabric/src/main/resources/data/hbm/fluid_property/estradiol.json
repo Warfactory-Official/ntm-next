@@ -20,7 +20,7 @@
             }
           ],
           "full_body": false,
-          "hazard": "PARTICLE_FINE",
+          "hazard": "particle_fine",
           "kind": "effects"
         }
       ]

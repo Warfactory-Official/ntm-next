@@ -6,16 +6,15 @@
     }
   ],
   "type": "hbm:crafting_shaped",
+  "input_state": {
+    "S": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "E": "#c:ingots/schrabidium",
     "P": "hbm:pellet_charged",
-    "S": {
-      "neoforge:ingredient_type": "neoforge:components",
-      "components": {
-        "minecraft:damage": 0
-      },
-      "items": "hbm:starmetal_helmet"
-    }
+    "S": "hbm:starmetal_helmet"
   },
   "pattern": [
     "EEE",

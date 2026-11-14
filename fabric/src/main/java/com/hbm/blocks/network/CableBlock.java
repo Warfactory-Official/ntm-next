@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
@@ -9,7 +25,6 @@ import com.hbm.blocks.CapabilityDependentShape;
 import com.hbm.capability.PhysicalConnector;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.uninos.graph.PhysicalGraph;
-import com.hbm.util.AutoRotate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -35,7 +50,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-@AutoRotate
 public class CableBlock extends Block
         implements CapabilityDependentShape, SimpleWaterloggedBlock, PhysicalConnector {
 
@@ -191,5 +205,39 @@ public class CableBlock extends Block
         return state.getValue(WATERLOGGED)
                 ? Fluids.WATER.getSource(false)
                 : super.getFluidState(state);
+    }
+
+    @java.lang.Override
+    protected net.minecraft.world.level.block.state.BlockState rotate(
+            net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.block.Rotation rotation) {
+        if (rotation == net.minecraft.world.level.block.Rotation.CLOCKWISE_90)
+            return state.setValue(NORTH, state.getValue(WEST))
+                    .setValue(EAST, state.getValue(NORTH))
+                    .setValue(SOUTH, state.getValue(EAST))
+                    .setValue(WEST, state.getValue(SOUTH));
+        if (rotation == net.minecraft.world.level.block.Rotation.CLOCKWISE_180)
+            return state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(EAST, state.getValue(WEST))
+                    .setValue(SOUTH, state.getValue(NORTH))
+                    .setValue(WEST, state.getValue(EAST));
+        if (rotation == net.minecraft.world.level.block.Rotation.COUNTERCLOCKWISE_90)
+            return state.setValue(NORTH, state.getValue(EAST))
+                    .setValue(EAST, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(WEST))
+                    .setValue(WEST, state.getValue(NORTH));
+        return state;
+    }
+
+    @java.lang.Override
+    protected net.minecraft.world.level.block.state.BlockState mirror(
+            net.minecraft.world.level.block.state.BlockState state,
+            net.minecraft.world.level.block.Mirror mirror) {
+        if (mirror == net.minecraft.world.level.block.Mirror.LEFT_RIGHT)
+            return state.setValue(NORTH, state.getValue(SOUTH))
+                    .setValue(SOUTH, state.getValue(NORTH));
+        if (mirror == net.minecraft.world.level.block.Mirror.FRONT_BACK)
+            return state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
+        return state;
     }
 }

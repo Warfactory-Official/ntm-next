@@ -1,32 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.machine;
 
-import com.hbm.blockentity.machine.pile.BlockEntityPileControl;
-import com.hbm.compat.computercraft.SnapshotPeripheral;
+import com.hbm.blockentity.machine.pile.PileControlBlockEntity;
+import com.hbm.compat.computercraft.BlockEntityPeripheral;
 import dan200.computercraft.api.lua.LuaFunction;
 
-public final class PileControlPeripheral extends SnapshotPeripheral<BlockEntityPileControl> {
-    private static final int LEVEL = 0;
+public final class PileControlPeripheral extends BlockEntityPeripheral<PileControlBlockEntity> {
 
-    public PileControlPeripheral(BlockEntityPileControl machine) {
-        super(machine, "ntm_pile_control", 1, 0);
-    }
-
-    @Override
-    protected void capture(BlockEntityPileControl machine) {
-        put(LEVEL, machine.extension);
+    public PileControlPeripheral(PileControlBlockEntity machine) {
+        super(machine, "ntm_pile_control");
     }
 
     @LuaFunction
-    public final Object[] getLevel() {
-        return read(s -> new Object[] {s.doubleAt(LEVEL)});
+    public Object[] getLevel() {
+        return new Object[] {target.travel};
     }
 
     @LuaFunction(mainThread = true)
-    public final Object[] setLevel(double percent) {
-        machine().setTarget(Math.clamp(percent / 100D, 0D, 1D));
+    public Object[] setLevel(double percent) {
+        machine().setTargetPosition(percent / 100D);
         return new Object[] {};
     }
 }

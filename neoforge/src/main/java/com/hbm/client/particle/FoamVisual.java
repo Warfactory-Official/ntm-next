@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.particle;
 
-import com.hbm.particle.ParticleFoam;
+import com.hbm.particle.FoamParticle;
 import dev.engine_room.flywheel.api.instance.Instancer;
 import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.EffectVisual;
@@ -15,20 +31,19 @@ import java.util.Arrays;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 
-public final class FoamVisual implements EffectVisual<ParticleFoam>, SimpleDynamicVisual {
-    private final ParticleFoam particle;
+public final class FoamVisual implements EffectVisual<FoamParticle>, SimpleDynamicVisual {
+    private final FoamParticle particle;
     private BillboardInstance[] instances = new BillboardInstance[0];
     private final Instancer<BillboardInstance> instancer;
     private final Vec3i origin;
     private int active;
 
-    public FoamVisual(VisualizationContext context, ParticleFoam particle, float partialTick) {
+    public FoamVisual(VisualizationContext context, FoamParticle particle, float partialTick) {
         this.particle = particle;
         this.origin = context.renderOrigin();
         this.instancer =
                 context.instancerProvider()
                         .instancer(InstanceTypes.BILLBOARD, ParticleModels.LIT_PARTICLE_BASE);
-        writeFrame(partialTick);
     }
 
     @Override
@@ -64,7 +79,7 @@ public final class FoamVisual implements EffectVisual<ParticleFoam>, SimpleDynam
                             light,
                             particle.headBubbles());
             int i = 0;
-            for (ParticleFoam.Point point : particle.trail()) {
+            for (FoamParticle.Point point : particle.trail()) {
                 if (i > 0) {
                     float fade = 1F - (float) i / particle.trailLength();
                     count =
@@ -101,7 +116,7 @@ public final class FoamVisual implements EffectVisual<ParticleFoam>, SimpleDynam
         if (alpha <= 0F) return count;
         int a = Mth.clamp((int) (alpha * 255F), 0, 255);
         for (int i = 0; i < bubbles; i++) {
-            int b = i * ParticleFoam.BUBBLE_STRIDE;
+            int b = i * FoamParticle.BUBBLE_STRIDE;
             int white = Mth.clamp((int) (data[b + 4] * 255F), 0, 255);
             int color = a << 24 | white << 16 | white << 8 | white;
             float s = scale * data[b + 3];

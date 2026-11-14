@@ -3,11 +3,14 @@
   "key": {
     "D": "hbm:ducttape",
     "K": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:insert_esapi",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:insert_esapi"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "P": "#c:ingots/asbestos",
     "S": "#c:plates/saturnite"

@@ -1,29 +1,63 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.items.armor;
 
 import com.hbm.api.environment.Environment;
 import com.hbm.api.environment.EnvironmentProvider;
-import com.hbm.extprop.HbmLivingProps;
-import com.hbm.extprop.HbmPlayerProps;
+import com.hbm.extprop.LivingHazards;
+import com.hbm.extprop.PlayerState;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.items.ModDataComponents;
 import com.hbm.items.ModItems;
-import com.hbm.items.tool.ItemGeigerCounter;
-import com.hbm.lib.Library;
+import com.hbm.items.tool.GeigerCounterItem;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.packet.PacketWire;
-import com.hbm.packet.toclient.JetpackParticlePayload;
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.packet.layout.JetpackBjLayout;
+import com.hbm.packet.layout.JetpackDnsLayout;
+import com.hbm.packet.layout.JetpackRegularLayout;
+import com.hbm.packet.layout.JetpackVectorLayout;
+import com.hbm.platform.ServerEvents;
 import com.hbm.sound.EntitySounds;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.ContaminationUtil;
+import com.hbm.util.RegistryUtil;
 import com.hbm.util.TickPhase;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.function.Consumer;
 import net.minecraft.SharedConstants;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
@@ -32,6 +66,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -43,6 +78,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
@@ -57,22 +93,28 @@ public final class ArmorSuitEffects {
     private ArmorSuitEffects() {}
 
     public static void init() {
-        FabricServerEvents.onServerTickPost(ArmorSuitEffects::tick);
+        final Consumer<MinecraftServer> callback = ArmorSuitEffects::tick;
+        ServerEvents.TICK_POST.add(callback);
     }
 
     private static void tick(MinecraftServer server) {
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            HbmPlayerProps props = HbmPlayerProps.getData(player);
+            if (player.isSpectator()) {
+                GAIT.remove(player);
+                continue;
+            }
+            PlayerState props = PlayerState.getOrCreate(player);
             if (props.plinkCooldown > 0) props.plinkCooldown--;
             if (wearsAny(player, ModArmorItem.Suit.ASBESTOS)) player.clearFire();
             ItemStack no9 = player.getItemBySlot(EquipmentSlot.HEAD);
             if (no9.getItem() == ModItems.NO9.get()) {
                 lamp(player, no9);
-                int blackLung = HbmLivingProps.getBlackLung(player);
-                if (blackLung > HbmLivingProps.maxBlacklung * .9D)
-                    HbmLivingProps.setBlackLung(player, (int) (HbmLivingProps.maxBlacklung * .9D));
-                if (HbmLivingProps.getBlackLung(player) >= HbmLivingProps.maxBlacklung * .25D)
-                    HbmLivingProps.setBlackLung(player, HbmLivingProps.getBlackLung(player) - 1);
+                int blackLung = LivingHazards.blackLung(player);
+                if (blackLung > LivingHazards.BLACK_LUNG_LIMIT * .9D)
+                    LivingHazards.setBlackLung(
+                            player, (int) (LivingHazards.BLACK_LUNG_LIMIT * .9D));
+                if (LivingHazards.blackLung(player) >= LivingHazards.BLACK_LUNG_LIMIT * .25D)
+                    LivingHazards.setBlackLung(player, LivingHazards.blackLung(player) - 1);
             }
 
             ArmorFullSetBonus bonus = activeBonus(player);
@@ -90,7 +132,7 @@ public final class ArmorSuitEffects {
             Jetpack jetpack = jetpackKind(player);
             if (jetpack != null) jetpackServerTick(player, jetpack);
             if (wingsKind(player) != null) wingsServerTick(player);
-            euphemiumServerTick(player, props.euphemiumFallCapped);
+            euphemiumServerTick(player, props.fallCapped);
 
             bjBrownout(player);
 
@@ -172,7 +214,7 @@ public final class ArmorSuitEffects {
         if (player.getInventory().contains(s -> s.is(ModItems.GEIGER_COUNTER.get()))) return;
 
         double rads = ContaminationUtil.getNoNeutronPlayerRads(player);
-        int idx = ItemGeigerCounter.pickGeiger(rads, player.level().getRandom());
+        int idx = GeigerCounterItem.pickGeiger(rads, player.level().getRandom());
         if (idx > 0) {
             EntitySounds.play(
                     player,
@@ -194,7 +236,7 @@ public final class ArmorSuitEffects {
                 level.getEntities(
                         player,
                         player.getBoundingBox().inflate(HARD_LANDING_RANGE, 0D, HARD_LANDING_RANGE),
-                        e -> !(e instanceof ItemEntity))) {
+                        e -> !e.isSpectator() && !(e instanceof ItemEntity))) {
             double dx = player.getX() - e.getX();
             double dz = player.getZ() - e.getZ();
             double dist = Math.sqrt(dx * dx + dz * dz);
@@ -216,7 +258,7 @@ public final class ArmorSuitEffects {
     }
 
     private static void lamp(ServerPlayer player, ItemStack helmet) {
-        boolean on = HbmPlayerProps.getData(player).enableHUD;
+        boolean on = PlayerState.getOrCreate(player).enableHUD;
         if (on == helmet.getOrDefault(ModDataComponents.NO9_LAMP.get(), false)) return;
         EntitySounds.play(
                 player,
@@ -250,6 +292,17 @@ public final class ArmorSuitEffects {
         return true;
     }
 
+    public static boolean spendsRound(@Nullable Container inventory) {
+        if (!(inventory instanceof Inventory owned)) return true;
+        Player owner = owned.player;
+        if (!hasFullSet(owner, ModArmorItem.Suit.TRENCHMASTER, false)
+                && ArmorModHandler.modItem(
+                                owner.getItemBySlot(EquipmentSlot.HEAD),
+                                ArmorModHandler.HELMET_ONLY)
+                        != ModItems.CARD_AOS.get()) return true;
+        return owner.getRandom().nextInt(3) < 2;
+    }
+
     public static boolean wearsAny(LivingEntity entity, ModArmorItem.Suit suit) {
         for (EquipmentSlot slot : ArmorUtil.ARMOR_SLOTS) {
             if (entity.getItemBySlot(slot).getItem() instanceof ModArmorItem item
@@ -262,7 +315,7 @@ public final class ArmorSuitEffects {
         boolean fuelTick = TickPhase.every(player, 10);
         for (EquipmentSlot slot : ArmorUtil.ARMOR_SLOTS) {
             ItemStack stack = player.getItemBySlot(slot);
-            if (stack.getItem() instanceof ModArmorItemFueled fueled) {
+            if (stack.getItem() instanceof FueledModArmorItem fueled) {
                 if (fuelTick) fueled.setFill(stack, fueled.getFill(stack) - (int) amount);
             } else if (stack.getItem() instanceof ModArmorItem armor) {
                 armor.setCharge(stack, armor.getCharge(stack) - amount);
@@ -270,9 +323,9 @@ public final class ArmorSuitEffects {
         }
     }
 
-    private static final Identifier DNS_SPEED_ID = Library.id("dns_speed");
-    private static final Identifier ENVSUIT_SPEED_ID = Library.id("envsuit_speed");
-    private static final Identifier STEP_HEIGHT_ID = Library.id("suit_step_height");
+    private static final Identifier DNS_SPEED_ID = RegistryUtil.id("dns_speed");
+    private static final Identifier ENVSUIT_SPEED_ID = RegistryUtil.id("envsuit_speed");
+    private static final Identifier STEP_HEIGHT_ID = RegistryUtil.id("suit_step_height");
 
     private static void applySprintSpeed(ServerPlayer player, Identifier id, double amount) {
         AttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
@@ -313,24 +366,24 @@ public final class ArmorSuitEffects {
         if (chest.is(ModItems.BJ_PLATE_JETPACK.get()) && hasFullSet(player, ModArmorItem.Suit.BJ))
             return Jetpack.BJ;
         ItemStack pack = wornPack(player);
-        return pack.getItem() instanceof ItemJetpack jetpack && jetpack.getFuel(pack) > 0
+        return pack.getItem() instanceof JetpackItem jetpack && jetpack.getFuel(pack) > 0
                 ? jetpack.kind
                 : null;
     }
 
     public static ItemStack wornPack(Player player) {
-        return wornPlateMod(player, ItemJetpack.class);
+        return wornPlateMod(player, JetpackItem.class);
     }
 
-    public static ItemWings.@Nullable Kind wingsKind(Player player) {
+    public static WingsItem.@Nullable Kind wingsKind(Player player) {
         ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-        if (chest.getItem() instanceof ItemWings wings) return wings.kind;
-        return ArmorModHandler.modItem(chest, ArmorModHandler.PLATE_ONLY) instanceof ItemWings wings
+        if (chest.getItem() instanceof WingsItem wings) return wings.kind;
+        return ArmorModHandler.modItem(chest, ArmorModHandler.PLATE_ONLY) instanceof WingsItem wings
                 ? wings.kind
                 : null;
     }
 
-    private static ItemStack wornPlateMod(Player player, Class<? extends ItemArmorMod> type) {
+    private static ItemStack wornPlateMod(Player player, Class<? extends ArmorModItem> type) {
         ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
         if (type.isInstance(chest.getItem())) return chest;
         return type.isInstance(ArmorModHandler.modItem(chest, ArmorModHandler.PLATE_ONLY))
@@ -402,36 +455,36 @@ public final class ArmorSuitEffects {
     }
 
     private static boolean thrusting(ServerPlayer player, Jetpack kind) {
-        return HbmPlayerProps.getData(player).isJetpackActive()
+        return PlayerState.getOrCreate(player).jetpackActive()
                 && !(kind == Jetpack.BRAKE && player.isShiftKeyDown());
     }
 
     private static boolean gliding(
-            ServerPlayer player, Jetpack kind, HbmPlayerProps props, boolean thrusting) {
+            ServerPlayer player, Jetpack kind, PlayerState props, boolean thrusting) {
         return (kind == Jetpack.DNS || kind == Jetpack.BRAKE)
                 && !thrusting
-                && (!player.isShiftKeyDown() || kind == Jetpack.BRAKE && props.isJetpackActive())
+                && (!player.isShiftKeyDown() || kind == Jetpack.BRAKE && props.jetpackActive())
                 && !player.onGround()
                 && props.enableBackpack
-                && (!player.isFallFlying() || props.isJetpackActive())
+                && (!player.isFallFlying() || props.jetpackActive())
                 && (kind != Jetpack.BRAKE || Environment.gravity(player) > 0F);
     }
 
     private static void jetpackServerTick(ServerPlayer player, Jetpack kind) {
-        HbmPlayerProps props = HbmPlayerProps.getData(player);
+        PlayerState props = PlayerState.getOrCreate(player);
         boolean thrusting = thrusting(player, kind);
         boolean gliding = gliding(player, kind, props, thrusting);
 
         if (thrusting || gliding) {
-            int plume =
+            var plume =
                     switch (kind) {
-                        case DNS -> JetpackParticlePayload.DNS;
-                        case BJ -> JetpackParticlePayload.BJ;
-                        case FLY, BRAKE -> JetpackParticlePayload.REGULAR;
-                        case VECTOR, BOOST -> JetpackParticlePayload.VECTOR;
+                        case DNS -> JetpackDnsLayout.encode(player.getId());
+                        case BJ -> JetpackBjLayout.encode(player.getId());
+                        case FLY, BRAKE -> JetpackRegularLayout.encode(player.getId());
+                        case VECTOR, BOOST -> JetpackVectorLayout.encode(player.getId());
                     };
             PacketWire.sendToAllAround(
-                    new JetpackParticlePayload(player.getId(), plume),
+                    plume,
                     new TargetPoint(
                             player.level(), player.getX(), player.getY(), player.getZ(), 100D));
         }
@@ -444,7 +497,7 @@ public final class ArmorSuitEffects {
             player.fallDistance = 0;
         if (kind.isMod()) {
             ItemStack pack = wornPack(player);
-            if (pack.getItem() instanceof ItemJetpack jetpack) {
+            if (pack.getItem() instanceof JetpackItem jetpack) {
                 jetpack.burn(
                         pack, player.tickCount, thrusting ? kind.burnRate : kind.hoverBurnRate);
                 storeWornPack(player, pack);
@@ -474,8 +527,8 @@ public final class ArmorSuitEffects {
     private static void wingsServerTick(ServerPlayer player) {
         if (!player.onGround()
                 && (!player.isFallFlying()
-                        || wingsKind(player) == ItemWings.Kind.MURK
-                                && HbmPlayerProps.getData(player).isJetpackActive())) {
+                        || wingsKind(player) == WingsItem.Kind.MURK
+                                && PlayerState.getOrCreate(player).jetpackActive())) {
             player.fallDistance = 0;
         }
     }

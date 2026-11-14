@@ -16,7 +16,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ]
       },
@@ -44,7 +44,7 @@
         ],
         "requires_mods": [
           {
-            "id": 213
+            "id": "hbm:weapon_mod_special_bayonet/mas36"
           }
         ]
       }
@@ -63,7 +63,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ]
       },
@@ -73,7 +73,7 @@
         ],
         "requires_mods": [
           {
-            "id": 213
+            "id": "hbm:weapon_mod_special_bayonet/mas36"
           }
         ]
       }

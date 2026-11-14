@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.gen.util;
 
-import com.hbm.blockentity.BlockEntityLogicBlock;
-import com.hbm.blockentity.BlockEntityPedestal;
-import com.hbm.blockentity.bomb.BlockEntityCharge;
+import com.hbm.blockentity.bomb.ChargeBlockEntity;
+import com.hbm.blockentity.encounter.LogicBlockEntity;
+import com.hbm.blockentity.prop.PedestalBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.entity.mob.EntityUndeadSoldier;
+import com.hbm.entity.mob.UndeadSoldierEntity;
 import com.hbm.items.ModItems;
 import com.hbm.util.TickPhase;
 import java.util.LinkedHashMap;
@@ -23,8 +39,7 @@ import net.minecraft.world.phys.AABB;
 
 public final class LogicBlockConditions {
 
-    public static final Map<String, Predicate<BlockEntityLogicBlock>> CONDITIONS =
-            new LinkedHashMap<>();
+    public static final Map<String, Predicate<LogicBlockEntity>> CONDITIONS = new LinkedHashMap<>();
 
     static {
         CONDITIONS.put("EMPTY", tile -> false);
@@ -33,13 +48,13 @@ public final class LogicBlockConditions {
         CONDITIONS.put("PLAYER_CUBE_25", playerCube(25));
         CONDITIONS.put("BOMB_CRANE", LogicBlockConditions::bombCrane);
         CONDITIONS.put("ABERRATOR", LogicBlockConditions::aberrator);
-        CONDITIONS.put("REDSTONE", BlockEntityLogicBlock::isPowered);
+        CONDITIONS.put("REDSTONE", LogicBlockEntity::isPowered);
         CONDITIONS.put("PUZZLE_TEST", puzzleTest());
     }
 
     private LogicBlockConditions() {}
 
-    private static Predicate<BlockEntityLogicBlock> puzzleTest() {
+    private static Predicate<LogicBlockEntity> puzzleTest() {
         return tile -> {
             Level level = tile.getLevel();
             if (level == null) return false;
@@ -61,12 +76,12 @@ public final class LogicBlockConditions {
             }
 
             return tile.phase == 1
-                    && level.getBlockEntity(pos.above()) instanceof BlockEntityPedestal pedestal
-                    && pedestal.item.is(ModItems.BIG_SWORD.get());
+                    && level.getBlockEntity(pos.above()) instanceof PedestalBlockEntity pedestal
+                    && pedestal.display.is(ModItems.BIG_SWORD.get());
         };
     }
 
-    private static Predicate<BlockEntityLogicBlock> playerCube(int n) {
+    private static Predicate<LogicBlockEntity> playerCube(int n) {
         return tile -> {
             Level level = tile.getLevel();
             if (level == null) return false;
@@ -85,7 +100,7 @@ public final class LogicBlockConditions {
                 pos.getZ() + 1 + radius);
     }
 
-    private static boolean aberrator(BlockEntityLogicBlock tile) {
+    private static boolean aberrator(LogicBlockEntity tile) {
         if (!(tile.getLevel() instanceof ServerLevel level) || level.getDifficulty().getId() == 0)
             return false;
 
@@ -94,7 +109,7 @@ public final class LogicBlockConditions {
         if (tile.phase > 0
                 && (tile.timer < 60
                         || !level.getEntitiesOfClass(
-                                        EntityUndeadSoldier.class, legacySoldierBox(pos))
+                                        UndeadSoldierEntity.class, legacySoldierBox(pos))
                                 .isEmpty())) {
             return false;
         }
@@ -111,14 +126,14 @@ public final class LogicBlockConditions {
                 pos.getZ() + 51);
     }
 
-    private static boolean bombCrane(BlockEntityLogicBlock tile) {
+    private static boolean bombCrane(LogicBlockEntity tile) {
         if (!(tile.getLevel() instanceof ServerLevel level)) return false;
 
         BlockPos pos = tile.getBlockPos();
         if (tile.phase == 0) {
-            BlockEntityCharge charge = LogicBlockActions.craneCharge(level, pos.above(), 200);
+            ChargeBlockEntity charge = LogicBlockActions.craneCharge(level, pos.above(), 200);
             if (charge.timer != 200) {
-                charge.timer = 200;
+                charge.hbm$syncSet$ChargeBlockEntity$timer(200);
                 charge.changed();
             }
         }

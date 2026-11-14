@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityBlastDoor;
-import com.hbm.blocks.machine.BlastDoor;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.door.BlastDoorBlockEntity;
+import com.hbm.blocks.machine.BlastDoorBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import dev.engine_room.flywheel.api.instance.Instance;
@@ -19,14 +35,16 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class BlastDoorVisual extends HbmDynamicBlockEntityVisual<BlockEntityBlastDoor>
-        implements ShaderLightVisual {
+public final class BlastDoorVisual extends AbstractBoundedBlockEntityVisual<BlastDoorBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int SLIDERS = 4;
     private static final float EXTEND = 5F;
     private static final Material MATERIAL =
@@ -70,10 +88,10 @@ public final class BlastDoorVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     private float lastRamp = Float.NaN;
 
     public BlastDoorVisual(
-            VisualizationContext context, BlockEntityBlastDoor blockEntity, float partialTick) {
+            VisualizationContext context, BlastDoorBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         Matrix4f bodyBase = new Matrix4f().translation(.5F, 0F, .5F).rotateY(180F * Mth.DEG_TO_RAD);
-        if (blockEntity.getBlockState().getValue(BlockMultiblockCore.FACING).getAxis()
+        if (blockEntity.getBlockState().getValue(MultiblockCoreBlock.FACING).getAxis()
                 == Direction.Axis.Z) bodyBase.rotateY(90F * Mth.DEG_TO_RAD);
         basePose.set(bodyBase);
         Matrix4f blockLocal = new Matrix4f(bodyBase).translate(0F, 3F, 0F);
@@ -92,7 +110,7 @@ public final class BlastDoorVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
@@ -107,14 +125,15 @@ public final class BlastDoorVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     }
 
     private float ramp(float partialTick) {
-        if (blockEntity.state == BlockEntityBlastDoor.STATE_OPEN) return 0F;
-        if (blockEntity.state != BlockEntityBlastDoor.STATE_MOVING) return EXTEND;
+        if (blockEntity.phase == BlastDoorBlockEntity.RETRACTED) return 0F;
+        if (blockEntity.phase != BlastDoorBlockEntity.TRAVELLING) return EXTEND;
         float travelled =
                 Mth.clamp(
-                        (blockEntity.timer + partialTick) / BlockEntityBlastDoor.TRAVEL_TICKS,
+                        (blockEntity.elapsedTicks + partialTick)
+                                / BlastDoorBlockEntity.MOTION_TICKS,
                         0F,
                         1F);
-        return EXTEND * (blockEntity.isOpening ? 1F - travelled : travelled);
+        return EXTEND * (blockEntity.retracting ? 1F - travelled : travelled);
     }
 
     private void write(int index, Matrix4f pose, boolean visible) {
@@ -133,7 +152,7 @@ public final class BlastDoorVisual extends HbmDynamicBlockEntityVisual<BlockEnti
                                 pos.getY(),
                                 pos.getZ(),
                                 pos.getX() + 1,
-                                pos.getY() + BlastDoor.LEAF_TOP + 2,
+                                pos.getY() + BlastDoorBlock.LEAF_TOP + 2,
                                 pos.getZ() + 1)
                         .inflate(1));
     }

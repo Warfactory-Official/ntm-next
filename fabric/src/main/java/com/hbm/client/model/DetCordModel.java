@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.bomb.IDetConnectible;
-import com.hbm.lib.Library;
+import com.hbm.blocks.bomb.DetCordBlock;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import java.util.List;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
@@ -28,7 +44,7 @@ public class DetCordModel implements BlockStateModel {
 
     public static Factory FACTORY = DetCordModel::new;
 
-    private static final Identifier OBJ = Library.id("models/blocks/cable_neo.obj");
+    private static final Identifier OBJ = RegistryUtil.id("models/blocks/cable_neo.obj");
     private static final float OFFSET_Y = 0.5F;
 
     private static final int P_X = 32, N_X = 16, P_Y = 8, N_Y = 4, P_Z = 2, N_Z = 1;
@@ -41,7 +57,7 @@ public class DetCordModel implements BlockStateModel {
     private final TextureSlots slots;
     private final Material.Baked particle;
     private final HFRWavefrontObject obj;
-    private final BlockStateModelPart[] cache = new BlockStateModelPart[64];
+    private final ModelPartCache cache = ModelPartCache.dense(64, this::buildPart);
     private final BlockStateModelPart fallback;
 
     public DetCordModel(ModelBaker baker, ResolvedModel base) {
@@ -82,7 +98,7 @@ public class DetCordModel implements BlockStateModel {
     }
 
     private static boolean connects(BlockAndTintGetter level, BlockPos pos, Direction dir) {
-        return IDetConnectible.isConnectible(level, pos.relative(dir), dir.getOpposite());
+        return DetCordBlock.joins(level, pos.relative(dir));
     }
 
     private static DetCordModel create(ModelBaker baker, ResolvedModel base) {
@@ -118,14 +134,7 @@ public class DetCordModel implements BlockStateModel {
     }
 
     private BlockStateModelPart partFor(int mask) {
-        synchronized (cache) {
-            BlockStateModelPart part = cache[mask];
-            if (part == null) {
-                part = buildPart(mask);
-                cache[mask] = part;
-            }
-            return part;
-        }
+        return cache.get(mask);
     }
 
     private BlockStateModelPart buildPart(int mask) {

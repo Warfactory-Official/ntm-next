@@ -1,16 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.packet;
 
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import java.lang.reflect.Array;
-import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.world.item.ItemStack;
 
 import static com.hbm.lib.internal.UnsafeHolder.U;
 
 public final class SyncBindings {
+    private static final Map<Class<?>, long[]> DECLARED = new ConcurrentHashMap<>();
     private static final ClassValue<long[]> FIELDS =
             new ClassValue<>() {
                 @Override
@@ -19,24 +38,32 @@ public final class SyncBindings {
                     for (Class<?> current = type;
                             current != null;
                             current = current.getSuperclass()) {
-                        for (var field : current.getDeclaredFields()) {
-                            SyncField declaration = field.getAnnotation(SyncField.class);
-                            if (declaration == null) continue;
-                            int mask = declaration.value();
-                            if (mask < 1 || mask > 3)
-                                throw new IllegalArgumentException("Invalid sync mask " + mask);
-                            if (field.getType().isPrimitive()) continue;
-                            assert !Modifier.isStatic(field.getModifiers());
-                            fields.add(U.objectFieldOffset(field));
-                            fields.add(mask);
-                            fields.add(declaration.units());
-                        }
+                        long[] declared = DECLARED.get(current);
+                        if (declared != null) fields.addElements(fields.size(), declared);
                     }
                     return fields.toLongArray();
                 }
             };
 
     private SyncBindings() {}
+
+    public static void field(Class<?> owner, String name, int mask, long units) {
+        if (mask < 1 || mask > 3) throw new IllegalArgumentException("Invalid sync mask " + mask);
+        long offset;
+        try {
+            offset = U.objectFieldOffset(owner.getDeclaredField(name));
+        } catch (NoSuchFieldException e) {
+            throw new IllegalStateException(e);
+        }
+        DECLARED.merge(
+                owner,
+                new long[] {offset, mask, units},
+                (held, added) -> {
+                    long[] joined = Arrays.copyOf(held, held.length + added.length);
+                    System.arraycopy(added, 0, joined, held.length, added.length);
+                    return joined;
+                });
+    }
 
     public static void bindFields(SyncSource owner) {
         bindFields(owner, null);

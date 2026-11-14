@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityFoundryTank;
-import com.hbm.blocks.machine.FoundryOutlet;
-import com.hbm.blocks.machine.FoundryTank;
+import com.hbm.blockentity.machine.FoundryTankBlockEntity;
+import com.hbm.blocks.machine.FoundryOutletBlock;
+import com.hbm.blocks.machine.FoundryTankBlock;
 import com.hbm.client.render.FoundryFaces;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.ChunkUtil;
@@ -20,6 +36,8 @@ import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.PackIdentity;
 import dev.engine_room.flywheel.lib.model.PackTaggedModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -28,7 +46,8 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Matrix4f;
 
-public final class FoundryTankVisual extends HbmDynamicBlockEntityVisual<BlockEntityFoundryTank> {
+public final class FoundryTankVisual extends AbstractBlockEntityVisual<FoundryTankBlockEntity>
+        implements CulledDynamicVisual {
     static final Material MOLTEN =
             SimpleMaterial.builder()
                     .texture(ResourceManager.foundry_stream_tex)
@@ -59,9 +78,9 @@ public final class FoundryTankVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private boolean initialized;
 
     public FoundryTankVisual(
-            VisualizationContext context, BlockEntityFoundryTank blockEntity, float partialTick) {
+            VisualizationContext context, FoundryTankBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        bodyMask = FoundryTank.mask(level, pos);
+        bodyMask = FoundryTankBlock.mask(level, pos);
         for (int i = 0; i < faces.length; i++) {
             var model = MOLTEN_FACES[i];
             faces[i] =
@@ -88,15 +107,15 @@ public final class FoundryTankVisual extends HbmDynamicBlockEntityVisual<BlockEn
     public static void blockChanged(
             ClientLevel level, BlockPos pos, BlockState before, BlockState after) {
         if (before == after
-                || !(before.getBlock() instanceof FoundryTank
-                        || after.getBlock() instanceof FoundryTank
-                        || before.getBlock() instanceof FoundryOutlet
-                        || after.getBlock() instanceof FoundryOutlet)) return;
+                || !(before.getBlock() instanceof FoundryTankBlock
+                        || after.getBlock() instanceof FoundryTankBlock
+                        || before.getBlock() instanceof FoundryOutletBlock
+                        || after.getBlock() instanceof FoundryOutletBlock)) return;
         var manager = VisualizationManager.get(level);
         if (manager == null) return;
         for (Direction direction : Direction.VALUES) {
             var neighbor = ChunkUtil.blockEntityIfLoaded(level, pos.relative(direction));
-            if (neighbor instanceof BlockEntityFoundryTank)
+            if (neighbor instanceof FoundryTankBlockEntity)
                 manager.blockEntities().queueUpdate(neighbor);
         }
     }
@@ -114,7 +133,7 @@ public final class FoundryTankVisual extends HbmDynamicBlockEntityVisual<BlockEn
             if (neighbor == null) continue;
             for (var entry : neighbor.getBlockEntities().entrySet()) {
                 var target = entry.getKey();
-                if (entry.getValue() instanceof BlockEntityFoundryTank
+                if (entry.getValue() instanceof FoundryTankBlockEntity
                         && ((target.getX() - direction.getStepX()) >> 4) == chunkX
                         && ((target.getZ() - direction.getStepZ()) >> 4) == chunkZ)
                     manager.blockEntities().queueUpdate(entry.getValue());
@@ -123,7 +142,7 @@ public final class FoundryTankVisual extends HbmDynamicBlockEntityVisual<BlockEn
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
@@ -137,7 +156,7 @@ public final class FoundryTankVisual extends HbmDynamicBlockEntityVisual<BlockEn
                         + ((mask & 1 << Direction.UP.ordinal()) != 0 ? .125D : 0);
         float height =
                 present ? (float) (blockEntity.amount * maximum / blockEntity.getCapacity()) : 0;
-        int color = present ? FoundryFaces.brightenMolten(blockEntity.type.moltenColor) : -1;
+        int color = present ? FoundryFaces.brightenMolten(blockEntity.type.moltenColor()) : -1;
         if (initialized
                 && present == lastPresent
                 && mask == lastMask
@@ -172,7 +191,7 @@ public final class FoundryTankVisual extends HbmDynamicBlockEntityVisual<BlockEn
 
     @Override
     public void update(float partialTick) {
-        int currentMask = FoundryTank.mask(level, pos);
+        int currentMask = FoundryTankBlock.mask(level, pos);
         if (currentMask != bodyMask) {
             bodyMask = currentMask;
             initialized = false;

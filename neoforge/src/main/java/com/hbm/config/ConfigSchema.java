@@ -1,5 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.config;
 
@@ -314,7 +344,7 @@ public final class ConfigSchema {
                     2,
                     0,
                     2,
-                    "Configures the algorithm of mk5 explosion. 0 = Legacy, 1 = Threaded DDA, "
+                    "Configures the algorithm of mk5 explosion. 0 = alias for 1, 1 = Threaded DDA, "
                             + "2 = Threaded DDA with damage accumulation.");
     public static final ConfigEntry<Integer> BOMB_MAX_THREADS =
             integer(
@@ -337,6 +367,16 @@ public final class ConfigSchema {
                     "Fraction of a power net's supply that foreign (FE) machines may take at normal priority, ahead of "
                             + "the leftover surplus they receive anyway. 0 keeps NTM machines strictly first.");
 
+    public static final ConfigEntry<Integer> CIWS_ACCURACY =
+            integer(
+                    Domain.RUNTIME,
+                    "turrets",
+                    "ciws_accuracy",
+                    50,
+                    Integer.MIN_VALUE,
+                    Integer.MAX_VALUE,
+                    "Percent chance that a CIWS burst hits its target; damaged CIWS turrets hit half as often.");
+
     public static final ConfigEntry<Boolean> WAYPOINT_DEBUG =
             bool(
                     Domain.RUNTIME,
@@ -355,8 +395,6 @@ public final class ConfigSchema {
                     Integer.MAX_VALUE,
                     "Limits veinminer's recursive function. Usually not an issue, unless you're using bukkit which is especially sensitive for some reason.");
 
-    public static final ConfigEntry<Boolean> DAMAGE_COMPATIBILITY_MODE =
-            bool(Domain.RUNTIME, "damage", "compatibility_mode", false, "");
     public static final ConfigEntry<Integer> ITEM_HAZARD_DROP_TICKRATE =
             integer(
                     Domain.RUNTIME,
@@ -401,6 +439,13 @@ public final class ConfigSchema {
                     "crate_opens_held",
                     true,
                     "Right-click with a held crate opens it; sneak to place it.");
+    public static final ConfigEntry<Boolean> CHECK_FOR_UPDATES =
+            bool(
+                    Domain.CLIENT,
+                    "updates",
+                    "check_for_updates",
+                    true,
+                    "Check CurseForge for new NTM NEXT and addon releases during mod startup and show chat notifications.");
     public static final ConfigEntry<Boolean> ORIGINAL_STEREO_EXPLOSIONS =
             bool(
                     Domain.CLIENT,
@@ -448,6 +493,13 @@ public final class ConfigSchema {
             bool(Domain.CLIENT, "hud", "nuke_flash", true, "");
     public static final ConfigEntry<Boolean> NUKE_HUD_SHAKE =
             bool(Domain.CLIENT, "hud", "nuke_shake", true, "");
+    public static final ConfigEntry<Boolean> MODE_BADGES =
+            bool(
+                    Domain.CLIENT,
+                    "hud",
+                    "mode_badges",
+                    true,
+                    "Show the 528, expensive, rampant and combined 328 mode badges.");
     public static final ConfigEntry<Boolean> RENDER_REBAR_SIMPLE =
             bool(
                     Domain.CLIENT,
@@ -563,14 +615,15 @@ public final class ConfigSchema {
                     EXPLOSION_ALGORITHM,
                     BOMB_MAX_THREADS,
                     FOREIGN_EXPORT_RESERVE,
+                    CIWS_ACCURACY,
                     WAYPOINT_DEBUG,
                     TOOL_RECURSION_DEPTH,
-                    DAMAGE_COMPATIBILITY_MODE,
                     ITEM_HAZARD_DROP_TICKRATE,
                     UNSTABLE_RECOVERY_SWEEP,
                     TOOL_HUD_INDICATOR_X,
                     TOOL_HUD_INDICATOR_Y,
                     CRATE_OPEN_HELD,
+                    CHECK_FOR_UPDATES,
                     ORIGINAL_STEREO_EXPLOSIONS,
                     COOLING_TOWER_PARTICLES,
                     JEI_HIDE_SECRETS,
@@ -581,6 +634,7 @@ public final class ConfigSchema {
                     RENDER_CABLE_HANG,
                     NUKE_HUD_FLASH,
                     NUKE_HUD_SHAKE,
+                    MODE_BADGES,
                     RENDER_REBAR_SIMPLE,
                     GEIGER_OFFSET_HORIZONTAL,
                     GEIGER_OFFSET_VERTICAL,

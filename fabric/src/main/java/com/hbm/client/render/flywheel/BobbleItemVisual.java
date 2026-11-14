@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.BlockEntityBobble;
-import com.hbm.blocks.generic.BlockBobble.Bobble;
-import com.hbm.client.render.RenderBobble;
+import com.hbm.blockentity.BobbleBlockEntity;
+import com.hbm.blocks.generic.BobbleBlock.Bobble;
+import com.hbm.client.render.BobbleRenderer;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -28,7 +44,7 @@ public final class BobbleItemVisual extends HbmItemVisual {
     private final Matrix4f world = new Matrix4f();
     private final Matrix4f labelBase = new Matrix4f();
     private final WorldText.Posing labelPosing =
-            (width, out) -> RenderBobble.labelWidth(out.set(labelBase), width);
+            (width, out) -> BobbleRenderer.labelWidth(out.set(labelBase), width);
 
     public BobbleItemVisual(VisualizationContext ctx, Bobble type) {
         super(ctx);
@@ -36,21 +52,21 @@ public final class BobbleItemVisual extends HbmItemVisual {
         draws = new BobbleDraws(type, new PoseStack());
         for (BobbleDraws.Draw draw : draws.draws)
             parts.add(transformed(ItemMaterials.item(draw.part().model())));
-        ItemStack held = RenderBobble.prop(type);
+        ItemStack held = BobbleRenderer.prop(type);
         prop = held.isEmpty() ? null : transformed(PropItem.model(held, ItemDisplayContext.NONE));
         label = new WorldText(instancers, WorldText.Style.NORMAL, true);
-        label.set(Component.literal(type.label()), 0F, 0F, RenderBobble.labelColor(type));
+        label.set(Component.literal(type.label()), 0F, 0F, BobbleRenderer.labelColor(type));
     }
 
     @Override
     public boolean update(ItemStack stack) {
-        return BlockEntityBobble.typeOf(stack) == type;
+        return BobbleBlockEntity.typeOf(stack) == type;
     }
 
     @Override
     protected void frame(Matrix4fc pose, int light, int overlay, float partialTick) {
         long time = GameTime.now();
-        int shine = RenderBobble.shine(time);
+        int shine = BobbleRenderer.shine(time);
         for (int i = 0; i < parts.size(); i++) {
             BobbleDraws.Draw draw = draws.draws.get(i);
             TransformedInstance part = parts.get(i);

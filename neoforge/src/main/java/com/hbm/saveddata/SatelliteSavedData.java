@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.saveddata;
 
-import com.hbm.lib.Library;
 import com.hbm.registration.OverridePoint;
 import com.hbm.saveddata.satellites.Satellite;
 import com.hbm.saveddata.satellites.SatelliteType;
+import com.hbm.util.RegistryUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.ArrayList;
@@ -39,7 +55,8 @@ public class SatelliteSavedData extends SavedData {
                                                     .forGetter(SatelliteSavedData::toEntries))
                                     .apply(i, SatelliteSavedData::fromEntries));
     public static final SavedDataType<SatelliteSavedData> TYPE =
-            new SavedDataType<>(Library.id("satellites"), SatelliteSavedData::new, CODEC, null);
+            new SavedDataType<>(
+                    RegistryUtil.id("satellites"), SatelliteSavedData::new, CODEC, null);
 
     public final Map<Integer, Satellite> sats = new HashMap<>();
 
@@ -48,23 +65,41 @@ public class SatelliteSavedData extends SavedData {
     }
 
     public static final OverridePoint<Locator> AT =
-            OverridePoint.of(Library.id("satellites_at"), (level, x, z) -> get(level));
+            OverridePoint.of(RegistryUtil.id("satellites_at"), (level, x, z) -> get(level));
 
     public static final OverridePoint<Runnable> CHANGED =
-            OverridePoint.of(Library.id("satellites_changed"), () -> {});
+            OverridePoint.of(RegistryUtil.id("satellites_changed"), () -> {});
 
     @FunctionalInterface
     public interface Locator {
         SatelliteSavedData at(ServerLevel level, int x, int z);
+
+        default List<ServerLevel> levels(ServerLevel level, int x, int z) {
+            return List.of(level);
+        }
     }
 
     public static SatelliteSavedData at(ServerLevel level, int x, int z) {
         return AT.get().at(level, x, z);
     }
 
+    public static List<ServerLevel> levels(ServerLevel level, int x, int z) {
+        return AT.get().levels(level, x, z);
+    }
+
+    public static SatelliteSavedData at(ServerLevel level, int x, int z, int frequency) {
+        var local = at(level, x, z);
+        if (local.isFreqTaken(frequency)) return local;
+        for (var candidate : levels(level, x, z)) {
+            var data = get(candidate);
+            if (data != local && data.isFreqTaken(frequency)) return data;
+        }
+        return local;
+    }
+
     private static SatelliteSavedData fromEntries(List<Entry> entries) {
         SatelliteSavedData data = new SatelliteSavedData();
-        for (Entry entry : entries) data.sats.put(entry.freq(), entry.sat());
+        for (Entry entry : entries) data.store(entry.freq(), entry.sat());
         return data;
     }
 
@@ -77,9 +112,14 @@ public class SatelliteSavedData extends SavedData {
     }
 
     public void put(int freq, Satellite sat) {
-        sats.put(freq, sat);
+        store(freq, sat);
         setDirty();
         CHANGED.get().run();
+    }
+
+    private void store(int freq, Satellite sat) {
+        sat.attach(this);
+        sats.put(freq, sat);
     }
 
     public boolean descend(int freq) {

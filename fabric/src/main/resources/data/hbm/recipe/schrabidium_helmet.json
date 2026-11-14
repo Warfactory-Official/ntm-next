@@ -6,16 +6,15 @@
     }
   ],
   "type": "hbm:crafting_shaped",
+  "input_state": {
+    "S": {
+      "preserve": "result"
+    }
+  },
   "key": {
     "E": "#c:ingots/schrabidium",
     "P": "hbm:pellet_charged",
-    "S": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:starmetal_helmet",
-      "components": {
-        "minecraft:damage": 0
-      }
-    }
+    "S": "hbm:starmetal_helmet"
   },
   "pattern": [
     "EEE",

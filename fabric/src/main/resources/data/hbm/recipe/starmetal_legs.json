@@ -6,14 +6,13 @@
     }
   ],
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "C": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:cobalt_legs",
-      "components": {
-        "minecraft:damage": 0
-      }
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "C": "hbm:cobalt_legs",
     "E": "#c:ingots/starmetal"
   },
   "pattern": [

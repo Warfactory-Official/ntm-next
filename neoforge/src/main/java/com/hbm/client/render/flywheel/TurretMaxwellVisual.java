@@ -1,28 +1,45 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.turret.BlockEntityTurretMaxwell;
+import com.hbm.blockentity.turret.TurretMaxwellBlockEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.BeamPronter.EnumWaveType;
 import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
-import org.jspecify.annotations.Nullable;
 
-public final class TurretMaxwellVisual extends HbmDynamicBlockEntityVisual<BlockEntityTurretMaxwell>
-        implements ShaderLightVisual {
-    private static final int CONNECTORS = 8;
-    private static final float[] PLUG_ROT = {0F, 0F, 90F, 90F, 180F, 180F, 270F, 270F};
-    private static final float[] PLUG_OZ = {0F, -1F, -1F, 0F, -1F, 0F, -1F, 0F};
+public final class TurretMaxwellVisual
+        extends AbstractDynamicExtentBlockEntityVisual<TurretMaxwellBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final int CARRIAGE = ResourceManager.turret_howard.partId("Carriage");
     private static final int MICROWAVE = ResourceManager.turret_maxwell.partId("Microwave");
     private static final MeshPart CONNECTOR_PART =
@@ -41,25 +58,17 @@ public final class TurretMaxwellVisual extends HbmDynamicBlockEntityVisual<Block
                     ResourceManager.turret_maxwell.groups[MICROWAVE],
                     true,
                     MeshPart.litCutout(ResourceManager.turret_maxwell_tex));
-    private final TransformedInstance[] connectors = new TransformedInstance[CONNECTORS];
-    private final TransformedInstance carriage;
-    private final TransformedInstance microwave;
+    private static final ChainInstance.Chain[] CHAINS = {
+        TurretChains.carriage(), TurretChains.pitched(1.5F, false, 1F).end()
+    };
+    private final TurretConnectors connectors;
+    private final ChainParts parts;
     private final BeamVisual[] beams = new BeamVisual[8];
     private final Matrix4f placement = new Matrix4f();
-    private final Matrix4f[] connectorPoses = new Matrix4f[CONNECTORS];
-    private final Matrix4f carriagePose = new Matrix4f();
-    private final Matrix4f microwavePose = new Matrix4f();
     private final Matrix4f beamBasePose = new Matrix4f();
-    private final Matrix4f instancePose = new Matrix4f();
-    private final AABB bodyBounds;
-    private final double[] lightBounds = new double[6];
-    private @Nullable AABB lastLightBounds;
+    private final AABB lightBounds;
     private Vec3 beamDirection = new Vec3(0D, 0D, 0D);
-    private float lastYaw = Float.NaN;
-    private float lastPitch = Float.NaN;
-    private int lastConnectorMask;
     private double lastBeamLength = Double.NaN;
-    private double lastBarrelLength = Double.NaN;
     private int lastBeamSegments;
     private boolean lastBeamActive;
     private boolean initialized;
@@ -67,39 +76,36 @@ public final class TurretMaxwellVisual extends HbmDynamicBlockEntityVisual<Block
     private double extentDistance = Double.NaN;
 
     public TurretMaxwellVisual(
-            VisualizationContext context, BlockEntityTurretMaxwell blockEntity, float partialTick) {
+            VisualizationContext context, TurretMaxwellBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         var offset = blockEntity.getHorizontalOffset();
         placement.translation((float) offset.x, 0F, (float) offset.z);
-        bodyBounds = LightBounds.of(ResourceManager.turret_chekhov, "Base", placement, pos);
-        for (int i = 0; i < CONNECTORS; i++) {
-            connectors[i] =
-                    instancerProvider()
-                            .instancer(InstanceTypes.TRANSFORMED, CONNECTOR_PART.model())
-                            .createInstance();
-            connectorPoses[i] =
-                    new Matrix4f(placement)
-                            .rotateY((PLUG_ROT[i]) * Mth.DEG_TO_RAD)
-                            .translate(0F, 0F, PLUG_OZ[i]);
-        }
-        carriage =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, CARRIAGE_PART.model())
-                        .createInstance();
-        microwave =
-                instancerProvider()
-                        .instancer(InstanceTypes.TRANSFORMED, MICROWAVE_PART.model())
-                        .createInstance();
+        AABB bodyBounds = LightBounds.of(ResourceManager.turret_chekhov, "Base", placement, pos);
+        connectors = new TurretConnectors(context, visualPos, placement, CONNECTOR_PART.model());
+        parts =
+                new ChainParts(
+                        context,
+                        visualPos,
+                        placement,
+                        new Model[] {CARRIAGE_PART.model(), MICROWAVE_PART.model()},
+                        CHAINS,
+                        2);
+        double[] bounds = new double[6];
+        LightBounds.resetBounds(bounds, bodyBounds.minmax(new AABB(pos).inflate(8)));
+        parts.includeLightBounds(bounds, pos);
+        connectors.includeLightBounds(bounds, pos);
+        lightBounds = new AABB(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
         for (int i = 0; i < beams.length; i++)
             beams[i] = new BeamVisual(context, level, pos, false, 2, .1F);
-        trackExtent();
+        beforeFrame();
+        updateAim();
         updateMovingParts(partialTick);
     }
 
     public static void initModels() {}
 
     @Override
-    protected void trackExtent() {
+    public void beforeFrame() {
         boolean beam = blockEntity.beam > 0;
         double distance = blockEntity.lastDist;
         if (beam == extentBeam && (!beam || distance == extentDistance)) return;
@@ -109,67 +115,56 @@ public final class TurretMaxwellVisual extends HbmDynamicBlockEntityVisual<Block
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(DynamicVisual.Context context) {
         updateMovingParts(context.partialTick());
     }
 
+    @Override
+    public void tick(TickableVisual.Context context) {
+        updateAim();
+    }
+
+    private void updateAim() {
+        TurretChains.aim(parts, blockEntity, Mth.HALF_PI);
+        parts.write();
+    }
+
     public void updateMovingParts(float partialTick) {
-        float yaw =
-                (float)
-                        -Math.toDegrees(
-                                Mth.lerp(
-                                        partialTick,
-                                        blockEntity.lastRotationYaw,
-                                        blockEntity.rotationYaw));
-        float pitch =
-                (float)
-                        Math.toDegrees(
-                                Mth.lerp(
-                                        partialTick,
-                                        blockEntity.lastRotationPitch,
-                                        blockEntity.rotationPitch));
-        int mask = blockEntity.connectorMask;
-        boolean connectorChanged = !initialized || mask != lastConnectorMask;
-        if (connectorChanged)
-            for (int i = 0; i < CONNECTORS; i++) {
-                boolean present = (mask & (1 << i)) != 0;
-                connectors[i].setVisible(present);
-                if (present) write(connectors[i], connectorPoses[i]);
+        connectors.update(blockEntity.connectorMask);
+        boolean beamActive = blockEntity.beam > 0;
+        if (beamActive) {
+            float yaw =
+                    (float)
+                            -Math.toDegrees(
+                                    Mth.lerp(
+                                            partialTick,
+                                            blockEntity.lastRotationYaw,
+                                            blockEntity.rotationYaw));
+            float pitch =
+                    (float)
+                            Math.toDegrees(
+                                    Mth.lerp(
+                                            partialTick,
+                                            blockEntity.lastRotationPitch,
+                                            blockEntity.rotationPitch));
+            double barrelLength = blockEntity.getBarrelLength();
+            double length = blockEntity.lastDist - barrelLength;
+            int segments = (int) (blockEntity.lastDist + 1D);
+            if (!initialized
+                    || !lastBeamActive
+                    || Double.doubleToLongBits(length) != Double.doubleToLongBits(lastBeamLength)
+                    || segments != lastBeamSegments) {
+                beamDirection = new Vec3(length, 0D, 0D);
+                lastBeamLength = length;
+                lastBeamSegments = segments;
             }
-        boolean yawChanged =
-                !initialized || Float.floatToIntBits(yaw) != Float.floatToIntBits(lastYaw);
-        boolean pitchChanged =
-                !initialized || Float.floatToIntBits(pitch) != Float.floatToIntBits(lastPitch);
-        if (yawChanged) {
-            carriagePose.set(placement).rotateY((yaw - 90F) * Mth.DEG_TO_RAD);
-            write(carriage, carriagePose);
-        }
-        if (yawChanged || pitchChanged) {
-            microwavePose
-                    .set(carriagePose)
+            beamBasePose
+                    .set(placement)
+                    .rotateY((yaw - 90F) * Mth.DEG_TO_RAD)
                     .translate(0F, 1.5F, 0F)
                     .rotateZ((pitch) * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.5F, 0F);
-            write(microwave, microwavePose);
-        }
-
-        boolean beamActive = blockEntity.beam > 0;
-        double barrelLength = blockEntity.getBarrelLength();
-        double length = blockEntity.lastDist - barrelLength;
-        int segments = (int) (blockEntity.lastDist + 1D);
-        boolean beamGeometryChanged =
-                !initialized
-                        || beamActive != lastBeamActive
-                        || Double.doubleToLongBits(length)
-                                != Double.doubleToLongBits(lastBeamLength)
-                        || Double.doubleToLongBits(barrelLength)
-                                != Double.doubleToLongBits(lastBarrelLength)
-                        || segments != lastBeamSegments;
-        if (beamActive) {
-            if (yawChanged || pitchChanged || beamGeometryChanged) {
-                beamBasePose.set(microwavePose).translate((float) barrelLength, 2F, 0F);
-            }
-            if (beamGeometryChanged) beamDirection = new Vec3(length, 0D, 0D);
+                    .translate(0F, -1.5F, 0F)
+                    .translate((float) barrelLength, 2F, 0F);
             for (int i = 0; i < beams.length; i++) {
                 int start = (int) ((level.getGameTime() + partialTick) * -50F + i * 45F) % 360;
                 beams[i].update(
@@ -186,36 +181,13 @@ public final class TurretMaxwellVisual extends HbmDynamicBlockEntityVisual<Block
         } else if (!initialized || lastBeamActive) {
             for (BeamVisual beam : beams) beam.hide();
         }
-        if (!connectorChanged && !yawChanged && !pitchChanged && !beamGeometryChanged) {
-            lastBeamActive = beamActive;
-            return;
-        }
-        LightBounds.resetBounds(lightBounds, bodyBounds);
-        for (int i = 0; i < connectors.length; i++)
-            if ((mask & (1 << i)) != 0)
-                LightBounds.includeLightBounds(
-                        lightBounds, CONNECTOR_PART.model(), connectorPoses[i], pos);
-        LightBounds.includeLightBounds(lightBounds, CARRIAGE_PART.model(), carriagePose, pos);
-        LightBounds.includeLightBounds(lightBounds, MICROWAVE_PART.model(), microwavePose, pos);
-        lastLightBounds = LightBounds.sections(lightSections, lightBounds, lastLightBounds);
-        lastYaw = yaw;
-        lastPitch = pitch;
-        lastConnectorMask = mask;
-        lastBeamLength = length;
-        lastBarrelLength = barrelLength;
-        lastBeamSegments = segments;
         lastBeamActive = beamActive;
         initialized = true;
     }
 
-    private void write(TransformedInstance instance, Matrix4f pose) {
-        instancePose.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(pose);
-        instance.setTransform(instancePose).light(0).setChanged();
-    }
-
     @Override
     protected AABB getRenderBoundingBox() {
-        return bodyBounds.minmax(new AABB(pos).inflate(8));
+        return lightBounds;
     }
 
     @Override
@@ -226,16 +198,14 @@ public final class TurretMaxwellVisual extends HbmDynamicBlockEntityVisual<Block
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        for (TransformedInstance instance : connectors) consumer.accept(instance);
-        consumer.accept(carriage);
-        consumer.accept(microwave);
+        connectors.collectCrumblingInstances(consumer);
+        parts.collectCrumblingInstances(consumer);
     }
 
     @Override
     protected void _delete() {
-        for (var connector : connectors) connector.delete();
-        carriage.delete();
-        microwave.delete();
+        connectors.delete();
+        parts.delete();
         for (BeamVisual beam : beams) beam.delete();
     }
 }

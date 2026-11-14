@@ -3,10 +3,13 @@
   "key": {
     "C": "hbm:conveyor_wand_regular",
     "P": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "minecraft:shears",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     "W": "#c:rods/wooden"

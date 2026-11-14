@@ -6,10 +6,13 @@
     "P": "#hbm:barrels_heavy/weapon_steel",
     "S": "#hbm:shells/weapon_steel",
     "W": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:wrench",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     }
   },

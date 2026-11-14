@@ -1,12 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.particle;
 
 import com.hbm.client.render.RenderTextures;
 import com.hbm.client.render.flywheel.PackedQuadMesh;
-import com.hbm.lib.Library;
-import com.hbm.particle.ParticleSpentCasing;
+import com.hbm.particle.CasingParticle;
+import com.hbm.particle.casing.CasingSmokeTrail;
+import com.hbm.util.RegistryUtil;
 import dev.engine_room.flywheel.api.instance.Instancer;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Transparency;
@@ -21,10 +38,10 @@ import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import java.util.Arrays;
+import java.util.Objects;
 import net.minecraft.core.Vec3i;
 
-public final class CasingSmokeVisual
-        implements EffectVisual<ParticleSpentCasing>, SimpleDynamicVisual {
+public final class CasingSmokeVisual implements EffectVisual<CasingParticle>, SimpleDynamicVisual {
     private static final Model MODEL =
             new SingleMeshModel(
                     PackedQuadMesh.builder(2)
@@ -44,25 +61,26 @@ public final class CasingSmokeVisual
                             .useOverlay(false)
                             .transparency(Transparency.ORDER_INDEPENDENT)
                             .writeMask(WriteMask.COLOR)
-                            .cutout(new SimpleCutoutShader(Library.id("cutout/zero.glsl")))
+                            .cutout(new SimpleCutoutShader(RegistryUtil.id("cutout/zero.glsl")))
                             .light(LightShaders.FLAT)
                             .ambientOcclusion(false)
                             .cardinalLightingMode(CardinalLightingMode.ENTITY)
                             .backfaceCulling(false)
                             .build());
 
-    private final ParticleSpentCasing particle;
-    private final Instancer<ParticleInstance> instancer;
+    private final CasingParticle particle;
+    private final CasingSmokeTrail smoke;
+    private final Instancer<InstanceParticle> instancer;
     private final Vec3i origin;
-    private ParticleInstance[] instances = new ParticleInstance[0];
+    private InstanceParticle[] instances = new InstanceParticle[0];
     private int active;
 
-    public CasingSmokeVisual(
-            VisualizationContext context, ParticleSpentCasing particle, float partialTick) {
+    public CasingSmokeVisual(VisualizationContext context, CasingParticle particle) {
         this.particle = particle;
+        this.smoke = Objects.requireNonNull(particle.getSmokeTrail());
         this.origin = context.renderOrigin();
         this.instancer =
-                context.instancerProvider().instancer(ParticleInstance.CASING_SMOKE, MODEL);
+                context.instancerProvider().instancer(InstanceParticle.CASING_SMOKE, MODEL);
         writeFrame();
     }
 
@@ -72,9 +90,7 @@ public final class CasingSmokeVisual
     }
 
     private void writeFrame() {
-        ParticleSpentCasing.SmokeFrame frame = particle.smokeFrame();
-        int count =
-                particle.isAlive() && frame != null ? Math.max(0, frame.nodes().length / 4 - 1) : 0;
+        int count = particle.isAlive() ? smoke.getVisualSegmentCount() : 0;
         if (count > instances.length) {
             int old = instances.length;
             instances = Arrays.copyOf(instances, Math.max(count, old * 2 + 1));
@@ -83,20 +99,24 @@ public final class CasingSmokeVisual
                 instances[i].setVisible(false);
             }
         }
-        if (frame != null) {
-            float[] nodes = frame.nodes();
-            float baseX = (float) (frame.x() - origin.getX());
-            float baseY = (float) (frame.y() - origin.getY()) - frame.heightQuarter();
-            float baseZ = (float) (frame.z() - origin.getZ());
+        if (count > 0) {
+            float[] nodes = smoke.getFrame();
+            float baseX = (float) (smoke.getFrameX() - origin.getX());
+            float baseY = (float) (smoke.getFrameY() - origin.getY());
+            float baseZ = (float) (smoke.getFrameZ() - origin.getZ());
             for (int i = 0; i < count; i++) {
                 int b = i * 4;
-                ParticleInstance instance = instances[i];
+                InstanceParticle instance = instances[i];
                 instance.setVisible(true);
                 instance.position(baseX + nodes[b], baseY + nodes[b + 1], baseZ + nodes[b + 2]);
                 instance.previousPosition(
                         baseX + nodes[b + 4], baseY + nodes[b + 5], baseZ + nodes[b + 6]);
-                instance.uvRegion(frame.widthX(), frame.widthZ(), nodes[b + 3], nodes[b + 7]);
-                instance.light(frame.light()).setChanged();
+                instance.uvRegion(
+                        smoke.getFrameHalfWidth(),
+                        smoke.getFrameHalfDepth(),
+                        nodes[b + 3],
+                        nodes[b + 7]);
+                instance.light(smoke.getFrameLight()).setChanged();
             }
         }
         for (int i = count; i < active; i++) instances[i].setVisible(false);
@@ -108,6 +128,6 @@ public final class CasingSmokeVisual
 
     @Override
     public void delete() {
-        for (ParticleInstance instance : instances) instance.delete();
+        for (InstanceParticle instance : instances) instance.delete();
     }
 }

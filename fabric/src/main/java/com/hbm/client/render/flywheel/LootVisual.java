@@ -1,17 +1,33 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blocks.generic.BlockLoot;
-import com.hbm.client.render.RenderLoot;
+import com.hbm.blocks.generic.LootBlock;
+import com.hbm.client.render.LootRenderer;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ModArmorItem;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
-import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.GroupObject;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
@@ -27,6 +43,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -42,10 +60,11 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.jspecify.annotations.Nullable;
 
-public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.BlockEntityLoot>
-        implements ShaderLightVisual {
+public final class LootVisual
+        extends AbstractDynamicExtentBlockEntityVisual<LootBlock.BlockEntityLoot>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Identifier MINI_NUKE_TEXTURE =
-            Library.id("textures/models/projectiles/mini_nuke.png");
+            RegistryUtil.id("textures/models/projectiles/mini_nuke.png");
     private static final Assets ASSETS = buildAssets();
     private final List<Placed> placed = new ArrayList<>();
     private final List<PlacedStack> stacks = new ArrayList<>();
@@ -53,13 +72,13 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Bloc
     private final double[] lightBoundsAccumulator = new double[6];
     private final AABB anchorBounds;
     private List<EntryKey> keys = List.of();
-    private BlockLoot.BlockEntityLoot.Entry[] trackedEntries =
-            new BlockLoot.BlockEntityLoot.Entry[0];
+    private LootBlock.BlockEntityLoot.Entry[] trackedEntries =
+            new LootBlock.BlockEntityLoot.Entry[0];
     private @Nullable AABB lastLightBounds;
 
     public LootVisual(
             VisualizationContext context,
-            BlockLoot.BlockEntityLoot blockEntity,
+            LootBlock.BlockEntityLoot blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
         anchorBounds = new AABB(pos);
@@ -112,7 +131,7 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Bloc
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockLoot.BlockEntityLoot be) {
+    public static boolean vanillaNeeded(LootBlock.BlockEntityLoot be) {
         for (var entry : be.items) {
             ItemStack stack = entry.stack();
             if (specs(stack) == null
@@ -259,18 +278,18 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Bloc
     }
 
     @Override
-    protected void trackExtent() {
-        List<BlockLoot.BlockEntityLoot.Entry> source = blockEntity.items;
+    public void beforeFrame() {
+        List<LootBlock.BlockEntityLoot.Entry> source = blockEntity.items;
         boolean same = source.size() == trackedEntries.length;
         for (int i = 0; same && i < trackedEntries.length; i++)
             same = source.get(i) == trackedEntries[i];
         if (same) return;
-        trackedEntries = source.toArray(new BlockLoot.BlockEntityLoot.Entry[0]);
+        trackedEntries = source.toArray(new LootBlock.BlockEntityLoot.Entry[0]);
         refreshVisibleBounds();
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 
@@ -295,12 +314,12 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Bloc
     }
 
     private boolean syncEntries() {
-        List<BlockLoot.BlockEntityLoot.Entry> source = blockEntity.items;
+        List<LootBlock.BlockEntityLoot.Entry> source = blockEntity.items;
         if (source.size() == keys.size()) {
             boolean same = true;
             for (int i = 0; i < source.size(); i++) {
                 EntryKey key = keys.get(i);
-                BlockLoot.BlockEntityLoot.Entry entry = source.get(i);
+                LootBlock.BlockEntityLoot.Entry entry = source.get(i);
                 if (key.x != entry.x()
                         || key.y != entry.y()
                         || key.z != entry.z()
@@ -335,14 +354,14 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Bloc
             List<DrawSpec> specs = specs(entry.stack());
             if (specs == null) {
                 AABB fixed =
-                        RenderLoot.fixedModel(
+                        LootRenderer.fixedModel(
                                 Minecraft.getInstance().getItemModelResolver(),
                                 new ItemStackRenderState(),
                                 entry.stack(),
                                 level);
                 bounds =
                         bounds.minmax(
-                                RenderLoot.stackBounds(fixed)
+                                LootRenderer.stackBounds(fixed)
                                         .move(
                                                 pos.getX() + entry.x(),
                                                 pos.getY() + entry.y(),
@@ -402,17 +421,17 @@ public final class LootVisual extends HbmDynamicBlockEntityVisual<BlockLoot.Bloc
                     .scale(.5F)
                     .rotateX(radians(90F));
             AABB fixed =
-                    RenderLoot.fixedModel(
+                    LootRenderer.fixedModel(
                             Minecraft.getInstance().getItemModelResolver(),
                             new ItemStackRenderState(),
                             stack,
                             level);
             PoseStack poses = new PoseStack();
             poses.translate(visualPos.getX() + x, visualPos.getY() + y, visualPos.getZ() + z);
-            RenderLoot.fixedView(poses, fixed);
+            LootRenderer.fixedView(poses, fixed);
             modelPose.set(poses.last().pose());
             extent =
-                    RenderLoot.stackBounds(fixed)
+                    LootRenderer.stackBounds(fixed)
                             .move(pos.getX() + x, pos.getY() + y, pos.getZ() + z);
         }
 

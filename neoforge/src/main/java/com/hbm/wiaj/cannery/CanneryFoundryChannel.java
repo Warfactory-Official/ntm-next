@@ -1,30 +1,59 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.wiaj.cannery;
 
-import com.hbm.blockentity.machine.BlockEntityFoundryBasin;
-import com.hbm.blockentity.machine.BlockEntityFoundryCastingBase;
-import com.hbm.blockentity.machine.BlockEntityFoundryChannel;
-import com.hbm.blockentity.machine.BlockEntityFoundryMold;
-import com.hbm.blockentity.machine.BlockEntityFoundryOutlet;
-import com.hbm.blockentity.machine.BlockEntityFoundryTank;
-import com.hbm.blockentity.machine.IRenderFoundry;
+import com.hbm.blockentity.machine.FoundryBasinBlockEntity;
+import com.hbm.blockentity.machine.FoundryCastingBaseBlockEntity;
+import com.hbm.blockentity.machine.FoundryChannelBlockEntity;
+import com.hbm.blockentity.machine.FoundryDischarge;
+import com.hbm.blockentity.machine.FoundryMoldBlockEntity;
+import com.hbm.blockentity.machine.FoundryRenderProvider;
+import com.hbm.blockentity.machine.FoundryTankBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.machine.FoundryChannel;
-import com.hbm.blocks.machine.FoundryOutlet;
-import com.hbm.blocks.machine.FoundryTank;
+import com.hbm.blocks.machine.FoundryChannelBlock;
+import com.hbm.blocks.machine.FoundryOutletBlock;
+import com.hbm.blocks.machine.FoundryTankBlock;
+import com.hbm.client.render.FoundryChannelRenderer;
 import com.hbm.client.render.FoundryFaces;
-import com.hbm.client.render.RenderFoundry;
-import com.hbm.client.render.RenderFoundryChannel;
-import com.hbm.client.render.RenderFoundryTank;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats.MaterialStack;
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.client.render.FoundryRenderer;
+import com.hbm.client.render.FoundryTankRenderer;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.MaterialStack;
+import com.hbm.inventory.material.Materials;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemScraps;
+import com.hbm.items.machine.ScrapsItem;
 import com.hbm.wiaj.JarRenderContext;
 import com.hbm.wiaj.JarScene;
 import com.hbm.wiaj.JarScript;
@@ -39,7 +68,7 @@ import com.hbm.wiaj.actors.ActorBase;
 import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ITileActorRenderer;
+import com.hbm.wiaj.actors.ActorRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -55,6 +84,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class CanneryFoundryChannel extends CanneryBase {
 
@@ -161,7 +191,7 @@ public class CanneryFoundryChannel extends CanneryBase {
                         ModBlocks.FOUNDRY_OUTLET
                                 .get()
                                 .defaultBlockState()
-                                .setValue(FoundryOutlet.FACING, Direction.NORTH)));
+                                .setValue(FoundryOutletBlock.FACING, Direction.NORTH)));
         scene0.add(new ActionSetTile(3, 2, 1, outlet(3, 2, 1)));
         scene0.add(
                 new ActionSetBlock(
@@ -171,9 +201,9 @@ public class CanneryFoundryChannel extends CanneryBase {
                         ModBlocks.FOUNDRY_OUTLET
                                 .get()
                                 .defaultBlockState()
-                                .setValue(FoundryOutlet.FACING, Direction.NORTH)));
+                                .setValue(FoundryOutletBlock.FACING, Direction.NORTH)));
         scene0.add(new ActionWait(5));
-        scene0.add(new ActionSetTile(3, 3, 3, tank(Mats.MAT_GOLD, MaterialShapes.BLOCK.q(1))));
+        scene0.add(new ActionSetTile(3, 3, 3, tank(Materials.GOLD, MaterialShape.BLOCK.amount(1))));
         scene0.add(new ActionSetBlock(3, 3, 3, ModBlocks.FOUNDRY_TANK.get().defaultBlockState()));
         scene0.add(new ActionSetTile(3, 3, 2, outlet(3, 3, 2)));
         scene0.add(
@@ -184,7 +214,7 @@ public class CanneryFoundryChannel extends CanneryBase {
                         ModBlocks.FOUNDRY_OUTLET
                                 .get()
                                 .defaultBlockState()
-                                .setValue(FoundryOutlet.FACING, Direction.NORTH)));
+                                .setValue(FoundryOutletBlock.FACING, Direction.NORTH)));
         scene0.add(new ActionWait(10));
 
         scene0.add(new ActionCreateActor(0, panel(0, 0, -25, Orientation.LEFT)));
@@ -196,7 +226,7 @@ public class CanneryFoundryChannel extends CanneryBase {
         scene0.add(new ActionWait(10));
         scene0.add(
                 new ActionSetTile(
-                        3, 2, 2, channel(3, 2, 2, Mats.MAT_GOLD, MaterialShapes.INGOT.q(1))));
+                        3, 2, 2, channel(3, 2, 2, Materials.GOLD, MaterialShape.INGOT.amount(1))));
         scene0.add(new ActionWait(10));
         scene0.add(new ActionCreateActor(0, panel(2, 0, -25, Orientation.LEFT)));
         scene0.add(new ActionWait(60));
@@ -214,8 +244,8 @@ public class CanneryFoundryChannel extends CanneryBase {
                                     1,
                                     1,
                                     new ItemStack(ModItems.byName("block")),
-                                    Mats.MAT_GOLD,
-                                    MaterialShapes.BLOCK.q(j, 60),
+                                    Materials.GOLD,
+                                    MaterialShape.BLOCK.share(j, 60),
                                     ItemStack.EMPTY)));
             scene0.add(new ActionWait(1));
         }
@@ -228,7 +258,7 @@ public class CanneryFoundryChannel extends CanneryBase {
         scene1.add(new ActionWait(10));
         scene1.add(
                 new ActionSetTile(
-                        2, 2, 2, channel(2, 2, 2, Mats.MAT_GOLD, MaterialShapes.INGOT.q(1))));
+                        2, 2, 2, channel(2, 2, 2, Materials.GOLD, MaterialShape.INGOT.amount(1))));
         scene1.add(new ActionWait(10));
 
         for (int i = 0; i < 60; i++) {
@@ -243,8 +273,8 @@ public class CanneryFoundryChannel extends CanneryBase {
                                     1,
                                     1,
                                     new ItemStack(ModItems.byName("ingot")),
-                                    Mats.MAT_GOLD,
-                                    MaterialShapes.INGOT.q(j, 60),
+                                    Materials.GOLD,
+                                    MaterialShape.INGOT.share(j, 60),
                                     ItemStack.EMPTY)));
             scene1.add(
                     new ActionSetTile(
@@ -256,8 +286,8 @@ public class CanneryFoundryChannel extends CanneryBase {
                                     2,
                                     2,
                                     new ItemStack(ModItems.byName("ingot")),
-                                    Mats.MAT_GOLD,
-                                    MaterialShapes.INGOT.q(j, 60),
+                                    Materials.GOLD,
+                                    MaterialShape.INGOT.share(j, 60),
                                     ItemStack.EMPTY)));
             scene1.add(new ActionWait(1));
         }
@@ -282,8 +312,8 @@ public class CanneryFoundryChannel extends CanneryBase {
                                             {
                                                 new ItemStack(Items.IRON_SHOVEL),
                                                 Component.literal(" -> "),
-                                                ItemScraps.create(
-                                                        new MaterialStack(Mats.MAT_GOLD, 1))
+                                                ScrapsItem.create(
+                                                        new MaterialStack(Materials.GOLD, 1))
                                             }
                                         },
                                         200)
@@ -342,89 +372,77 @@ public class CanneryFoundryChannel extends CanneryBase {
         return data;
     }
 
-    private static net.minecraft.world.level.block.state.BlockState channelState(int x) {
+    private static BlockState channelState(int x) {
         var state =
                 ModBlocks.FOUNDRY_CHANNEL
                         .get()
                         .defaultBlockState()
-                        .setValue(FoundryChannel.NORTH, true)
-                        .setValue(FoundryChannel.WEST, true);
-        return x == 2 ? state.setValue(FoundryChannel.EAST, true) : state;
+                        .setValue(FoundryChannelBlock.NORTH, true)
+                        .setValue(FoundryChannelBlock.WEST, true);
+        return x == 2 ? state.setValue(FoundryChannelBlock.EAST, true) : state;
     }
 
-    private static BlockEntityFoundryBasin basin(
-            int x,
-            int y,
-            int z,
-            ItemStack installed,
-            NTMMaterial type,
-            int amount,
-            ItemStack output) {
+    private static FoundryBasinBlockEntity basin(
+            int x, int y, int z, ItemStack installed, Material type, int amount, ItemStack output) {
         var tile =
-                new BlockEntityFoundryBasin(
+                new FoundryBasinBlockEntity(
                         new BlockPos(x, y, z), ModBlocks.FOUNDRY_BASIN.get().defaultBlockState());
         tile.inventory.set(0, installed);
         tile.inventory.set(1, output);
-        tile.type = type;
-        tile.amount = amount;
+        tile.hbm$syncSet$FoundryBaseBlockEntity$type(type);
+        tile.hbm$syncSet$FoundryBaseBlockEntity$amount(amount);
         return tile;
     }
 
-    private static BlockEntityFoundryMold mold(
-            int x,
-            int y,
-            int z,
-            ItemStack installed,
-            NTMMaterial type,
-            int amount,
-            ItemStack output) {
+    private static FoundryMoldBlockEntity mold(
+            int x, int y, int z, ItemStack installed, Material type, int amount, ItemStack output) {
         var tile =
-                new BlockEntityFoundryMold(
+                new FoundryMoldBlockEntity(
                         new BlockPos(x, y, z), ModBlocks.FOUNDRY_MOLD.get().defaultBlockState());
         tile.inventory.set(0, installed);
         tile.inventory.set(1, output);
-        tile.type = type;
-        tile.amount = amount;
+        tile.hbm$syncSet$FoundryBaseBlockEntity$type(type);
+        tile.hbm$syncSet$FoundryBaseBlockEntity$amount(amount);
         return tile;
     }
 
-    private static BlockEntityFoundryChannel channel(
-            int x, int y, int z, NTMMaterial type, int amount) {
-        var tile = new BlockEntityFoundryChannel(new BlockPos(x, y, z), channelState(x));
-        tile.type = type;
-        tile.amount = amount;
+    private static FoundryChannelBlockEntity channel(
+            int x, int y, int z, Material type, int amount) {
+        var tile = new FoundryChannelBlockEntity(new BlockPos(x, y, z), channelState(x));
+        tile.hbm$syncSet$FoundryBaseBlockEntity$type(type);
+        tile.hbm$syncSet$FoundryBaseBlockEntity$amount(amount);
         return tile;
     }
 
-    private static BlockEntityFoundryOutlet outlet(int x, int y, int z) {
-        return new BlockEntityFoundryOutlet(
+    private static FoundryDischarge outlet(int x, int y, int z) {
+        return new FoundryDischarge(
                 new BlockPos(x, y, z),
                 ModBlocks.FOUNDRY_OUTLET
                         .get()
                         .defaultBlockState()
-                        .setValue(FoundryOutlet.FACING, Direction.NORTH));
+                        .setValue(FoundryOutletBlock.FACING, Direction.NORTH));
     }
 
-    private static BlockEntityFoundryTank tank(NTMMaterial type, int amount) {
+    private static FoundryTankBlockEntity tank(Material type, int amount) {
         var tile =
-                new BlockEntityFoundryTank(
+                new FoundryTankBlockEntity(
                         new BlockPos(3, 3, 3), ModBlocks.FOUNDRY_TANK.get().defaultBlockState());
-        tile.type = type;
-        tile.amount = amount;
+        tile.hbm$syncSet$FoundryBaseBlockEntity$type(type);
+        tile.hbm$syncSet$FoundryBaseBlockEntity$amount(amount);
         return tile;
     }
 
-    public static class ActorFoundry implements ITileActorRenderer {
+    public static class ActorFoundry implements ActorRenderer {
         @Override
         public void renderActor(
                 JarRenderContext context, int ticks, float interp, CompoundTag data) {
             int x = data.getIntOr("x", 0), y = data.getIntOr("y", 0), z = data.getIntOr("z", 0);
-            var tile = (BlockEntityFoundryCastingBase) context.world().getBlockEntity(x, y, z);
-            var foundry = (IRenderFoundry) tile;
+            var tile = (FoundryCastingBaseBlockEntity) context.world().getBlockEntity(x, y, z);
+            var foundry = (FoundryRenderProvider) tile;
             BlockEntityRenderer<?, ?> registered =
                     Minecraft.getInstance().getBlockEntityRenderDispatcher().getRenderer(tile);
-            RenderFoundry renderer = (RenderFoundry) registered;
-            RenderFoundry.State state = renderer.createRenderState();
+            FoundryRenderer renderer = (FoundryRenderer) registered;
+            FoundryRenderer.State state = renderer.createRenderState();
             state.lightCoords = LightCoordsUtil.FULL_BRIGHT;
             state.moldHeight = foundry.moldHeight();
             state.outHeight = foundry.outHeight();
@@ -435,7 +453,7 @@ public class CanneryFoundryChannel extends CanneryBase {
             state.shouldRender = foundry.shouldRender();
             if (state.shouldRender) {
                 state.level = foundry.getMoltenLevel();
-                state.color = foundry.getMat().moltenColor;
+                state.color = foundry.getMat().moltenColor();
             }
 
             ItemStack mold = tile.inventory.get(0);
@@ -478,21 +496,21 @@ public class CanneryFoundryChannel extends CanneryBase {
     }
 
     public static class ActorFoundryWorld extends ActorBase {
-        private final RenderFoundryTank tankRenderer = new RenderFoundryTank();
-        private final RenderFoundryChannel channelRenderer = new RenderFoundryChannel();
+        private final FoundryTankRenderer tankRenderer = new FoundryTankRenderer();
+        private final FoundryChannelRenderer channelRenderer = new FoundryChannelRenderer();
 
         @Override
-        public void drawBackgroundComponent(JarRenderContext context, int ticks, float interp) {
+        public void drawInJar(JarRenderContext context, int ticks, float interp) {
             WorldInAJar world = context.world();
             for (int x = 0; x < world.sizeX; x++) {
                 for (int y = 0; y < world.sizeY; y++) {
                     for (int z = 0; z < world.sizeZ; z++) {
                         BlockPos pos = new BlockPos(x, y, z);
-                        if (world.getBlockEntity(pos) instanceof BlockEntityFoundryTank tank) {
+                        if (world.getBlockEntity(pos) instanceof FoundryTankBlockEntity tank) {
                             var state = tankRenderer.createRenderState();
                             state.doRender = tank.amount > 0 && tank.type != null;
                             if (!state.doRender) continue;
-                            int mask = FoundryTank.mask(world, pos);
+                            int mask = FoundryTankBlock.mask(world, pos);
                             for (Direction dir : Direction.VALUES)
                                 state.tank[dir.ordinal()] = (mask & 1 << dir.ordinal()) != 0;
                             double max =
@@ -500,23 +518,23 @@ public class CanneryFoundryChannel extends CanneryBase {
                                             + (state.tank[Direction.DOWN.ordinal()] ? 0.125D : 0)
                                             + (state.tank[Direction.UP.ordinal()] ? 0.125D : 0);
                             state.level = (float) (tank.amount * max / tank.getCapacity());
-                            state.color = FoundryFaces.brightenMolten(tank.type.moltenColor);
+                            state.color = FoundryFaces.brightenMolten(tank.type.moltenColor());
                             context.pose().pushPose();
                             context.pose().translate(x, y, z);
                             tankRenderer.submit(state, context.pose(), context.collector(), null);
                             context.pose().popPose();
                         } else if (world.getBlockEntity(pos)
-                                instanceof BlockEntityFoundryChannel channel) {
+                                instanceof FoundryChannelBlockEntity channel) {
                             var state = channelRenderer.createRenderState();
                             state.doRender = channel.amount > 0 && channel.type != null;
                             if (!state.doRender) continue;
                             state.level = (float) (channel.amount * 0.25D / channel.getCapacity());
-                            state.color = FoundryFaces.brightenMolten(channel.type.moltenColor);
+                            state.color = FoundryFaces.brightenMolten(channel.type.moltenColor());
                             var block = world.getBlockState(pos);
-                            state.north = block.getValue(FoundryChannel.NORTH);
-                            state.south = block.getValue(FoundryChannel.SOUTH);
-                            state.west = block.getValue(FoundryChannel.WEST);
-                            state.east = block.getValue(FoundryChannel.EAST);
+                            state.north = block.getValue(FoundryChannelBlock.NORTH);
+                            state.south = block.getValue(FoundryChannelBlock.SOUTH);
+                            state.west = block.getValue(FoundryChannelBlock.WEST);
+                            state.east = block.getValue(FoundryChannelBlock.EAST);
                             context.pose().pushPose();
                             context.pose().translate(x, y, z);
                             channelRenderer.submit(
@@ -529,10 +547,10 @@ public class CanneryFoundryChannel extends CanneryBase {
         }
 
         @Override
-        public void drawForegroundComponent(
+        public void drawOverlay(
                 GuiGraphicsExtractor graphics, int width, int height, int ticks, float interp) {}
 
         @Override
-        public void updateActor(JarScene scene) {}
+        public void tick(JarScene scene) {}
     }
 }

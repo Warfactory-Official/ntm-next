@@ -1,18 +1,15 @@
 {
   "type": "hbm:crafting_shaped",
   "input_state": {
+    "B": {
+      "preserve": "result"
+    },
     "C": {
       "preserve": "remainder"
     }
   },
   "key": {
-    "B": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:bj_plate_jetpack",
-      "components": {
-        "minecraft:damage": 0
-      }
-    },
+    "B": "hbm:bj_plate_jetpack",
     "C": "hbm:singularity_spark",
     "P": "hbm:plate_armor_dnt",
     "S": "hbm:ingot_chainsteel"

@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.storage.BlockEntityMachineBigAssTank;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.storage.BigAssTankBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.gui.FluidGauge;
 import com.hbm.inventory.fluid.NTMFluidProperties;
 import com.hbm.inventory.fluid.NTMFluidProperty;
@@ -16,15 +32,18 @@ import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.material.Transparency;
 import dev.engine_room.flywheel.api.material.WriteMask;
 import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.UvTransformedInstance;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -34,9 +53,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class BigAssTankVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineBigAssTank>
-        implements ShaderLightVisual {
+public final class BigAssTankVisual extends AbstractBoundedBlockEntityVisual<BigAssTankBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final float PLANE_OFF = 5.9375F;
     private static final float PLANE_BOTTOM = 1.75F;
     private static final double PLANE_SPEED = 250D;
@@ -51,19 +69,17 @@ public final class BigAssTankVisual
     private final Matrix4f hazardPlacement = new Matrix4f();
     private final Matrix4f instancePose = new Matrix4f();
     private final AABB rawBodyBounds;
-    private UvTransformedInstance fluid;
+    private ScrollInstance fluid;
     private Model fluidModel;
     private double lastHeight = Double.NaN;
-    private float lastMinU = Float.NaN;
+    private float lastScroll = Float.NaN;
     private Fluid lastFluid;
     private NTMFluidProperty lastProperty;
     private boolean lastVisible;
     private boolean initialized;
 
     public BigAssTankVisual(
-            VisualizationContext context,
-            BlockEntityMachineBigAssTank blockEntity,
-            float partialTick) {
+            VisualizationContext context, BigAssTankBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         basePose.translation(.5F, 0F, .5F);
         if (blockEntity.isTilted())
@@ -71,7 +87,7 @@ public final class BigAssTankVisual
                     .rotateZ((10F) * Mth.DEG_TO_RAD)
                     .rotateY((5F) * Mth.DEG_TO_RAD);
         basePose.rotateY(
-                (Facing.yaw(blockEntity.getBlockState().getValue(BlockMultiblockCore.FACING), 270))
+                (Facing.yaw(blockEntity.getBlockState().getValue(MultiblockCoreBlock.FACING), 270))
                         * Mth.DEG_TO_RAD);
         rawBodyBounds =
                 new AABB(pos)
@@ -121,32 +137,41 @@ public final class BigAssTankVisual
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(DynamicVisual.Context context) {
         updateMovingParts(context.partialTick());
+    }
+
+    @Override
+    public void tick(TickableVisual.Context context) {
+        scroll(false);
+    }
+
+    private void scroll(boolean fresh) {
+        float from = (float) -(level.getGameTime() % PLANE_SPEED / PLANE_SPEED);
+        if (fluid == null || !fresh && from == lastScroll) return;
+        lastScroll = from;
+        fluid.scroll(from, from - (float) (1D / PLANE_SPEED)).setChanged();
     }
 
     public void updateMovingParts(float partialTick) {
         Fluid type = blockEntity.tank.getTankType();
         var sheet = type == null ? null : FluidGauge.sheet(type);
         double height = blockEntity.tank.getFill() * 1.5D / blockEntity.tank.getMaxFill();
-        double minU = -((level.getGameTime() % PLANE_SPEED + partialTick) / PLANE_SPEED) % 1D;
         boolean visible = sheet != null && height > 0D;
         NTMFluidProperty prop = type == null ? null : NTMFluidProperties.get(type);
         boolean poseChanged = !initialized || height != lastHeight || visible != lastVisible;
         boolean fluidChanged = !initialized || type != lastFluid;
-        boolean uvChanged = visible && (float) minU != lastMinU;
         boolean hazardChanged = !initialized || prop != lastProperty;
-        if (!poseChanged && !fluidChanged && !uvChanged && !hazardChanged) return;
+        if (!poseChanged && !fluidChanged && !hazardChanged) return;
         if (fluidChanged) {
             Model model = fluidModel(sheet);
             if (model != fluidModel) {
                 if (fluid != null) fluid.delete();
                 fluidModel = model;
-                fluid =
-                        instancerProvider()
-                                .instancer(InstanceTypes.UV_TRANSFORMED, model)
-                                .createInstance();
+                fluid = instancerProvider().instancer(ScrollInstance.TYPE, model).createInstance();
+                fluid.direction(1F, 0F);
                 fluid.setVisible(false);
+                scroll(true);
             }
         }
         if (poseChanged || fluidChanged) {
@@ -165,9 +190,8 @@ public final class BigAssTankVisual
                 fluid.setTransform(instancePose).light(0);
             }
         }
-        if ((uvChanged || fluidChanged || poseChanged) && visible) {
-            lastMinU = (float) minU;
-            fluid.uvRegion((float) minU, 0F, .5F, (float) (-height * 2D * .5D)).setChanged();
+        if ((fluidChanged || poseChanged) && visible) {
+            fluid.uvRegion(0F, 0F, .5F, (float) (-height * 2D * .5D)).setChanged();
         }
 
         if (hazardChanged) {

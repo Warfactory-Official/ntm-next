@@ -1,5 +1,5 @@
 {
-  "ambientocclusion": true,
+  "ambientocclusion": false,
   "gui_light": "side",
   "textures": {
     "all": "hbm:block/filing_cabinet",

@@ -1,13 +1,12 @@
 {
   "type": "hbm:crafting_shaped",
-  "key": {
+  "input_state": {
     "B": {
-      "fabric:type": "fabric:components",
-      "base": "hbm:bj_legs",
-      "components": {
-        "minecraft:damage": 0
-      }
-    },
+      "preserve": "result"
+    }
+  },
+  "key": {
+    "B": "hbm:bj_legs",
     "C": "hbm:coin_worm",
     "P": "hbm:plate_armor_dnt",
     "S": "hbm:ingot_chainsteel"

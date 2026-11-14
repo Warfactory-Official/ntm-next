@@ -1,18 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.registration;
 
 import com.hbm.handler.MissileStruct;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.items.ModDataComponents;
+import com.hbm.items.machine.BatteryItem;
 import com.hbm.items.machine.FluidIdentifierData;
-import com.hbm.items.machine.ItemBattery;
-import com.hbm.items.machine.ItemICFPellet;
-import com.hbm.items.machine.ItemScraps;
-import com.hbm.items.special.ItemBedrockOreBase;
-import com.hbm.items.weapon.ItemCustomMissile;
-import com.hbm.items.weapon.grenade.ItemGrenadeUniversal;
+import com.hbm.items.machine.ICFPelletItem;
+import com.hbm.items.machine.ScrapsItem;
+import com.hbm.items.special.BedrockOreBaseItem;
+import com.hbm.items.weapon.CustomMissileItem;
+import com.hbm.items.weapon.grenade.GrenadeUniversalItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
@@ -30,10 +46,7 @@ public enum ItemSubtype {
     BATTERY_CHARGE {
         @Override
         public Object getSubtypeData(ItemStack stack) {
-            return stack.getOrDefault(
-                            ModDataComponents.BATTERY_CHARGE.get(),
-                            ((ItemBattery) stack.getItem()).maxCharge)
-                    > 0L;
+            return ((BatteryItem) stack.getItem()).getCharge(stack) > 0L;
         }
     },
     FLUID_CONTENT {
@@ -48,14 +61,14 @@ public enum ItemSubtype {
     SCRAP_MATERIAL {
         @Override
         public Object getSubtypeData(ItemStack stack) {
-            ItemScraps.ScrapData data = stack.get(ModDataComponents.SCRAP.get());
+            ScrapsItem.ScrapData data = stack.get(ModDataComponents.SCRAP.get());
             return data != null ? data.material() : null;
         }
     },
     GRENADE {
         @Override
         public Object getSubtypeData(ItemStack stack) {
-            return ItemGrenadeUniversal.getData(stack);
+            return GrenadeUniversalItem.getData(stack);
         }
     },
     FLUID_IDENTIFIER {
@@ -80,9 +93,9 @@ public enum ItemSubtype {
         @Override
         public Object getSubtypeData(ItemStack stack) {
             return new ICFPelletSubtype(
-                    ItemICFPellet.getType(stack, true),
-                    ItemICFPellet.getType(stack, false),
-                    ItemICFPellet.isMuonCatalyzed(stack));
+                    ICFPelletItem.getType(stack, true),
+                    ICFPelletItem.getType(stack, false),
+                    ICFPelletItem.isMuonCatalyzed(stack));
         }
     },
     CUSTOM_MACHINE {
@@ -94,7 +107,7 @@ public enum ItemSubtype {
     MISSILE {
         @Override
         public Object getSubtypeData(ItemStack stack) {
-            MissileStruct parts = ItemCustomMissile.getStruct(stack);
+            MissileStruct parts = CustomMissileItem.getStruct(stack);
             return parts == null
                     ? null
                     : new MissileSubtype(parts, stack.get(ModDataComponents.MISSILE_CHIP.get()));
@@ -103,14 +116,14 @@ public enum ItemSubtype {
     BEDROCK_ORE_SET {
         @Override
         public Object getSubtypeData(ItemStack stack) {
-            return ItemBedrockOreBase.sample(stack).set().id();
+            return BedrockOreBaseItem.sample(stack).set().id();
         }
     };
 
     public abstract Object getSubtypeData(ItemStack stack);
 
     private record ICFPelletSubtype(
-            ItemICFPellet.EnumICFFuel first, ItemICFPellet.EnumICFFuel second, boolean muon) {}
+            ICFPelletItem.EnumICFFuel first, ICFPelletItem.EnumICFFuel second, boolean muon) {}
 
     private record FluidSubtype(Identifier fluid, int pressure) {}
 

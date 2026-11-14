@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.uninos.graph;
 
@@ -16,6 +32,27 @@ public final class BufferPool<H> {
         long credit(H handler, long amount);
 
         void debit(H handler, long amount);
+
+        default long outputAllowance(H handler, long speed, long netMoved) {
+            return Math.max(0, speed - netMoved);
+        }
+
+        default long inputAllowance(H handler, long speed, long netMoved) {
+            return Math.max(0, speed - netMoved);
+        }
+
+        default boolean reservesSources() {
+            return false;
+        }
+
+        default void reserve(H handler, long amount) {}
+
+        default void release(H handler, long amount) {}
+    }
+
+    @FunctionalInterface
+    public interface Observer<H> {
+        void accept(H handler, int tier, long output, long input);
     }
 
     private static final class Member<H> {
@@ -30,6 +67,7 @@ public final class BufferPool<H> {
         long in;
         long give;
         long take;
+        long reserved;
     }
 
     private final ArrayList<Member<H>> members = new ArrayList<>();
@@ -48,6 +86,13 @@ public final class BufferPool<H> {
         for (int i = 0; i < size; i++) members.get(i).handler = null;
         size = 0;
         seen.clear();
+    }
+
+    public void visit(Observer<H> observer) {
+        for (int i = 0; i < size; i++) {
+            Member<H> m = members.get(i);
+            observer.accept(m.handler, m.tier, m.outSpeed, m.inSpeed);
+        }
     }
 
     public void add(H handler, int tier, long stock, long outSpeed, long inSpeed) {
@@ -78,8 +123,16 @@ public final class BufferPool<H> {
             long headroom = Math.max(0, port.headroom(m.handler));
             m.stock = stock;
             m.capacity = Math.addExact(stock, headroom);
-            m.out = Math.min(stock, Math.max(0, m.outSpeed - Math.max(0, m.gathered - stock)));
-            m.in = Math.min(headroom, Math.max(0, m.inSpeed - Math.max(0, stock - m.gathered)));
+            m.out =
+                    Math.min(
+                            stock,
+                            port.outputAllowance(
+                                    m.handler, m.outSpeed, Math.max(0, m.gathered - stock)));
+            m.in =
+                    Math.min(
+                            headroom,
+                            port.inputAllowance(
+                                    m.handler, m.inSpeed, Math.max(0, stock - m.gathered)));
             if (m.in > 0) takers |= 1 << m.tier;
             if (m.out > 0) givers |= 1 << m.tier;
         }
@@ -134,6 +187,24 @@ public final class BufferPool<H> {
     private void transfer(Port<H> port, Total moved) {
         budget.setMin(want, offer);
         if (budget.isZero()) return;
+        boolean reserve = port.reservesSources();
+        if (reserve) {
+            remaining.set(budget);
+            weight.set(offer);
+            for (int i = 0; i < size; i++) {
+                Member<H> m = members.get(i);
+                long share =
+                        Distribution.weightedShare(
+                                remaining, m.give, weight, Math.min(m.give, remaining.limit()));
+                weight.subtract(m.give);
+                m.reserved = 0;
+                if (share > 0) {
+                    port.reserve(m.handler, share);
+                    m.reserved = share;
+                }
+                remaining.subtract(share);
+            }
+        }
         accepted.set(0);
         remaining.set(budget);
         weight.set(want);
@@ -169,5 +240,14 @@ public final class BufferPool<H> {
             remaining.subtract(share);
         }
         moved.add(accepted);
+        if (reserve) {
+            for (int i = 0; i < size; i++) {
+                Member<H> m = members.get(i);
+                if (m.reserved > 0) {
+                    port.release(m.handler, m.reserved);
+                    m.reserved = 0;
+                }
+            }
+        }
     }
 }

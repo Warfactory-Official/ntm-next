@@ -1,16 +1,32 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.command;
 
 import com.hbm.entity.mob.glyphid.GlyphidPathDebug;
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.handler.radiation.RadiationSystemNT;
-import com.hbm.items.ICustomizable;
-import com.hbm.items.ISatChip;
+import com.hbm.items.ItemCustomizationHandler;
 import com.hbm.items.ModItems;
+import com.hbm.items.SatelliteFrequencyProvider;
 import com.hbm.saveddata.SatelliteSavedData;
-import com.hbm.saveddata.satellites.Satellite;
+import com.hbm.saveddata.satellites.SatelliteDeployment;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -20,7 +36,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -104,7 +120,11 @@ public final class ModCommands {
     private static CompletableFuture<Suggestions> suggestFrequencies(
             CommandContext<CommandSourceStack> ctx, SuggestionsBuilder builder) {
         return SharedSuggestionProvider.suggest(
-                satellites(ctx.getSource()).sats.keySet().stream().map(String::valueOf), builder);
+                satelliteLevels(ctx.getSource()).stream()
+                        .flatMap(level -> SatelliteSavedData.get(level).sats.keySet().stream())
+                        .map(String::valueOf)
+                        .distinct(),
+                builder);
     }
 
     private static int orbitSatellite(CommandContext<CommandSourceStack> ctx) {
@@ -112,12 +132,12 @@ public final class ModCommands {
         if (!(source.getEntity() instanceof ServerPlayer player)) return notAPlayer(source);
 
         ItemStack held = player.getMainHandItem();
-        if (!(held.getItem() instanceof ISatChip)
+        if (!(held.getItem() instanceof SatelliteFrequencyProvider)
                 || held.is(ModItems.SAT_CHIP.get())
-                || !Satellite.orbit(
+                || !SatelliteDeployment.launch(
                         source.getLevel(),
                         held,
-                        ISatChip.getFreqS(held),
+                        SatelliteFrequencyProvider.frequency(held),
                         player.getX(),
                         player.getY(),
                         player.getZ())) {
@@ -140,7 +160,8 @@ public final class ModCommands {
         CommandSourceStack source = ctx.getSource();
         if (!(source.getEntity() instanceof ServerPlayer)) return notAPlayer(source);
 
-        if (!satellites(source).descend(IntegerArgumentType.getInteger(ctx, "frequency"))) {
+        var frequency = IntegerArgumentType.getInteger(ctx, "frequency");
+        if (!satellites(source, frequency).descend(frequency)) {
             source.sendFailure(
                     Component.translatable("commands.satellite.no_satellite")
                             .withStyle(ChatFormatting.RED));
@@ -158,29 +179,41 @@ public final class ModCommands {
         CommandSourceStack source = ctx.getSource();
         if (!(source.getEntity() instanceof ServerPlayer)) return notAPlayer(source);
 
-        Map<Integer, Satellite> sats = satellites(source).sats;
-        if (sats.isEmpty()) {
+        var count = 0;
+        for (var level : satelliteLevels(source)) {
+            var sats = SatelliteSavedData.get(level).sats;
+            sats.forEach(
+                    (freq, sat) ->
+                            source.sendSuccess(
+                                    () ->
+                                            Component.literal(
+                                                            "["
+                                                                    + level.dimension().identifier()
+                                                                    + "] "
+                                                                    + freq
+                                                                    + " - "
+                                                                    + sat.kind().label())
+                                                    .withStyle(ChatFormatting.GREEN),
+                                    false));
+            count += sats.size();
+        }
+        if (count == 0) {
             source.sendFailure(
                     Component.translatable("commands.satellite.no_active_satellites")
                             .withStyle(ChatFormatting.RED));
             return 0;
         }
-        sats.forEach(
-                (freq, sat) ->
-                        source.sendSuccess(
-                                () ->
-                                        Component.literal(
-                                                        freq
-                                                                + " - "
-                                                                + sat.getClass().getSimpleName())
-                                                .withStyle(ChatFormatting.GREEN),
-                                false));
-        return sats.size();
+        return count;
     }
 
-    private static SatelliteSavedData satellites(CommandSourceStack source) {
+    private static SatelliteSavedData satellites(CommandSourceStack source, int frequency) {
         BlockPos pos = BlockPos.containing(source.getPosition());
-        return SatelliteSavedData.at(source.getLevel(), pos.getX(), pos.getZ());
+        return SatelliteSavedData.at(source.getLevel(), pos.getX(), pos.getZ(), frequency);
+    }
+
+    private static List<ServerLevel> satelliteLevels(CommandSourceStack source) {
+        var pos = BlockPos.containing(source.getPosition());
+        return SatelliteSavedData.levels(source.getLevel(), pos.getX(), pos.getZ());
     }
 
     private static int notAPlayer(CommandSourceStack source) {
@@ -219,20 +252,20 @@ public final class ModCommands {
             return 0;
         }
         var stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof ICustomizable customizable)) {
+        if (!(stack.getItem() instanceof ItemCustomizationHandler customizable)) {
             source.sendFailure(
                     Component.translatable("commands.hbm.youHaveToHold")
                             .withStyle(ChatFormatting.RED));
             return 0;
         }
-        String[] args;
+        List<String> words;
         try {
             String raw = StringArgumentType.getString(ctx, "args").trim();
-            args = raw.isEmpty() ? new String[0] : raw.split("\\s+");
+            words = raw.isEmpty() ? List.of() : List.of(raw.split("\\s+"));
         } catch (IllegalArgumentException ignored) {
-            args = new String[0];
+            words = List.of();
         }
-        customizable.customize(player, stack, args);
+        customizable.customizeByCommand(player, stack, words);
         return 1;
     }
 
@@ -276,7 +309,7 @@ public final class ModCommands {
     private static int resetPlayers(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack src = ctx.getSource();
         for (ServerPlayer p : src.getServer().getPlayerList().getPlayers()) {
-            HbmLivingProps.getData(p).radiation = 0D;
+            LivingHazards.getOrCreate(p).radiation = 0D;
         }
         src.sendSuccess(() -> Component.translatable("commands.hbmrad.player_success"), true);
         return 1;
@@ -292,7 +325,7 @@ public final class ModCommands {
                             Component.literal(
                                     p.getName().getString()
                                             + ": "
-                                            + HbmLivingProps.getData(p).radiation
+                                            + LivingHazards.storedRadiation(p)
                                             + " RAD"),
                     false);
         }
@@ -304,8 +337,11 @@ public final class ModCommands {
         CommandSourceStack src = ctx.getSource();
         Collection<ServerPlayer> targets = EntityArgument.getPlayers(ctx, "targets");
         double value =
-                Mth.clamp(DoubleArgumentType.getDouble(ctx, "value"), 0D, HbmLivingProps.RAD_CAP);
-        for (ServerPlayer p : targets) HbmLivingProps.getData(p).radiation = value;
+                Mth.clamp(
+                        DoubleArgumentType.getDouble(ctx, "value"),
+                        0D,
+                        LivingHazards.RADIATION_CAP);
+        for (ServerPlayer p : targets) LivingHazards.getOrCreate(p).radiation = value;
         src.sendSuccess(
                 () -> Component.translatable("commands.hbm.setRadiationFor", targets.size(), value),
                 true);

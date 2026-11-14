@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.loader;
 
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.IdentityHashMap;
@@ -16,7 +32,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 public final class ObjMeshCache implements PreparableReloadListener {
 
-    public static final Identifier ID = Library.id("obj_meshes");
+    public static final Identifier ID = RegistryUtil.id("obj_meshes");
     public static final ObjMeshCache INSTANCE = new ObjMeshCache();
     private static volatile IdentityHashMap<
                     ResourceManager, ConcurrentHashMap<Identifier, GroupObject[]>>
@@ -28,7 +44,9 @@ public final class ObjMeshCache implements PreparableReloadListener {
         var generation = caches;
         ConcurrentHashMap<Identifier, GroupObject[]> cache;
         synchronized (generation) {
-            cache = generation.computeIfAbsent(resources, _ -> new ConcurrentHashMap<>());
+            cache =
+                    generation.computeIfAbsent(
+                            resources, _ -> new ConcurrentHashMap<>());
         }
         GroupObject[] shared =
                 cache.computeIfAbsent(

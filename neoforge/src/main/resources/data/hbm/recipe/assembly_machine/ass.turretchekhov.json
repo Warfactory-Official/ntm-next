@@ -6,7 +6,10 @@
   "duration": 200,
   "input_items": [
     {
-      "ingredient": "hbm:battery_pack_battery_lead"
+      "ingredient": "hbm:battery_pack_battery_lead",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
     },
     {
       "count": 16,

@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.fabric.client;
 
@@ -8,6 +24,7 @@ import com.hbm.client.model.BlockModel;
 import com.hbm.client.model.ConveyorChuteModel;
 import com.hbm.client.model.DetCordModel;
 import com.hbm.client.model.FluoroModel;
+import com.hbm.client.model.FoundryOutletModel;
 import com.hbm.client.model.FoundryTankModel;
 import com.hbm.client.model.HangingVineModel;
 import com.hbm.client.model.PaintableDuctModel;
@@ -27,6 +44,7 @@ public final class NtmFabricModelPlugin implements ModelLoadingPlugin {
     public void initialize(Context ctx) {
         PneumoTubeModel.FACTORY = FabricPneumoTubeModel::new;
         FoundryTankModel.FACTORY = FabricFoundryTankModel::new;
+        FoundryOutletModel.FACTORY = FabricFoundryOutletModel::new;
         ConveyorChuteModel.FACTORY = FabricConveyorChuteModel::new;
         DetCordModel.FACTORY = FabricDetCordModel::new;
         FluoroModel.FACTORY = FabricFluoroModel::new;

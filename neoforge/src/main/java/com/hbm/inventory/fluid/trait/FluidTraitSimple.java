@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.fluid.trait;
 
-import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
@@ -11,15 +27,15 @@ public final class FluidTraitSimple {
 
     private FluidTraitSimple() {}
 
-    public static final class FT_Gaseous extends FluidTrait {
+    public static final class FT_Gaseous implements FluidTrait {
 
         public static final FT_Gaseous INSTANCE = new FT_Gaseous();
 
         private FT_Gaseous() {}
 
         @Override
-        public void addInfoHidden(List<Component> info) {
-            info.add(
+        public void describeDetails(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
                             .append(
@@ -29,15 +45,15 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_Gaseous_ART extends FluidTrait {
+    public static final class FT_Gaseous_ART implements FluidTrait {
 
         public static final FT_Gaseous_ART INSTANCE = new FT_Gaseous_ART();
 
         private FT_Gaseous_ART() {}
 
         @Override
-        public void addInfoHidden(List<Component> info) {
-            info.add(
+        public void describeDetails(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
                             .append(
@@ -47,15 +63,15 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_Liquid extends FluidTrait {
+    public static final class FT_Liquid implements FluidTrait {
 
         public static final FT_Liquid INSTANCE = new FT_Liquid();
 
         private FT_Liquid() {}
 
         @Override
-        public void addInfoHidden(List<Component> info) {
-            info.add(
+        public void describeDetails(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
                             .append(
@@ -65,15 +81,15 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_Viscous extends FluidTrait {
+    public static final class FT_Viscous implements FluidTrait {
 
         public static final FT_Viscous INSTANCE = new FT_Viscous();
 
         private FT_Viscous() {}
 
         @Override
-        public void addInfoHidden(List<Component> info) {
-            info.add(
+        public void describeDetails(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
                             .append(
@@ -84,15 +100,15 @@ public final class FluidTraitSimple {
     }
 
     @Deprecated
-    public static final class FT_Plasma extends FluidTrait {
+    public static final class FT_Plasma implements FluidTrait {
 
         public static final FT_Plasma INSTANCE = new FT_Plasma();
 
         private FT_Plasma() {}
 
         @Override
-        public void addInfoHidden(List<Component> info) {
-            info.add(
+        public void describeDetails(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(
                                     Component.literal("[Plasma]")
@@ -100,15 +116,15 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_Amat extends FluidTrait {
+    public static final class FT_Amat implements FluidTrait {
 
         public static final FT_Amat INSTANCE = new FT_Amat();
 
         private FT_Amat() {}
 
         @Override
-        public void addInfo(List<Component> info) {
-            info.add(
+        public void describe(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.DARK_RED))
                             .append(
@@ -118,15 +134,15 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_LeadContainer extends FluidTrait {
+    public static final class FT_LeadContainer implements FluidTrait {
 
         public static final FT_LeadContainer INSTANCE = new FT_LeadContainer();
 
         private FT_LeadContainer() {}
 
         @Override
-        public void addInfo(List<Component> info) {
-            info.add(
+        public void describe(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.DARK_RED))
                             .append(
@@ -136,15 +152,15 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_Delicious extends FluidTrait {
+    public static final class FT_Delicious implements FluidTrait {
 
         public static final FT_Delicious INSTANCE = new FT_Delicious();
 
         private FT_Delicious() {}
 
         @Override
-        public void addInfoHidden(List<Component> info) {
-            info.add(
+        public void describeDetails(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.DARK_GREEN))
                             .append(
@@ -154,15 +170,15 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_Unsiphonable extends FluidTrait {
+    public static final class FT_Unsiphonable implements FluidTrait {
 
         public static final FT_Unsiphonable INSTANCE = new FT_Unsiphonable();
 
         private FT_Unsiphonable() {}
 
         @Override
-        public void addInfoHidden(List<Component> info) {
-            info.add(
+        public void describeDetails(Consumer<Component> info) {
+            info.accept(
                     Component.empty()
                             .append(Component.literal("[").withStyle(ChatFormatting.BLUE))
                             .append(
@@ -172,14 +188,14 @@ public final class FluidTraitSimple {
         }
     }
 
-    public static final class FT_NoID extends FluidTrait {
+    public static final class FT_NoID implements FluidTrait {
 
         public static final FT_NoID INSTANCE = new FT_NoID();
 
         private FT_NoID() {}
     }
 
-    public static final class FT_NoContainer extends FluidTrait {
+    public static final class FT_NoContainer implements FluidTrait {
 
         public static final FT_NoContainer INSTANCE = new FT_NoContainer();
 

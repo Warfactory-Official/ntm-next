@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineStrandCaster;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.ContinuousCaster;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -20,6 +36,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.LightCoordsUtil;
@@ -27,9 +45,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class StrandCasterVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineStrandCaster>
-        implements ShaderLightVisual {
+public final class StrandCasterVisual extends AbstractBoundedBlockEntityVisual<ContinuousCaster>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int PLATE = ResourceManager.strand_caster.partId("plate");
     private static final double STRAND_REST = 3.4D;
     private static final double STRAND_PER_CAST = .375D;
@@ -63,11 +80,9 @@ public final class StrandCasterVisual
     private boolean initialized;
 
     public StrandCasterVisual(
-            VisualizationContext context,
-            BlockEntityMachineStrandCaster blockEntity,
-            float partialTick) {
+            VisualizationContext context, ContinuousCaster blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        float yaw = Facing.yaw(BlockMultiblockCore.coreFacing(blockEntity.getBlockState()), 0);
+        float yaw = Facing.yaw(MultiblockCoreBlock.coreFacing(blockEntity.getBlockState()), 0);
         var rawBodyLocal = new Matrix4f().translation(.5F, 0F, .5F).rotateY(yaw * Mth.DEG_TO_RAD);
         rawBodyBounds = LightBounds.of(MODEL, "caster", rawBodyLocal, pos);
         plate =
@@ -119,14 +134,14 @@ public final class StrandCasterVisual
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
         var mold = blockEntity.getInstalledMold();
         boolean molten = blockEntity.amount != 0 && blockEntity.type != null && mold != null;
-        int color = molten ? ARGB.opaque(blockEntity.type.moltenColor) : 0;
+        int color = molten ? ARGB.opaque(blockEntity.type.moltenColor()) : 0;
         if (!molten) {
             if (initialized && !lastMolten) return;
             plate.setVisible(false);

@@ -4,11 +4,14 @@
     "D": "hbm:ducttape",
     "R": "hbm:rebar",
     "W": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:wrench",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:wrench"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     }
   },
   "pattern": [

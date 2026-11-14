@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.multiblock;
 
@@ -16,64 +32,200 @@ import org.jspecify.annotations.Nullable;
 public final class CellBuckets {
     private static final List<Plain> PLAIN =
             List.of(
-                    Plain.of(3F, 3F, MapColor.NONE),
-                    Plain.of(3F, 3F, MapColor.METAL),
-                    Plain.of(3F, 3F, MapColor.NONE, 15),
-                    Plain.anyTool(3F, 6F, MapColor.WOOD, BlockTags.MINEABLE_WITH_AXE),
-                    Plain.of(3F, 6F, MapColor.METAL),
-                    Plain.of(3F, 18F, MapColor.NONE),
-                    Plain.anyTool(5F, 6F, MapColor.WOOD, BlockTags.MINEABLE_WITH_AXE),
+                    Plain.of(3F, 3F, MapColor.DIRT),
+                    Plain.of(3F, 3F, MapColor.DEEPSLATE, 15),
+                    Plain.of(3F, 6F, MapColor.STONE),
+                    Plain.anyTool(3F, 6F, MapColor.COLOR_BROWN, BlockTags.MINEABLE_WITH_AXE),
+                    Plain.of(3F, 18F, MapColor.STONE),
+                    Plain.of(3F, 18F, MapColor.COLOR_LIGHT_GRAY),
                     Plain.of(5F, 6F, MapColor.METAL),
-                    Plain.of(5F, 6F, MapColor.NONE),
-                    Plain.of(5F, 10F, MapColor.NONE),
-                    Plain.of(5F, 12F, MapColor.NONE),
-                    Plain.of(5F, 18F, MapColor.NONE),
-                    Plain.of(5F, 30F, MapColor.METAL),
-                    Plain.of(5F, 36F, MapColor.METAL),
-                    Plain.of(5F, 36F, MapColor.NONE),
-                    Plain.of(5F, 60F, MapColor.NONE),
-                    Plain.of(5F, 360F, MapColor.METAL),
-                    Plain.of(10F, 6F, MapColor.METAL),
-                    Plain.of(10F, 6F, MapColor.NONE),
-                    Plain.of(10F, 12F, MapColor.METAL),
-                    Plain.of(10F, 12F, MapColor.NONE),
-                    Plain.of(10F, 60F, MapColor.METAL),
-                    Plain.of(10F, 450F, MapColor.METAL),
-                    Plain.of(10F, 600F, MapColor.METAL),
-                    Plain.of(20F, 1200F, MapColor.METAL),
-                    Plain.of(50F, 36F, MapColor.NONE),
-                    Plain.of(100F, 480F, MapColor.NONE));
+                    Plain.of(5F, 6F, MapColor.DIRT),
+                    Plain.of(5F, 6F, MapColor.STONE),
+                    Plain.anyTool(5F, 6F, MapColor.WOOD, BlockTags.MINEABLE_WITH_AXE),
+                    Plain.of(5F, 6F, MapColor.WOOD),
+                    Plain.of(5F, 6F, MapColor.COLOR_GRAY),
+                    Plain.of(5F, 6F, MapColor.COLOR_LIGHT_GRAY),
+                    Plain.of(5F, 6F, MapColor.COLOR_BLUE),
+                    Plain.of(5F, 6F, MapColor.COLOR_BROWN),
+                    Plain.of(5F, 6F, MapColor.PODZOL),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_WHITE),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_ORANGE),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_LIGHT_BLUE),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_YELLOW),
+                    Plain.anyTool(
+                            5F, 6F, MapColor.TERRACOTTA_LIGHT_GRAY, BlockTags.MINEABLE_WITH_AXE),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_LIGHT_GRAY),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_CYAN),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_BLUE),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_BROWN),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_GREEN),
+                    Plain.of(5F, 6F, MapColor.DEEPSLATE),
+                    Plain.of(5F, 12F, MapColor.STONE),
+                    Plain.of(5F, 12F, MapColor.COLOR_GRAY),
+                    Plain.of(5F, 12F, MapColor.COLOR_LIGHT_GRAY),
+                    Plain.of(5F, 12F, MapColor.TERRACOTTA_CYAN),
+                    Plain.of(5F, 18F, MapColor.STONE),
+                    Plain.of(5F, 18F, MapColor.TERRACOTTA_CYAN),
+                    Plain.of(5F, 18F, MapColor.DEEPSLATE),
+                    Plain.of(5F, 30F, MapColor.COLOR_GRAY),
+                    Plain.of(5F, 30F, MapColor.TERRACOTTA_BROWN),
+                    Plain.of(5F, 36F, MapColor.DIRT),
+                    Plain.of(5F, 36F, MapColor.STONE),
+                    Plain.of(5F, 36F, MapColor.TERRACOTTA_LIGHT_GRAY),
+                    Plain.of(5F, 60F, MapColor.STONE),
+                    Plain.of(5F, 60F, MapColor.COLOR_LIGHT_GRAY),
+                    Plain.of(5F, 60F, MapColor.COLOR_BROWN),
+                    Plain.of(5F, 60F, MapColor.TERRACOTTA_LIGHT_GRAY),
+                    Plain.of(5F, 60F, MapColor.TERRACOTTA_BROWN),
+                    Plain.of(5F, 360F, MapColor.DIRT),
+                    Plain.of(5F, 360F, MapColor.COLOR_LIGHT_GRAY),
+                    Plain.of(10F, 6F, MapColor.WOOD),
+                    Plain.of(10F, 6F, MapColor.TERRACOTTA_BROWN),
+                    Plain.of(10F, 12F, MapColor.STONE),
+                    Plain.of(10F, 12F, MapColor.COLOR_GRAY),
+                    Plain.of(10F, 12F, MapColor.TERRACOTTA_YELLOW),
+                    Plain.of(10F, 12F, MapColor.DEEPSLATE),
+                    Plain.of(10F, 60F, MapColor.TERRACOTTA_BROWN),
+                    Plain.of(10F, 60F, MapColor.TERRACOTTA_GREEN),
+                    Plain.of(10F, 450F, MapColor.QUARTZ),
+                    Plain.of(10F, 600F, MapColor.COLOR_GRAY),
+                    Plain.of(10F, 600F, MapColor.COLOR_LIGHT_GRAY),
+                    Plain.of(10F, 600F, MapColor.TERRACOTTA_CYAN),
+                    Plain.of(10F, 600F, MapColor.TERRACOTTA_BROWN),
+                    Plain.of(10F, 600F, MapColor.DEEPSLATE),
+                    Plain.of(20F, 1200F, MapColor.WOOD),
+                    Plain.of(50F, 36F, MapColor.TERRACOTTA_CYAN),
+                    Plain.of(100F, 480F, MapColor.STONE),
+                    Plain.of(3F, 3F, MapColor.DEEPSLATE, 15)
+                            .traits(MultiblockCellBlock.SOUND_METAL, false),
+                    Plain.of(3F, 3F, MapColor.DIRT).traits(MultiblockCellBlock.SOUND_METAL, false),
+                    Plain.of(5F, 6F, MapColor.METAL).traits(MultiblockCellBlock.SOUND_METAL, false),
+                    Plain.of(5F, 6F, MapColor.COLOR_LIGHT_GRAY)
+                            .traits(MultiblockCellBlock.SOUND_METAL, false),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_LIGHT_BLUE)
+                            .traits(MultiblockCellBlock.SOUND_METAL, false),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_CYAN)
+                            .traits(MultiblockCellBlock.SOUND_METAL, false),
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_BLUE)
+                            .traits(MultiblockCellBlock.SOUND_METAL, false),
+                    Plain.of(10F, 600F, MapColor.COLOR_GRAY)
+                            .traits(MultiblockCellBlock.SOUND_STONE, true),
+                    Plain.of(10F, 600F, MapColor.COLOR_LIGHT_GRAY)
+                            .traits(MultiblockCellBlock.SOUND_STONE, true),
+                    Plain.of(10F, 600F, MapColor.TERRACOTTA_CYAN)
+                            .traits(MultiblockCellBlock.SOUND_STONE, true),
+                    Plain.of(10F, 600F, MapColor.TERRACOTTA_BROWN)
+                            .traits(MultiblockCellBlock.SOUND_STONE, true),
+                    Plain.of(20F, 1200F, MapColor.WOOD)
+                            .traits(MultiblockCellBlock.SOUND_STONE, true));
 
     private static final List<Plain> ADDON_PLAIN = new ArrayList<>();
 
     private static final List<Plain> COMPARATOR =
-            List.of(Plain.of(5F, 12F, MapColor.NONE), Plain.of(5F, 6F, MapColor.NONE));
+            List.of(
+                    Plain.of(5F, 6F, MapColor.TERRACOTTA_CYAN),
+                    Plain.of(5F, 6F, MapColor.DEEPSLATE),
+                    Plain.of(5F, 12F, MapColor.TERRACOTTA_CYAN));
 
     private static final List<Geometry> GEOMETRY =
             List.of(
-                    Geometry.of(GeometryCellPartition.DOOR, Plain.of(5F, 30F, MapColor.METAL), 6),
-                    Geometry.of(GeometryCellPartition.DOOR, Plain.of(10F, 60F, MapColor.METAL), 3),
-                    Geometry.of(GeometryCellPartition.DOOR, Plain.of(10F, 450F, MapColor.METAL), 3),
-                    Geometry.of(GeometryCellPartition.DOOR, Plain.of(10F, 600F, MapColor.METAL), 5),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR, Plain.of(5F, 30F, MapColor.COLOR_GRAY), 12),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR,
+                            Plain.of(5F, 30F, MapColor.TERRACOTTA_BROWN),
+                            6),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR,
+                            Plain.of(10F, 60F, MapColor.TERRACOTTA_BROWN),
+                            2),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR,
+                            Plain.of(10F, 60F, MapColor.TERRACOTTA_GREEN),
+                            2),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR, Plain.of(10F, 450F, MapColor.QUARTZ), 3),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR,
+                            Plain.of(10F, 600F, MapColor.COLOR_GRAY),
+                            4),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR, Plain.of(10F, 600F, MapColor.DEEPSLATE), 8),
                     Geometry.of(
                             GeometryCellPartition.DOOR_SEALED,
-                            Plain.of(10F, 600F, MapColor.METAL),
+                            Plain.of(10F, 600F, MapColor.COLOR_GRAY),
+                            13),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR_SEALED,
+                            Plain.of(10F, 600F, MapColor.COLOR_LIGHT_GRAY),
+                            2),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR_SEALED,
+                            Plain.of(10F, 600F, MapColor.TERRACOTTA_CYAN),
+                            6),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR_SEALED,
+                            Plain.of(10F, 600F, MapColor.TERRACOTTA_BROWN),
+                            12),
+                    Geometry.of(
+                            GeometryCellPartition.DOOR_SEALED,
+                            Plain.of(20F, 1200F, MapColor.WOOD),
+                            6),
+                    Geometry.of(GeometryCellPartition.RAIL, Plain.of(5F, 6F, MapColor.WOOD), 2),
+                    Geometry.of(
+                            GeometryCellPartition.RAIL,
+                            Plain.of(5F, 6F, MapColor.COLOR_LIGHT_GRAY),
+                            2),
+                    Geometry.of(
+                            GeometryCellPartition.RAIL,
+                            Plain.of(5F, 6F, MapColor.TERRACOTTA_YELLOW),
                             7),
                     Geometry.of(
-                            GeometryCellPartition.DOOR_SEALED,
-                            Plain.of(20F, 1200F, MapColor.METAL),
-                            4),
-                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(3F, 18F, MapColor.NONE), 2),
-                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 6F, MapColor.METAL), 4),
-                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 36F, MapColor.METAL), 2),
-                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 6F, MapColor.NONE), 12),
-                    Geometry.analog(
-                            GeometryCellPartition.STATIC, Plain.of(5F, 12F, MapColor.NONE), 5),
-                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 60F, MapColor.NONE), 13),
+                            GeometryCellPartition.RAIL,
+                            Plain.of(5F, 6F, MapColor.TERRACOTTA_BROWN),
+                            2),
+                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(3F, 18F, MapColor.STONE), 2),
+                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 6F, MapColor.DIRT), 2),
+                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 6F, MapColor.STONE), 7),
+                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 6F, MapColor.WOOD), 2),
                     Geometry.of(
-                            GeometryCellPartition.STATIC, Plain.of(5F, 360F, MapColor.METAL), 2),
-                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(50F, 36F, MapColor.NONE), 4),
-                    Geometry.of(GeometryCellPartition.RAIL, Plain.of(5F, 6F, MapColor.NONE), 3));
+                            GeometryCellPartition.STATIC,
+                            Plain.of(5F, 6F, MapColor.COLOR_GRAY),
+                            37),
+                    Geometry.of(
+                            GeometryCellPartition.STATIC,
+                            Plain.of(5F, 6F, MapColor.COLOR_BROWN),
+                            18),
+                    Geometry.of(
+                            GeometryCellPartition.STATIC,
+                            Plain.of(5F, 6F, MapColor.TERRACOTTA_YELLOW),
+                            2),
+                    Geometry.of(
+                            GeometryCellPartition.STATIC,
+                            Plain.of(5F, 6F, MapColor.TERRACOTTA_CYAN),
+                            2),
+                    Geometry.of(
+                            GeometryCellPartition.STATIC,
+                            Plain.of(5F, 6F, MapColor.TERRACOTTA_BROWN),
+                            3),
+                    Geometry.of(
+                            GeometryCellPartition.STATIC, Plain.of(5F, 6F, MapColor.DEEPSLATE), 60),
+                    Geometry.analog(
+                            GeometryCellPartition.STATIC,
+                            Plain.of(5F, 12F, MapColor.TERRACOTTA_CYAN),
+                            16),
+                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 36F, MapColor.DIRT), 2),
+                    Geometry.of(
+                            GeometryCellPartition.STATIC,
+                            Plain.of(5F, 60F, MapColor.TERRACOTTA_LIGHT_GRAY),
+                            25),
+                    Geometry.of(GeometryCellPartition.STATIC, Plain.of(5F, 360F, MapColor.DIRT), 2),
+                    Geometry.of(
+                            GeometryCellPartition.STATIC,
+                            Plain.of(50F, 36F, MapColor.TERRACOTTA_CYAN),
+                            2));
+
+    private static List<Geometry> allGeometry = GEOMETRY;
 
     private CellBuckets() {}
 
@@ -82,7 +234,7 @@ public final class CellBuckets {
     }
 
     public static List<Geometry> geometry() {
-        return GEOMETRY;
+        return allGeometry;
     }
 
     public static boolean supportsComparator(Plain key) {
@@ -91,9 +243,37 @@ public final class CellBuckets {
 
     public static Plain plain(
             float hardness, float resistance, MapColor mapColor, int light, boolean requiresTool) {
-        Plain found = find(PLAIN, hardness, resistance, mapColor, light, requiresTool);
+        return plain(
+                hardness,
+                resistance,
+                mapColor,
+                light,
+                requiresTool,
+                MultiblockCellBlock.SOUND_STONE,
+                false);
+    }
+
+    public static Plain plain(
+            float hardness,
+            float resistance,
+            MapColor mapColor,
+            int light,
+            boolean requiresTool,
+            int sound,
+            boolean sealed) {
+        Plain found =
+                find(PLAIN, hardness, resistance, mapColor, light, requiresTool, sound, sealed);
         if (found == null)
-            found = find(ADDON_PLAIN, hardness, resistance, mapColor, light, requiresTool);
+            found =
+                    find(
+                            ADDON_PLAIN,
+                            hardness,
+                            resistance,
+                            mapColor,
+                            light,
+                            requiresTool,
+                            sound,
+                            sealed);
         if (found != null) return found;
         throw new IllegalStateException(
                 "no plain cell bucket for hardness "
@@ -106,6 +286,10 @@ public final class CellBuckets {
                         + light
                         + ", requiresTool "
                         + requiresTool
+                        + ", sound "
+                        + sound
+                        + ", sealed "
+                        + sealed
                         + "; add it to CellBuckets.PLAIN, or register an addon's with ModBlocks.addonPlainCell");
     }
 
@@ -115,13 +299,13 @@ public final class CellBuckets {
             float resistance,
             MapColor mapColor,
             int light,
-            boolean requiresTool) {
+            boolean requiresTool,
+            int sound,
+            boolean sealed) {
         for (Plain bucket : buckets) {
-            if (bucket.hardness() == hardness
-                    && bucket.resistance() == resistance
-                    && bucket.mapColor() == mapColor
-                    && bucket.light() == light
-                    && bucket.requiresTool() == requiresTool) {
+            if (bucket.matchesOwner(hardness, resistance, mapColor, light, requiresTool)
+                    && bucket.sound() == sound
+                    && bucket.sealed() == sealed) {
                 return bucket;
             }
         }
@@ -136,15 +320,35 @@ public final class CellBuckets {
     }
 
     public static Geometry geometry(GeometryCellPartition part, Plain key) {
-        for (Geometry bucket : GEOMETRY) {
-            if (bucket.part() == part && bucket.key().equals(key)) return bucket;
+        for (Geometry bucket : allGeometry) {
+            if (bucket.part() == part
+                    && bucket.key()
+                            .matchesOwner(
+                                    key.hardness(),
+                                    key.resistance(),
+                                    key.mapColor(),
+                                    key.light(),
+                                    key.requiresTool())) return bucket;
         }
         throw new IllegalStateException(
                 "no geometry cell bucket for "
                         + part
                         + " at "
                         + key.suffix()
-                        + "; add one to CellBuckets with its own measured radix");
+                        + "; add one to CellBuckets with its own measured capacity");
+    }
+
+    public static Geometry addAddonGeometry(GeometryCellPartition part, Plain key, int capacity) {
+        for (Geometry bucket : allGeometry) {
+            if (bucket.part() == part && bucket.key().equals(key))
+                throw new IllegalStateException("geometry bucket already exists: " + bucket.name());
+        }
+        Geometry bucket = Geometry.of(part, key, capacity);
+        List<Geometry> next = new ArrayList<>(allGeometry);
+        next.add(bucket);
+        allGeometry = List.copyOf(next);
+        MultiblockCellShapes.addBucket(bucket);
+        return bucket;
     }
 
     static String whole(float value) {
@@ -165,7 +369,45 @@ public final class CellBuckets {
             MapColor mapColor,
             int light,
             boolean requiresTool,
-            TagKey<Block> mineable) {
+            TagKey<Block> mineable,
+            int sound,
+            boolean sealed) {
+
+        public Plain(
+                float hardness,
+                float resistance,
+                MapColor mapColor,
+                int light,
+                boolean requiresTool,
+                TagKey<Block> mineable) {
+            this(
+                    hardness,
+                    resistance,
+                    mapColor,
+                    light,
+                    requiresTool,
+                    mineable,
+                    MultiblockCellBlock.SOUND_STONE,
+                    false);
+        }
+
+        public Plain traits(int sound, boolean sealed) {
+            return new Plain(
+                    hardness, resistance, mapColor, light, requiresTool, mineable, sound, sealed);
+        }
+
+        private boolean matchesOwner(
+                float hardness,
+                float resistance,
+                MapColor mapColor,
+                int light,
+                boolean requiresTool) {
+            return this.hardness == hardness
+                    && this.resistance == resistance
+                    && this.mapColor == mapColor
+                    && this.light == light
+                    && this.requiresTool == requiresTool;
+        }
 
         public static Plain of(float hardness, float resistance, MapColor mapColor) {
             return of(hardness, resistance, mapColor, 0);
@@ -187,7 +429,10 @@ public final class CellBuckets {
                     + "_r"
                     + whole(resistance)
                     + (mapColor == MapColor.NONE ? "" : "_m" + mapColor.id)
-                    + (light == 0 ? "" : "_l" + light);
+                    + (light == 0 ? "" : "_l" + light)
+                    + (requiresTool ? "" : "_any")
+                    + (sound == MultiblockCellBlock.SOUND_METAL ? "_metal" : "")
+                    + (sealed ? "_sealed" : "");
         }
 
         public String name() {
@@ -198,33 +443,27 @@ public final class CellBuckets {
     public record Geometry(
             GeometryCellPartition part,
             Plain key,
-            int radix,
+            int maxShapes,
             boolean comparator,
-            IntegerProperty hi,
-            IntegerProperty lo) {
+            IntegerProperty shape) {
 
-        static Geometry of(GeometryCellPartition part, Plain key, int radix) {
-            return create(part, key, radix, false);
+        static Geometry of(GeometryCellPartition part, Plain key, int capacity) {
+            return create(part, key, capacity, false);
         }
 
-        static Geometry analog(GeometryCellPartition part, Plain key, int radix) {
+        static Geometry analog(GeometryCellPartition part, Plain key, int capacity) {
             assert supportsComparator(key);
-            return create(part, key, radix, true);
+            return create(part, key, capacity, true);
         }
 
         private static Geometry create(
-                GeometryCellPartition part, Plain key, int radix, boolean comparator) {
+                GeometryCellPartition part, Plain key, int capacity, boolean comparator) {
             return new Geometry(
                     part,
                     key,
-                    radix,
+                    capacity,
                     comparator,
-                    IntegerProperty.create("shape_hi", 0, radix - 1),
-                    IntegerProperty.create("shape_lo", 0, radix - 1));
-        }
-
-        public int maxShapes() {
-            return radix * radix;
+                    IntegerProperty.create("shape", 0, capacity - 1));
         }
 
         public String name() {

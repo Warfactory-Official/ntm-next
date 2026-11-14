@@ -1,0 +1,328 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
+
+package com.hbm.client.render;
+
+import com.hbm.blockentity.machine.storage.SocketBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.render.flywheel.WorldItem;
+import com.hbm.items.machine.BatteryCreativeItem;
+import com.hbm.items.machine.BatteryPackItem;
+import com.hbm.items.machine.BatteryPackType;
+import com.hbm.items.machine.BatterySCItem;
+import com.hbm.main.ResourceManager;
+import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.render.util.BeamPronter.EnumBeamType;
+import com.hbm.render.util.BeamPronter.EnumWaveType;
+import com.hbm.render.util.BeamPronter;
+import com.hbm.render.util.HorsePronter;
+import com.hbm.util.Facing;
+import com.hbm.util.RegistryUtil;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.item.ItemModelResolver;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionfc;
+import org.jspecify.annotations.Nullable;
+
+public class BatterySocketRenderer
+        implements BlockEntityRenderer<SocketBlockEntity, BatterySocketRenderer.State>,
+                ConcurrentRenderStateExtraction {
+    private static final int CAPACITOR = ResourceManager.battery_socket.partId("Capacitor");
+    private static final int BATTERY = ResourceManager.battery_socket.partId("Battery");
+    private static final int SUPPORTS = ResourceManager.battery_socket.partId("Supports");
+
+    private static final double UNICORN_SCALE = 0.75D;
+    private static final float UNICORN_DEGREES_PER_TICK = 25F;
+    private static final float ITEM_DEGREES_PER_TICK = 2.5F;
+    private static final double ARC_OFFSET = 0.4375D;
+    private static final double ARC_HEIGHT = 1.1875D;
+    private static final int ARC_OUTER = 0x404040;
+    private static final int ARC_INNER = 0x002040;
+
+    private static final int NO_PART = -1;
+
+    private final HFRWavefrontObject model;
+    private final ItemModelResolver itemModelResolver;
+    private final Map<Identifier, RenderType> bodyTypes = new HashMap<>();
+    private final Map<Identifier, RenderType> centrepieceTypes = new HashMap<>();
+    private final Map<BatteryPackType, Identifier> tierTextures = new ConcurrentHashMap<>();
+
+    public BatterySocketRenderer(BlockEntityRendererProvider.Context context) {
+        this.model = ResourceManager.battery_socket;
+        this.itemModelResolver = context.itemModelResolver();
+    }
+
+    private static float dummyableYaw(Direction facing) {
+        return Facing.yaw(facing, 90);
+    }
+
+    @Override
+    public State createRenderState() {
+        return new State();
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(SocketBlockEntity be) {
+        BlockPos pos = be.getBlockPos();
+        return new AABB(
+                pos.getX() - 1,
+                pos.getY(),
+                pos.getZ() - 1,
+                pos.getX() + 2,
+                pos.getY() + 2,
+                pos.getZ() + 2);
+    }
+
+    @Override
+    public boolean shouldRenderOffScreen() {
+        return true;
+    }
+
+    @Override
+    public void extractRenderState(
+            SocketBlockEntity socket,
+            State state,
+            float partialTicks,
+            Vec3 cameraPosition,
+            ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+        BlockEntityRenderer.super.extractRenderState(
+                socket, state, partialTicks, cameraPosition, breakProgress);
+        state.facing = socket.getBlockState().getValue(MultiblockCoreBlock.FACING);
+
+        state.frame = socket.frame;
+        long gameTime = socket.getLevel() == null ? 0L : socket.getLevel().getGameTime();
+        state.spin = (float) (gameTime % 360L) + partialTicks;
+        state.arcSeed = gameTime / 5L;
+        state.arcStart = (int) (gameTime % 20L);
+
+        ItemStack stack = socket.getShownItem();
+        state.itemsOnly =
+                !state.forceNative && VisualizationManager.supportsVisualization(socket.getLevel());
+        state.unicorn = stack.getItem() instanceof BatteryCreativeItem;
+        if (stack.getItem() instanceof BatteryPackItem pack) {
+            state.bodyPart = pack.tier.isCapacitor() ? CAPACITOR : BATTERY;
+            state.bodyTexture =
+                    tierTextures.computeIfAbsent(
+                            pack.tier,
+                            tier ->
+                                    RegistryUtil.id(
+                                            "textures/block/models/machines/" + tier.tex + ".png"));
+        } else if (stack.getItem() instanceof BatterySCItem) {
+            state.bodyPart = BATTERY;
+            state.bodyTexture = ResourceManager.battery_sc_tex;
+        } else {
+            state.bodyPart = NO_PART;
+            state.bodyTexture = null;
+        }
+        state.centrepiece = SocketCentrepieces.of(stack);
+        state.generic =
+                !stack.isEmpty()
+                        && state.bodyPart == NO_PART
+                        && !state.unicorn
+                        && state.centrepiece == null;
+        ItemStack rendered =
+                state.generic && (!state.itemsOnly || !WorldItem.bakesFramed(stack))
+                        ? stack.copyWithCount(1)
+                        : ItemStack.EMPTY;
+        state.itemArm =
+                FramedItem.resolve(
+                        itemModelResolver, state.item, rendered, socket.getLevel(), null, 0);
+    }
+
+    @Override
+    public void submit(
+            State state,
+            PoseStack poseStack,
+            SubmitNodeCollector collector,
+            CameraRenderState camera) {
+        poseStack.pushPose();
+        poseStack.translate(0.5, 0.0, 0.5);
+        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(dummyableYaw(state.facing)));
+        poseStack.translate(-0.5, 0.0, 0.5);
+        int light = state.lightCoords;
+        if (state.frame && !state.itemsOnly) {
+            RenderType socketType =
+                    bodyTypes.computeIfAbsent(
+                            ResourceManager.battery_socket_tex, RenderTypes::entitySolid);
+            collector.submitCustomGeometry(
+                    poseStack,
+                    socketType,
+                    (pose, buffer) -> model.renderPart(pose, buffer, light, -1, SUPPORTS));
+        }
+        if (!state.itemsOnly && state.bodyPart != NO_PART && state.bodyTexture != null) {
+            RenderType bodyType =
+                    bodyTypes.computeIfAbsent(state.bodyTexture, RenderTypes::entitySolid);
+            int part = state.bodyPart;
+            collector.submitCustomGeometry(
+                    poseStack,
+                    bodyType,
+                    (pose, buffer) -> model.renderPart(pose, buffer, light, -1, part));
+        }
+        if (!state.item.isEmpty()) {
+            poseStack.pushPose();
+            itemPose(poseStack, state.spin, state.itemArm);
+            state.item.submit(poseStack, collector, light, OverlayTexture.NO_OVERLAY, 0);
+            poseStack.popPose();
+        }
+        if (!state.itemsOnly && state.unicorn) submitUnicorn(state, poseStack, collector, light);
+        if (!state.itemsOnly && state.centrepiece != null) {
+            submitCentrepiece(state.centrepiece, state.spin, poseStack, collector, light);
+        }
+        if (!state.itemsOnly && (state.unicorn || state.generic || state.centrepiece != null)) {
+            submitArcs(state, poseStack, collector);
+        }
+        poseStack.popPose();
+    }
+
+    public static void itemPose(PoseStack poseStack, float spin, FramedItem.Arm arm) {
+        poseStack.translate(0, 0.5, 0);
+        poseStack.scale(1.5F, 1.5F, 1.5F);
+        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(spin * ITEM_DEGREES_PER_TICK));
+        if (arm.mesh()) poseStack.translate(0, arm.groundLift(), 0);
+        else if (arm == FramedItem.Arm.BLOCK) FramedItem.framedBlockPrefix(poseStack);
+        else {
+            FramedItem.framedSpritePrefix(poseStack);
+            FramedItem.framedSpriteSinglePose(poseStack);
+        }
+    }
+
+    private void submitUnicorn(
+            State state, PoseStack poseStack, SubmitNodeCollector collector, int light) {
+        poseStack.pushPose();
+        poseStack.scale((float) UNICORN_SCALE, (float) UNICORN_SCALE, (float) UNICORN_SCALE);
+        poseStack.mulPose(
+                (Quaternionfc) Axis.YN.rotationDegrees(state.spin * UNICORN_DEGREES_PER_TICK));
+        RenderType horseType =
+                bodyTypes.computeIfAbsent(
+                        ResourceManager.horse_sunburst_tex, RenderTypes::entityCutout);
+        HorsePronter.reset();
+        HorsePronter.enableHorn();
+        HorsePronter.pront(poseStack, collector, horseType, light);
+        poseStack.popPose();
+    }
+
+    private void submitCentrepiece(
+            SocketCentrepieces.Centrepiece piece,
+            float spin,
+            PoseStack poseStack,
+            SubmitNodeCollector collector,
+            int light) {
+        poseStack.pushPose();
+        poseStack.scale(piece.scale(), piece.scale(), piece.scale());
+        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(spin * piece.degreesPerTick()));
+        RenderType type =
+                centrepieceTypes.computeIfAbsent(piece.texture(), RenderTypes::entityCutoutCull);
+        HFRWavefrontObject mesh = piece.mesh();
+        int part = piece.part();
+        collector.submitCustomGeometry(
+                poseStack, type, (pose, buffer) -> mesh.renderPart(pose, buffer, light, -1, part));
+        poseStack.popPose();
+    }
+
+    private void submitArcs(State state, PoseStack poseStack, SubmitNodeCollector collector) {
+        Random rand = new Random(state.arcSeed);
+        rand.nextBoolean();
+        for (int i = -1; i <= 1; i += 2) {
+            for (int j = -1; j <= 1; j += 2) {
+                if (rand.nextInt(4) != 0) continue;
+                poseStack.pushPose();
+                poseStack.translate(0, 0.75, 0);
+                Vec3 skeleton = new Vec3(ARC_OFFSET * i, ARC_HEIGHT, ARC_OFFSET * j);
+                BeamPronter.prontBeam(
+                        poseStack,
+                        collector,
+                        skeleton,
+                        EnumWaveType.RANDOM,
+                        EnumBeamType.SOLID,
+                        ARC_OUTER,
+                        ARC_INNER,
+                        state.arcStart,
+                        15,
+                        0.0625F,
+                        3,
+                        0.025F);
+                BeamPronter.prontBeam(
+                        poseStack,
+                        collector,
+                        skeleton,
+                        EnumWaveType.RANDOM,
+                        EnumBeamType.SOLID,
+                        ARC_OUTER,
+                        ARC_INNER,
+                        state.arcStart,
+                        1,
+                        0F,
+                        3,
+                        0.025F);
+                poseStack.popPose();
+            }
+        }
+    }
+
+    public static final class State extends HybridBlockEntityRenderState {
+        public Direction facing = Direction.EAST;
+        public int bodyPart = NO_PART;
+        public @Nullable Identifier bodyTexture;
+        public boolean frame;
+        public boolean unicorn;
+        public boolean generic;
+        public SocketCentrepieces.@Nullable Centrepiece centrepiece;
+        public boolean itemsOnly;
+        public final ItemStackRenderState item = new ItemStackRenderState();
+        public FramedItem.Arm itemArm = FramedItem.Arm.SPRITE;
+        public float spin;
+        public long arcSeed;
+        public int arcStart;
+    }
+}

@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.capability;
 
 import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.blocks.CapabilityDependentShape;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
@@ -32,7 +48,9 @@ public final class CapabilityInvalidation {
     };
 
     public static void onLevelTick(LevelTickEvent.Post event) {
-        if (event.getLevel() instanceof ServerLevel level) level.hbm$redrawCapabilityShapes();
+        if (event.getLevel() instanceof ServerLevel level)
+            ((com.hbm.interfaces.injected.ServerLevelExtension) (level))
+                    .hbm$redrawCapabilityShapes();
     }
 
     public static boolean hasConsumers(
@@ -131,7 +149,7 @@ public final class CapabilityInvalidation {
         for (var iterator = shapes.long2IntEntrySet().fastIterator(); iterator.hasNext(); ) {
             var entry = iterator.next();
             BlockPos at = BlockPos.of(entry.getLongKey());
-            LevelChunk source = BlockMultiblockCore.readableChunk(level, at.getX(), at.getZ());
+            LevelChunk source = MultiblockCoreBlock.readableChunk(level, at.getX(), at.getZ());
             if (source == null) continue;
             BlockState state = source.getBlockState(at);
             int mask = entry.getIntValue();
@@ -139,7 +157,7 @@ public final class CapabilityInvalidation {
                 if ((mask & (1 << direction.ordinal())) == 0) continue;
                 neighbour.setWithOffset(at, direction);
                 LevelChunk chunk =
-                        BlockMultiblockCore.readableChunk(
+                        MultiblockCoreBlock.readableChunk(
                                 level, neighbour.getX(), neighbour.getZ(), source);
                 if (chunk == null) continue;
                 Block block = chunk.getBlockState(neighbour).getBlock();

@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.recipes;
 
@@ -21,14 +37,6 @@ import org.jspecify.annotations.Nullable;
 
 public class CustomMachineRecipe extends GenericRecipe {
 
-    private static final Codec<PollutionType> POLLUTION_TYPE =
-            Codec.stringResolver(
-                    Enum::name,
-                    name -> {
-                        for (PollutionType type : PollutionType.VALUES)
-                            if (type.name().equals(name)) return type;
-                        return null;
-                    });
     private static final MapCodec<Extras> EXTRAS_MAP_CODEC =
             RecordCodecBuilder.mapCodec(
                     i ->
@@ -36,7 +44,7 @@ public class CustomMachineRecipe extends GenericRecipe {
                                             Codec.STRING
                                                     .fieldOf("recipe_key")
                                                     .forGetter(Extras::recipeKey),
-                                            POLLUTION_TYPE
+                                            PollutionType.CODEC
                                                     .optionalFieldOf("pollution_type")
                                                     .forGetter(Extras::pollutionType),
                                             Codec.FLOAT
@@ -54,7 +62,7 @@ public class CustomMachineRecipe extends GenericRecipe {
                                     .apply(i, Extras::new));
     private static final StreamCodec<ByteBuf, Optional<PollutionType>> POLLUTION_TYPE_STREAM =
             ByteBufCodecs.VAR_INT.<Optional<PollutionType>>map(
-                    id -> id == 0 ? Optional.empty() : Optional.of(PollutionType.VALUES[id - 1]),
+                    id -> id == 0 ? Optional.empty() : Optional.of(PollutionType.byIndex(id - 1)),
                     type -> type.<Integer>map(t -> t.ordinal() + 1).orElse(0));
     private static final StreamCodec<RegistryFriendlyByteBuf, Extras> EXTRAS_STREAM_CODEC =
             StreamCodec.composite(

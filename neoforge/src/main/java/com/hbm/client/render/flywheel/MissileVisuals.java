@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.missile.EntityMissileAntiBallistic;
-import com.hbm.entity.missile.EntityMissileBaseNT;
+import com.hbm.entity.missile.Missile;
+import com.hbm.entity.missile.MissileAntiBallisticEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import net.minecraft.resources.Identifier;
@@ -14,15 +30,13 @@ import net.minecraft.util.Mth;
 public final class MissileVisuals {
     private MissileVisuals() {}
 
-    private static <T extends EntityMissileBaseNT> ObjEntityVisual.Pose<T> flight() {
+    private static <T extends Missile> ObjEntityVisual.Pose<T> flight() {
         return (pose, entity, partialTick) -> {
-            float yaw = Mth.rotLerp(partialTick, entity.renderYawO, entity.renderYaw);
+            float yaw = entity.viewYaw(partialTick);
             pose.rotateY((yaw - 90F) * Mth.DEG_TO_RAD);
-            pose.rotateZ(
-                    Mth.lerp(partialTick, entity.renderPitchO, entity.renderPitch)
-                            * Mth.DEG_TO_RAD);
+            pose.rotateZ(entity.viewPitch(partialTick) * Mth.DEG_TO_RAD);
             pose.rotateY((90F - yaw) * Mth.DEG_TO_RAD);
-            switch (entity.getFacing()) {
+            switch (entity.padFacing()) {
                 case 2 -> pose.rotateY(90F * Mth.DEG_TO_RAD);
                 case 4 -> pose.rotateY(180F * Mth.DEG_TO_RAD);
                 case 3 -> pose.rotateY(270F * Mth.DEG_TO_RAD);
@@ -32,32 +46,28 @@ public final class MissileVisuals {
         };
     }
 
-    private static <T extends EntityMissileBaseNT> ObjEntityVisual.Spec<T> hull(
+    private static <T extends Missile> ObjEntityVisual.Spec<T> hull(
             HFRWavefrontObject mesh, Identifier texture, float scale, String... parts) {
         return ObjEntityVisual.Spec.<T>of(mesh, texture, parts).scale(scale).pose(flight());
     }
 
-    private static <T extends EntityMissileBaseNT> ObjEntityVisual.Spec<T> v2(Identifier texture) {
+    private static <T extends Missile> ObjEntityVisual.Spec<T> v2(Identifier texture) {
         return hull(ResourceManager.missileV2, texture, 1F, "Cylinder");
     }
 
-    private static <T extends EntityMissileBaseNT> ObjEntityVisual.Spec<T> strong(
-            Identifier texture) {
+    private static <T extends Missile> ObjEntityVisual.Spec<T> strong(Identifier texture) {
         return hull(ResourceManager.missileStrong, texture, 1.5F, "Circle");
     }
 
-    private static <T extends EntityMissileBaseNT> ObjEntityVisual.Spec<T> huge(
-            Identifier texture) {
+    private static <T extends Missile> ObjEntityVisual.Spec<T> huge(Identifier texture) {
         return hull(ResourceManager.missileHuge, texture, 1F, "Circle");
     }
 
-    private static <T extends EntityMissileBaseNT> ObjEntityVisual.Spec<T> atlas(
-            Identifier texture) {
+    private static <T extends Missile> ObjEntityVisual.Spec<T> atlas(Identifier texture) {
         return hull(ResourceManager.missileNuclear, texture, 1F, "Circle.002_Circle.003");
     }
 
-    private static <T extends EntityMissileBaseNT> ObjEntityVisual.Spec<T> micro(
-            Identifier texture) {
+    private static <T extends Missile> ObjEntityVisual.Spec<T> micro(Identifier texture) {
         return hull(ResourceManager.missileMicro, texture, 1F, "Circle");
     }
 
@@ -152,7 +162,7 @@ public final class MissileVisuals {
         ObjEntityVisual.register(
                 ModEntities.MISSILE_ANTI.get(),
                 () ->
-                        ObjEntityVisual.Spec.<EntityMissileAntiBallistic>of(
+                        ObjEntityVisual.Spec.<MissileAntiBallisticEntity>of(
                                         ResourceManager.missileABM,
                                         ResourceManager.missileAA_tex,
                                         "Circle")

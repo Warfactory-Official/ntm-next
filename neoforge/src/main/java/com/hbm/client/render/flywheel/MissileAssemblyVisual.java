@@ -1,14 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineMissileAssembly;
-import com.hbm.blocks.machine.BlockMachineHorizontal;
+import com.hbm.blockentity.machine.MissileWorkbenchBlockEntity;
+import com.hbm.blocks.machine.HorizontalMachineBlock;
 import com.hbm.client.render.MissilePronter;
 import com.hbm.handler.MissileStruct;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
-import com.hbm.items.weapon.ItemCustomMissilePart;
+import com.hbm.items.weapon.CustomMissilePartItem.PartType;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.Facing;
 import dev.engine_room.flywheel.api.instance.Instance;
@@ -21,6 +37,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +51,8 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 public final class MissileAssemblyVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineMissileAssembly>
-        implements ShaderLightVisual {
+        extends AbstractDynamicExtentBlockEntityVisual<MissileWorkbenchBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Map<PartKey, MeshPart[]> PART_MODELS = new ConcurrentHashMap<>();
     private static final MeshPart[] STRUT_PARTS =
             MeshPart.objParts(
@@ -64,35 +82,35 @@ public final class MissileAssemblyVisual
 
     public MissileAssemblyVisual(
             VisualizationContext context,
-            BlockEntityMachineMissileAssembly blockEntity,
+            MissileWorkbenchBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
         bodyBounds = new AABB(pos).inflate(1);
-        trackedMissile = blockEntity.loadedMissile;
+        trackedMissile = blockEntity.visibleParts();
         rootPose.translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(blockState.getValue(BlockMachineHorizontal.FACING), 180)
+                        Facing.yaw(blockState.getValue(HorizontalMachineBlock.FACING), 180)
                                 * Mth.DEG_TO_RAD);
         writeFrame();
     }
 
     public static void initModels() {}
 
-    private static boolean valid(@Nullable ItemCustomMissilePart part, PartType type) {
+    private static boolean valid(@Nullable CustomMissilePartItem part, PartType type) {
         return part != null && part.type == type && part.mesh != null && part.skin != null;
     }
 
     @Override
-    protected void trackExtent() {
-        if (blockEntity.loadedMissile == trackedMissile) return;
-        trackedMissile = blockEntity.loadedMissile;
+    public void beforeFrame() {
+        if (blockEntity.visibleParts() == trackedMissile) return;
+        trackedMissile = blockEntity.visibleParts();
         lastLightBounds =
                 LightBounds.sections(lightSections, getRenderBoundingBox(), lastLightBounds);
         refreshVisibleBounds();
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame();
     }
 
@@ -206,19 +224,19 @@ public final class MissileAssemblyVisual
         private void write(Matrix4f base) {
             Matrix4f pose = stackPose.set(base);
             int index = 0;
-            ItemCustomMissilePart thruster = currentMissile.thruster();
+            CustomMissilePartItem thruster = currentMissile.thruster();
             if (valid(thruster, PartType.THRUSTER)) {
                 parts.get(index++).write(pose);
                 pose.translate(0F, thruster.height, 0F);
             }
-            ItemCustomMissilePart fuselage = currentMissile.fuselage();
+            CustomMissilePartItem fuselage = currentMissile.fuselage();
             if (valid(fuselage, PartType.FUSELAGE)) {
-                ItemCustomMissilePart fins = currentMissile.fins();
+                CustomMissilePartItem fins = currentMissile.fins();
                 if (valid(fins, PartType.FINS)) parts.get(index++).write(pose);
                 parts.get(index++).write(pose);
                 pose.translate(0F, fuselage.height, 0F);
             }
-            ItemCustomMissilePart warhead = currentMissile.warhead();
+            CustomMissilePartItem warhead = currentMissile.warhead();
             if (valid(warhead, PartType.WARHEAD)) parts.get(index).write(pose);
         }
 
@@ -260,7 +278,7 @@ public final class MissileAssemblyVisual
     private final class MissilePartVisual {
         private final List<PartVisual> groups;
 
-        private MissilePartVisual(ItemCustomMissilePart source) {
+        private MissilePartVisual(CustomMissilePartItem source) {
             MeshPart[] models =
                     PART_MODELS.computeIfAbsent(
                             new PartKey(source.mesh, source.skin),

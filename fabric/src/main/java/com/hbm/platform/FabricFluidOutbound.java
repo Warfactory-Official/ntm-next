@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.platform;
 
 import com.hbm.api.fluidmk2.FluidCaps;
 import com.hbm.api.fluidmk2.FluidFace;
-import com.hbm.api.fluidmk2.IFluidHandlerMK2;
+import com.hbm.api.fluidmk2.FluidHandler;
 import com.hbm.capability.ForeignBridges;
 import com.hbm.capability.ForeignFluidStaging;
 import com.hbm.inventory.fluid.tank.FluidTankAccess;
@@ -24,6 +40,7 @@ import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -39,7 +56,7 @@ public final class FabricFluidOutbound {
 
     public static void register(List<Supplier<? extends Block>> blocks) {
         if (blocks.isEmpty()) return;
-        FabricCaps.registerForBlocks(
+        Caps.registerForBlocks(
                 FluidStorage.SIDED,
                 (level, pos, state, be, side) -> faceAt(level, pos, side),
                 blocks.stream().map(Supplier::get).toArray(Block[]::new));
@@ -48,7 +65,7 @@ public final class FabricFluidOutbound {
     private static @Nullable Storage<FluidVariant> faceAt(
             Level level, BlockPos pos, @Nullable Direction side) {
         if (side == null) return null;
-        IFluidHandlerMK2 machine = resolve(FluidCaps.RECEIVER, level, pos, side, null);
+        FluidHandler machine = resolve(FluidCaps.RECEIVER, level, pos, side, null);
         if (machine == null) machine = resolve(FluidCaps.PROVIDER, level, pos, side, null);
         if (machine == null) return null;
         if (ForeignFluidStaging.tanksOf(machine).tankCount() == 0) return null;
@@ -57,8 +74,8 @@ public final class FabricFluidOutbound {
         return Staging.of(owner, machine).face(pos, side);
     }
 
-    private static @Nullable IFluidHandlerMK2 resolve(
-            BlockApiLookup<IFluidHandlerMK2, FluidFace> token,
+    private static @Nullable FluidHandler resolve(
+            BlockApiLookup<FluidHandler, FluidFace> token,
             Level level,
             BlockPos pos,
             Direction side,
@@ -69,17 +86,17 @@ public final class FabricFluidOutbound {
     private static final class Staging extends SnapshotParticipant<ForeignFluidStaging.Saved> {
 
         private final BlockEntity be;
-        private final IFluidHandlerMK2 machine;
+        private final FluidHandler machine;
         private final ForeignFluidStaging staging;
         private final Long2ObjectOpenHashMap<Face[]> faces = new Long2ObjectOpenHashMap<>();
 
-        private Staging(BlockEntity be, IFluidHandlerMK2 machine, int tanks) {
+        private Staging(BlockEntity be, FluidHandler machine, int tanks) {
             this.be = be;
             this.machine = machine;
             this.staging = new ForeignFluidStaging(machine, be, tanks);
         }
 
-        static Staging of(BlockEntity be, IFluidHandlerMK2 machine) {
+        static Staging of(BlockEntity be, FluidHandler machine) {
             ForeignBridges bridges = ForeignBridges.of(be);
             int tanks = FluidTankAccess.of(machine).tankCount();
             Staging staging =
@@ -130,8 +147,8 @@ public final class FabricFluidOutbound {
             return owner.be.isRemoved() ? null : owner.be.getLevel();
         }
 
-        private @Nullable IFluidHandlerMK2 half(
-                BlockApiLookup<IFluidHandlerMK2, FluidFace> token, @Nullable Fluid fluid) {
+        private @Nullable FluidHandler half(
+                BlockApiLookup<FluidHandler, FluidFace> token, @Nullable Fluid fluid) {
             Level level = level();
             return level == null ? null : resolve(token, level, pos, side, fluid);
         }
@@ -160,7 +177,8 @@ public final class FabricFluidOutbound {
                 FluidVariant resource, long maxAmount, TransactionContext transaction, boolean in) {
             if (resource.isBlank() || maxAmount < DROPLETS_PER_MB) return 0L;
             Fluid fluid = resource.getFluid();
-            IFluidHandlerMK2 half = half(in ? FluidCaps.RECEIVER : FluidCaps.PROVIDER, fluid);
+            DataComponentPatch components = resource.getComponentsPatch();
+            FluidHandler half = half(in ? FluidCaps.RECEIVER : FluidCaps.PROVIDER, fluid);
             if (half == null) return 0L;
             FluidTankAccess tanks = FluidTankAccess.of(owner.machine);
             if (tanks.tankCount() != owner.staging.tanks()) return 0L;
@@ -170,8 +188,10 @@ public final class FabricFluidOutbound {
             for (int i = 0; i < tanks.tankCount() && budget > 0L; i++) {
                 long step =
                         in
-                                ? owner.staging.stageInsert(half, tanks, i, fluid, budget)
-                                : owner.staging.stageExtract(half, tanks, i, fluid, budget);
+                                ? owner.staging.stageInsert(
+                                        half, tanks, i, fluid, components, budget)
+                                : owner.staging.stageExtract(
+                                        half, tanks, i, fluid, components, budget);
                 moved += step;
                 budget -= step;
             }
@@ -202,11 +222,16 @@ public final class FabricFluidOutbound {
             if (index >= tanks.tankCount() || tanks.tankCount() != face.owner.staging.tanks())
                 return 0L;
             Fluid fluid = resource.getFluid();
-            IFluidHandlerMK2 provider = face.half(FluidCaps.PROVIDER, fluid);
+            FluidHandler provider = face.half(FluidCaps.PROVIDER, fluid);
             if (provider == null) return 0L;
             face.owner.updateSnapshots(transaction);
             return face.owner.staging.stageExtract(
-                            provider, tanks, index, fluid, maxAmount / DROPLETS_PER_MB)
+                            provider,
+                            tanks,
+                            index,
+                            fluid,
+                            resource.getComponentsPatch(),
+                            maxAmount / DROPLETS_PER_MB)
                     * DROPLETS_PER_MB;
         }
 
@@ -221,7 +246,9 @@ public final class FabricFluidOutbound {
             if (index >= tanks.tankCount() || tanks.tankCount() != face.owner.staging.tanks())
                 return FluidVariant.blank();
             Fluid fluid = face.owner.staging.resource(tanks, index);
-            return fluid.isSame(Fluids.EMPTY) ? FluidVariant.blank() : FluidVariant.of(fluid);
+            return fluid.isSame(Fluids.EMPTY)
+                    ? FluidVariant.blank()
+                    : FluidVariant.of(fluid, face.owner.staging.components(tanks, index));
         }
 
         @Override

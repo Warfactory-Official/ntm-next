@@ -1,8 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items.weapon.grenade;
 
+import com.hbm.items.weapon.grenade.GrenadeFillingItem;
+import com.hbm.items.weapon.grenade.GrenadeShellItem;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -13,38 +31,33 @@ import net.minecraft.network.codec.StreamCodec;
 import org.jspecify.annotations.Nullable;
 
 public record GrenadeData(
-        ItemGrenadeShell.EnumGrenadeShell shell,
-        ItemGrenadeFilling.EnumGrenadeFilling filling,
-        ItemGrenadeFuze.EnumGrenadeFuze fuze,
-        ItemGrenadeExtra.@Nullable EnumGrenadeExtra extra) {
+        GrenadeShellItem.EnumGrenadeShell shell,
+        GrenadeFillingDefinition filling,
+        GrenadeFuzeItem.EnumGrenadeFuze fuze,
+        GrenadeExtraItem.@Nullable EnumGrenadeExtra extra) {
 
     public static final GrenadeData DEFAULT =
             new GrenadeData(
-                    ItemGrenadeShell.EnumGrenadeShell.FRAG,
-                    ItemGrenadeFilling.EnumGrenadeFilling.HE,
-                    ItemGrenadeFuze.EnumGrenadeFuze.S3,
+                    GrenadeShellItem.EnumGrenadeShell.FRAG,
+                    GrenadeFillingItem.EnumGrenadeFilling.HE,
+                    GrenadeFuzeItem.EnumGrenadeFuze.S3,
                     null);
-    private static final Codec<ItemGrenadeShell.EnumGrenadeShell> SHELL =
+    private static final Codec<GrenadeShellItem.EnumGrenadeShell> SHELL =
             Codec.STRING.xmap(
                     value ->
-                            ItemGrenadeShell.EnumGrenadeShell.valueOf(
+                            GrenadeShellItem.EnumGrenadeShell.valueOf(
                                     value.toUpperCase(Locale.ROOT)),
                     value -> value.name().toLowerCase(Locale.ROOT));
-    private static final Codec<ItemGrenadeFilling.EnumGrenadeFilling> FILLING =
+    private static final Codec<GrenadeFillingDefinition> FILLING = GrenadeFillings.CODEC;
+    private static final Codec<GrenadeFuzeItem.EnumGrenadeFuze> FUZE =
             Codec.STRING.xmap(
                     value ->
-                            ItemGrenadeFilling.EnumGrenadeFilling.valueOf(
-                                    value.toUpperCase(Locale.ROOT)),
+                            GrenadeFuzeItem.EnumGrenadeFuze.valueOf(value.toUpperCase(Locale.ROOT)),
                     value -> value.name().toLowerCase(Locale.ROOT));
-    private static final Codec<ItemGrenadeFuze.EnumGrenadeFuze> FUZE =
+    private static final Codec<GrenadeExtraItem.EnumGrenadeExtra> EXTRA =
             Codec.STRING.xmap(
                     value ->
-                            ItemGrenadeFuze.EnumGrenadeFuze.valueOf(value.toUpperCase(Locale.ROOT)),
-                    value -> value.name().toLowerCase(Locale.ROOT));
-    private static final Codec<ItemGrenadeExtra.EnumGrenadeExtra> EXTRA =
-            Codec.STRING.xmap(
-                    value ->
-                            ItemGrenadeExtra.EnumGrenadeExtra.valueOf(
+                            GrenadeExtraItem.EnumGrenadeExtra.valueOf(
                                     value.toUpperCase(Locale.ROOT)),
                     value -> value.name().toLowerCase(Locale.ROOT));
 
@@ -73,34 +86,18 @@ public record GrenadeData(
             StreamCodec.composite(
                     ByteBufCodecs.VAR_INT,
                     data -> data.shell().ordinal(),
-                    ByteBufCodecs.VAR_INT,
-                    data -> data.filling().ordinal(),
+                    GrenadeFillings.STREAM_CODEC,
+                    GrenadeData::filling,
                     ByteBufCodecs.VAR_INT,
                     data -> data.fuze().ordinal(),
                     ByteBufCodecs.VAR_INT,
                     data -> data.extra() == null ? -1 : data.extra().ordinal(),
                     (shell, filling, fuze, extra) ->
                             new GrenadeData(
-                                    enumAt(
-                                            ItemGrenadeShell.EnumGrenadeShell.values(),
-                                            shell,
-                                            ItemGrenadeShell.EnumGrenadeShell.FRAG),
-                                    enumAt(
-                                            ItemGrenadeFilling.EnumGrenadeFilling.values(),
-                                            filling,
-                                            ItemGrenadeFilling.EnumGrenadeFilling.HE),
-                                    enumAt(
-                                            ItemGrenadeFuze.EnumGrenadeFuze.values(),
-                                            fuze,
-                                            ItemGrenadeFuze.EnumGrenadeFuze.S3),
-                                    extra < 0
+                                    GrenadeShellItem.EnumGrenadeShell.VALUES[shell],
+                                    filling,
+                                    GrenadeFuzeItem.EnumGrenadeFuze.VALUES[fuze],
+                                    extra == -1
                                             ? null
-                                            : enumAt(
-                                                    ItemGrenadeExtra.EnumGrenadeExtra.values(),
-                                                    extra,
-                                                    null)));
-
-    private static <T> T enumAt(T[] values, int ordinal, @Nullable T fallback) {
-        return ordinal >= 0 && ordinal < values.length ? values[ordinal] : fallback;
-    }
+                                            : GrenadeExtraItem.EnumGrenadeExtra.VALUES[extra]));
 }

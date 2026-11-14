@@ -1,10 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
-import com.hbm.blockentity.network.BlockEntityPipePaintable;
-import com.hbm.interfaces.IToolable;
+import com.hbm.blockentity.network.PipePaintableBlockEntity;
+import com.hbm.interfaces.ToolInteractionHandler;
+import com.hbm.interfaces.ToolType;
 import com.hbm.items.machine.FluidIdentifierItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,21 +43,28 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class FluidDuctPaintableBlock extends FluidDuctBlockBase
-        implements EntityBlock, IToolable, PaintableCamoBlock {
+public class FluidDuctPaintableBlock extends FluidDuctBlock
+        implements EntityBlock, ToolInteractionHandler, CamouflageStateProvider {
 
     public static final BooleanProperty PAINTED = BooleanProperty.create("painted");
     public static final BooleanProperty OVERLAY = BooleanProperty.create("overlay");
 
-    public FluidDuctPaintableBlock(Properties props) {
-        super(props);
+    public FluidDuctPaintableBlock(Properties properties) {
+        super(properties);
         registerDefaultState(
                 stateDefinition.any().setValue(PAINTED, false).setValue(OVERLAY, true));
     }
 
     public static boolean allowedPaint(Block paint, Block that) {
-        if (paint == Blocks.GRASS_BLOCK) return false;
-        return paint.defaultBlockState().isSolidRender() && paint != that;
+        return paint != that
+                && paint != Blocks.GRASS_BLOCK
+                && paint.defaultBlockState().isSolidRender();
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(PAINTED, OVERLAY);
     }
 
     @Override
@@ -54,67 +78,63 @@ public class FluidDuctPaintableBlock extends FluidDuctBlockBase
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(PAINTED, OVERLAY);
-    }
-
-    @Override
     protected InteractionResult useItemOn(
-            ItemStack stack,
+            ItemStack held,
             BlockState state,
             Level level,
             BlockPos pos,
             Player player,
             InteractionHand hand,
             BlockHitResult hit) {
-        if (stack.getItem() instanceof FluidIdentifierItem) return InteractionResult.PASS;
-        if (stack.getItem() instanceof BlockItem blockItem
-                && !state.getValue(PAINTED)
-                && allowedPaint(blockItem.getBlock(), this)) {
-            if (!level.isClientSide()
-                    && level.getBlockEntity(pos) instanceof BlockEntityPipePaintable pipe) {
-                pipe.setCamo(blockItem.getBlock().defaultBlockState());
-                level.setBlock(pos, state.setValue(PAINTED, true), Block.UPDATE_ALL);
-            }
-            return InteractionResult.SUCCESS;
+        if (held.getItem() instanceof FluidIdentifierItem) return InteractionResult.PASS;
+        if (state.getValue(PAINTED) || !(held.getItem() instanceof BlockItem blockItem)) {
+            return InteractionResult.PASS;
         }
-        return InteractionResult.PASS;
+
+        var paint = blockItem.getBlock();
+        if (!allowedPaint(paint, this)) return InteractionResult.PASS;
+        if (!level.isClientSide()) {
+            var pipe = (PipePaintableBlockEntity) level.getBlockEntity(pos);
+            pipe.setCamo(paint.defaultBlockState());
+            level.setBlock(pos, state.setValue(PAINTED, true), Block.UPDATE_ALL);
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public boolean onScrew(
+    public boolean onToolUse(
             Level level,
-            Player player,
+            @Nullable Player player,
             BlockPos pos,
-            @Nullable Direction side,
+            @Nullable Direction face,
             Vec3 hit,
             ToolType tool) {
-        BlockState state = level.getBlockState(pos);
+        if (player != null && player.isSpectator()) return false;
+        if (tool != ToolType.SCREWDRIVER && tool != ToolType.DEFUSER) return false;
+
+        var state = level.getBlockState(pos);
         if (tool == ToolType.SCREWDRIVER) {
-            if (state.getValue(PAINTED)
-                    && level.getBlockEntity(pos) instanceof BlockEntityPipePaintable pipe
-                    && pipe.getCamo() != null) {
-                if (!level.isClientSide()) {
-                    pipe.setCamo(null);
-                    level.setBlock(pos, state.setValue(PAINTED, false), Block.UPDATE_ALL);
-                }
-                return true;
+            if (!state.getValue(PAINTED)) return false;
+            if (!(level.getBlockEntity(pos) instanceof PipePaintableBlockEntity pipe)
+                    || pipe.getCamo() == null) {
+                return false;
             }
-            return false;
-        }
-        if (tool == ToolType.DEFUSER) {
             if (!level.isClientSide()) {
-                level.setBlock(
-                        pos, state.setValue(OVERLAY, !state.getValue(OVERLAY)), Block.UPDATE_ALL);
+                pipe.setCamo(null);
+                level.setBlock(pos, state.setValue(PAINTED, false), Block.UPDATE_ALL);
             }
             return true;
         }
-        return false;
+
+        if (!level.isClientSide()) {
+            level.setBlock(pos, state.cycle(OVERLAY), Block.UPDATE_ALL);
+        }
+        return true;
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityPipePaintable(pos, state);
+        return new PipePaintableBlockEntity(pos, state);
     }
 
     @Override

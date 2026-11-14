@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.integration.rei;
 
@@ -9,7 +25,7 @@ import com.hbm.integration.recipeviewer.PageSlot;
 import com.hbm.integration.recipeviewer.RecipePage;
 import com.hbm.integration.recipeviewer.RecipePages;
 import com.hbm.inventory.fluid.trait.FluidTraitTooltip;
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.architectury.fluid.FluidStack;
@@ -38,7 +54,7 @@ import org.jspecify.annotations.Nullable;
 
 final class ReiPageDisplay implements Display {
 
-    static final Identifier SERIALIZER_ID = Library.id("recipe_page");
+    static final Identifier SERIALIZER_ID = RegistryUtil.id("recipe_page");
     static final DisplaySerializer<ReiPageDisplay> SERIALIZER =
             DisplaySerializer.of(
                     RecordCodecBuilder.<Key>mapCodec(
@@ -196,6 +212,7 @@ final class ReiPageDisplay implements Display {
         private final Map<EntryStack<?>, Tooltip> fluidLines = new IdentityHashMap<>();
         private final List<Tooltip> tooltips = new ArrayList<>();
         boolean background;
+        boolean visible = true;
 
         Slot(Role role, int x, int y) {
             this.role = role;
@@ -228,7 +245,7 @@ final class ReiPageDisplay implements Display {
                     milliBuckets * FluidStack.bucketAmount() / 1000L,
                     (shown, lines) -> {
                         lines.accept(Component.literal(milliBuckets + "mB"));
-                        if (pressure > 0) FluidTraitTooltip.addPressureInfo(pressure, lines);
+                        if (pressure > 0) FluidTraitTooltip.pressure(pressure, lines);
                     });
         }
 
@@ -265,7 +282,7 @@ final class ReiPageDisplay implements Display {
                     stack,
                     (shown, lines) -> {
                         amountLines.append(shown, lines);
-                        FluidTraitTooltip.addInfo(fluid, lines);
+                        FluidTraitTooltip.describe(fluid, lines);
                     });
             entries.add(stack);
             return this;
@@ -321,6 +338,20 @@ final class ReiPageDisplay implements Display {
         @Override
         public PageSlot display(int x, int y) {
             return slot(Role.DISPLAY, x, y);
+        }
+
+        @Override
+        public PageSlot lookupInput() {
+            Slot slot = (Slot) slot(Role.INPUT, 0, 0);
+            slot.visible = false;
+            return slot;
+        }
+
+        @Override
+        public PageSlot lookupOutput() {
+            Slot slot = (Slot) slot(Role.OUTPUT, 0, 0);
+            slot.visible = false;
+            return slot;
         }
 
         @Override

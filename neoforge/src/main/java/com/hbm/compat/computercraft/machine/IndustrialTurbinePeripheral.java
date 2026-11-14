@@ -1,59 +1,66 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.machine;
 
-import com.hbm.blockentity.machine.BlockEntityMachineIndustrialTurbine;
+import com.hbm.blockentity.machine.IndustrialTurbineBlockEntity;
+import com.hbm.compat.computercraft.SteamTypes;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import dan200.computercraft.api.lua.LuaFunction;
 
 public final class IndustrialTurbinePeripheral
-        extends TurbinePeripheral<BlockEntityMachineIndustrialTurbine> {
+        extends TurbinePeripheral<IndustrialTurbineBlockEntity> {
 
-    private static final int FLYWHEEL = SLOTS;
-
-    public IndustrialTurbinePeripheral(BlockEntityMachineIndustrialTurbine machine) {
-        super(machine, SLOTS + 1);
+    public IndustrialTurbinePeripheral(IndustrialTurbineBlockEntity machine) {
+        super(machine);
     }
 
     @Override
-    protected FluidTankNTM input(BlockEntityMachineIndustrialTurbine machine) {
+    protected FluidTankNTM input(IndustrialTurbineBlockEntity machine) {
         return machine.tanks[0];
     }
 
     @Override
-    protected FluidTankNTM output(BlockEntityMachineIndustrialTurbine machine) {
+    protected FluidTankNTM output(IndustrialTurbineBlockEntity machine) {
         return machine.tanks[1];
     }
 
     @Override
-    protected long power(BlockEntityMachineIndustrialTurbine machine) {
+    protected long power(IndustrialTurbineBlockEntity machine) {
         return machine.powerBuffer;
     }
 
-    @Override
-    protected void capture(BlockEntityMachineIndustrialTurbine machine) {
-        super.capture(machine);
-        put(FLYWHEEL, (int) (machine.spin * 100));
+    @LuaFunction
+    public Object[] getFlywheel() {
+        return new Object[] {(int) (target.spin * 100)};
     }
 
     @LuaFunction
-    public final Object[] getFlywheel() {
-        return read(s -> new Object[] {s.intAt(FLYWHEEL)});
-    }
-
-    @LuaFunction
-    public final Object[] getInfo() {
-        return read(
-                s ->
-                        new Object[] {
-                            s.intAt(IN_FILL),
-                            s.intAt(IN_MAX),
-                            s.intAt(OUT_FILL),
-                            s.intAt(OUT_MAX),
-                            s.intAt(STEAM),
-                            s.longAt(POWER),
-                            s.intAt(FLYWHEEL)
-                        });
+    public Object[] getInfo() {
+        return new Object[] {
+            (int) input(target).getFill(),
+            (int) input(target).getMaxFill(),
+            (int) output(target).getFill(),
+            (int) output(target).getMaxFill(),
+            (int) SteamTypes.toInt(input(target).getTankType()),
+            (long) power(target),
+            (int) (target.spin * 100)
+        };
     }
 }

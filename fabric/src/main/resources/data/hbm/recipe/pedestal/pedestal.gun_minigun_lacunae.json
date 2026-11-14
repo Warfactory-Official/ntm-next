@@ -11,7 +11,10 @@
       "ingredient": "hbm:item_secret_selenium_steel"
     },
     "C": {
-      "ingredient": "hbm:gun_minigun"
+      "ingredient": "hbm:gun_minigun",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "D": {
       "count": 4,

@@ -1,13 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineAssemblyFactory;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.AssemblyFactoryBlockEntity;
+import com.hbm.blockentity.machine.JointedArm;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.client.render.AssemblyFactoryRenderer;
+import com.hbm.client.render.AssemblyMachineRenderer;
 import com.hbm.client.render.FramedItem;
-import com.hbm.client.render.RenderAssemblyFactory;
-import com.hbm.client.render.RenderAssemblyMachine;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -20,16 +37,20 @@ import dev.engine_room.flywheel.api.material.Material;
 import dev.engine_room.flywheel.api.material.Transparency;
 import dev.engine_room.flywheel.api.material.WriteMask;
 import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.instance.UvTransformedInstance;
 import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.material.StandardMaterialShaders;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
@@ -38,10 +59,11 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
 
 public final class AssemblyFactoryVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityMachineAssemblyFactory>
-        implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<AssemblyFactoryBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final float BASE_YAW = 90F;
     private static final double SAW_DOWN = -.375D;
     private static final float SPARK_WIDE = .1875F;
@@ -100,39 +122,38 @@ public final class AssemblyFactoryVisual
                     .build();
     private static final Model FIRST_SPARK_MODEL = sparkModel(SPARK_MATERIAL, SPARK_LENGTH);
     private static final Model SECOND_SPARK_MODEL = sparkModel(SPARK_MATERIAL, -SPARK_LENGTH);
-    private final PartVisual[] parts;
+    private static final int[] GROUP_FIRST = {1, 6, 12, 17};
+    private static final ChainInstance.Chain[] CHAINS = buildChains();
+    private final ChainInstance[] parts;
     private final UvTransformedInstance firstSpark;
     private final UvTransformedInstance secondSpark;
     private final Matrix4f rootPose = new Matrix4f();
+    private final Matrix4f base = new Matrix4f();
     private final Matrix4f instancePose = new Matrix4f();
     private final AABB rawBodyBounds;
-    private final double[] arm1 = new double[5];
+    private final float[][] previous = new float[4][6];
+    private final float[][] current = new float[4][6];
     private final double[] arm2 = new double[5];
-    private final double[] arm3 = new double[5];
     private final double[] arm4 = new double[5];
-    private final double[] lastArm1 = new double[5];
-    private final double[] lastArm2 = new double[5];
-    private final double[] lastArm3 = new double[5];
-    private final double[] lastArm4 = new double[5];
-    private final Matrix4f armPose = new Matrix4f();
     private final Matrix4f sparkPose = new Matrix4f();
     private double lastSlide1 = Double.NaN;
     private double lastSlide2 = Double.NaN;
+    private double lastSaw1 = Double.NaN;
+    private double lastSaw2 = Double.NaN;
     private float lastSparkU = Float.NaN;
     private boolean lastSparkOneVisible;
     private boolean lastSparkTwoVisible;
-    private boolean lastFrame;
-    private boolean initialized;
+    private boolean frameShown;
     private final float yaw;
-    private final WorldItem[] previews = new WorldItem[BlockEntityMachineAssemblyFactory.MODULES];
+    private final WorldItem[] previews = new WorldItem[AssemblyFactoryBlockEntity.MODULES];
     private final PoseStack previewPoses = new PoseStack();
 
     public AssemblyFactoryVisual(
             VisualizationContext context,
-            BlockEntityMachineAssemblyFactory blockEntity,
+            AssemblyFactoryBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
-        var facing = BlockMultiblockCore.coreFacing(blockEntity.getBlockState());
+        var facing = MultiblockCoreBlock.coreFacing(blockEntity.getBlockState());
         var rawBodyLocal =
                 new Matrix4f()
                         .translation(.5F, 0F, .5F)
@@ -140,9 +161,13 @@ public final class AssemblyFactoryVisual
         rawBodyBounds = new AABB(pos).minmax(LightBounds.of(MODEL, "Base", rawBodyLocal, pos));
         yaw = BASE_YAW + Facing.yaw(facing, 0);
         rootPose.translation(.5F, 0F, .5F).rotateY(yaw * Mth.DEG_TO_RAD);
-        parts = new PartVisual[STATIC_PARTS.length];
+        base.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(rootPose);
+        parts = new ChainInstance[STATIC_PARTS.length];
         for (int i = 0; i < parts.length; i++) {
-            parts[i] = new PartVisual(STATIC_PARTS[i]);
+            parts[i] =
+                    instancerProvider()
+                            .instancer(ChainInstance.TYPE, STATIC_PARTS[i].model())
+                            .createInstance();
         }
         firstSpark =
                 instancerProvider()
@@ -152,17 +177,62 @@ public final class AssemblyFactoryVisual
                 instancerProvider()
                         .instancer(InstanceTypes.UV_TRANSFORMED, SECOND_SPARK_MODEL)
                         .createInstance();
+        firstSpark.setVisible(false);
+        secondSpark.setVisible(false);
         for (int i = 0; i < previews.length; i++)
             previews[i] = new WorldItem(visualizationContext, level, pos);
+        frameShown = blockEntity.frame;
+        for (int group = 0; group < GROUP_FIRST.length; group++) readChannels(group);
+        for (int i = 0; i < parts.length; i++) write(i, i != 0 || frameShown);
         updateFrame(partialTick);
+    }
+
+    private static ChainInstance.Chain[] buildChains() {
+        var chains = new ChainInstance.Chain[PART_NAMES.length];
+        chains[0] = new ChainInstance.Chain();
+        for (int group = 0; group < GROUP_FIRST.length; group++) {
+            boolean negative = group == 0 || group == 3;
+            boolean blade = group % 2 == 1;
+            for (int part = 0; part < (blade ? 6 : 5); part++)
+                chains[GROUP_FIRST[group] + part] = arm(negative, part);
+        }
+        return chains;
+    }
+
+    private static ChainInstance.Chain arm(boolean negative, int part) {
+        float sign = negative ? -1F : 1F;
+        var chain =
+                new ChainInstance.Chain().translate(negative ? .5F : -.5F, 0F, 0F).slideX(0, sign);
+        if (part > 0) {
+            chain.translate(0F, 1.625F, sign * .9375F)
+                    .rotateX(1, sign * Mth.DEG_TO_RAD)
+                    .translate(0F, -1.625F, -sign * .9375F);
+        }
+        if (part > 1) {
+            chain.translate(0F, 2.375F, sign * .9375F)
+                    .rotateX(2, sign * Mth.DEG_TO_RAD)
+                    .translate(0F, -2.375F, -sign * .9375F);
+        }
+        if (part > 2) {
+            chain.translate(0F, 2.375F, sign * .4375F)
+                    .rotateX(3, sign * Mth.DEG_TO_RAD)
+                    .translate(0F, -2.375F, -sign * .4375F);
+        }
+        if (part > 3) chain.slideY(4, 1F);
+        if (part > 4) {
+            chain.translate(0F, 1.625F, negative ? -.3125F : .3125F)
+                    .rotateX(5, -sign * Mth.DEG_TO_RAD)
+                    .translate(0F, -1.625F, negative ? .3125F : -.3125F);
+        }
+        return chain.end();
     }
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockEntityMachineAssemblyFactory be) {
-        boolean inRange = RenderAssemblyMachine.inPreviewRange(be.getBlockPos());
-        for (int i = 0; i < BlockEntityMachineAssemblyFactory.MODULES; i++) {
-            if (!WorldItem.drawsFramed(RenderAssemblyFactory.previewStack(be, i, inRange)))
+    public static boolean vanillaNeeded(AssemblyFactoryBlockEntity be) {
+        boolean inRange = AssemblyMachineRenderer.inPreviewRange(be.getBlockPos());
+        for (int i = 0; i < AssemblyFactoryBlockEntity.MODULES; i++) {
+            if (!WorldItem.drawsFramed(AssemblyFactoryRenderer.previewStack(be, i, inRange)))
                 return true;
         }
         return false;
@@ -248,87 +318,92 @@ public final class AssemblyFactoryVisual
         lights[index] = LightCoordsUtil.FULL_BRIGHT;
     }
 
-    private static boolean same(double[] first, double[] second) {
-        for (int i = 0; i < first.length; i++) if (first[i] != second[i]) return false;
-        return true;
-    }
-
-    private static void copy(double[] source, double[] target) {
-        System.arraycopy(source, 0, target, 0, source.length);
-    }
-
     @Override
-    protected void frame(Context context) {
+    public void frame(DynamicVisual.Context context) {
         updateFrame(context.partialTick());
     }
 
+    @Override
+    public void tick(TickableVisual.Context context) {
+        boolean frame = blockEntity.frame;
+        if (frame != frameShown) {
+            frameShown = frame;
+            write(0, frame);
+        }
+        for (int group = 0; group < GROUP_FIRST.length; group++) {
+            if (!readChannels(group)) continue;
+            for (int part = 0; part < (group % 2 == 1 ? 6 : 5); part++)
+                write(GROUP_FIRST[group] + part, true);
+        }
+    }
+
+    private boolean readChannels(int group) {
+        var carriage = blockEntity.carriages[group / 2];
+        JointedArm arm = group % 2 == 0 ? carriage.striker : carriage.saw;
+        return set(previous[group], (float) carriage.prevSlider, arm.prevAngles)
+                | set(current[group], (float) carriage.slider, arm.angles);
+    }
+
+    private static boolean set(float[] channels, float slider, double[] angles) {
+        boolean changed = channels[0] != slider;
+        channels[0] = slider;
+        for (int i = 0; i < 5; i++) {
+            float angle = (float) angles[i];
+            changed |= channels[i + 1] != angle;
+            channels[i + 1] = angle;
+        }
+        return changed;
+    }
+
+    private void write(int index, boolean visible) {
+        ChainInstance instance = parts[index];
+        instance.setVisible(visible);
+        if (!visible) return;
+        int group = GROUP_FIRST.length - 1;
+        while (group > 0 && index < GROUP_FIRST[group]) group--;
+        instance.chain(CHAINS[index]).channels(previous[group], current[group]);
+        instance.setTransform(base);
+        instance.light(0).setChanged();
+    }
+
     private void updateFrame(float partialTick) {
-        boolean inRange = RenderAssemblyMachine.inPreviewRange(pos);
-        writeFrame(partialTick, inRange);
+        boolean inRange = AssemblyMachineRenderer.inPreviewRange(pos);
+        writeSparks(partialTick, inRange);
         for (int i = 0; i < previews.length; i++) {
-            ItemStack stack = RenderAssemblyFactory.previewStack(blockEntity, i, inRange);
+            ItemStack stack = AssemblyFactoryRenderer.previewStack(blockEntity, i, inRange);
             FramedItem.Arm arm = previews[i].setFramed(stack, level);
             if (arm == null) continue;
             previewPoses.setIdentity();
             previewPoses.translate(visualPos.getX(), visualPos.getY(), visualPos.getZ());
             previewPoses.translate(.5, 0, .5);
-            previewPoses.mulPose(Axis.YP.rotationDegrees(yaw));
-            RenderAssemblyFactory.previewPose(
+            previewPoses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(yaw));
+            AssemblyFactoryRenderer.previewPose(
                     previewPoses, i, arm, stack.getItem() instanceof BlockItem);
             previews[i].write(previewPoses.last().pose(), partialTick);
         }
     }
 
-    private void writeFrame(float partialTick, boolean inRange) {
+    private void writeSparks(float partialTick, boolean inRange) {
         double slide1 = blockEntity.carriages[0].getSlider(partialTick);
         double slide2 = blockEntity.carriages[1].getSlider(partialTick);
-        blockEntity.carriages[0].striker.getPositions(partialTick, arm1);
         blockEntity.carriages[0].saw.getPositions(partialTick, arm2);
-        blockEntity.carriages[1].striker.getPositions(partialTick, arm3);
         blockEntity.carriages[1].saw.getPositions(partialTick, arm4);
         boolean sparkOneVisible = inRange && arm2[3] <= SAW_DOWN;
         boolean sparkTwoVisible = inRange && arm4[3] <= SAW_DOWN;
         float sparkU = (float) ((blockEntity.getLevel().getGameTime() / 10D + partialTick) % 10D);
-        boolean frameChanged = !initialized || blockEntity.frame != lastFrame;
-        boolean firstChanged =
-                !initialized
-                        || slide1 != lastSlide1
-                        || !same(arm1, lastArm1)
-                        || !same(arm2, lastArm2);
-        boolean secondChanged =
-                !initialized
-                        || slide2 != lastSlide2
-                        || !same(arm3, lastArm3)
-                        || !same(arm4, lastArm4);
         boolean uvChanged = sparkU != lastSparkU;
         boolean sparkOneChanged =
-                firstChanged
-                        || sparkOneVisible != lastSparkOneVisible
-                        || sparkOneVisible && uvChanged;
+                sparkOneVisible != lastSparkOneVisible
+                        || sparkOneVisible
+                                && (uvChanged || slide1 != lastSlide1 || arm2[2] != lastSaw1);
         boolean sparkTwoChanged =
-                secondChanged
-                        || sparkTwoVisible != lastSparkTwoVisible
-                        || sparkTwoVisible && uvChanged;
-        if (frameChanged) {
-            lastFrame = blockEntity.frame;
-            parts[0].write(blockEntity.frame, rootPose);
-        }
-        if (firstChanged) {
-            lastSlide1 = slide1;
-            copy(arm1, lastArm1);
-            copy(arm2, lastArm2);
-            armPoses(.5D - slide1, arm1, 1, true, false);
-            armPoses(-.5D + slide1, arm2, 6, false, true);
-        }
-        if (secondChanged) {
-            lastSlide2 = slide2;
-            copy(arm3, lastArm3);
-            copy(arm4, lastArm4);
-            armPoses(-.5D + slide2, arm3, 12, false, false);
-            armPoses(.5D - slide2, arm4, 17, true, true);
-        }
+                sparkTwoVisible != lastSparkTwoVisible
+                        || sparkTwoVisible
+                                && (uvChanged || slide2 != lastSlide2 || arm4[2] != lastSaw2);
         if (sparkOneChanged) {
             lastSparkOneVisible = sparkOneVisible;
+            lastSlide1 = slide1;
+            lastSaw1 = arm2[2];
             firstSpark.setVisible(sparkOneVisible);
             if (sparkOneVisible) {
                 sparkPose
@@ -339,6 +414,8 @@ public final class AssemblyFactoryVisual
         }
         if (sparkTwoChanged) {
             lastSparkTwoVisible = sparkTwoVisible;
+            lastSlide2 = slide2;
+            lastSaw2 = arm4[2];
             secondSpark.setVisible(sparkTwoVisible);
             if (sparkTwoVisible) {
                 sparkPose
@@ -348,7 +425,6 @@ public final class AssemblyFactoryVisual
             }
         }
         if (sparkOneChanged || sparkTwoChanged) lastSparkU = sparkU;
-        initialized = true;
     }
 
     private void writeSpark(UvTransformedInstance instance, Matrix4f local, float u) {
@@ -357,31 +433,6 @@ public final class AssemblyFactoryVisual
                 .setTransform(instancePose)
                 .light(LightCoordsUtil.FULL_BRIGHT)
                 .setChanged();
-    }
-
-    private void armPoses(double slider, double[] arm, int first, boolean negative, boolean blade) {
-        Matrix4f pose = armPose.set(rootPose).translate((float) slider, 0F, 0F);
-        parts[first].write(true, pose);
-        float sign = negative ? -1F : 1F;
-        pose.translate(0F, 1.625F, sign * .9375F)
-                .rotateX(sign * (float) arm[0] * Mth.DEG_TO_RAD)
-                .translate(0F, -1.625F, -sign * .9375F);
-        parts[first + 1].write(true, pose);
-        pose.translate(0F, 2.375F, sign * .9375F)
-                .rotateX(sign * (float) arm[1] * Mth.DEG_TO_RAD)
-                .translate(0F, -2.375F, -sign * .9375F);
-        parts[first + 2].write(true, pose);
-        pose.translate(0F, 2.375F, sign * .4375F)
-                .rotateX(sign * (float) arm[2] * Mth.DEG_TO_RAD)
-                .translate(0F, -2.375F, -sign * .4375F);
-        parts[first + 3].write(true, pose);
-        pose.translate(0F, (float) arm[3], 0F);
-        parts[first + 4].write(true, pose);
-        if (!blade) return;
-        pose.translate(0F, 1.625F, negative ? -.3125F : .3125F)
-                .rotateX((negative ? 1F : -1F) * (float) arm[4] * Mth.DEG_TO_RAD)
-                .translate(0F, -1.625F, negative ? .3125F : -.3125F);
-        parts[first + 5].write(true, pose);
     }
 
     @Override
@@ -399,7 +450,7 @@ public final class AssemblyFactoryVisual
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        for (var part : parts) part.collect(consumer);
+        for (ChainInstance part : parts) consumer.accept(part);
     }
 
     @Override
@@ -408,33 +459,5 @@ public final class AssemblyFactoryVisual
         firstSpark.delete();
         secondSpark.delete();
         for (WorldItem preview : previews) preview.delete();
-    }
-
-    private final class PartVisual {
-        private final TransformedInstance instance;
-
-        private PartVisual(MeshPart part) {
-            instance =
-                    instancerProvider()
-                            .instancer(InstanceTypes.TRANSFORMED, part.model())
-                            .createInstance();
-        }
-
-        private void write(boolean shown, Matrix4f local) {
-            instance.setVisible(shown);
-            if (!shown) return;
-            instancePose
-                    .translation(visualPos.getX(), visualPos.getY(), visualPos.getZ())
-                    .mul(local);
-            instance.setTransform(instancePose).light(0).setChanged();
-        }
-
-        private void collect(Consumer<Instance> consumer) {
-            consumer.accept(instance);
-        }
-
-        private void delete() {
-            instance.delete();
-        }
     }
 }

@@ -1,6 +1,7 @@
 {
   "values": [
     "hbm:bolt",
-    "hbm:shockwave"
+    "hbm:shockwave",
+    "hbm:health_drain"
   ]
 }

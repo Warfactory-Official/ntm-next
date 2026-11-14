@@ -3,11 +3,14 @@
   "key": {
     "D": "hbm:ducttape",
     "K": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:insert_kevlar",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:insert_kevlar"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     },
     "P": "#hbm:ingots/any_plastic"
   },

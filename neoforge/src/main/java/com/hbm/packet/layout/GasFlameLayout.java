@@ -1,0 +1,127 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
+package com.hbm.packet.layout;
+
+import com.hbm.client.ClientPacketEvents;
+import com.hbm.packet.PayloadHandlerContext;
+import com.hbm.packet.threading.EncodedPayload;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.DecoderException;
+
+import static com.hbm.lib.internal.UnsafeHolder.BA_BASE;
+import static com.hbm.lib.internal.UnsafeHolder.U;
+import static java.lang.Double.doubleToRawLongBits;
+import static java.lang.Double.longBitsToDouble;
+import static java.lang.Float.floatToRawIntBits;
+import static java.lang.Float.intBitsToFloat;
+
+public final class GasFlameLayout {
+    public static final int VARIANT = 6;
+    public static final int VARIANT_BITS = 5;
+    public static final int MIN_BODY_BYTES = 53;
+    public static final int MAX_BODY_BYTES = 53;
+    public static final int BODY_BYTES = MIN_BODY_BYTES;
+
+    private GasFlameLayout() {}
+
+    public static EncodedPayload encode(
+            double x,
+            double y,
+            double z,
+            double motionX,
+            double motionY,
+            double motionZ,
+            float scale) {
+        EncodedPayload payload =
+                EncodedPayload.allocate(
+                        PacketFamilyClientEvents.TYPE,
+                        BODY_BYTES,
+                        MAX_BODY_BYTES,
+                        true,
+                        false,
+                        false);
+        try {
+            ByteBuf encodedBuffer = payload.buffer();
+            int bufferStart = encodedBuffer.writerIndex();
+            Object storageBase;
+            long storageAddress;
+            if (encodedBuffer.hasArray()) {
+                storageBase = encodedBuffer.array();
+                storageAddress = BA_BASE + encodedBuffer.arrayOffset() + bufferStart;
+            } else {
+                storageBase = null;
+                storageAddress = encodedBuffer.memoryAddress() + bufferStart;
+            }
+            long xBits = doubleToRawLongBits(x);
+            long yBits = doubleToRawLongBits(y);
+            long zBits = doubleToRawLongBits(z);
+            long motionXBits = doubleToRawLongBits(motionX);
+            long motionYBits = doubleToRawLongBits(motionY);
+            long motionZBits = doubleToRawLongBits(motionZ);
+            long scaleBits = floatToRawIntBits(scale);
+            U.putLong(storageBase, storageAddress, 6L | (xBits << 5));
+            U.putLong(storageBase, storageAddress + 8L, (xBits >>> 59) | (yBits << 5));
+            U.putLong(storageBase, storageAddress + 16L, (yBits >>> 59) | (zBits << 5));
+            U.putLong(storageBase, storageAddress + 24L, (zBits >>> 59) | (motionXBits << 5));
+            U.putLong(storageBase, storageAddress + 32L, (motionXBits >>> 59) | (motionYBits << 5));
+            U.putLong(storageBase, storageAddress + 40L, (motionYBits >>> 59) | (motionZBits << 5));
+            U.putLong(
+                    storageBase,
+                    storageAddress + 45L,
+                    (motionZBits >>> 35) | ((scaleBits & 0xFFFFFFFFL) << 29));
+            encodedBuffer.writerIndex(bufferStart + BODY_BYTES);
+            return payload;
+        } catch (Throwable encodingFailure) {
+            payload.release();
+            throw encodingFailure;
+        }
+    }
+
+    static void receiveFields(
+            ByteBuf decodedBuffer,
+            PayloadHandlerContext context,
+            Object storageBase,
+            long storageAddress,
+            int bufferStart,
+            int bodyBytes) {
+        if (bodyBytes != BODY_BYTES) throw new DecoderException("Invalid packet length");
+        long xWord = U.getLong(storageBase, storageAddress);
+        long xToYWord = U.getLong(storageBase, storageAddress + 8L);
+        long yToZWord = U.getLong(storageBase, storageAddress + 16L);
+        long zToMotionXWord = U.getLong(storageBase, storageAddress + 24L);
+        long motionXToMotionYWord = U.getLong(storageBase, storageAddress + 32L);
+        long motionYToMotionZWord = U.getLong(storageBase, storageAddress + 40L);
+        long motionZToScaleWord = U.getLong(storageBase, storageAddress + 45L);
+        double x = longBitsToDouble(((xWord >>> 5) | (xToYWord << 59)));
+        double y = longBitsToDouble(((xToYWord >>> 5) | (yToZWord << 59)));
+        double z = longBitsToDouble(((yToZWord >>> 5) | (zToMotionXWord << 59)));
+        double motionX = longBitsToDouble(((zToMotionXWord >>> 5) | (motionXToMotionYWord << 59)));
+        double motionY =
+                longBitsToDouble(((motionXToMotionYWord >>> 5) | (motionYToMotionZWord << 59)));
+        double motionZ =
+                longBitsToDouble(
+                        ((motionYToMotionZWord >>> 5) | ((motionZToScaleWord >>> 24) << 59)));
+        float scale = intBitsToFloat((int) (motionZToScaleWord >>> 29));
+        if ((motionZToScaleWord >>> 61) != 0) throw new DecoderException("Nonzero packet padding");
+        var player = context.playerOrNull();
+        if (player == null) return;
+        ClientPacketEvents.gasFlame(player, x, y, z, motionX, motionY, motionZ, scale);
+    }
+}

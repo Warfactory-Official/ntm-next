@@ -1,9 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.blockentity.machine.storage;
 
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -76,8 +106,8 @@ public enum CrateType {
             0xFFFFFF,
             0xFFFFFF) {
         @Override
-        public BlockEntityCrate newBlockEntity(BlockPos pos, BlockState state) {
-            return new BlockEntityCrateTungsten(pos, state);
+        public CrateBlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new CrateTungstenBlockEntity(pos, state);
         }
     },
     SAFE("safe", "container.safe", 15, 5, 3, 44, 18, 8, 86, 144, 176, 168, 8, 0x404040, 0x404040);
@@ -99,7 +129,7 @@ public enum CrateType {
     public final int inventoryLabelColor;
     public final Identifier texture;
 
-    private Supplier<? extends BlockEntityType<? extends BlockEntityCrate>> typeSupplier;
+    private Supplier<? extends BlockEntityType<? extends CrateBlockEntity>> typeSupplier;
 
     CrateType(
             String id,
@@ -132,19 +162,19 @@ public enum CrateType {
         this.inventoryLabelX = inventoryLabelX;
         this.titleColor = titleColor;
         this.inventoryLabelColor = inventoryLabelColor;
-        this.texture = Library.id("textures/gui/storage/gui_" + id + ".png");
+        this.texture = RegistryUtil.id("textures/gui/storage/gui_" + id + ".png");
     }
 
     public void setTypeSupplier(
-            Supplier<? extends BlockEntityType<? extends BlockEntityCrate>> typeSupplier) {
+            Supplier<? extends BlockEntityType<? extends CrateBlockEntity>> typeSupplier) {
         this.typeSupplier = typeSupplier;
     }
 
-    public BlockEntityType<? extends BlockEntityCrate> blockEntityType() {
+    public BlockEntityType<? extends CrateBlockEntity> blockEntityType() {
         return typeSupplier.get();
     }
 
-    public BlockEntityCrate newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityCrate(this, pos, state);
+    public CrateBlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CrateBlockEntity(this, pos, state);
     }
 }

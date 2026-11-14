@@ -3,11 +3,14 @@
   "ingredients": [
     "hbm:injector_5htp",
     {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "minecraft:iron_sword",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "minecraft:iron_sword"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     }
   ],
   "result": {

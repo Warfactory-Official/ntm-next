@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
@@ -8,7 +24,7 @@ import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.api.fluidmk2.PipeData;
 import com.hbm.api.ntl.PneumaticNetwork;
 import com.hbm.blocks.network.pneumatic.PneumoTubeBlock;
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.platform.ServerEvents;
 import com.hbm.uninos.graph.GraphNode;
 import com.hbm.uninos.graph.GraphSegment;
 import com.hbm.uninos.graph.LevelNodeGraph;
@@ -19,6 +35,8 @@ import it.unimi.dsi.fastutil.longs.LongLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,7 +56,7 @@ import org.jspecify.annotations.Nullable;
 public final class ChunkDuctNodes {
     private static final Predicate<BlockState> DUCT =
             state ->
-                    state.getBlock() instanceof FluidDuctBlockBase
+                    state.getBlock() instanceof FluidDuctBlock
                             || state.getBlock() instanceof PneumoTubeBlock;
     private static final Map<ServerLevel, LongLinkedOpenHashSet> REDRAW = new HashMap<>();
     private static final Map<ServerLevel, ReferenceOpenHashSet<BlockEntity>> OWNERS =
@@ -47,13 +65,16 @@ public final class ChunkDuctNodes {
     private ChunkDuctNodes() {}
 
     public static void init() {
-        FabricServerEvents.onChunkLoad(ChunkDuctNodes::onChunkLoad);
-        FabricServerEvents.onServerTickPost(ChunkDuctNodes::redraw);
-        FabricServerEvents.onServerStopping(
+        final BiConsumer<ServerLevel, LevelChunk> callback = ChunkDuctNodes::onChunkLoad;
+        ServerEvents.CHUNK_LOAD.add(callback);
+        final Consumer<MinecraftServer> callback2 = ChunkDuctNodes::redraw;
+        ServerEvents.TICK_POST.add(callback2);
+        final Consumer<MinecraftServer> callback3 =
                 server -> {
                     REDRAW.clear();
                     OWNERS.clear();
-                });
+                };
+        ServerEvents.STOPPING.add(callback3);
     }
 
     public static void schedule(ServerLevel level, BlockPos pos) {
@@ -104,13 +125,16 @@ public final class ChunkDuctNodes {
     }
 
     public static void record(ChunkAccess chunk, BlockPos pos, Identifier fluid) {
-        Long2ObjectOpenHashMap<String> fluids = chunk.hbm$ductFluids();
-        if (fluids == null) chunk.hbm$setDuctFluids(fluids = new Long2ObjectOpenHashMap<>());
+        Long2ObjectOpenHashMap<String> fluids =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$ductFluids();
+        if (fluids == null)
+            ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
+                    .hbm$setDuctFluids(fluids = new Long2ObjectOpenHashMap<>());
         fluids.put(pos.asLong(), fluid.toString());
         chunk.markUnsaved();
     }
 
-    static void typeFromRecord(ServerLevel level, BlockPos pos, FluidDuctBlockBase duct) {
+    static void typeFromRecord(ServerLevel level, BlockPos pos, FluidDuctBlock duct) {
         LevelChunk chunk = level.getChunkAt(pos);
         Fluid fluid = take(chunk, pos);
         if (fluid == null || !duct.retypable()) return;
@@ -118,7 +142,8 @@ public final class ChunkDuctNodes {
     }
 
     public static void onChunkLoad(ServerLevel level, LevelChunk chunk) {
-        Long2ObjectOpenHashMap<String> fluids = chunk.hbm$ductFluids();
+        Long2ObjectOpenHashMap<String> fluids =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$ductFluids();
         LevelChunkSection[] sections = chunk.getSections();
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int baseX = chunk.getPos().getMinBlockX();
@@ -134,7 +159,7 @@ public final class ChunkDuctNodes {
                         if (!DUCT.test(state)) continue;
                         long key = pos.set(baseX + x, baseY + y, baseZ + z).asLong();
                         scheduleAround(level, pos, state);
-                        if (!(state.getBlock() instanceof FluidDuctBlockBase duct)
+                        if (!(state.getBlock() instanceof FluidDuctBlock duct)
                                 || state.hasBlockEntity()
                                 || FluidPipeGraph.graphAt(level, key) != null) continue;
                         duct.createNodes(level, pos.immutable(), state);
@@ -173,7 +198,8 @@ public final class ChunkDuctNodes {
     }
 
     private static @Nullable Fluid take(ChunkAccess chunk, BlockPos pos) {
-        Long2ObjectOpenHashMap<String> fluids = chunk.hbm$ductFluids();
+        Long2ObjectOpenHashMap<String> fluids =
+                ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$ductFluids();
         if (fluids == null) return null;
         String id = fluids.remove(pos.asLong());
         if (id == null) return null;

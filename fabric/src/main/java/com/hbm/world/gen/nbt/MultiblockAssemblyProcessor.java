@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.gen.nbt;
 
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -32,10 +48,10 @@ public class MultiblockAssemblyProcessor implements StructureProcessor {
             ServerLevelAccessor level,
             BlockPos pos,
             BlockState coreState,
-            BlockMultiblockCore block,
+            MultiblockCoreBlock block,
             @Nullable BoundingBox clip) {
         if (clip == null || clip.isInside(pos)) level.setBlock(pos, coreState, 3);
-        block.fillSpace(level, pos, coreState.getValue(BlockMultiblockCore.FACING), clip);
+        block.fillSpace(level, pos, coreState.getValue(MultiblockCoreBlock.FACING), clip);
         block.assembled(level, pos, coreState, clip);
     }
 
@@ -48,7 +64,7 @@ public class MultiblockAssemblyProcessor implements StructureProcessor {
             List<StructureTemplate.StructureBlockInfo> processedBlockInfoList,
             StructurePlaceSettings settings) {
         for (StructureTemplate.StructureBlockInfo info : processedBlockInfoList) {
-            if (info.state().getBlock() instanceof BlockMultiblockCore folded) {
+            if (info.state().getBlock() instanceof MultiblockCoreBlock folded) {
                 assembleFolded(
                         level,
                         info.pos(),

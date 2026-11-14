@@ -1,23 +1,39 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.recipes;
 
 import com.hbm.NuclearTech;
+import com.hbm.inventory.material.Material;
 import com.hbm.inventory.material.MaterialDistributionRecipe;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats.MaterialStack;
-import com.hbm.inventory.material.Mats;
-import com.hbm.inventory.material.NTMMaterial.SmeltingBehavior;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.MaterialRegistry;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.MaterialStack;
+import com.hbm.inventory.material.SmeltingBehavior;
 import com.hbm.inventory.recipes.ingredient.CountIngredient;
 import com.hbm.inventory.recipes.ingredient.HbmNarrowedIngredient;
 import com.hbm.inventory.recipes.ingredient.RecipeInputState;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.RecipeSource;
 import com.hbm.items.ModDataComponents;
-import com.hbm.items.machine.ItemScraps;
-import com.hbm.lib.Library;
+import com.hbm.items.machine.ScrapsItem;
+import com.hbm.util.RegistryUtil;
 import java.util.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
@@ -62,11 +78,11 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
                         "emerald",
                         "quartz",
                         "copper")) {
-            tags.add(MaterialShapes.ORE.tagFor(material));
-            tags.add(MaterialShapes.BLOCK.tagFor(material));
+            tags.add(MaterialShape.ORE.tag(material));
+            tags.add(MaterialShape.BLOCK.tag(material));
         }
         for (String material : List.of("iron", "gold", "copper"))
-            tags.add(MaterialShapes.INGOT.tagFor(material));
+            tags.add(MaterialShape.INGOT.tag(material));
         return Set.copyOf(tags);
     }
 
@@ -142,10 +158,10 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
     public @Nullable ArcFurnaceRecipe getOutput(ItemStack stack, boolean liquid) {
         if (stack.isEmpty()) return null;
 
-        MaterialStack scrap = ItemScraps.getMats(stack);
+        MaterialStack scrap = ScrapsItem.getMats(stack);
         if (scrap != null && liquid) {
             if (!RecipeInputState.only(stack, ModDataComponents.SCRAP.get())) return null;
-            if (scrap.material.smeltable != SmeltingBehavior.SMELTABLE) return null;
+            if (scrap.material.behaviour() != SmeltingBehavior.SMELTABLE) return null;
             return new ArcFurnaceRecipe("arc.scraps").outputMaterials(scrap);
         }
 
@@ -199,7 +215,7 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
         }
 
         private static ResourceKey<Recipe<?>> key(String path) {
-            return ResourceKey.create(Registries.RECIPE, Library.id("arc_furnace/" + path));
+            return ResourceKey.create(Registries.RECIPE, RegistryUtil.id("arc_furnace/" + path));
         }
 
         private static String segment(Identifier id) {
@@ -238,28 +254,25 @@ public class ArcFurnaceRecipes extends GenericRecipes<ArcFurnaceRecipe, ArcFurna
                 String path, CountIngredient input, List<MaterialStack> materials) {
             List<MaterialStack> smeltables = new ArrayList<>();
             for (MaterialStack material : materials) {
-                if (material.material.smeltable == SmeltingBehavior.SMELTABLE)
+                if (material.material.behaviour() == SmeltingBehavior.SMELTABLE)
                     smeltables.add(material.copy());
             }
             if (!smeltables.isEmpty()) fluidRow(path, input, smeltables);
         }
 
         Derived build(Collection<RecipeHolder<?>> loaded) {
-            for (NTMMaterial material : Mats.orderedList) {
-                NTMMaterial convert = material.smeltsInto;
-                if (convert.smeltable != SmeltingBehavior.SMELTABLE) continue;
-                for (MaterialShapes shape : MaterialShapes.allShapes) {
-                    if (shape.tagPathPlural == null || shape.q(1) == 0) continue;
-                    TagKey<Item> tag = shape.tagFor(material.tagPath);
+            for (Material material : MaterialRegistry.ordered()) {
+                Material convert = material.smeltsInto();
+                if (convert.behaviour() != SmeltingBehavior.SMELTABLE) continue;
+                for (MaterialShape shape : MaterialShape.ALL) {
+                    if (!shape.hasTags() || shape.quanta() == 0) continue;
+                    TagKey<Item> tag = material.tag(shape);
                     Optional<HolderSet.Named<Item>> members = BuiltInRegistries.ITEM.get(tag);
                     if (members.isEmpty() || members.get().size() == 0) continue;
                     fluidRow(
                             "shape/" + segment(tag.location()),
                             CountIngredient.of(members.get(), 1),
-                            List.of(
-                                    new MaterialStack(
-                                            convert,
-                                            shape.q(1) * material.convOut / material.convIn)));
+                            List.of(new MaterialStack(convert, material.convert(shape.quanta()))));
                 }
             }
 

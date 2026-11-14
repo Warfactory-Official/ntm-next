@@ -3,10 +3,13 @@
   "key": {
     "D": "hbm:ducttape",
     "K": {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:insert_esapi",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     "P": "#c:ingots/asbestos",

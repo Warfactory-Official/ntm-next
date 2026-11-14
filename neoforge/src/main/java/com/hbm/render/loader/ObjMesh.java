@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.loader;
 
@@ -13,6 +29,7 @@ public final class ObjMesh {
 
     static final int MAGIC = 0x48424D4F;
     static final int VERSION = 1;
+    static final int COLORED_VERSION = 2;
 
     private ObjMesh() {}
 
@@ -26,7 +43,8 @@ public final class ObjMesh {
     public static GroupObject[] read(InputStream input, String source) throws IOException {
         try {
             ByteBuffer data = ByteBuffer.wrap(input.readAllBytes());
-            if (data.getInt() != MAGIC || data.getInt() != VERSION) {
+            int magic = data.getInt(), version = data.getInt();
+            if (magic != MAGIC || version != VERSION && version != COLORED_VERSION) {
                 throw new IOException("Unsupported mesh header: " + source);
             }
             float[] positions = table(data, 3);
@@ -41,6 +59,8 @@ public final class ObjMesh {
                 data.position(data.position() + nameLength);
                 float[] bounds = floats(data, 6);
                 int faces = count(data, 11);
+                boolean colored = version == COLORED_VERSION && data.get() != 0;
+                int[] colors = colored ? new int[Math.multiplyExact(faces, 4)] : null;
                 float[] quads = new float[Math.multiplyExact(faces, GroupObject.QUAD)];
                 float[] faceNormals = new float[Math.multiplyExact(faces, 3)];
                 int position = 0, uv = 0, normal = 0, faceNormal = 0;
@@ -56,19 +76,22 @@ public final class ObjMesh {
                         position += delta(data);
                         uv += delta(data);
                         normal += delta(data);
+                        if (colored) colors[f * 4 + c] = data.getInt();
                         System.arraycopy(positions, position * 3, quads, vertex, 3);
                         System.arraycopy(uvs, uv * 2, quads, vertex + 3, 2);
                         System.arraycopy(normals, normal * 3, quads, vertex + 5, 3);
                     }
-                    if (corners == 3)
+                    if (corners == 3) {
                         System.arraycopy(
                                 quads,
                                 base + 2 * GroupObject.STRIDE,
                                 quads,
                                 base + 3 * GroupObject.STRIDE,
                                 GroupObject.STRIDE);
+                        if (colored) colors[f * 4 + 3] = colors[f * 4 + 2];
+                    }
                 }
-                groups[g] = new GroupObject(name, quads, faceNormals, bounds);
+                groups[g] = new GroupObject(name, quads, faceNormals, bounds, colors);
             }
             if (data.hasRemaining()) throw new IOException("Trailing mesh data: " + source);
             return groups;

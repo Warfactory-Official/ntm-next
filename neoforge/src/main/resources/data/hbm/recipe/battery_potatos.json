@@ -1,7 +1,13 @@
 {
   "type": "hbm:crafting_shapeless",
   "ingredients": [
-    "hbm:battery_potato",
+    {
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:battery_potato",
+      "predicates": {
+        "hbm:consume_component": "hbm:battery_charge"
+      }
+    },
     "hbm:turret_chip",
     "#c:dusts/redstone"
   ],

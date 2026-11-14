@@ -1,18 +1,49 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.world.feature;
 
+import com.hbm.util.SectionAccess;
 import com.hbm.world.NtmWorldgenFields;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class Stratum3DFeature extends Feature<Stratum3DConfig> {
-
     private static final int SIZE = 16;
     public static final int MIN_Y = 6;
     public static final int MAX_Y = 64;
@@ -49,6 +80,13 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
         double[] cacheZ = rowZ.values();
 
         BlockPos.MutableBlockPos pos = scratch.pos;
+        var reader =
+                new SectionAccess.Reader() {
+                    @Override
+                    protected ChunkAccess resolve(int chunkX, int chunkZ) {
+                        return level.getChunk(chunkX, chunkZ);
+                    }
+                };
 
         for (int ox = 0; ox < SIZE; ox++) {
             int x = x0 + ox;
@@ -63,7 +101,7 @@ public class Stratum3DFeature extends Feature<Stratum3DConfig> {
                     double nz = cacheZ[ox * SPAN + oy];
                     if (nx * ny * nz <= threshold) continue;
                     pos.set(x, y, z);
-                    if (cfg.replaceable().test(level.getBlockState(pos), rand)) {
+                    if (cfg.replaceable().test(reader.read(x, y, z), rand)) {
                         level.setBlock(pos, cfg.state(), 2);
                     }
                 }

@@ -1,14 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.packet;
 
 import com.hbm.handler.FarTracking;
 import com.hbm.handler.threading.TargetPoint;
 import com.hbm.packet.threading.ThreadedPayload;
-import com.hbm.packet.toclient.UnitPayload;
-import com.hbm.platform.NeoForgeNetwork;
-import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.platform.Network;
+import com.hbm.platform.Platform;
+import com.hbm.platform.ServerEvents;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -30,7 +46,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.fml.ModList;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 public final class PacketWire {
 
@@ -39,9 +55,9 @@ public final class PacketWire {
     private static volatile byte[] ccpPacketIdBytes;
 
     private static final class Transport {
-        static final boolean EXTENDED_CHUNK_CACHE = ModList.get().isLoaded("neb-fabric");
+        static final boolean EXTENDED_CHUNK_CACHE = Platform.isModLoaded("neb-fabric");
         static final boolean MANAGED =
-                ModList.get().isLoaded("bandwidthoptimizer") || EXTENDED_CHUNK_CACHE;
+                Platform.isModLoaded("bandwidthoptimizer") || EXTENDED_CHUNK_CACHE;
     }
 
     public static boolean managedTransport() {
@@ -95,7 +111,7 @@ public final class PacketWire {
     }
 
     public static void sendToAll(ThreadedPayload payload) {
-        MinecraftServer server = NeoForgeServerEvents.getCurrentServer();
+        MinecraftServer server = ServerEvents.getCurrentServer();
         if (server == null) {
             payload.release();
             return;
@@ -125,7 +141,7 @@ public final class PacketWire {
             payload.release();
             return;
         }
-        sendToPlayers(payload, NeoForgeNetwork.playersWatchingEntity(entity));
+        sendToPlayers(payload, Network.playersWatchingEntity(entity));
     }
 
     public static boolean hasPlayersTracking(ServerLevel level, BlockPos pos) {
@@ -215,24 +231,41 @@ public final class PacketWire {
         }
     }
 
-    public static void sendSyncTracking(ThreadedPayload payload, ServerLevel level, BlockPos pos) {
-        try {
-            if (!(payload instanceof UnitPayload unit) || !unit.requiresRecipientBase()) {
-                ByteBuf wire = payload.getCompiledBuffer();
-                if (!payload.compiledIncludesWirePrefix()) return;
-            }
-            var players = ChunkTrackerIndex.players(level, pos.getX() >> 4, pos.getZ() >> 4);
-            for (int i = 0; i < players.size(); i++)
-                enqueueSync(players.get(i), level, pos.asLong(), payload);
-        } finally {
-            payload.release();
+    public static void sendSyncTracking(
+            SyncUnitState.Snapshot publication,
+            ServerLevel level,
+            BlockPos pos,
+            int blockEntityType) {
+        if (ccpPacketIdBytes == null) return;
+        var players = ChunkTrackerIndex.players(level, pos.getX() >> 4, pos.getZ() >> 4);
+        long position = pos.asLong();
+        for (int i = 0; i < players.size(); i++) {
+            enqueueUnitSync(players.get(i), level, position, blockEntityType, publication);
         }
     }
 
-    static void enqueueSync(
-            ServerPlayer player, ServerLevel level, long position, ThreadedPayload payload) {
+    static void enqueueUnitSync(
+            ServerPlayer player,
+            ServerLevel level,
+            long position,
+            int blockEntityType,
+            SyncUnitState.Snapshot publication) {
         assert onServerThread();
-        batch(player).addSync(level, position, payload);
+        batch(player).addUnitSync(level, position, blockEntityType, publication);
+    }
+
+    static void enqueueBlobSync(
+            ServerPlayer player,
+            ServerLevel level,
+            long position,
+            int blockEntityType,
+            long revision,
+            long previousRevision,
+            SyncBlob.Prepared publication) {
+        assert onServerThread();
+        batch(player)
+                .addBlobSync(
+                        level, position, blockEntityType, revision, previousRevision, publication);
     }
 
     static ChannelHandlerContext framingContext(Channel channel) {
@@ -275,11 +308,11 @@ public final class PacketWire {
         if (batch != null) batch.dropChunk(level, chunkKey);
     }
 
-    public static void dropSyncPosition(ServerLevel level, BlockPos pos) {
+    public static void dropSyncPosition(ServerLevel level, BlockPos pos, BlockEntity owner) {
         var players = ChunkTrackerIndex.players(level, pos.getX() >> 4, pos.getZ() >> 4);
         for (int i = 0; i < players.size(); i++) {
             OutboundBatch batch = PENDING.get(players.get(i));
-            if (batch != null) batch.dropPosition(level, pos.asLong());
+            if (batch != null) batch.dropPosition(level, pos.asLong(), owner);
         }
     }
 
@@ -319,7 +352,7 @@ public final class PacketWire {
     }
 
     private static boolean onServerThread() {
-        MinecraftServer server = NeoForgeServerEvents.getCurrentServer();
+        MinecraftServer server = ServerEvents.getCurrentServer();
         return server == null || server.isSameThread();
     }
 }

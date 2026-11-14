@@ -1,72 +1,57 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.compat.computercraft.storage;
 
-import com.hbm.api.energymk2.IEnergyHandlerMK2.ConnectionPriority;
-import com.hbm.blockentity.machine.storage.BlockEntityBatteryREDD;
+import com.hbm.blockentity.machine.storage.ReddBlockEntity;
 import dan200.computercraft.api.lua.LuaFunction;
 
-public final class BatteryREDDPeripheral extends EnergyStoragePeripheral<BlockEntityBatteryREDD> {
+public final class BatteryREDDPeripheral extends StorageModesPeripheral<ReddBlockEntity> {
 
-    private static final int POWER = SLOTS;
-    private static final int DELTA = SLOTS + 1;
+    private static final int POWER = MODE_NUMBERS;
+    private static final int DELTA = MODE_NUMBERS + 1;
 
-    public BatteryREDDPeripheral(BlockEntityBatteryREDD machine) {
-        super(machine, SLOTS + 2, 0);
+    public BatteryREDDPeripheral(ReddBlockEntity machine) {
+        super(machine, MODE_NUMBERS + 2, 0);
     }
 
     @Override
-    protected int redLow(BlockEntityBatteryREDD machine) {
-        return machine.getRedLow();
-    }
-
-    @Override
-    protected int redHigh(BlockEntityBatteryREDD machine) {
-        return machine.getRedHigh();
-    }
-
-    @Override
-    protected ConnectionPriority priority(BlockEntityBatteryREDD machine) {
-        return machine.getPriority();
-    }
-
-    @Override
-    protected void applyRedLow(BlockEntityBatteryREDD machine, int mode) {
-        machine.setRedLow(mode);
-    }
-
-    @Override
-    protected void applyRedHigh(BlockEntityBatteryREDD machine, int mode) {
-        machine.setRedHigh(mode);
-    }
-
-    @Override
-    protected void applyPriority(BlockEntityBatteryREDD machine, ConnectionPriority priority) {
-        machine.priority = priority;
-    }
-
-    @Override
-    protected void capture(BlockEntityBatteryREDD machine) {
+    protected void capture(ReddBlockEntity machine) {
         super.capture(machine);
-        put(POWER, machine.bigPower.doubleValue());
-        put(DELTA, machine.bigDelta.longValue());
+        put(POWER, machine.getExactStock().doubleValue());
+        put(DELTA, machine.getExactDelta().longValue());
     }
 
     @LuaFunction
-    public final Object[] getEnergyInfo() {
+    public Object[] getEnergyInfo() {
         return read(s -> new Object[] {s.doubleAt(POWER), s.longAt(DELTA)});
     }
 
     @LuaFunction
-    public final Object[] getInfo() {
+    public Object[] getInfo() {
         return read(
                 s ->
                         new Object[] {
                             s.doubleAt(POWER),
                             s.longAt(DELTA),
-                            s.intAt(RED_LOW),
-                            s.intAt(RED_HIGH),
+                            s.intAt(MODE_LOW),
+                            s.intAt(MODE_HIGH),
                             s.intAt(PRIORITY)
                         });
     }

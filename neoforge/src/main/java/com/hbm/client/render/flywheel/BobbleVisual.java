@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.BlockEntityBobble;
-import com.hbm.blocks.generic.BlockBobble.Bobble;
-import com.hbm.blocks.generic.BlockBobble.BobbleType;
-import com.hbm.blocks.generic.BlockBobble;
-import com.hbm.client.render.RenderBobble;
+import com.hbm.blockentity.BobbleBlockEntity;
+import com.hbm.blocks.generic.BobbleBlock.Bobble;
+import com.hbm.blocks.generic.BobbleBlock.BobbleType;
+import com.hbm.blocks.generic.BobbleBlock;
+import com.hbm.client.render.BobbleRenderer;
 import com.hbm.util.GameTime;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -18,6 +34,8 @@ import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
 import java.util.ArrayList;
@@ -30,10 +48,11 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
+import org.joml.Quaternionfc;
 import org.jspecify.annotations.Nullable;
 
-public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityBobble>
-        implements ShaderLightVisual {
+public final class BobbleVisual extends AbstractBoundedBlockEntityVisual<BobbleBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final Prop[] PROPS = new Prop[BobbleType.values().length];
     private static final VarHandle PROP = MethodHandles.arrayElementVarHandle(Prop[].class);
     private List<BobbleDraws.Draw> draws = List.of();
@@ -44,7 +63,7 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
             new WorldText(instancerProvider(), WorldText.Style.NORMAL, true);
     private final Matrix4f labelBase = new Matrix4f();
     private final WorldText.Posing labelPosing =
-            (width, out) -> RenderBobble.labelWidth(out.set(labelBase), width);
+            (width, out) -> BobbleRenderer.labelWidth(out.set(labelBase), width);
     private final WorldItem prop = new WorldItem(visualizationContext, level, pos);
     private final Matrix4f propLocal = new Matrix4f();
     private final Matrix4f propPose = new Matrix4f();
@@ -54,20 +73,20 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     private boolean animated;
 
     public BobbleVisual(
-            VisualizationContext context, BlockEntityBobble blockEntity, float partialTick) {
+            VisualizationContext context, BobbleBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         updateMovingParts(partialTick);
     }
 
     public static void initModels() {}
 
-    public static boolean vanillaNeeded(BlockEntityBobble be) {
+    public static boolean vanillaNeeded(BobbleBlockEntity be) {
         if (!(be.type instanceof BobbleType ntm))
             return !WorldItem.draws(ItemStack.EMPTY, ItemDisplayContext.NONE);
         int i = ntm.ordinal();
         Prop prop = (Prop) PROP.getAcquire(PROPS, i);
         if (prop == null || prop.stack().getPrototype() != prop.components()) {
-            ItemStack stack = RenderBobble.prop(be.type);
+            ItemStack stack = BobbleRenderer.prop(be.type);
             prop = new Prop(stack, stack.getPrototype());
             PROP.setRelease(PROPS, i, prop);
         }
@@ -75,7 +94,7 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
@@ -98,7 +117,7 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     }
 
     private void wobble(long time) {
-        int shine = RenderBobble.shine(time);
+        int shine = BobbleRenderer.shine(time);
         for (int i = 0; i < draws.size(); i++) {
             BobbleDraws.Draw draw = draws.get(i);
             TransformedInstance instance = instances.get(i);
@@ -117,19 +136,19 @@ public final class BobbleVisual extends HbmDynamicBlockEntityVisual<BlockEntityB
     private void rebuild(Bobble type) {
         for (TransformedInstance instance : instances) instance.delete();
         instances.clear();
-        int rotation = blockState.getValue(BlockBobble.ROTATION);
+        int rotation = blockState.getValue(BobbleBlock.ROTATION);
         PoseStack pose = new PoseStack();
         pose.translate(.5D, 0D, .5D);
         pose.scale(.25F, .25F, .25F);
-        pose.mulPose(Axis.YN.rotationDegrees(22.5F * rotation + 90F));
+        pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(22.5F * rotation + 90F));
         BobbleDraws built = new BobbleDraws(type, pose);
         draws = built.draws;
         propLocal.set(built.propLocal);
         propPivot = built.propPivot;
         anchor.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ());
         labelBase.set(anchor).mul(built.labelLocal);
-        label.set(Component.literal(type.label()), 0F, 0F, RenderBobble.labelColor(type));
-        prop.set(RenderBobble.prop(type), ItemDisplayContext.NONE);
+        label.set(Component.literal(type.label()), 0F, 0F, BobbleRenderer.labelColor(type));
+        prop.set(BobbleRenderer.prop(type), ItemDisplayContext.NONE);
         if (propPivot == null) propPose.set(anchor).mul(propLocal);
         animated = false;
         for (BobbleDraws.Draw draw : draws) {

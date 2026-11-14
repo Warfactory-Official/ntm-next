@@ -1,17 +1,34 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.registration;
 
 import com.hbm.NuclearTech;
-import com.hbm.blocks.IPersistentInfoProvider;
+import com.hbm.blocks.PersistentItemTooltipProvider;
 import com.hbm.blocks.fluid.ClassicFluid;
 import com.hbm.client.model.BlockModel;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.NTMMaterial;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialShape;
 import com.hbm.items.MaterialShapeRoster;
 import com.hbm.items.PersistentInfoBlockItem;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -19,10 +36,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.*;
+import java.util.stream.Collectors;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
@@ -32,6 +54,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import org.jspecify.annotations.Nullable;
 
 public final class Reg {
@@ -84,6 +107,10 @@ public final class Reg {
         return ITEM_MODELS.get(item);
     }
 
+    public static Supplier<BlockModel<?>> declaredBakedBy(Identifier block) {
+        return BAKED_BY.get(block);
+    }
+
     public static Supplier<BlockModel<?>> bakedBy(Identifier block) {
         return BAKED_BY.get(block);
     }
@@ -97,24 +124,34 @@ public final class Reg {
             action.run();
         }
         AFTER_REGISTRATION.clear();
+        MAP_COLORS.values().forEach(MapColors::finishRegistration);
     }
 
     public static <T> void afterRegistration(RegistryHandle<T> handle, Consumer<? super T> action) {
-        NeoForgeRegistrar.assertOpen("Reg.afterRegistration(" + handle.id() + ")");
+        Registrar.assertOpen("Reg.afterRegistration(" + handle.id() + ")");
         AFTER_REGISTRATION.add(() -> action.accept(handle.get()));
     }
 
-    private static final Namespace HBM = new Namespace(NuclearTech.MOD_ID);
+    private static final Map<String, MapColors> MAP_COLORS = new LinkedHashMap<>();
+    private static final Namespace HBM = new Namespace(NuclearTech.MOD_ID, NuclearTech.class);
 
     private static volatile Set<String> namespaces = Set.of(NuclearTech.MOD_ID);
 
     public static synchronized Namespace in(String namespace) {
+        return in(namespace, null);
+    }
+
+    public static synchronized Namespace in(String namespace, @Nullable Class<?> resourceAnchor) {
         if (!namespaces.contains(namespace)) {
             Set<String> next = new HashSet<>(namespaces);
             next.add(namespace);
             namespaces = Set.copyOf(next);
         }
-        return new Namespace(namespace);
+        return new Namespace(namespace, resourceAnchor);
+    }
+
+    public static @Nullable MapColors mapColors(String namespace) {
+        return MAP_COLORS.get(namespace);
     }
 
     public static boolean isNtmNamespace(String namespace) {
@@ -215,6 +252,14 @@ public final class Reg {
         return HBM.classicFluid(name, spec);
     }
 
+    @SafeVarargs
+    public static <T extends BlockEntity> BeHandle<T> be(
+            String name,
+            BlockEntityType.BlockEntitySupplier<T> factory,
+            RegistryHandle<? extends Block>... blocks) {
+        return HBM.be(name, factory, blocks);
+    }
+
     public static <T extends BlockEntity> BeHandle<T> be(
             String name, Supplier<BlockEntityType<T>> typeFactory) {
         return HBM.be(name, typeFactory);
@@ -226,16 +271,28 @@ public final class Reg {
     }
 
     private static Item defaultBlockItem(Block block, Item.Properties props) {
-        return block instanceof IPersistentInfoProvider
+        return block instanceof PersistentItemTooltipProvider
                 ? new PersistentInfoBlockItem(block, props)
                 : new BlockItem(block, props);
     }
 
     public static final class Namespace {
         private final String namespace;
+        private final @Nullable MapColors colors;
 
-        private Namespace(String namespace) {
+        private Namespace(String namespace, @Nullable Class<?> resourceAnchor) {
             this.namespace = namespace;
+            colors = resourceAnchor == null ? null : new MapColors(resourceAnchor, namespace);
+            if (colors != null) MAP_COLORS.put(namespace, colors);
+        }
+
+        private Supplier<BlockBehaviour.Properties> properties(
+                String name, Supplier<BlockBehaviour.Properties> source) {
+            return colors == null ? source : () -> colors.apply(name, source.get());
+        }
+
+        public MapColor constantMapColor(String owner, MapColor sourceMaterial) {
+            return colors.constant(owner, sourceMaterial);
         }
 
         private String qualify(String name) {
@@ -246,7 +303,7 @@ public final class Reg {
                 String name,
                 Function<Item.Properties, ? extends I> factory,
                 Supplier<Item.Properties> props) {
-            return new Handle<>(NeoForgeRegistrar.registerItem(qualify(name), factory, props));
+            return new Handle<>(Registrar.registerItem(qualify(name), factory, props));
         }
 
         public <I extends Item> Handle<I> item(
@@ -254,8 +311,7 @@ public final class Reg {
                 Identifier model,
                 Function<Item.Properties, ? extends I> factory,
                 Supplier<Item.Properties> props) {
-            return new Handle<>(
-                    NeoForgeRegistrar.registerItem(qualify(name), model, factory, props));
+            return new Handle<>(Registrar.registerItem(qualify(name), model, factory, props));
         }
 
         public <E extends Enum<E>, I extends Item> ItemFamily<E, I> family(
@@ -294,11 +350,63 @@ public final class Reg {
             return new ItemFamily<>(constants, members);
         }
 
+        private <B extends Block> Handle<B> registeredBlock(
+                String name,
+                Function<BlockBehaviour.Properties, ? extends B> factory,
+                Supplier<BlockBehaviour.Properties> props) {
+            return new Handle<>(
+                    Registrar.registerBlock(
+                            qualify(name),
+                            properties -> {
+                                var block = factory.apply(properties);
+                                block.hbm$bulkManaged(true);
+                                return block;
+                            },
+                            properties(name, props)));
+        }
+
         public <B extends Block> Handle<B> block(
                 String name,
                 Function<BlockBehaviour.Properties, ? extends B> factory,
                 Supplier<BlockBehaviour.Properties> props) {
-            return new Handle<>(NeoForgeRegistrar.registerBlock(qualify(name), factory, props));
+            return registeredBlock(name, factory, props);
+        }
+
+        public <B extends Block> Handle<B> sharedBlock(
+                String name,
+                int priority,
+                Function<BlockBehaviour.Properties, ? extends B> factory,
+                Supplier<BlockBehaviour.Properties> props) {
+            Shared.Entry<B> entry =
+                    Shared.request(
+                            Registries.BLOCK,
+                            name,
+                            namespace,
+                            priority,
+                            owner -> {
+                                Identifier assets = Identifier.fromNamespaceAndPath(owner, name);
+                                return Registrar.registerBlock(
+                                        NuclearTech.MOD_ID + ":" + name,
+                                        properties -> {
+                                            var block = factory.apply(properties);
+                                            block.hbm$bulkManaged(true);
+                                            return block;
+                                        },
+                                        () ->
+                                                properties(name, props)
+                                                        .get()
+                                                        .overrideDescription(
+                                                                Util.makeDescriptionId(
+                                                                        "block", assets))
+                                                        .overrideLootTable(
+                                                                Optional.of(
+                                                                        ResourceKey.create(
+                                                                                Registries
+                                                                                        .LOOT_TABLE,
+                                                                                assets.withPrefix(
+                                                                                        "blocks/")))));
+                            });
+            return new Handle<>(entry, Identifier.fromNamespaceAndPath(namespace, name));
         }
 
         public <B extends Block> Handle<B> blockItem(
@@ -313,9 +421,8 @@ public final class Reg {
                 Function<BlockBehaviour.Properties, ? extends B> factory,
                 Supplier<BlockBehaviour.Properties> props,
                 BiFunction<? super B, Item.Properties, ? extends Item> itemFactory) {
-            Handle<B> block =
-                    new Handle<>(NeoForgeRegistrar.registerBlock(qualify(name), factory, props));
-            NeoForgeRegistrar.registerItem(
+            Handle<B> block = registeredBlock(name, factory, props);
+            Registrar.registerItem(
                     qualify(name),
                     itemProps -> itemFactory.apply(block.get(), itemProps),
                     () -> new Item.Properties().useBlockDescriptionPrefix());
@@ -323,19 +430,32 @@ public final class Reg {
         }
 
         public ClassicFluid.Pair classicFluid(String name, ClassicFluid.Spec spec) {
-            return NeoForgeRegistrar.registerClassicFluid(qualify(name), spec);
+            return Registrar.registerClassicFluid(qualify(name), spec);
+        }
+
+        @SafeVarargs
+        public final <T extends BlockEntity> BeHandle<T> be(
+                String name,
+                BlockEntityType.BlockEntitySupplier<T> factory,
+                RegistryHandle<? extends Block>... blocks) {
+            return be(
+                    name,
+                    () ->
+                            new BlockEntityType<>(
+                                    factory,
+                                    Arrays.stream(blocks)
+                                            .map(RegistryHandle::get)
+                                            .collect(Collectors.toUnmodifiableSet())));
         }
 
         public <T extends BlockEntity> BeHandle<T> be(
                 String name, Supplier<BlockEntityType<T>> typeFactory) {
-            return new BeHandle<>(
-                    NeoForgeRegistrar.registerBlockEntityType(qualify(name), typeFactory));
+            return new BeHandle<>(Registrar.registerBlockEntityType(qualify(name), typeFactory));
         }
 
         public <T extends Entity> EntityHandle<T> entity(
                 String name, Supplier<EntityType<T>> typeFactory) {
-            return new EntityHandle<>(
-                    NeoForgeRegistrar.registerEntityType(qualify(name), typeFactory));
+            return new EntityHandle<>(Registrar.registerEntityType(qualify(name), typeFactory));
         }
     }
 
@@ -365,22 +485,6 @@ public final class Reg {
         public BeHandle<E> andThen(Consumer<? super BeHandle<E>> action) {
             action.accept(this);
             return this;
-        }
-
-        public BeHandle<E> ticks(Consumer<? super E> both) {
-            return ticks(both, both);
-        }
-
-        public BeHandle<E> ticks(Consumer<? super E> client, Consumer<? super E> server) {
-            return ticksClient(client).ticksServer(server);
-        }
-
-        public BeHandle<E> ticksClient(Consumer<? super E> tick) {
-            return ticksClientAt((level, pos, state, be) -> tick.accept(be));
-        }
-
-        public BeHandle<E> ticksServer(Consumer<? super E> tick) {
-            return ticksServerAt((level, pos, state, be) -> tick.accept(be));
         }
 
         public BeHandle<E> ticksAt(BlockEntityTicker<? super E> both) {
@@ -433,9 +537,15 @@ public final class Reg {
     public static final class Handle<T> implements RegistryHandle<T> {
 
         private final RegistryHandle<T> delegate;
+        private final Identifier assets;
 
         private Handle(RegistryHandle<T> delegate) {
+            this(delegate, delegate.id());
+        }
+
+        private Handle(RegistryHandle<T> delegate, Identifier assets) {
             this.delegate = delegate;
+            this.assets = assets;
         }
 
         @Override
@@ -475,8 +585,8 @@ public final class Reg {
             return this;
         }
 
-        public Handle<T> materialShape(NTMMaterial material, MaterialShapes shape) {
-            id();
+        public Handle<T> materialShape(Material material, MaterialShape shape) {
+
             MaterialShapeRoster.claim(material, shape);
             return this;
         }

@@ -1,27 +1,58 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client;
 
+import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.client.particle.ContrailVisuals;
 import com.hbm.client.particle.DebrisVisuals;
-import com.hbm.client.particle.ParticleGasFlame;
-import com.hbm.client.particle.ParticleRadiationFog;
+import com.hbm.client.particle.GasFlameParticle;
 import com.hbm.client.particle.RadFogVisuals;
+import com.hbm.client.particle.RadiationFogParticle;
 import com.hbm.client.particle.RocketFlameVisuals;
-import com.hbm.packet.toclient.JetpackParticlePayload;
+import com.hbm.packet.ClientEventConstants;
+import com.hbm.particle.ContrailParticle;
 import com.hbm.particle.CoolingTowerParticleOptions;
+import com.hbm.particle.DeadLeafParticle;
 import com.hbm.particle.DebrisChunk;
 import com.hbm.particle.DebrisMesh;
+import com.hbm.particle.DebrisParticle;
+import com.hbm.particle.ExSmokeParticle;
 import com.hbm.particle.HbmEffectNT;
 import com.hbm.particle.HbmParticles;
-import com.hbm.particle.ParticleContrail;
-import com.hbm.particle.ParticleDeadLeaf;
-import com.hbm.particle.ParticleDebris;
-import com.hbm.particle.ParticleExSmoke;
-import com.hbm.particle.ParticleMukeWave;
-import com.hbm.particle.ParticleRocketFlame;
+import com.hbm.particle.MukeWaveParticle;
 import com.hbm.particle.RocketFlameColor;
+import com.hbm.particle.RocketFlameParticle;
 import com.hbm.sound.ModSounds;
 import java.util.concurrent.CompletableFuture;
 import net.minecraft.client.Minecraft;
@@ -64,7 +95,7 @@ public final class ClientEffects {
             double motionZ,
             float scale) {
         if (level instanceof ClientLevel client) {
-            ParticleGasFlame.spawn(client, x, y, z, motionX, motionY, motionZ, scale);
+            GasFlameParticle.spawn(client, x, y, z, motionX, motionY, motionZ, scale);
         }
     }
 
@@ -97,7 +128,7 @@ public final class ClientEffects {
 
     private static void spawnDeadLeaf(Level level, double x, double y, double z) {
         if (!(level instanceof ClientLevel client)) return;
-        Minecraft.getInstance().particleEngine.add(new ParticleDeadLeaf(client, x, y, z));
+        Minecraft.getInstance().particleEngine.add(new DeadLeafParticle(client, x, y, z));
     }
 
     private static void spawnGasFlame(Level level, double x, double y, double z, double spread) {
@@ -200,16 +231,17 @@ public final class ClientEffects {
 
     public static void spawnJetpackPlume(Level level, int playerId, int mode) {
         if (!(level.getEntity(playerId) instanceof Player player)) return;
-        if (mode == JetpackParticlePayload.REGULAR || mode == JetpackParticlePayload.VECTOR) {
-            spawnFueledJetpackPlume(level, player, mode == JetpackParticlePayload.VECTOR);
+        if (mode == ClientEventConstants.JETPACK_REGULAR
+                || mode == ClientEventConstants.JETPACK_VECTOR) {
+            spawnFueledJetpackPlume(level, player, mode == ClientEventConstants.JETPACK_VECTOR);
             return;
         }
-        if (mode != JetpackParticlePayload.DNS && mode != JetpackParticlePayload.BJ) {
+        if (mode != ClientEventConstants.JETPACK_DNS && mode != ClientEventConstants.JETPACK_BJ) {
             throw new IllegalArgumentException();
         }
         ParticleStatus setting = Minecraft.getInstance().options.particles().get();
         if (setting == ParticleStatus.MINIMAL) return;
-        boolean bj = mode == JetpackParticlePayload.BJ;
+        boolean bj = mode == ClientEventConstants.JETPACK_BJ;
 
         float angle = (float) -Math.toRadians(player.yBodyRot);
         double sin = Math.sin(angle);
@@ -309,7 +341,10 @@ public final class ClientEffects {
                                 CollisionContext.empty()));
         if (hit.getType() != HitResult.Type.BLOCK || hit.getDirection() != Direction.UP) return;
 
-        BlockState state = level.getBlockState(hit.getBlockPos());
+        BlockState state =
+                MultiblockSurface.particleState(
+                        level, hit.getBlockPos(), level.getBlockState(hit.getBlockPos()));
+        if (state == null) return;
         double distance = from.distanceTo(hit.getLocation());
         double speed = 0.75D - distance * 0.075D;
         RandomSource rand = level.getRandom();
@@ -391,7 +426,7 @@ public final class ClientEffects {
             Minecraft.getInstance()
                     .particleEngine
                     .add(
-                            new ParticleMukeWave(client, x, y + 2, z)
+                            new MukeWaveParticle(client, x, y + 2, z)
                                     .setup(waveScale, (int) (25F * waveScale / 45F)));
         }
         for (int i = 0; i < cloudCount; i++) {
@@ -447,7 +482,7 @@ public final class ClientEffects {
         smoke.setLifetime(lifetime);
     }
 
-    private static void spawnDebris(
+    public static void spawnDebris(
             Level level,
             double x,
             double y,
@@ -471,7 +506,7 @@ public final class ClientEffects {
             double mY = -velocity * Mth.sin(pitch);
             double mX = horizontal * Mth.cos(yaw);
             double mZ = -horizontal * Mth.sin(yaw);
-            DebrisChunk chunk = ParticleDebris.carve(client, centre, size, retry, rand);
+            DebrisChunk chunk = DebrisParticle.carve(client, centre, size, retry, rand);
             Minecraft mc = Minecraft.getInstance();
             CompletableFuture.supplyAsync(() -> DebrisMesh.bake(chunk), Util.backgroundExecutor())
                     .whenComplete(
@@ -481,8 +516,8 @@ public final class ClientEffects {
                                                 if (error != null)
                                                     throw new IllegalStateException(error);
                                                 if (mc.level != client) return;
-                                                ParticleDebris debris =
-                                                        new ParticleDebris(
+                                                DebrisParticle debris =
+                                                        new DebrisParticle(
                                                                 client, x, y, z, mX, mY, mZ, chunk,
                                                                 meshes);
                                                 mc.particleEngine.add(debris);
@@ -503,7 +538,7 @@ public final class ClientEffects {
     }
 
     private static void spawnRadFogVanilla(Level level, double x, double y, double z) {
-        ParticleRadiationFog.spawnCluster(level, x, y, z);
+        RadiationFogParticle.spawnCluster(level, x, y, z);
     }
 
     public static void radialDigamma(Level level, double x, double y, double z, int count) {
@@ -591,8 +626,8 @@ public final class ClientEffects {
         if (RocketFlameVisuals.trySpawnInstanced(level, x, y, z, scale, mX, mY, mZ, maxAge, color))
             return;
         if (!(level instanceof ClientLevel client)) return;
-        ParticleRocketFlame fx =
-                new ParticleRocketFlame(client, x, y, z)
+        RocketFlameParticle fx =
+                new RocketFlameParticle(client, x, y, z)
                         .setScale(scale)
                         .setMaxAge(maxAge)
                         .noClip()
@@ -682,7 +717,7 @@ public final class ClientEffects {
 
         for (int i = 0; i < count; i++) {
             double r = rand.nextDouble();
-            ParticleExSmoke fx = new ParticleExSmoke(client, x, y, z);
+            ExSmokeParticle fx = new ExSmokeParticle(client, x, y, z);
             fx.setParticleSpeed(Math.cos(angle) * strength * r, 0, Math.sin(angle) * strength * r);
             Minecraft.getInstance().particleEngine.add(fx);
             angle += step;
@@ -696,7 +731,7 @@ public final class ClientEffects {
         float angle = rand.nextInt(360) * Mth.DEG_TO_RAD;
         float step = Mth.TWO_PI / count;
         for (int i = 0; i < count; i++) {
-            ParticleExSmoke fx = new ParticleExSmoke(client, x, y, z);
+            ExSmokeParticle fx = new ExSmokeParticle(client, x, y, z);
             fx.setParticleSpeed(Math.cos(angle) * strength, 0, Math.sin(angle) * strength);
             Minecraft.getInstance().particleEngine.add(fx);
             angle += step;
@@ -709,7 +744,7 @@ public final class ClientEffects {
         if (!(level instanceof ClientLevel client)) return;
         Minecraft.getInstance()
                 .particleEngine
-                .add(new ParticleContrail(client, x, y, z, type.r, type.g, type.b, type.scale));
+                .add(new ContrailParticle(client, x, y, z, type.r, type.g, type.b, type.scale));
     }
 
     public enum Contrail {

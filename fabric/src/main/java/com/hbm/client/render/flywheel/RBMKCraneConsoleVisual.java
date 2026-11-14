@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.rbmk.BlockEntityCraneConsole;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.rbmk.RBMKCraneConsoleBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.RenderTextures;
 import com.hbm.main.ResourceManager;
 import com.hbm.util.Facing;
@@ -22,6 +38,8 @@ import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ARGB;
@@ -32,7 +50,8 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 public final class RBMKCraneConsoleVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityCraneConsole> implements ShaderLightVisual {
+        extends AbstractDynamicExtentBlockEntityVisual<RBMKCraneConsoleBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int JOYSTICK = ResourceManager.rbmk_crane_console.partId("Joystick");
     private static final int METER1 = ResourceManager.rbmk_crane_console.partId("Meter1");
     private static final int METER2 = ResourceManager.rbmk_crane_console.partId("Meter2");
@@ -127,14 +146,16 @@ public final class RBMKCraneConsoleVisual
     private boolean initialized;
 
     public RBMKCraneConsoleVisual(
-            VisualizationContext context, BlockEntityCraneConsole blockEntity, float partialTick) {
+            VisualizationContext context,
+            RBMKCraneConsoleBlockEntity blockEntity,
+            float partialTick) {
         super(context, blockEntity, partialTick);
         var rawBodyLocal =
                 new Matrix4f()
                         .translation(.5F, 0F, .5F)
                         .rotateY(
                                 Facing.yaw(
-                                                BlockMultiblockCore.coreFacing(
+                                                MultiblockCoreBlock.coreFacing(
                                                         blockEntity.getBlockState()),
                                                 90)
                                         * Mth.DEG_TO_RAD)
@@ -167,7 +188,7 @@ public final class RBMKCraneConsoleVisual
                 instancerProvider()
                         .instancer(InstanceTypes.TRANSFORMED, LAMP2_MODEL)
                         .createInstance();
-        trackExtent();
+        beforeFrame();
         updateMovingParts(partialTick);
     }
 
@@ -194,14 +215,14 @@ public final class RBMKCraneConsoleVisual
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
     public void updateMovingParts(float partialTick) {
         int facingKey =
-                BlockMultiblockCore.coreFacing(blockEntity.getBlockState()).get3DDataValue();
-        float facing = Facing.yaw(BlockMultiblockCore.coreFacing(blockEntity.getBlockState()), 90);
+                MultiblockCoreBlock.coreFacing(blockEntity.getBlockState()).get3DDataValue();
+        float facing = Facing.yaw(MultiblockCoreBlock.coreFacing(blockEntity.getBlockState()), 90);
         float tiltFront =
                 (float) Mth.lerp(partialTick, blockEntity.lastTiltFront, blockEntity.tiltFront);
         float tiltLeft =
@@ -210,35 +231,32 @@ public final class RBMKCraneConsoleVisual
         double meter1Angle =
                 Math.sin(time * .01D % 360D) * 180D / Math.PI * .05D
                         + 135D
-                        - 270D * blockEntity.loadedHeat;
+                        - 270D * blockEntity.carriedHeat;
         double meter2Angle =
                 Math.sin(time * .01D % 360D) * 180D / Math.PI * .05D
                         + 135D
-                        - 270D * blockEntity.loadedEnrichment;
+                        - 270D * blockEntity.carriedEnrichment;
         int lamp1 =
-                blockEntity.isCraneLoading()
-                        ? LOADING
-                        : blockEntity.hasItemLoaded() ? LOADED : UNLOADED;
-        int lamp2 = blockEntity.isAboveValidTarget() ? VALID : INVALID;
-        boolean setUp = blockEntity.setUpCrane;
+                blockEntity.isLifting() ? LOADING : blockEntity.isCarrying() ? LOADED : UNLOADED;
+        int lamp2 = blockEntity.isAboveTarget() ? VALID : INVALID;
+        boolean setUp = blockEntity.rigged;
         int span =
-                blockEntity.craneRotationOffset == 90 || blockEntity.craneRotationOffset == 270
-                        ? blockEntity.spanL + blockEntity.spanR + 1
-                        : blockEntity.spanF + blockEntity.spanB + 1;
+                blockEntity.rotation == 90 || blockEntity.rotation == 270
+                        ? blockEntity.spanLeft + blockEntity.spanRight + 1
+                        : blockEntity.spanFront + blockEntity.spanBack + 1;
         int girderSpan = Math.max(0, span);
         int tubeCount = Math.max(0, blockEntity.height - 6);
-        float front = (float) Mth.lerp(partialTick, blockEntity.lastPosFront, blockEntity.posFront);
-        float left = (float) Mth.lerp(partialTick, blockEntity.lastPosLeft, blockEntity.posLeft);
-        float progress =
-                (float) Mth.lerp(partialTick, blockEntity.lastProgress, blockEntity.progress);
+        float front =
+                (float) Mth.lerp(partialTick, blockEntity.lastHookFront, blockEntity.hookFront);
+        float left = (float) Mth.lerp(partialTick, blockEntity.lastHookLeft, blockEntity.hookLeft);
+        float progress = (float) Mth.lerp(partialTick, blockEntity.lastLift, blockEntity.lift);
         boolean facingChanged = !initialized || facingKey != lastFacing;
         boolean centerChanged =
                 !initialized
                         || blockEntity.centerX != lastCenterX
                         || blockEntity.centerY != lastCenterY
                         || blockEntity.centerZ != lastCenterZ;
-        boolean rotationChanged =
-                !initialized || blockEntity.craneRotationOffset != lastCraneRotation;
+        boolean rotationChanged = !initialized || blockEntity.rotation != lastCraneRotation;
         boolean structureChanged =
                 !initialized
                         || setUp != lastSetUp
@@ -272,7 +290,7 @@ public final class RBMKCraneConsoleVisual
         lastCenterX = blockEntity.centerX;
         lastCenterY = blockEntity.centerY;
         lastCenterZ = blockEntity.centerZ;
-        lastCraneRotation = blockEntity.craneRotationOffset;
+        lastCraneRotation = blockEntity.rotation;
         lastFront = front;
         lastLeft = left;
         lastProgress = progress;
@@ -341,17 +359,15 @@ public final class RBMKCraneConsoleVisual
                             blockEntity.centerZ - pos.getZ())
                     .rotateY(facing * Mth.DEG_TO_RAD)
                     .translate(-front, 0F, left)
-                    .rotateY(blockEntity.craneRotationOffset * Mth.DEG_TO_RAD);
-            girderPose
-                    .set(craneRootPose)
-                    .rotateY(-blockEntity.craneRotationOffset * Mth.DEG_TO_RAD);
-            switch (blockEntity.craneRotationOffset) {
-                case 90 -> girderPose.translate(0F, 0F, -left - blockEntity.spanR);
-                case 180 -> girderPose.translate(front - blockEntity.spanF, 0F, 0F);
-                case 270 -> girderPose.translate(0F, 0F, -left + blockEntity.spanL);
-                default -> girderPose.translate(front + blockEntity.spanB, 0F, 0F);
+                    .rotateY(blockEntity.rotation * Mth.DEG_TO_RAD);
+            girderPose.set(craneRootPose).rotateY(-blockEntity.rotation * Mth.DEG_TO_RAD);
+            switch (blockEntity.rotation) {
+                case 90 -> girderPose.translate(0F, 0F, -left - blockEntity.spanRight);
+                case 180 -> girderPose.translate(front - blockEntity.spanFront, 0F, 0F);
+                case 270 -> girderPose.translate(0F, 0F, -left + blockEntity.spanLeft);
+                default -> girderPose.translate(front + blockEntity.spanBack, 0F, 0F);
             }
-            girderPose.rotateY(blockEntity.craneRotationOffset * Mth.DEG_TO_RAD);
+            girderPose.rotateY(blockEntity.rotation * Mth.DEG_TO_RAD);
             int slot = 0;
             for (int i = 0; i < girderSpan; i++) {
                 writeCrane(slot++, girderPose);
@@ -398,9 +414,13 @@ public final class RBMKCraneConsoleVisual
     }
 
     @Override
-    protected void trackExtent() {
-        boolean setUp = blockEntity.setUpCrane;
-        int reach = blockEntity.spanF + blockEntity.spanB + blockEntity.spanL + blockEntity.spanR;
+    public void beforeFrame() {
+        boolean setUp = blockEntity.rigged;
+        int reach =
+                blockEntity.spanFront
+                        + blockEntity.spanBack
+                        + blockEntity.spanLeft
+                        + blockEntity.spanRight;
         if (renderBounds != null
                 && setUp == extentSetUp
                 && blockEntity.centerX == extentCenterX

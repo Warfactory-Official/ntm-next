@@ -18,7 +18,7 @@
       {
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "parts": [
@@ -50,7 +50,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_attachments.png"
@@ -61,7 +61,7 @@
         "duration": 0,
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "kind": "gap",
@@ -127,7 +127,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       }

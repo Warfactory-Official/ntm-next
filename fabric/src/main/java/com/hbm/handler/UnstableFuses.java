@@ -1,11 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler;
 
-import com.hbm.blockentity.BlockEntityMachineBase;
-import com.hbm.blockentity.IControlReceiverFilter;
-import com.hbm.config.FabricHbmConfig;
+import com.hbm.blockentity.GhostFilters;
+import com.hbm.blockentity.MachineBlockEntity;
+import com.hbm.config.HbmConfig;
+import com.hbm.config.RuntimeConfig;
 import com.hbm.interfaces.StoredItemSlots;
 import com.hbm.interfaces.StoredItems;
 import com.hbm.interfaces.injected.UnstableFuseSchedule;
@@ -23,12 +40,15 @@ import com.hbm.inventory.ItemInteriors;
 import com.hbm.inventory.ItemStackContainer;
 import com.hbm.inventory.SlotDeltaBuffer;
 import com.hbm.inventory.SlotSource;
-import com.hbm.items.special.ItemUnstable;
+import com.hbm.items.special.UnstableItem;
 import com.hbm.lib.ModDamageTypes;
-import com.hbm.platform.FabricServerEvents;
+import com.hbm.platform.PlayerLevelChange;
+import com.hbm.platform.ServerEvents;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -62,12 +82,16 @@ public final class UnstableFuses {
     private UnstableFuses() {}
 
     public static void init() {
-        FabricServerEvents.onServerTickPost(UnstableFuses::tick);
-        FabricServerEvents.onChunkLoad(UnstableFuses::onChunkLoad);
-        FabricServerEvents.onPlayerJoin(UnstableFuses::onEntityLoad);
-        FabricServerEvents.onPlayerRespawn(UnstableFuses::onEntityLoad);
-        FabricServerEvents.onPlayerChangeLevel(
-                (player, origin, destination) -> onEntityLoad(player));
+        final Consumer<MinecraftServer> callback = UnstableFuses::tick;
+        ServerEvents.TICK_POST.add(callback);
+        final BiConsumer<ServerLevel, LevelChunk> callback2 = UnstableFuses::onChunkLoad;
+        ServerEvents.CHUNK_LOAD.add(callback2);
+        final Consumer<ServerPlayer> callback3 = UnstableFuses::onEntityLoad;
+        ServerEvents.JOIN.add(callback3);
+        final Consumer<ServerPlayer> callback4 = UnstableFuses::onEntityLoad;
+        ServerEvents.RESPAWN.add(callback4);
+        final PlayerLevelChange callback5 = (player, origin, destination) -> onEntityLoad(player);
+        ServerEvents.LEVEL_CHANGE.add(callback5);
     }
 
     public static long nextDeadline(MinecraftServer server) {
@@ -77,7 +101,8 @@ public final class UnstableFuses {
 
     public static void registerInterior(
             MinecraftServer server, InventoryLocation owner, SlotSource[] sources) {
-        UnstableFuseQueue queue = server.hbm$unstableFuses();
+        UnstableFuseQueue queue =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server)).hbm$unstableFuses();
         SlotSource[] previous = queue.interiorSources(owner);
         boolean same = previous != null && previous.length == sources.length;
         if (same)
@@ -102,7 +127,8 @@ public final class UnstableFuses {
     }
 
     public static void unregisterInterior(MinecraftServer server, InventoryLocation owner) {
-        UnstableFuseQueue queue = server.hbm$unstableFuses();
+        UnstableFuseQueue queue =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server)).hbm$unstableFuses();
         SlotSource[] sources = queue.interiorSources(owner);
         queue.interiorSources(owner, null);
         queue.remove(owner);
@@ -117,7 +143,9 @@ public final class UnstableFuses {
         if (!isStorageOwner(owner)) return;
         if (!(owner.level() instanceof ServerLevel level)
                 || level.getEntity(owner.getId()) != owner) return;
-        UnstableFuseQueue queue = level.getServer().hbm$unstableFuses();
+        UnstableFuseQueue queue =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (level.getServer()))
+                        .hbm$unstableFuses();
         if (deadline < queue.deadline(owner)) queue.put(owner, deadline);
     }
 
@@ -130,7 +158,10 @@ public final class UnstableFuses {
         InventorySlotBinding.bind(stack, owner, 0);
         ItemInteriors.publish(owner, owner, 0, stack);
         if (deadline(stack) == Long.MAX_VALUE
-                && level.getServer().hbm$unstableFuses().deadline(owner) == Long.MAX_VALUE) return;
+                && ((com.hbm.interfaces.injected.UnstableFuseSchedule) (level.getServer()))
+                                .hbm$unstableFuses()
+                                .deadline(owner)
+                        == Long.MAX_VALUE) return;
         slotChanged(owner, owner, 0);
     }
 
@@ -145,7 +176,9 @@ public final class UnstableFuses {
         }
         ServerLevel level = kind.level(owner);
         if (level == null) return;
-        level.getServer().hbm$unstableFuses().slotChanged(source, slot);
+        ((com.hbm.interfaces.injected.UnstableFuseSchedule) (level.getServer()))
+                .hbm$unstableFuses()
+                .slotChanged(source, slot);
     }
 
     public static void changed(Object owner) {
@@ -164,12 +197,16 @@ public final class UnstableFuses {
         } else {
             throw new IllegalArgumentException();
         }
-        level.getServer().hbm$unstableFuses().changed(owner);
+        ((com.hbm.interfaces.injected.UnstableFuseSchedule) (level.getServer()))
+                .hbm$unstableFuses()
+                .changed(owner);
     }
 
     public static void removed(ServerLevel level, Object owner) {
         ItemInteriors.retire(level.getServer(), owner);
-        level.getServer().hbm$unstableFuses().remove(owner);
+        ((com.hbm.interfaces.injected.UnstableFuseSchedule) (level.getServer()))
+                .hbm$unstableFuses()
+                .remove(owner);
         if (owner instanceof BlockEntity block) InventoryChanges.unbindBlock(block);
         if (owner instanceof Entity entity) bindContainers(entity, null);
     }
@@ -203,7 +240,9 @@ public final class UnstableFuses {
     public static void rebuildBlock(BlockEntity owner) {
         InventoryOwnerAccess kind = InventoryOwnerAccess.BLOCK;
         if (!kind.live(owner)) return;
-        UnstableFuseQueue queue = kind.level(owner).getServer().hbm$unstableFuses();
+        UnstableFuseQueue queue =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (kind.level(owner).getServer()))
+                        .hbm$unstableFuses();
         queue.remove(owner);
         Object sources = InventoryChanges.sources(owner);
         ItemInteriors.replaceSources(owner, sources);
@@ -247,7 +286,8 @@ public final class UnstableFuses {
     public static void reindexSource(MinecraftServer server, Object source) {
         Object owner = InventoryChanges.owner(source);
         if (owner == null || !InventoryOwnerAccess.of(owner).live(owner)) return;
-        UnstableFuseQueue queue = server.hbm$unstableFuses();
+        UnstableFuseQueue queue =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server)).hbm$unstableFuses();
         trackSource(queue, owner, source);
         FuseSlots index = queue.slots(owner);
         queue.put(owner, index == null ? Long.MAX_VALUE : index.minimum());
@@ -257,7 +297,8 @@ public final class UnstableFuses {
         ServerLevel level = InventoryOwnerAccess.of(owner).level(owner);
         if (level == null) return;
         var server = level.getServer();
-        var queue = server.hbm$unstableFuses();
+        var queue =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server)).hbm$unstableFuses();
         FuseSlots index = queue.slots(owner);
         if (index != null) {
             index.removeSource(source);
@@ -271,7 +312,8 @@ public final class UnstableFuses {
         ItemInteriors.flush(server);
         long now = server.overworld().getGameTime();
         boolean audit = auditing(now);
-        UnstableFuseQueue queue = server.hbm$unstableFuses();
+        UnstableFuseQueue queue =
+                ((com.hbm.interfaces.injected.UnstableFuseSchedule) (server)).hbm$unstableFuses();
         SlotDeltaBuffer.Batch deltas = queue.takeSlots();
         if (deltas != null) {
             ReferenceOpenHashSet<Object> touched = null;
@@ -335,8 +377,9 @@ public final class UnstableFuses {
         if (audit) {
             var visited = new ReferenceOpenHashSet<>(owners);
             for (ServerLevel level : server.getAllLevels()) {
-                for (Object owner : level.hbm$storageEntities())
-                    if (visited.add(owner)) owners.add(owner);
+                for (Object owner :
+                        ((com.hbm.interfaces.injected.ServerLevelExtension) (level))
+                                .hbm$storageEntities()) if (visited.add(owner)) owners.add(owner);
             }
             for (ServerPlayer player : server.getPlayerList().getPlayers())
                 if (visited.add(player)) owners.add(player);
@@ -378,7 +421,8 @@ public final class UnstableFuses {
     }
 
     private static boolean auditing(long now) {
-        return now % RECOVERY_PERIOD == 0 && FabricHbmConfig.runtime().unstableRecoverySweep();
+        return now % RECOVERY_PERIOD == 0
+                && ((RuntimeConfig) HbmConfig.RUNTIME).unstableRecoverySweep();
     }
 
     public static void onChunkLoad(ServerLevel level, LevelChunk chunk) {
@@ -398,7 +442,8 @@ public final class UnstableFuses {
         if (InventoryEntityAccess.of(entity).cargo) bindContainers(entity, entity);
         if (entity.level() instanceof ServerLevel level)
             inspect(
-                    level.getServer().hbm$unstableFuses(),
+                    ((com.hbm.interfaces.injected.UnstableFuseSchedule) (level.getServer()))
+                            .hbm$unstableFuses(),
                     new Sweep(level.getGameTime(), false),
                     entity);
     }
@@ -476,11 +521,9 @@ public final class UnstableFuses {
         if (container instanceof BlockEntity blockEntity && blockEntity.isRemoved()) return false;
         if (container instanceof Entity entity && entity.isRemoved()) return false;
         if (container instanceof ResultContainer) return false;
-        if (container instanceof IControlReceiverFilter filter) {
-            int[] range = filter.getFilterSlots();
-            if (slot >= range[0] && slot < range[1]) return false;
-        }
-        return !(container instanceof BlockEntityMachineBase machine) || machine.dropsSlot(slot);
+        if (container instanceof GhostFilters filter && filter.filterWindow().contains(slot))
+            return false;
+        return !(container instanceof MachineBlockEntity machine) || machine.dropsSlot(slot);
     }
 
     private static boolean menuOwnedSlot(Slot slot, ServerPlayer player) {
@@ -702,17 +745,11 @@ public final class UnstableFuses {
                 return false;
             if (container instanceof ContainerEntity loot && loot.getContainerLootTable() != null)
                 return false;
-            int firstFilter = 0;
-            int endFilter = 0;
-            if (container instanceof IControlReceiverFilter filter) {
-                int[] range = filter.getFilterSlots();
-                firstFilter = range[0];
-                endFilter = range[1];
-            }
+            var filters = container instanceof GhostFilters filter ? filter.filterWindow() : null;
             boolean changed = false;
             for (int slot = 0, size = container.getContainerSize(); slot < size; slot++) {
-                if (slot >= firstFilter && slot < endFilter) continue;
-                if (container instanceof BlockEntityMachineBase machine && !machine.dropsSlot(slot))
+                if (filters != null && filters.contains(slot)) continue;
+                if (container instanceof MachineBlockEntity machine && !machine.dropsSlot(slot))
                     continue;
                 ItemStack item = container.getItem(slot);
                 ItemStack replacement =
@@ -854,11 +891,13 @@ public final class UnstableFuses {
                 if (deadline < nextDeadline) nextDeadline = deadline;
                 return false;
             }
-            if (ItemUnstable.hasSpentFuse(stack, now)) {
+            if (UnstableItem.hasSpentFuse(stack, now)) {
+                UnstableItem unstable = (UnstableItem) stack.getItem();
+                int count = stack.getCount();
                 stack.setCount(0);
                 mutations++;
                 if (blasts == null) blasts = new ArrayList<>();
-                blasts.add(new Blast(level, x, y, z, carrier));
+                blasts.add(new Blast(level, x, y, z, carrier, unstable, count));
                 return true;
             }
             boolean changed = ItemContents.rewrite(stack, level, this);
@@ -876,7 +915,9 @@ public final class UnstableFuses {
         private void detonate() {
             if (blasts == null) return;
             for (Blast blast : blasts) {
-                ItemUnstable.detonate(blast.level, blast.x, blast.y, blast.z);
+                if (blast.carrier != null && blast.carrier.isSpectator()) continue;
+                blast.item.expire(
+                        blast.level, blast.x, blast.y, blast.z, blast.count, blast.carrier);
                 if (blast.carrier != null && !blast.carrier.isRemoved()) {
                     ServerLevel carrierLevel = (ServerLevel) blast.carrier.level();
                     blast.carrier.hurtServer(
@@ -888,5 +929,12 @@ public final class UnstableFuses {
         }
     }
 
-    private record Blast(ServerLevel level, double x, double y, double z, Entity carrier) {}
+    private record Blast(
+            ServerLevel level,
+            double x,
+            double y,
+            double z,
+            Entity carrier,
+            UnstableItem item,
+            int count) {}
 }

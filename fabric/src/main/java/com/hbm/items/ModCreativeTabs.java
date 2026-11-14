@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.inventory.material.Mats;
-import com.hbm.lib.Library;
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.inventory.material.Materials;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.util.RegistryUtil;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
@@ -34,7 +50,7 @@ public final class ModCreativeTabs {
                 register(
                         "parts",
                         CreativeContents.Tab.PARTS,
-                        () -> new ItemStack(ModItems.ingot(Mats.MAT_URANIUM)));
+                        () -> new ItemStack(ModItems.ingot(Materials.URANIUM)));
         CONTROL =
                 register(
                         "control",
@@ -45,7 +61,12 @@ public final class ModCreativeTabs {
                         "templates",
                         CreativeContents.Tab.TEMPLATES,
                         () -> new ItemStack(ModItems.BLUEPRINTS),
-                        FabricRegistrar.searchBar());
+                        ((Consumer<CreativeModeTab.Builder>)
+                                (builder2 -> {
+                                    builder2.backgroundTexture(
+                                            CreativeModeTab.createTextureLocation("item_search"));
+                                    Registrar.SEARCH_BUILDERS.add(builder2);
+                                })));
         BLOCKS =
                 register(
                         "blocks",
@@ -63,7 +84,7 @@ public final class ModCreativeTabs {
                         () -> new ItemStack(ModBlocks.NUKE_MAN),
                         builder ->
                                 builder.backgroundTexture(
-                                        Library.id(
+                                        RegistryUtil.id(
                                                 "textures/gui/container/creative_inventory/tab_nuke.png")));
         MISSILES =
                 register(
@@ -97,7 +118,7 @@ public final class ModCreativeTabs {
             CreativeContents.Tab tab,
             Supplier<ItemStack> icon,
             Consumer<CreativeModeTab.Builder> extra) {
-        return FabricRegistrar.registerCreativeModeTab(
+        return Registrar.registerCreativeModeTab(
                 name,
                 builder -> {
                     builder.title(Component.translatable("itemGroup.hbm." + name))

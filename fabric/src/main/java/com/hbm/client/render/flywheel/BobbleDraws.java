@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blocks.generic.BlockBobble.Bobble;
-import com.hbm.blocks.generic.BlockBobble.BobbleType;
+import com.hbm.blocks.generic.BobbleBlock.Bobble;
+import com.hbm.blocks.generic.BobbleBlock.BobbleType;
 import com.hbm.client.render.BobbleFigures;
-import com.hbm.client.render.RenderBobble;
+import com.hbm.client.render.BobbleRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -29,6 +45,7 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Quaternionfc;
 import org.jspecify.annotations.Nullable;
 
 final class BobbleDraws {
@@ -40,11 +57,11 @@ final class BobbleDraws {
                     CardinalLightingMode.OFF,
                     true);
     private static final MeshPart SOCKET_MESH =
-            mesh(ResourceManager.bobble, RenderBobble.SOCKET_PART, SOCKET);
+            mesh(ResourceManager.bobble, BobbleRenderer.SOCKET_PART, SOCKET);
     private static final MeshPart DRILLGON_MESH =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.DRILLGON,
+                    BobbleRenderer.DRILLGON,
                     material(ResourceManager.bobble_drillgon_tex, true));
     private static final SkinMeshes[] GUY_MESHES = buildGuyMeshes();
     private static final Map<Bobble, SkinMeshes> FIGURE_MESHES = new ConcurrentHashMap<>();
@@ -56,7 +73,7 @@ final class BobbleDraws {
                             Transparency.ORDER_INDEPENDENT,
                             CardinalLightingMode.CHUNK,
                             false),
-                    RenderBobble.LAYERED);
+                    BobbleRenderer.LAYERED);
     private static final SkinMeshes ABEL_MESHES =
             skinMeshes(
                     fixed(
@@ -64,49 +81,52 @@ final class BobbleDraws {
                             Transparency.ORDER_INDEPENDENT,
                             CardinalLightingMode.CHUNK,
                             false),
-                    RenderBobble.LAYERED);
+                    BobbleRenderer.LAYERED);
     private static final MeshPart PEEP_TAIL_PART =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.PEEP_TAIL,
+                    BobbleRenderer.PEEP_TAIL,
                     material(ResourceManager.bobble_peep_tex, true));
     private static final MeshPart PEEP_HAT_PART =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.PEEP_HAT,
+                    BobbleRenderer.PEEP_HAT,
                     blended(ResourceManager.bobble_peep_tex));
     private static final MeshPart HORN_PART =
-            mesh(ResourceManager.bobble, RenderBobble.HORN, blended(ResourceManager.bobble_vt_tex));
+            mesh(
+                    ResourceManager.bobble,
+                    BobbleRenderer.HORN,
+                    blended(ResourceManager.bobble_vt_tex));
     private static final MeshPart PELLET_PART =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.PELLET,
+                    BobbleRenderer.PELLET,
                     SimpleMaterial.builderOf(material(ResourceManager.bobble_pu238_tex, true))
                             .cardinalLightingMode(CardinalLightingMode.OFF)
                             .build());
     private static final MeshPart PELLET_SHINE_PART =
-            mesh(ResourceManager.bobble, RenderBobble.PELLET_SHINE, SHINE);
+            mesh(ResourceManager.bobble, BobbleRenderer.PELLET_SHINE, SHINE);
     private static final MeshPart FUMO_PART =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.FUMO,
+                    BobbleRenderer.FUMO,
                     material(ResourceManager.bobble_uffr_tex, true));
     private static final MeshPart FUMO_HEAD_PART =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.FUMO_HEAD,
+                    BobbleRenderer.FUMO_HEAD,
                     material(ResourceManager.bobble_uffr_tex, false));
     private static final MeshPart HEV_HEAD_PART =
             mesh(
                     ResourceManager.armor_hev,
-                    RenderBobble.HEV_HEAD,
+                    BobbleRenderer.HEV_HEAD,
                     material(ResourceManager.hev_helmet_tex, true));
     private static final MeshPart[] HEV_HAT_PARTS =
             buildParts(ResourceManager.armor_hat, blended(ResourceManager.hat_tex));
     private static final MeshPart[] NI4NI_PARTS =
             meshParts(
                     ResourceManager.n_i_4_n_i,
-                    RenderBobble.NI4NI,
+                    BobbleRenderer.NI4NI,
                     material(ResourceManager.n_i_4_n_i_tex, true));
     private static final MeshPart[] SHIMMER_AXE_PARTS =
             buildParts(
@@ -114,17 +134,17 @@ final class BobbleDraws {
     private static final MeshPart MINI_NUKE_PART =
             mesh(
                     ResourceManager.fatman,
-                    RenderBobble.MINI_NUKE,
+                    BobbleRenderer.MINI_NUKE,
                     material(ResourceManager.fatman_mininuke_tex, true));
     private static final MeshPart[] DOUBLE_BARREL_PARTS =
             meshParts(
                     ResourceManager.double_barrel,
-                    RenderBobble.DOUBLE_BARREL,
+                    BobbleRenderer.DOUBLE_BARREL,
                     material(ResourceManager.double_barrel_sacred_dragon_tex, true));
     private static final MeshPart FLUORO_PART =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.FLUORO,
+                    BobbleRenderer.FLUORO,
                     fixed(
                             ResourceManager.fluorescent_lamp_tex,
                             Transparency.ORDER_INDEPENDENT_ADDITIVE,
@@ -133,7 +153,7 @@ final class BobbleDraws {
     private static final MeshPart GLOW_PART =
             mesh(
                     ResourceManager.bobble,
-                    RenderBobble.GLOW,
+                    BobbleRenderer.GLOW,
                     fixed(
                             ResourceManager.bobble_glow_tex,
                             Transparency.ORDER_INDEPENDENT_ADDITIVE,
@@ -147,7 +167,7 @@ final class BobbleDraws {
 
     BobbleDraws(Bobble type, PoseStack root) {
         part(root, SOCKET_MESH, 0xFFFFFFFF, 0);
-        Supplier<RenderBobble.Body> body =
+        Supplier<BobbleRenderer.Body> body =
                 type instanceof BobbleType ? null : BobbleFigures.get(type).body();
         if (body != null) {
             part(
@@ -158,7 +178,7 @@ final class BobbleDraws {
                                     mesh(
                                             body.get().mesh(),
                                             body.get().group(),
-                                            material(RenderBobble.skinTexture(key), true))),
+                                            material(BobbleRenderer.skinTexture(key), true))),
                     0xFFFFFFFF,
                     0);
         } else if (!(type instanceof BobbleType ntm)) {
@@ -174,15 +194,15 @@ final class BobbleDraws {
         root.pushPose();
         renderPost(type, root);
         root.popPose();
-        labelLocal = RenderBobble.labelBase(new Matrix4f(root.last().pose()));
+        labelLocal = BobbleRenderer.labelBase(new Matrix4f(root.last().pose()));
     }
 
     static Matrix4f bob(
             Matrix4f out, Matrix4fc anchor, Matrix4fc pivot, long time, Matrix4fc pose) {
         return out.set(anchor)
                 .mul(pivot)
-                .rotateX(RenderBobble.wobbleX(time) * Mth.DEG_TO_RAD)
-                .rotateZ(RenderBobble.wobbleZ(time) * Mth.DEG_TO_RAD)
+                .rotateX(BobbleRenderer.wobbleX(time) * Mth.DEG_TO_RAD)
+                .rotateZ(BobbleRenderer.wobbleZ(time) * Mth.DEG_TO_RAD)
                 .mul(pose);
     }
 
@@ -194,11 +214,11 @@ final class BobbleDraws {
 
     private static SkinMeshes guyMeshes(Bobble type) {
         return skinMeshes(
-                blended(RenderBobble.skinTexture(type)),
-                type.skinLayers() ? RenderBobble.LAYERED : RenderBobble.FLAT);
+                blended(BobbleRenderer.skinTexture(type)),
+                type.skinLayers() ? BobbleRenderer.LAYERED : BobbleRenderer.FLAT);
     }
 
-    private static SkinMeshes skinMeshes(Material material, RenderBobble.Skin skin) {
+    private static SkinMeshes skinMeshes(Material material, BobbleRenderer.Skin skin) {
         return new SkinMeshes(
                 mesh(ResourceManager.bobble, skin.leftLeg(), material),
                 mesh(ResourceManager.bobble, skin.rightLeg(), material),
@@ -263,9 +283,9 @@ final class BobbleDraws {
     }
 
     private void renderGuy(PoseStack pose, Bobble type, SkinMeshes skin, int light) {
-        RenderBobble.Pose angles = RenderBobble.pose(type);
+        BobbleRenderer.Pose angles = BobbleRenderer.pose(type);
         pose.pushPose();
-        pose.mulPose(Axis.YP.rotationDegrees((float) angles.body()));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) angles.body()));
         if (type == BobbleType.PEEP) part(pose, PEEP_TAIL_PART, -1, light);
         limb(pose, skin.leftLeg, 0D, 1D, -.125D, angles.leftLeg(), light);
         limb(pose, skin.rightLeg, 0D, 1D, .125D, angles.rightLeg(), light);
@@ -276,9 +296,9 @@ final class BobbleDraws {
         pose.translate(0D, 1.75D, 0D);
         Matrix4f pivot = new Matrix4f(pose.last().pose());
         PoseStack head = new PoseStack();
-        head.mulPose(Axis.XP.rotationDegrees((float) angles.head()[0]));
-        head.mulPose(Axis.YP.rotationDegrees((float) angles.head()[1]));
-        head.mulPose(Axis.ZP.rotationDegrees((float) angles.head()[2]));
+        head.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) angles.head()[0]));
+        head.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) angles.head()[1]));
+        head.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) angles.head()[2]));
         head.translate(0D, -1.75D, 0D);
         bobbing(pivot, head, skin.head, -1, light);
         if (type == BobbleType.VT) bobbing(pivot, head, HORN_PART, -1, light);
@@ -286,7 +306,7 @@ final class BobbleDraws {
         if (type == BobbleType.VAER) holdProp(type, head, pivot);
         if (type == BobbleType.NOS) {
             head.translate(0D, 1.75D, 0D);
-            head.mulPose(Axis.XP.rotationDegrees(180F));
+            head.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
             head.scale(.095F, .095F, .095F);
             for (MeshPart part : HEV_HAT_PARTS) bobbing(pivot, head, part, -1, light);
         }
@@ -304,9 +324,9 @@ final class BobbleDraws {
             int light) {
         pose.pushPose();
         pose.translate(x, y, z);
-        pose.mulPose(Axis.XP.rotationDegrees((float) rotation[0]));
-        pose.mulPose(Axis.YP.rotationDegrees((float) rotation[1]));
-        pose.mulPose(Axis.ZP.rotationDegrees((float) rotation[2]));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) rotation[0]));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) rotation[1]));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) rotation[2]));
         pose.translate(-x, -y, -z);
         part(pose, part, -1, light);
         pose.popPose();
@@ -339,8 +359,8 @@ final class BobbleDraws {
         switch (ntm) {
             case BLUEHAT -> {
                 pose.translate(0D, .875D, -.5D);
-                pose.mulPose(Axis.YP.rotationDegrees(-90F));
-                pose.mulPose(Axis.ZP.rotationDegrees(-160F));
+                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-160F));
                 pose.scale(.0625F, .0625F, .0625F);
                 part(pose, HEV_HEAD_PART, 0xFFFFFFFF, 0);
             }
@@ -348,8 +368,8 @@ final class BobbleDraws {
                 pose.pushPose();
                 pose.translate(.8D, 1.6D, .4D);
                 pose.scale(.125F, .125F, .125F);
-                pose.mulPose(Axis.YP.rotationDegrees(90F));
-                pose.mulPose(Axis.XP.rotationDegrees(10F));
+                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(10F));
                 for (MeshPart part : NI4NI_PARTS) part(pose, part, -1, 0);
                 pose.popPose();
                 holdProp(type, pose, null);
@@ -357,14 +377,14 @@ final class BobbleDraws {
             case ADAM29 -> holdProp(type, pose, null);
             case PHEO -> {
                 pose.translate(.5D, 1.15D, .45D);
-                pose.mulPose(Axis.XP.rotationDegrees(-60F));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-60F));
                 pose.scale(2F, 2F, 2F);
                 for (MeshPart part : SHIMMER_AXE_PARTS) part(pose, part, -1, 0);
             }
             case BOB -> {
                 pose.pushPose();
                 pose.translate(0D, .6875D, .625D);
-                pose.mulPose(Axis.XP.rotationDegrees(-90F));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
                 pose.scale(.125F, .125F, .125F);
                 pose.translate(-6D, 0D, 0D);
                 for (int i = -1; i <= 1; i++) {
@@ -374,8 +394,8 @@ final class BobbleDraws {
                 pose.popPose();
                 pose.pushPose();
                 pose.translate(.25D, .3125D, -.5D);
-                pose.mulPose(Axis.XP.rotationDegrees(-90F));
-                pose.mulPose(Axis.YP.rotationDegrees(90F));
+                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
+                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 pose.scale(.1F, .1F, .1F);
                 for (MeshPart part : DOUBLE_BARREL_PARTS) part(pose, part, -1, 0);
                 pose.popPose();
@@ -408,7 +428,7 @@ final class BobbleDraws {
     }
 
     private void holdProp(Bobble type, PoseStack pose, @Nullable Matrix4f pivot) {
-        RenderBobble.propPose(type, pose);
+        BobbleRenderer.propPose(type, pose);
         propLocal.set(pose.last().pose());
         propPivot = pivot;
     }

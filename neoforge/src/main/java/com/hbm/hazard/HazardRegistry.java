@@ -1,10 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.hazard;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockSellafield;
+import com.hbm.blocks.generic.SellafieldBlock;
 import com.hbm.config.BalanceConfig;
 import com.hbm.hazard.modifier.HazardModifierDecayHeat;
 import com.hbm.hazard.modifier.HazardModifierFuelRadiation;
@@ -14,21 +44,21 @@ import com.hbm.hazard.modifier.HazardModifierRBMKRadiation;
 import com.hbm.hazard.modifier.HazardModifierRTGRadiation;
 import com.hbm.hazard.transformer.*;
 import com.hbm.hazard.type.*;
-import com.hbm.inventory.OreDictManager;
+import com.hbm.inventory.material.MaterialTagRegistry;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBreedingRod;
-import com.hbm.items.machine.ItemDepletedFuel;
-import com.hbm.items.machine.ItemPWRFuel.EnumPWRFuel;
-import com.hbm.items.machine.ItemPlateFuel;
-import com.hbm.items.machine.ItemRBMKPellet;
-import com.hbm.items.machine.ItemRBMKRod;
-import com.hbm.items.machine.ItemRTGPellet;
-import com.hbm.items.machine.ItemWatzPellet;
-import com.hbm.items.machine.ItemZirnoxRod;
-import com.hbm.items.machine.ItemZirnoxRodDepleted;
-import com.hbm.lib.Library;
+import com.hbm.items.machine.BreedingRodItem;
+import com.hbm.items.machine.DepletedFuelItem;
+import com.hbm.items.machine.PWRFuelItem.EnumPWRFuel;
+import com.hbm.items.machine.PlateFuelItem;
+import com.hbm.items.machine.RBMKPelletItem;
+import com.hbm.items.machine.RBMKRodItem;
+import com.hbm.items.machine.RTGPelletItem;
+import com.hbm.items.machine.WatzPelletItem;
+import com.hbm.items.machine.ZirnoxRodDepletedItem;
+import com.hbm.items.machine.ZirnoxRodItem;
 import com.hbm.registration.ItemFamily;
 import com.hbm.registration.RegistryHandle;
+import com.hbm.util.RegistryUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import java.util.ArrayList;
@@ -48,20 +78,20 @@ import net.minecraft.world.level.ItemLike;
 
 public final class HazardRegistry {
 
-    public static final IHazardType RADIATION = new HazardTypeRadiation();
-    public static final IHazardType CONTAMINATING = new HazardTypeContaminating();
-    public static final IHazardType DIGAMMA = new HazardTypeDigamma();
-    public static final IHazardType HOT = new HazardTypeHot();
-    public static final IHazardType BLINDING = new HazardTypeBlinding();
-    public static final IHazardType ASBESTOS = new HazardTypeAsbestos();
-    public static final IHazardType COAL = new HazardTypeCoal();
-    public static final IHazardType HYDROACTIVE = new HazardTypeHydroactive();
-    public static final IHazardType EXPLOSIVE = new HazardTypeExplosive();
-    public static final IHazardType TOXIC = new HazardTypeToxic();
-    public static final IHazardType COLD = new HazardTypeCold();
+    public static final HazardKind RADIATION = new HazardTypeRadiation();
+    public static final HazardKind CONTAMINATING = new HazardTypeContaminating();
+    public static final HazardKind DIGAMMA = new HazardTypeDigamma();
+    public static final HazardKind HOT = new HazardTypeHot();
+    public static final HazardKind BLINDING = new HazardTypeBlinding();
+    public static final HazardKind ASBESTOS = new HazardTypeAsbestos();
+    public static final HazardKind COAL = new HazardTypeCoal();
+    public static final HazardKind HYDROACTIVE = new HazardTypeHydroactive();
+    public static final HazardKind EXPLOSIVE = new HazardTypeExplosive();
+    public static final HazardKind TOXIC = new HazardTypeToxic();
+    public static final HazardKind COLD = new HazardTypeCold();
 
-    private static final Map<Identifier, IHazardType> TYPES_BY_ID = new LinkedHashMap<>();
-    private static final Map<IHazardType, Identifier> IDS_BY_TYPE = new IdentityHashMap<>();
+    private static final Map<Identifier, HazardKind> TYPES_BY_ID = new LinkedHashMap<>();
+    private static final Map<HazardKind, Identifier> IDS_BY_TYPE = new IdentityHashMap<>();
 
     static {
         nameType("radiation", RADIATION);
@@ -77,10 +107,10 @@ public final class HazardRegistry {
         nameType("cold", COLD);
     }
 
-    public static final Codec<IHazardType> TYPE_CODEC =
+    public static final Codec<HazardKind> TYPE_CODEC =
             Identifier.CODEC.comapFlatMap(
                     id -> {
-                        IHazardType type = TYPES_BY_ID.get(id);
+                        HazardKind type = TYPES_BY_ID.get(id);
                         return type == null
                                 ? DataResult.error(
                                         () ->
@@ -92,13 +122,13 @@ public final class HazardRegistry {
                     },
                     HazardRegistry::idOf);
 
-    private static void nameType(String name, IHazardType type) {
-        Identifier id = Library.id(name);
+    private static void nameType(String name, HazardKind type) {
+        Identifier id = RegistryUtil.id(name);
         TYPES_BY_ID.put(id, type);
         IDS_BY_TYPE.put(type, id);
     }
 
-    public static void registerType(Identifier id, IHazardType type) {
+    public static void registerType(Identifier id, HazardKind type) {
         if (TYPES_BY_ID.containsKey(id) || IDS_BY_TYPE.containsKey(type)) {
             throw new IllegalArgumentException("duplicate hazard type " + id);
         }
@@ -106,7 +136,7 @@ public final class HazardRegistry {
         IDS_BY_TYPE.put(type, id);
     }
 
-    public static Identifier idOf(IHazardType type) {
+    public static Identifier idOf(HazardKind type) {
         Identifier id = IDS_BY_TYPE.get(type);
         if (id == null)
             throw new IllegalArgumentException("hazard type carries no datapack name: " + type);
@@ -186,20 +216,20 @@ public final class HazardRegistry {
 
     private static final ToDoubleFunction<ItemStack> ZIRNOX_DEPLETION =
             stack ->
-                    stack.getItem() instanceof ItemZirnoxRod rod
-                            ? (double) ItemZirnoxRod.getLifeTime(stack) / (double) rod.type.maxLife
+                    stack.getItem() instanceof ZirnoxRodItem rod
+                            ? (double) ZirnoxRodItem.getLifeTime(stack) / (double) rod.type.maxLife
                             : 0D;
 
-    public static HazardData makeData(IHazardType type, double level) {
+    public static HazardData makeData(HazardKind type, double level) {
         return new HazardData().addEntry(type, level);
     }
 
     public static TagKey<Item> hazardTag(String name) {
-        return TagKey.create(Registries.ITEM, Library.id("hazard/" + name));
+        return TagKey.create(Registries.ITEM, RegistryUtil.id("hazard/" + name));
     }
 
     public static final List<TagKey<Item>> ORE_BLACKLIST =
-            List.of(OreDictManager.TH232.ore(), OreDictManager.U.ore());
+            List.of(MaterialTagRegistry.TH232.ore(), MaterialTagRegistry.U.ore());
 
     public static void registerItems() {
         ORE_BLACKLIST.forEach(HazardSystem::blacklist);
@@ -218,7 +248,7 @@ public final class HazardRegistry {
                                 new HazardEntry(RADIATION, 0D)
                                         .addMod(
                                                 new HazardModifierLevel(
-                                                        BlockSellafield.LEVEL,
+                                                        SellafieldBlock.LEVEL,
                                                         0.5D,
                                                         1D,
                                                         2.5D,
@@ -258,8 +288,8 @@ public final class HazardRegistry {
 
     private static final ToDoubleFunction<ItemStack> PLATE_DEPLETION =
             stack ->
-                    stack.getItem() instanceof ItemPlateFuel plate
-                            ? (double) ItemPlateFuel.getLifeTime(stack) / (double) plate.lifeTime
+                    stack.getItem() instanceof PlateFuelItem plate
+                            ? (double) PlateFuelItem.getLifeTime(stack) / (double) plate.lifeTime
                             : 0D;
 
     private static void registerPlateFuel() {
@@ -273,7 +303,7 @@ public final class HazardRegistry {
     }
 
     private static void plateFuel(
-            RegistryHandle<ItemPlateFuel> fuel, double base, double target, boolean blinding) {
+            RegistryHandle<PlateFuelItem> fuel, double base, double target, boolean blinding) {
         HazardData data =
                 new HazardData()
                         .addEntry(
@@ -304,12 +334,12 @@ public final class HazardRegistry {
         wasteStages(ModItems.WASTE_PLATE_PU238BE, pube * mult_nugget, pube * mult_nugget);
     }
 
-    private static void otherWaste(RegistryHandle<ItemDepletedFuel> waste, double base) {
+    private static void otherWaste(RegistryHandle<DepletedFuelItem> waste, double base) {
         wasteStages(waste, base * 0.075D, base);
     }
 
     private static void wasteStages(
-            RegistryHandle<ItemDepletedFuel> waste, double cooled, double hot) {
+            RegistryHandle<DepletedFuelItem> waste, double cooled, double hot) {
         HazardSystem.register(
                 waste.get(),
                 new HazardData()
@@ -322,9 +352,9 @@ public final class HazardRegistry {
     }
 
     private static void registerZirnox() {
-        for (RegistryHandle<ItemZirnoxRod> handle : ModItems.FUEL) {
+        for (RegistryHandle<ZirnoxRodItem> handle : ModItems.FUEL) {
             if (handle == null) continue;
-            ItemZirnoxRod rod = handle.get();
+            ZirnoxRodItem rod = handle.get();
             HazardSystem.register(
                     rod,
                     new HazardData()
@@ -335,9 +365,9 @@ public final class HazardRegistry {
                                                             zirnoxWasteRad(rod),
                                                             ZIRNOX_DEPLETION))));
         }
-        for (RegistryHandle<ItemZirnoxRodDepleted> handle : ModItems.DEPLETED) {
+        for (RegistryHandle<ZirnoxRodDepletedItem> handle : ModItems.DEPLETED) {
             if (handle == null) continue;
-            ItemZirnoxRodDepleted dep = handle.get();
+            ZirnoxRodDepletedItem dep = handle.get();
             HazardData data = new HazardData();
             if (dep.wasteRad > 0F) data.addEntry(RADIATION, dep.wasteRad);
             if (dep.blinding > 0F) data.addEntry(BLINDING, dep.blinding);
@@ -389,12 +419,12 @@ public final class HazardRegistry {
                         .addEntry(BLINDING, 45D));
     }
 
-    private static double zirnoxWasteRad(ItemZirnoxRod rod) {
+    private static double zirnoxWasteRad(ZirnoxRodItem rod) {
         ItemLike spent = ModItems.spentZirnoxFuel(rod);
         if (spent == null) return 0D;
         Item item = spent.asItem();
-        if (item instanceof ItemZirnoxRodDepleted dep) return dep.wasteRad;
-        if (item instanceof ItemZirnoxRod bred) return bred.type.freshRad;
+        if (item instanceof ZirnoxRodDepletedItem dep) return dep.wasteRad;
+        if (item instanceof ZirnoxRodItem bred) return bred.type.freshRad;
         return ZIRNOX_TRITIUM_RAD;
     }
 
@@ -405,7 +435,7 @@ public final class HazardRegistry {
     private static void registerBreedingRods() {
         for (var family : List.of(ModItems.ROD, ModItems.ROD_DUAL, ModItems.ROD_QUAD)) {
             for (var member : family) {
-                ItemBreedingRod rod = member.get();
+                BreedingRodItem rod = member.get();
                 if (rod.type.radiation == 0D) continue;
                 HazardSystem.register(
                         rod,
@@ -422,7 +452,7 @@ public final class HazardRegistry {
     private static void registerWatzPellets() {
         for (var member : ModItems.WATZ_PELLET) {
             double rad =
-                    switch ((ItemWatzPellet.EnumWatzType) member.get().type) {
+                    switch ((WatzPelletItem.EnumWatzType) member.get().type) {
                         case SCHRABIDIUM -> sa326 * mult_ingot * 4D;
                         case HES, MES, LES -> saf * mult_ingot * 4D;
                         case HEN -> np237 * mult_ingot * 4D;
@@ -438,8 +468,8 @@ public final class HazardRegistry {
     }
 
     private static void registerRBMKFuel() {
-        Map<String, RegistryHandle<ItemRBMKPellet>> pellets = new HashMap<>();
-        for (RegistryHandle<ItemRBMKPellet> handle : ModItems.PELLETS)
+        Map<String, RegistryHandle<RBMKPelletItem>> pellets = new HashMap<>();
+        for (RegistryHandle<RBMKPelletItem> handle : ModItems.PELLETS)
             pellets.put(handle.id().getPath(), handle);
         RBMKBuilder b = new RBMKBuilder(pellets);
 
@@ -549,10 +579,13 @@ public final class HazardRegistry {
         put(ModItems.PELLET_RTG_LEAD, pb209 * mult_rtg, 0D, 7D, 50D);
         put(ModItems.PELLET_RTG_GOLD, au198 * mult_rtg, 0D, 5D, 0D);
         put(ModItems.PELLET_RTG_AMERICIUM, am241 * mult_rtg, 0D, 0D, 0D);
+        HazardSystem.register(
+                ModItems.PELLET_RTG_DEPLETED_NEPTUNIUM.get(),
+                makeData(RADIATION, np237 * mult_rtg));
     }
 
     private static void put(
-            RegistryHandle<ItemRTGPellet> pellet,
+            RegistryHandle<RTGPelletItem> pellet,
             double base,
             double target,
             double hot,
@@ -567,22 +600,22 @@ public final class HazardRegistry {
 
     private static final class RBMKBuilder {
 
-        private final Map<String, RegistryHandle<ItemRBMKPellet>> pellets;
+        private final Map<String, RegistryHandle<RBMKPelletItem>> pellets;
 
-        RBMKBuilder(Map<String, RegistryHandle<ItemRBMKPellet>> pellets) {
+        RBMKBuilder(Map<String, RegistryHandle<RBMKPelletItem>> pellets) {
             this.pellets = pellets;
         }
 
-        void rod(RegistryHandle<ItemRBMKRod> rod, double base, double dep) {
+        void rod(RegistryHandle<RBMKRodItem> rod, double base, double dep) {
             rbmk(rod, base, dep, true, false, 0D, 0D);
         }
 
-        void rod(RegistryHandle<ItemRBMKRod> rod, double base, double dep, boolean linear) {
+        void rod(RegistryHandle<RBMKRodItem> rod, double base, double dep, boolean linear) {
             rbmk(rod, base, dep, true, linear, 0D, 0D);
         }
 
         void rbmk(
-                RegistryHandle<ItemRBMKRod> rod,
+                RegistryHandle<RBMKRodItem> rod,
                 double base,
                 double dep,
                 boolean hot,
@@ -607,7 +640,7 @@ public final class HazardRegistry {
                 boolean linear,
                 double blinding,
                 double digamma) {
-            RegistryHandle<ItemRBMKPellet> handle = pellets.get(path);
+            RegistryHandle<RBMKPelletItem> handle = pellets.get(path);
             if (handle == null)
                 throw new IllegalStateException("no RBMK pellet registered as " + path);
             HazardSystem.register(handle.get(), data(base, dep, false, linear, blinding, digamma));
@@ -632,13 +665,13 @@ public final class HazardRegistry {
     }
 
     public static void registerTrafos() {
-        for (IHazardTransformer transformer : transformers()) {
+        for (HazardTransformer transformer : transformers()) {
             HazardSystem.addTransformer(transformer);
         }
     }
 
-    public static List<IHazardTransformer> transformers() {
-        List<IHazardTransformer> out = new ArrayList<>();
+    public static List<HazardTransformer> transformers() {
+        List<HazardTransformer> out = new ArrayList<>();
         out.add(new HazardTransformerRadiationNBT());
         out.add(new HazardTransformerItemContents());
         if (!(BalanceConfig.enableLBSM && BalanceConfig.enableLBSMSafeCrates))

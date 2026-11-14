@@ -24,6 +24,38 @@
           "type": "minecraft:item",
           "functions": [
             {
+              "count": 4,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:pipe_steel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "count": 2,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "hbm:steel_grate"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
               "count": 6,
               "function": "minecraft:set_count"
             }

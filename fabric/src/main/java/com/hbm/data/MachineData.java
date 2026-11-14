@@ -1,12 +1,42 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.data;
 
-import com.hbm.blockentity.machine.rbmk.RBMKConfig;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.lib.Library;
+import com.hbm.blockentity.machine.rbmk.RbmkParams;
+import com.hbm.inventory.material.MaterialShape;
 import com.hbm.util.DataCodecs;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.Registry;
@@ -16,9 +46,13 @@ import net.minecraft.resources.ResourceKey;
 public final class MachineData {
 
     public static final ResourceKey<Registry<MachineConfig>> REGISTRY =
-            ResourceKey.createRegistryKey(Library.id("machine_config"));
+            ResourceKey.createRegistryKey(RegistryUtil.id("machine_config"));
 
     private static final List<DataGroups.Group> GROUPS = new ArrayList<>();
+
+    private static final DataGroups.Group RTG = DataGroups.group(GROUPS, "rtg");
+    public static final DataGroups.Param<Boolean> RTG_DECAY = RTG.bool("decay", true);
+    public static final DataGroups.Param<Boolean> RTG_SCALE_POWER = RTG.bool("scale_power", false);
 
     private static final DataGroups.Group CONDENSER = DataGroups.group(GROUPS, "condenser");
     public static final DataGroups.Param<Integer> CONDENSER_INPUT_TANK_SIZE =
@@ -80,9 +114,9 @@ public final class MachineData {
 
     private static final DataGroups.Group CRUCIBLE = DataGroups.group(GROUPS, "crucible");
     public static final DataGroups.Param<Integer> CRUCIBLE_RECIPE_CAPACITY =
-            CRUCIBLE.integer("recipe_capacity", MaterialShapes.BLOCK.q(16));
+            CRUCIBLE.integer("recipe_capacity", MaterialShape.BLOCK.amount(16));
     public static final DataGroups.Param<Integer> CRUCIBLE_WASTE_CAPACITY =
-            CRUCIBLE.integer("waste_capacity", MaterialShapes.BLOCK.q(16));
+            CRUCIBLE.integer("waste_capacity", MaterialShape.BLOCK.amount(16));
     public static final DataGroups.Param<Integer> CRUCIBLE_PROCESS_TIME =
             CRUCIBLE.integer("processing_heat", 20_000);
     public static final DataGroups.Param<Double> CRUCIBLE_DIFFUSION =
@@ -237,6 +271,12 @@ public final class MachineData {
             PUMPJACK.integer("gas_per_deposit_max", 250);
     public static final DataGroups.Param<Double> PUMPJACK_DRAIN_CHANCE =
             PUMPJACK.chance("drain_chance", 0.025D);
+    public static final DataGroups.Param<Double> PUMPJACK_RESERVE_OIL_MULTIPLIER =
+            PUMPJACK.real("oil_multiplier", 1.5D);
+    public static final DataGroups.Param<Double> PUMPJACK_RESERVE_GAS_MULTIPLIER =
+            PUMPJACK.real("gas_multiplier", 0.5D);
+    public static final DataGroups.Param<Double> PUMPJACK_RESERVE_DRAIN_MULTIPLIER =
+            PUMPJACK.real("drain_chance_multiplier", 0.5D);
 
     private static final DataGroups.Group DERRICK = DataGroups.group(GROUPS, "derrick");
     public static final DataGroups.Param<Integer> DERRICK_MAX_POWER =
@@ -354,6 +394,6 @@ public final class MachineData {
 
     public static void applyDataPack(RegistryAccess registries) {
         DataGroups.apply(registries, REGISTRY, GROUPS);
-        RBMKConfig.publishColumnHeight();
+        RbmkParams.publishColumnHeight();
     }
 }

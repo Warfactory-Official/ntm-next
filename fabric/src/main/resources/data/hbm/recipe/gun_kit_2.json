@@ -2,23 +2,30 @@
   "type": "hbm:crafting_shapeless",
   "ingredients": [
     {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:gun_kit_1",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:wrench",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     "hbm:ducttape",
     {
       "fabric:type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "hbm:lubricant"
     }
   ],

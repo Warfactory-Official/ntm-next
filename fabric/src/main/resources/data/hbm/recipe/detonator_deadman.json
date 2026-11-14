@@ -3,10 +3,13 @@
   "ingredients": [
     "hbm:detonator",
     {
-      "fabric:type": "fabric:components",
+      "fabric:type": "hbm:matchers",
       "base": "hbm:defuser",
       "components": {
         "minecraft:damage": 0
+      },
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
       }
     },
     "hbm:ducttape"

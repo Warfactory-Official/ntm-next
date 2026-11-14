@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.capability;
 
 import com.hbm.inventory.fluid.FluidStackNTM;
-import com.hbm.items.machine.IFluidContainerItem;
+import com.hbm.items.machine.FluidContainerItem;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,7 +38,7 @@ public final class ForeignFluidItemAccess {
     public static List<Item> containerItems() {
         List<Item> out = new ArrayList<>();
         for (Item item : BuiltInRegistries.ITEM) {
-            if (item instanceof IFluidContainerItem) out.add(item);
+            if (item instanceof FluidContainerItem) out.add(item);
         }
         return out;
     }
@@ -39,7 +55,7 @@ public final class ForeignFluidItemAccess {
     }
 
     public static long insertableMb(ItemStack stack, Fluid fluid, long maxMb) {
-        IFluidContainerItem item = itemOf(stack);
+        FluidContainerItem item = itemOf(stack);
         if (item == null || fluid == Fluids.EMPTY || maxMb <= 0) return 0L;
         if (item.machineConvertible() && !item.canStore(fluid)) return 0L;
         int want = (int) Math.min(maxMb, Integer.MAX_VALUE);
@@ -47,14 +63,14 @@ public final class ForeignFluidItemAccess {
     }
 
     public static long extractableMb(ItemStack stack, Fluid fluid, long maxMb) {
-        IFluidContainerItem item = itemOf(stack);
+        FluidContainerItem item = itemOf(stack);
         if (item == null || fluid == Fluids.EMPTY || maxMb <= 0) return 0L;
         int want = (int) Math.min(maxMb, Integer.MAX_VALUE);
         return item.drain(stack.copyWithCount(1), fluid, want, PRESSURE);
     }
 
     public static long capacityMb(ItemStack stack, Fluid fluid) {
-        IFluidContainerItem item = itemOf(stack);
+        FluidContainerItem item = itemOf(stack);
         if (item == null || fluid == Fluids.EMPTY) return 0L;
         Fluid held = heldFluid(stack);
         if (held != Fluids.EMPTY && held != fluid) return 0L;
@@ -65,18 +81,18 @@ public final class ForeignFluidItemAccess {
     }
 
     public static ItemStack withContent(ItemStack stack, Fluid fluid, long mb) {
-        IFluidContainerItem item = itemOf(stack);
+        FluidContainerItem item = itemOf(stack);
         if (item == null) return stack;
         if (mb <= 0 || fluid == Fluids.EMPTY) return item.emptyContainer(stack);
         return item.filledContainer(stack, new FluidStackNTM(fluid, mb, PRESSURE));
     }
 
-    private static IFluidContainerItem itemOf(ItemStack stack) {
-        return stack.getItem() instanceof IFluidContainerItem item ? item : null;
+    private static FluidContainerItem itemOf(ItemStack stack) {
+        return stack.getItem() instanceof FluidContainerItem item ? item : null;
     }
 
     private static FluidStackNTM content(ItemStack stack) {
-        IFluidContainerItem item = itemOf(stack);
+        FluidContainerItem item = itemOf(stack);
         return item == null ? null : item.getContent(stack);
     }
 }

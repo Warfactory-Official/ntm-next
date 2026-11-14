@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.entity.projectile.EntityShrapnel;
+import com.hbm.entity.projectile.ShrapnelEntity;
 import com.hbm.main.ResourceManager;
 import dev.engine_room.flywheel.api.material.CardinalLightingMode;
 import dev.engine_room.flywheel.api.material.Material;
@@ -46,8 +62,8 @@ public final class ShrapnelVisual<T extends Entity> extends HbmDynamicEntityVisu
     }
 
     private static float scale(Entity entity) {
-        return entity instanceof EntityShrapnel shrapnel
-                        && shrapnel.getTrail() >= EntityShrapnel.TRAIL_VOLCANO
+        return entity instanceof ShrapnelEntity shrapnel
+                        && shrapnel.getTrail() >= ShrapnelEntity.TRAIL_VOLCANO
                 ? 3F
                 : 1F;
     }

@@ -4,6 +4,7 @@
     "S": {
       "fabric:type": "hbm:fluid_content",
       "amount": 1000,
+      "drain": true,
       "fluid": "hbm:kerosene"
     },
     "T": "#c:ingots/steel"

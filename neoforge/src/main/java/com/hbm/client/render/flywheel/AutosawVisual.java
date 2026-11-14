@@ -1,25 +1,44 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineAutosaw;
+import com.hbm.blockentity.machine.AutosawBlockEntity;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.hbm.util.GameTime;
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.material.Material;
+import dev.engine_room.flywheel.api.model.Model;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
+import dev.engine_room.flywheel.api.visual.TickableVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleTickableVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class AutosawVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachineAutosaw>
-        implements ShaderLightVisual {
+public final class AutosawVisual extends AbstractBoundedBlockEntityVisual<AutosawBlockEntity>
+        implements ShaderLightVisual, SimpleTickableVisual, CulledDynamicVisual {
     private static final int MAIN = ResourceManager.autosaw.partId("Main");
     private static final int ENGINE = ResourceManager.autosaw.partId("Engine");
     private static final int ARM_UPPER = ResourceManager.autosaw.partId("ArmUpper");
@@ -36,123 +55,122 @@ public final class AutosawVisual extends HbmDynamicBlockEntityVisual<BlockEntity
         MeshPart.obj(MODEL.groups[ARM_TIP], MODEL.smoothing(), MATERIAL),
         MeshPart.obj(MODEL.groups[SAWBLADE], MODEL.smoothing(), MATERIAL)
     };
-    private final AABB bodyBounds;
-    private final TransformedInstance[] instances;
-    private final Matrix4f basePose = new Matrix4f();
-    private final Matrix4f[] local = {
-        new Matrix4f(), new Matrix4f(), new Matrix4f(),
-        new Matrix4f(), new Matrix4f(), new Matrix4f()
+    private static final int TURN = 0, ANGLE = 1, SPIN = 2, SHAKE = 3;
+    private static final ChainInstance.Chain[] CHAINS = {
+        new ChainInstance.Chain().rotateY(TURN, -Mth.DEG_TO_RAD),
+        new ChainInstance.Chain().sine(SHAKE).rotateY(TURN, -Mth.DEG_TO_RAD).slideY(SHAKE, .01F),
+        arm(1),
+        arm(2),
+        arm(3),
+        arm(4)
     };
-    private final Matrix4f world = new Matrix4f();
-    private float lastTurn = Float.NaN;
-    private float lastAngle = Float.NaN;
-    private float lastSpin = Float.NaN;
-    private float lastEngine = Float.NaN;
+    private final AABB lightBounds;
+    private final ChainParts parts;
+    private boolean lastOn;
+    private boolean initialized;
 
     public AutosawVisual(
-            VisualizationContext context,
-            BlockEntityMachineAutosaw blockEntity,
-            float partialTick) {
+            VisualizationContext context, AutosawBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
-        basePose.translation(.5F, 0F, .5F);
-        bodyBounds = LightBounds.of(MODEL, "Base", basePose, pos);
-        instances = new TransformedInstance[PARTS.length];
-        for (int i = 0; i < PARTS.length; i++)
-            instances[i] =
-                    instancerProvider()
-                            .instancer(InstanceTypes.TRANSFORMED, PARTS[i].model())
-                            .createInstance();
-        updateMovingParts(partialTick);
+        Matrix4f basePose = new Matrix4f().translation(.5F, 0F, .5F);
+        AABB bodyBounds = LightBounds.of(MODEL, "Base", basePose, pos);
+        Model[] models = new Model[PARTS.length];
+        for (int i = 0; i < PARTS.length; i++) models[i] = PARTS[i].model();
+        parts = new ChainParts(context, visualPos, basePose, models, CHAINS, 4);
+        double[] bounds = new double[6];
+        LightBounds.resetBounds(
+                bounds,
+                bodyBounds.minmax(
+                        new AABB(
+                                        pos.getX() - 12,
+                                        pos.getY(),
+                                        pos.getZ() - 12,
+                                        pos.getX() + 13,
+                                        pos.getY() + 10,
+                                        pos.getZ() + 13)
+                                .inflate(1)));
+        parts.includeLightBounds(bounds, pos);
+        lightBounds = new AABB(bounds[0], bounds[1], bounds[2], bounds[3], bounds[4], bounds[5]);
+        updateOn();
+        updateTick();
+    }
+
+    private static ChainInstance.Chain arm(int joints) {
+        var chain =
+                new ChainInstance.Chain()
+                        .rotateY(TURN, -Mth.DEG_TO_RAD)
+                        .translate(0F, 1.75F, 0F)
+                        .rotateX(ANGLE, Mth.DEG_TO_RAD)
+                        .translate(0F, -1.75F, 0F);
+        if (joints > 1) {
+            chain.translate(0F, 1.75F, -4F)
+                    .rotateX(ANGLE, -2F * Mth.DEG_TO_RAD)
+                    .translate(0F, -1.75F, 4F)
+                    .translate(-.01F, 0F, 0F);
+        }
+        if (joints > 2) {
+            chain.translate(.01F, 0F, 0F)
+                    .translate(0F, 1.75F, -8F)
+                    .rotateX(ANGLE, Mth.DEG_TO_RAD)
+                    .translate(0F, -1.75F, 8F);
+        }
+        if (joints > 3)
+            chain.translate(0F, 1.75F, -10F)
+                    .rotateY(SPIN, -Mth.DEG_TO_RAD)
+                    .translate(0F, -1.75F, 10F);
+        return chain.end();
     }
 
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
-        updateMovingParts(context.partialTick());
+    public void frame(DynamicVisual.Context context) {
+        updateOn();
     }
 
-    public void updateMovingParts(float partialTick) {
-        float turn = Mth.lerp(partialTick, blockEntity.prevRotationYaw, blockEntity.rotationYaw);
-        float angle =
-                80F
-                        - Mth.lerp(
-                                partialTick,
-                                blockEntity.prevRotationPitch,
-                                blockEntity.rotationPitch);
-        float spin = Mth.lerp(partialTick, blockEntity.lastSpin, blockEntity.spin);
-        float engine =
-                blockEntity.isOn
-                        ? (float) Math.sin((GameTime.now() * 2 % (2 * Math.PI)) + partialTick)
-                        : 0F;
-        boolean turnChanged = turn != lastTurn;
-        boolean armChanged = turnChanged || angle != lastAngle;
-        boolean bladeChanged = armChanged || spin != lastSpin;
-        boolean engineChanged = turnChanged || engine != lastEngine;
-        lastTurn = turn;
-        lastAngle = angle;
-        lastSpin = spin;
-        lastEngine = engine;
-
-        if (turnChanged) {
-            local[0].set(basePose).rotateY(-turn * Mth.DEG_TO_RAD);
-            write(0);
-        }
-        if (engineChanged) {
-            local[1].set(local[0]).translate(0F, engine * .01F, 0F);
-            write(1);
-        }
-        if (armChanged) {
-            local[2].set(local[0])
-                    .translate(0F, 1.75F, 0F)
-                    .rotateX(angle * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.75F, 0F);
-            local[3].set(local[2])
-                    .translate(0F, 1.75F, -4F)
-                    .rotateX(-angle * 2F * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.75F, 4F)
-                    .translate(-.01F, 0F, 0F);
-            local[4].set(local[3])
-                    .translate(.01F, 0F, 0F)
-                    .translate(0F, 1.75F, -8F)
-                    .rotateX(angle * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.75F, 8F);
-            for (int i = 2; i <= 4; i++) write(i);
-        }
-        if (bladeChanged) {
-            local[5].set(local[4])
-                    .translate(0F, 1.75F, -10F)
-                    .rotateY(-spin * Mth.DEG_TO_RAD)
-                    .translate(0F, -1.75F, 10F);
-            write(5);
-        }
+    @Override
+    public void tick(TickableVisual.Context context) {
+        updateTick();
     }
 
-    private void write(int index) {
-        world.translation(visualPos.getX(), visualPos.getY(), visualPos.getZ()).mul(local[index]);
-        instances[index].setTransform(world).light(0).setChanged();
+    private void updateOn() {
+        boolean on = blockEntity.isOn;
+        if (initialized && on == lastOn) return;
+        lastOn = on;
+        initialized = true;
+        shake();
+        parts.write();
+    }
+
+    private void updateTick() {
+        parts.set(TURN, blockEntity.prevRotationYaw, blockEntity.rotationYaw);
+        parts.set(ANGLE, 80F - blockEntity.prevRotationPitch, 80F - blockEntity.rotationPitch);
+        parts.set(SPIN, blockEntity.lastSpin, blockEntity.spin);
+        shake();
+        parts.write();
+    }
+
+    private void shake() {
+        if (lastOn) {
+            float from = (float) (level.getGameTime() * 2 % (2 * Math.PI));
+            parts.set(SHAKE, from, from + 1F);
+        } else {
+            parts.set(SHAKE, 0F, 0F);
+        }
     }
 
     @Override
     protected AABB getRenderBoundingBox() {
-        return bodyBounds.minmax(
-                new AABB(
-                                pos.getX() - 12,
-                                pos.getY(),
-                                pos.getZ() - 12,
-                                pos.getX() + 13,
-                                pos.getY() + 10,
-                                pos.getZ() + 13)
-                        .inflate(1));
+        return lightBounds;
     }
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        for (TransformedInstance instance : instances) consumer.accept(instance);
+        parts.collectCrumblingInstances(consumer);
     }
 
     @Override
     protected void _delete() {
-        for (TransformedInstance instance : instances) instance.delete();
+        parts.delete();
     }
 }

@@ -1,11 +1,41 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client;
 
-import com.hbm.extprop.HbmPlayerProps;
+import com.hbm.extprop.PlayerState;
 import com.hbm.items.armor.ArmorDash;
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
@@ -15,7 +45,7 @@ import net.minecraft.util.ARGB;
 
 public final class DashBarRenderer {
 
-    private static final Identifier MISC = Library.id("textures/misc/overlay_misc.png");
+    private static final Identifier MISC = RegistryUtil.id("textures/misc/overlay_misc.png");
 
     private static final int WIDTH = 30;
     private static final int HEIGHT = 10;
@@ -39,7 +69,7 @@ public final class DashBarRenderer {
         LocalPlayer player = mc.player;
         if (player == null) return;
 
-        HbmPlayerProps props = HbmPlayerProps.getData(player);
+        PlayerState props = PlayerState.getOrCreate(player);
         int dashes = props.dashCount;
         if (dashes <= 0) {
             fade = 0F;

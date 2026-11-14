@@ -1,10 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.render;
 
-import com.hbm.blockentity.machine.rbmk.RBMKColumn;
-import com.hbm.interfaces.injected.IBufferBuilderExtension;
+import com.hbm.blockentity.machine.rbmk.ColumnSnapshot;
+import com.hbm.interfaces.injected.BufferBuilderExtension;
 import com.hbm.render.util.Vertices;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -38,12 +68,12 @@ public final class RBMKColumnGrid {
 
     private RBMKColumnGrid() {}
 
-    private static int vertexCount(RBMKColumn[] columns) {
+    private static int vertexCount(ColumnSnapshot[] columns) {
         int n = 0;
-        for (RBMKColumn col : columns) {
+        for (ColumnSnapshot col : columns) {
             if (col == null) continue;
             n += 4;
-            switch (col.type) {
+            switch (col.type()) {
                 case FUEL, FUEL_SIM, CONTROL, CONTROL_AUTO -> n += 12;
                 default -> {}
             }
@@ -54,25 +84,25 @@ public final class RBMKColumnGrid {
     public static void emit(
             PoseStack.Pose pose,
             VertexConsumer buf,
-            RBMKColumn[] columns,
+            ColumnSnapshot[] columns,
             int stride,
             float x,
             float y,
             float z) {
-        IBufferBuilderExtension block =
-                buf instanceof IBufferBuilderExtension fast
+        BufferBuilderExtension block =
+                buf instanceof BufferBuilderExtension fast
                                 && fast.hbm$beginBlock(vertexCount(columns))
                         ? fast
                         : null;
         for (int i = 0; i < columns.length; i++) {
-            RBMKColumn col = columns[i];
+            ColumnSnapshot col = columns[i];
             if (col == null) continue;
 
             float ky = -(i / stride) * 0.125F + y;
             float kz = -(i % stride) * 0.125F + z;
 
             float r = 1.0F, g = 1.0F, b = 1.0F;
-            short dye = col instanceof RBMKColumn.ControlColumn control ? control.color : -1;
+            short dye = col instanceof ColumnSnapshot.Control control ? control.dye : -1;
             if (dye >= 0) {
                 switch (dye) {
                     case 0 -> {
@@ -95,13 +125,13 @@ public final class RBMKColumnGrid {
                     }
                 }
             } else {
-                double heat = col.heat / col.maxHeat;
+                double heat = col.heat / col.heatCeiling;
                 double cv = 0.65D + (i % 2) * 0.05D;
                 r = (float) (cv + (1 - cv) * heat);
                 g = (float) cv;
                 b = (float) cv;
             }
-            if (col.indicator > 0) {
+            if (col.craneHighlight > 0) {
                 r = 1.0F;
                 g = 1.0F;
                 b = 0.0F;
@@ -109,7 +139,7 @@ public final class RBMKColumnGrid {
 
             drawColumn(pose, buf, block, x, ky, kz, r, g, b);
 
-            switch (col.type) {
+            switch (col.type()) {
                 case FUEL, FUEL_SIM ->
                         drawDot(
                                 pose,
@@ -119,14 +149,14 @@ public final class RBMKColumnGrid {
                                 ky,
                                 kz,
                                 0F,
-                                0.25F + (float) ((RBMKColumn.FuelColumn) col).enrichment * 0.75F,
+                                0.25F + (float) ((ColumnSnapshot.Fuel) col).enrichment * 0.75F,
                                 0F);
                 case CONTROL -> {
-                    float level = (float) ((RBMKColumn.ControlColumn) col).level;
+                    float level = (float) ((ColumnSnapshot.Control) col).extraction;
                     drawDot(pose, buf, block, x + 0.01F, ky, kz, level, level, 0F);
                 }
                 case CONTROL_AUTO -> {
-                    float level = (float) ((RBMKColumn.ControlColumn) col).level;
+                    float level = (float) ((ColumnSnapshot.Control) col).extraction;
                     drawDot(pose, buf, block, x + 0.01F, ky, kz, level, 0F, level);
                 }
                 default -> {}
@@ -138,7 +168,7 @@ public final class RBMKColumnGrid {
     private static void drawColumn(
             PoseStack.Pose pose,
             VertexConsumer buf,
-            @Nullable IBufferBuilderExtension block,
+            @Nullable BufferBuilderExtension block,
             float x,
             float y,
             float z,
@@ -156,7 +186,7 @@ public final class RBMKColumnGrid {
     private static void drawDot(
             PoseStack.Pose pose,
             VertexConsumer buf,
-            @Nullable IBufferBuilderExtension block,
+            @Nullable BufferBuilderExtension block,
             float x,
             float y,
             float z,
@@ -184,7 +214,7 @@ public final class RBMKColumnGrid {
 
     private static void vtx(
             VertexConsumer buf,
-            @Nullable IBufferBuilderExtension block,
+            @Nullable BufferBuilderExtension block,
             PoseStack.Pose pose,
             float x,
             float y,

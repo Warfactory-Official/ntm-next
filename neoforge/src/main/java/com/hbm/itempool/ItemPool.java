@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.itempool;
 
@@ -42,8 +58,6 @@ public class ItemPool {
 
     public final String name;
     public List<Entry> pool = List.of();
-    private LootTable stackTable;
-    private LootTable unitTable;
 
     public ItemPool(String name) {
         this.name = name;
@@ -57,23 +71,18 @@ public class ItemPool {
         for (Map.Entry<String, JsonElement> pool : root(RESOURCE).entrySet()) {
             ItemPool loaded = new ItemPool(pool.getKey());
             loaded.pool = body(pool.getValue(), ops);
-            loaded.stackTable =
-                    LootTable.DIRECT_CODEC
-                            .parse(ops, pool.getValue())
-                            .getOrThrow(
-                                    err ->
-                                            new IllegalStateException(
-                                                    "decoding " + pool.getKey() + ": " + err));
-            loaded.unitTable =
-                    LootTable.DIRECT_CODEC
-                            .parse(ops, units.get(pool.getKey()))
-                            .getOrThrow(
-                                    err ->
-                                            new IllegalStateException(
-                                                    "decoding unit table "
-                                                            + pool.getKey()
-                                                            + ": "
-                                                            + err));
+            LootTable.DIRECT_CODEC
+                    .parse(ops, pool.getValue())
+                    .getOrThrow(
+                            err ->
+                                    new IllegalStateException(
+                                            "decoding " + pool.getKey() + ": " + err));
+            LootTable.DIRECT_CODEC
+                    .parse(ops, units.get(pool.getKey()))
+                    .getOrThrow(
+                            err ->
+                                    new IllegalStateException(
+                                            "decoding unit table " + pool.getKey() + ": " + err));
         }
     }
 
@@ -196,28 +205,39 @@ public class ItemPool {
     }
 
     public static ItemStack getStack(String name, LootContext context) {
-        return POOLS.get(name).getStack(context);
+        return POOLS.get(name).getStack(context.getRandom());
+    }
+
+    public static ItemStack getStack(String name, RandomSource random) {
+        return POOLS.get(name).getStack(random);
     }
 
     public ItemStack getStack(LootContext context) {
-        return draw(stackTable, context);
+        return getStack(context.getRandom());
+    }
+
+    public ItemStack getStack(RandomSource random) {
+        Entry entry = select(random);
+        int count = entry.min() + random.nextInt(entry.max() - entry.min() + 1);
+        return entry.isEmpty()
+                ? ItemStack.EMPTY
+                : new ItemStack(entry.item(), count, entry.patch());
     }
 
     public static ItemStack getUnit(String name, LootContext context) {
-        return draw(POOLS.get(name).unitTable, context);
+        Entry entry = POOLS.get(name).select(context.getRandom());
+        return entry.isEmpty() ? ItemStack.EMPTY : new ItemStack(entry.item(), 1, entry.patch());
     }
 
-    private static ItemStack draw(LootTable table, LootContext context) {
-        ItemStack[] result = new ItemStack[1];
-        table.getRandomItemsRaw(
-                context,
-                stack -> {
-                    if (result[0] != null)
-                        throw new IllegalStateException(
-                                "a direct item pool emitted multiple stacks");
-                    result[0] = stack;
-                });
-        return result[0] == null ? ItemStack.EMPTY : result[0];
+    private Entry select(RandomSource random) {
+        int total = 0;
+        for (Entry entry : pool) total = Math.addExact(total, entry.weight());
+        int choice = random.nextInt(total);
+        for (Entry entry : pool) {
+            choice -= entry.weight();
+            if (choice < 0) return entry;
+        }
+        throw new IllegalStateException("item pool lost its selection weight: " + name);
     }
 
     public record Entry(

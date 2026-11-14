@@ -2,7 +2,13 @@
   "type": "hbm:crafting_shaped",
   "key": {
     "M": "#hbm:gun_mechanisms/saturnite",
-    "U": "hbm:gun_star_f"
+    "U": {
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:gun_star_f",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
+    }
   },
   "pattern": [
     "UMU"

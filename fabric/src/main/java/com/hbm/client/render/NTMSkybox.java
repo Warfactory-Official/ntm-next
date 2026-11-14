@@ -1,14 +1,44 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.render;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.RenderConfig;
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.handler.ImpactWorldHandler;
-import com.hbm.lib.Library;
 import com.hbm.util.GameTime;
+import com.hbm.util.RegistryUtil;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.pipeline.BlendFunction;
@@ -44,18 +74,22 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
+import org.joml.Quaternionfc;
 import org.joml.Vector4f;
 import org.jspecify.annotations.Nullable;
 
 public final class NTMSkybox {
-    private static final Identifier DIGAMMA_STAR = Library.id("textures/misc/star_digamma.png");
-    private static final Identifier LODE_STAR = Library.id("textures/misc/star_lode.png");
-    private static final Identifier BOBMAZON_SAT = Library.id("textures/misc/sat_bobmazon.png");
+    private static final Identifier DIGAMMA_STAR =
+            RegistryUtil.id("textures/misc/star_digamma.png");
+    private static final Identifier LODE_STAR = RegistryUtil.id("textures/misc/star_lode.png");
+    private static final Identifier BOBMAZON_SAT =
+            RegistryUtil.id("textures/misc/sat_bobmazon.png");
 
     public static final RenderPipeline IMPACT_STARS =
             RenderPipeline.builder(RenderPipelines.GLOBALS_SNIPPET)
-                    .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
-                    .withLocation(Library.id("pipeline/impact_stars"))
+                    .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                    .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
+                    .withLocation(RegistryUtil.id("pipeline/impact_stars"))
                     .withVertexShader("core/stars")
                     .withFragmentShader("core/stars")
                     .withColorTargetState(
@@ -121,9 +155,9 @@ public final class NTMSkybox {
     }
 
     public static void poseImpactStars(PoseStack pose, float starAngle) {
-        pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose(Axis.XP.rotation(starAngle));
-        pose.mulPose(Axis.YP.rotationDegrees(-19.0F));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotation(starAngle));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-19.0F));
     }
 
     public static void renderExtras() {
@@ -141,18 +175,18 @@ public final class NTMSkybox {
 
         if (mode == Mode.CHAINLOADER && renderLodeStar) {
             pose.pushPose();
-            pose.mulPose(Axis.XP.rotationDegrees(-75.0F));
-            pose.mulPose(Axis.YP.rotationDegrees(10.0F));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-75.0F));
+            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(10.0F));
             draw(LODE_STAR, pose, lodeSize, 100.0F, 1.0F, 1.0F);
             pose.popPose();
         }
 
-        float digamma = (float) HbmLivingProps.getDigamma(player);
+        float digamma = (float) LivingHazards.digamma(player);
         pose.pushPose();
-        pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
-        pose.mulPose(Axis.XP.rotation(sunAngle));
-        pose.mulPose(Axis.XP.rotationDegrees(140.0F));
-        pose.mulPose(Axis.ZP.rotationDegrees(-40.0F));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotation(sunAngle));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(140.0F));
+        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-40.0F));
         draw(
                 DIGAMMA_STAR,
                 pose,
@@ -164,9 +198,9 @@ public final class NTMSkybox {
 
         long now = GameTime.now();
         pose.pushPose();
-        pose.mulPose(Axis.XP.rotationDegrees(-40.0F));
-        pose.mulPose(Axis.YP.rotationDegrees(now % 360_000L / 1000.0F));
-        pose.mulPose(Axis.XP.rotationDegrees(now % 36_000L / 100.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-40.0F));
+        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(now % 360_000L / 1000.0F));
+        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(now % 36_000L / 100.0F));
         draw(BOBMAZON_SAT, pose, 0.5F, 100.0F, brightness, satAlpha);
         pose.popPose();
     }

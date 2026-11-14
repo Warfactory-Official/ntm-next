@@ -1,15 +1,44 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.wiaj.cannery;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.PowerDetectorBlock;
 import com.hbm.client.model.Meshes;
-import com.hbm.lib.Library;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import com.hbm.wiaj.JarRenderContext;
 import com.hbm.wiaj.JarScene;
 import com.hbm.wiaj.JarScript;
@@ -23,8 +52,9 @@ import com.hbm.wiaj.actions.ActionWait;
 import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ITileActorRenderer;
+import com.hbm.wiaj.actors.ActorRenderer;
 import com.hbm.wiaj.cannery.CanneryFirebox.ActorFirebox;
+import com.hbm.wiaj.cannery.Dummies;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.rendertype.RenderType;
@@ -35,6 +65,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import org.joml.Quaternionfc;
 
 public class CanneryStirling extends CanneryBase {
 
@@ -249,7 +280,7 @@ public class CanneryStirling extends CanneryBase {
         return script;
     }
 
-    public static final class ActorStirling implements ITileActorRenderer {
+    public static final class ActorStirling implements ActorRenderer {
         private static final HFRWavefrontObject MODEL = ResourceManager.stirling;
         private static final int BASE = MODEL.partId("Base");
         private static final int COG = MODEL.partId("Cog");
@@ -278,21 +309,22 @@ public class CanneryStirling extends CanneryBase {
             pose.pushPose();
             pose.translate(x + 0.5D, y, z + 0.5D);
             pose.mulPose(
-                    Axis.YP.rotationDegrees(
-                            switch (rotation) {
-                                case 3 -> 0;
-                                case 5 -> 90;
-                                case 2 -> 180;
-                                case 4 -> 270;
-                                default -> 0;
-                            }));
+                    (Quaternionfc)
+                            Axis.YP.rotationDegrees(
+                                    switch (rotation) {
+                                        case 3 -> 0;
+                                        case 5 -> 90;
+                                        case 2 -> 180;
+                                        case 4 -> 270;
+                                        default -> 0;
+                                    }));
             RenderType renderType = TYPES[type];
             part(context, renderType, BASE);
 
             if (hasCog) {
                 pose.pushPose();
                 pose.translate(0, 1.375, 0);
-                pose.mulPose(Axis.ZP.rotationDegrees(-rot));
+                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-rot));
                 pose.translate(0, -1.375, 0);
                 part(context, renderType, COG);
                 pose.popPose();
@@ -300,7 +332,7 @@ public class CanneryStirling extends CanneryBase {
 
             pose.pushPose();
             pose.translate(0, 1.375, 0.25);
-            pose.mulPose(Axis.XP.rotationDegrees(rot * 2F + 3F));
+            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(rot * 2F + 3F));
             pose.translate(0, -1.375, -0.25);
             part(context, renderType, COG_SMALL);
             pose.popPose();
@@ -331,12 +363,12 @@ public class CanneryStirling extends CanneryBase {
         }
     }
 
-    public static final class ActorBurner implements ITileActorRenderer {
+    public static final class ActorBurner implements ActorRenderer {
         private static final HFRWavefrontObject MODEL =
-                Meshes.load(Library.id("models/machines/oilburner.obj"));
+                Meshes.load(RegistryUtil.id("models/machines/oilburner.obj"));
         private static final RenderType TYPE =
                 RenderTypes.entityCutoutCull(
-                        Library.id("textures/block/models/machines/oilburner.png"));
+                        RegistryUtil.id("textures/block/models/machines/oilburner.png"));
 
         @Override
         public void renderActor(

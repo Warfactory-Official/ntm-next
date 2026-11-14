@@ -1,5 +1,5 @@
 {
-  "ambientocclusion": true,
+  "ambientocclusion": false,
   "gui_light": "side",
   "loader": "hbm:obj",
   "model": "hbm:models/blocks/spikes.obj",

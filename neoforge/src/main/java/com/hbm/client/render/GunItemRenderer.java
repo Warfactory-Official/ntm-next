@@ -1,20 +1,37 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
 import com.hbm.client.render.flywheel.GunItemVisual;
 import com.hbm.client.render.flywheel.GunRestVisual;
 import com.hbm.client.render.flywheel.ItemVisuals;
+import com.hbm.client.weapon.GunClientState;
 import com.hbm.items.weapon.sedna.AkimboGhost;
 import com.hbm.items.weapon.sedna.BulletConfig;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
-import com.hbm.items.weapon.sedna.impl.ItemGunNI4NI;
-import com.hbm.items.weapon.sedna.mags.IMagazine;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
+import com.hbm.items.weapon.sedna.impl.GunNI4NIItem;
+import com.hbm.items.weapon.sedna.mags.Magazine;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
 import com.hbm.main.ResourceManager;
-import com.hbm.render.item.weapon.sedna.ItemRenderWeaponBase;
 import com.hbm.render.item.weapon.sedna.MuzzleFlash;
+import com.hbm.render.item.weapon.sedna.WeaponItemRenderer;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -114,28 +131,26 @@ public class GunItemRenderer
     }
 
     private static UpgradeState upgradeState(ItemStack stack) {
-        if (!(stack.getItem() instanceof ItemGunBaseNT gun)) return NO_UPGRADES;
-        List<List<Integer>> configurations = new ArrayList<>(gun.getConfigCount());
+        if (!(stack.getItem() instanceof GunBaseNTItem gun)) return NO_UPGRADES;
+        List<List<Identifier>> configurations = new ArrayList<>(gun.getConfigCount());
         for (int config = 0; config < gun.getConfigCount(); config++) {
-            int[] ids =
-                    ItemGunBaseNT.getValueIntArray(stack, XWeaponModManager.KEY_MOD_LIST + config);
-            List<Integer> snapshot = new ArrayList<>(ids.length);
-            for (int id : ids) snapshot.add(id);
-            configurations.add(List.copyOf(snapshot));
+            configurations.add(XWeaponModManager.installed(stack, config));
         }
         return new UpgradeState(List.copyOf(configurations));
     }
 
     private static boolean loaded(ItemStack stack) {
-        if (!(stack.getItem() instanceof ItemGunBaseNT gun)) return false;
-        IMagazine<?> magazine = gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
+        if (!(stack.getItem() instanceof GunBaseNTItem gun)) return false;
+        Magazine<?> magazine =
+                gun.getConfig(stack, 0).getReceivers(stack).get(0).getMagazine(stack);
         return magazine != null && magazine.getAmount(stack, null) > 0;
     }
 
     private static @Nullable AmmoReference loadedAmmo(ItemStack stack) {
         if (!loaded(stack)) return null;
-        ItemGunBaseNT gun = (ItemGunBaseNT) stack.getItem();
-        IMagazine<?> magazine = gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
+        GunBaseNTItem gun = (GunBaseNTItem) stack.getItem();
+        Magazine<?> magazine =
+                gun.getConfig(stack, 0).getReceivers(stack).get(0).getMagazine(stack);
         Object type = magazine.getType(stack, null);
         if (!(type instanceof BulletConfig bullet)) return null;
         if (bullet.ammoItem == null) return null;
@@ -170,7 +185,7 @@ public class GunItemRenderer
                                             != otherArm);
             firstPerson =
                     new FirstPerson(
-                            drawn ? ItemRenderWeaponBase.get(stack) : null, stack, otherArm, live);
+                            drawn ? WeaponItemRenderer.get(stack) : null, stack, otherArm, live);
         }
         return argumentFor(stack, set, owner, firstPerson);
     }
@@ -193,8 +208,8 @@ public class GunItemRenderer
         int dark = -1;
         int light = -1;
         int grip = -1;
-        if (stack.getItem() instanceof ItemGunNI4NI) {
-            int[] colors = ItemGunNI4NI.getColors(stack);
+        if (stack.getItem() instanceof GunNI4NIItem) {
+            int[] colors = GunNI4NIItem.getColors(stack);
             if (colors != null) {
                 customTexture = true;
                 dark = 0xFF000000 | colors[0];
@@ -219,16 +234,17 @@ public class GunItemRenderer
 
     public Shot shot(ItemStack stack, DrawSet set, @Nullable ItemOwner owner) {
         if ((set != DrawSet.EQUIPPED && set != DrawSet.AKIMBO)
-                || !(stack.getItem() instanceof ItemGunBaseNT gun)
+                || !(stack.getItem() instanceof GunBaseNTItem gun)
                 || owner == null) return Shot.NONE;
         LivingEntity entity = owner.asLivingEntity();
         if (entity == null) return Shot.NONE;
         if (entity == Minecraft.getInstance().player) {
             return new Shot(
-                    gun.lastShot[set == DrawSet.AKIMBO ? akimboShotConfig : equippedShotConfig],
-                    (float) gun.shotRand);
+                    GunClientState.getLastShotTime(
+                            gun, set == DrawSet.AKIMBO ? akimboShotConfig : equippedShotConfig),
+                    (float) GunClientState.getShotRandom(gun));
         }
-        return new Shot(ItemRenderWeaponBase.flashMap.getOrDefault(entity, -1L), 0F);
+        return new Shot(WeaponItemRenderer.flashMap.getOrDefault(entity, -1L), 0F);
     }
 
     public Argument argument(
@@ -341,7 +357,7 @@ public class GunItemRenderer
                         : argument;
         if (arg.firstPerson() != null) {
             FirstPerson firstPerson = arg.firstPerson();
-            ItemRenderWeaponBase renderer = firstPerson.renderer();
+            WeaponItemRenderer renderer = firstPerson.renderer();
             if (renderer == null) return;
             if (firstPerson.live()) {
                 renderer.submitFirstPerson(
@@ -493,7 +509,7 @@ public class GunItemRenderer
         }
     }
 
-    public record ModReference(int config, int id) {
+    public record ModReference(int config, Identifier id) {
         public static final Codec<ModReference> CODEC =
                 RecordCodecBuilder.create(
                         i ->
@@ -501,7 +517,9 @@ public class GunItemRenderer
                                                 Codec.INT
                                                         .optionalFieldOf("config", 0)
                                                         .forGetter(ModReference::config),
-                                                Codec.INT.fieldOf("id").forGetter(ModReference::id))
+                                                Identifier.CODEC
+                                                        .fieldOf("id")
+                                                        .forGetter(ModReference::id))
                                         .apply(i, ModReference::new));
     }
 
@@ -516,7 +534,7 @@ public class GunItemRenderer
                                         .apply(i, AmmoReference::new));
     }
 
-    public record UpgradeState(List<List<Integer>> configurations) {
+    public record UpgradeState(List<List<Identifier>> configurations) {
         boolean has(ModReference reference) {
             return reference.config() >= 0
                     && reference.config() < configurations.size()
@@ -561,7 +579,7 @@ public class GunItemRenderer
             @Nullable FirstPerson firstPerson) {}
 
     public record FirstPerson(
-            @Nullable ItemRenderWeaponBase renderer,
+            @Nullable WeaponItemRenderer renderer,
             ItemStack stack,
             boolean otherArm,
             boolean live) {}
@@ -1030,7 +1048,8 @@ public class GunItemRenderer
                     renderer::poseFor,
                     false,
                     stack -> AkimboGhost.isGhost(stack) ? secondGun : weapon,
-                    Map.of());
+                    Map.of(),
+                    transformation);
         }
 
         @Override

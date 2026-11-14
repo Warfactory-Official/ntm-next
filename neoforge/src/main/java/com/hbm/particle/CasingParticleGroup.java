@@ -1,28 +1,53 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
 import com.hbm.client.render.WeaponRenderTypes;
 import com.hbm.main.ResourceManager;
+import com.hbm.particle.casing.Casing;
+import com.hbm.particle.casing.CasingShape;
+import com.hbm.particle.casing.CasingSmokeTrail;
 import com.hbm.render.util.Vertices;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import java.util.ArrayList;
-import java.util.List;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import java.util.Arrays;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleGroup;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionf;
+import org.joml.Quaternionfc;
 
-public class CasingParticleGroup extends ParticleGroup<ParticleSpentCasing> {
+public class CasingParticleGroup extends ParticleGroup<CasingParticle> {
+
+    private final Frame frame = new Frame();
 
     public CasingParticleGroup(ParticleEngine engine) {
         super(engine);
@@ -31,160 +56,157 @@ public class CasingParticleGroup extends ParticleGroup<ParticleSpentCasing> {
     @Override
     public ParticleGroupRenderState extractRenderState(
             Frustum frustum, Camera camera, float partialTicks) {
-        List<Instance> out = new ArrayList<>(this.particles.size());
         Vec3 cam = camera.position();
-        float playerYaw =
-                Minecraft.getInstance().player != null
-                        ? Minecraft.getInstance().player.getViewYRot(partialTicks)
-                        : 0F;
+        Player player = Minecraft.getInstance().player;
+        float viewYaw = player != null ? player.getViewYRot(partialTicks) * Mth.DEG_TO_RAD : 0F;
+        float viewCos = Mth.cos(viewYaw);
+        float viewSin = Mth.sin(viewYaw);
+        frame.begin(cam.x, cam.y, cam.z, particles.size());
 
-        for (ParticleSpentCasing casing : this.particles) {
-            Instance in = new Instance();
-            double pX = casing.interpX(partialTicks);
-            double pY = casing.interpY(partialTicks);
-            double pZ = casing.interpZ(partialTicks);
-            in.relX = pX - cam.x;
-            in.relY = pY - cam.y;
-            in.relZ = pZ - cam.z;
-            in.yaw = casing.interpYaw(partialTicks);
-            in.pitch = casing.interpPitch(partialTicks);
-            in.config = casing.config;
-            in.light = casing.lightCoords(partialTicks);
-            in.heightQuarter = casing.height() / 4F;
-            in.scaleLift = casing.config.getScaleY() * 0.01F;
+        for (CasingParticle casing : particles) {
+            double x = casing.getRenderX(partialTicks);
+            double y = casing.getRenderY(partialTicks);
+            double z = casing.getRenderZ(partialTicks);
+            int light = casing.getLight(partialTicks);
+            frame.addMesh(
+                    casing.getCasing(),
+                    x,
+                    y,
+                    z,
+                    casing.getRenderYaw(partialTicks),
+                    casing.getRenderPitch(partialTicks),
+                    light);
+            if (casing.prepareSmoke(x, y, z, viewCos, viewSin, light))
+                frame.addSmoke(casing.getSmokeTrail());
+        }
+        return frame;
+    }
 
-            if (casing.hasSmoke()) {
-                casing.dragSmokeNodes(pX, pY, pZ);
+    private static final class Frame implements ParticleGroupRenderState {
+        private static final int POSE_STRIDE = 5;
+        private static final int EDGE = ARGB.colorFromFloat(0F, 1F, 1F, 1F);
 
-                double timeAlpha = 1D - (double) casing.age() / (double) casing.maxSmokeGen();
-                List<ParticleSpentCasing.SmokeNode> nodes = casing.smokeNodes;
-                float[] smoke = new float[nodes.size() * 4];
-                for (int i = 0; i < nodes.size(); i++) {
-                    ParticleSpentCasing.SmokeNode node = nodes.get(i);
-                    smoke[i * 4] = (float) node.x;
-                    smoke[i * 4 + 1] = (float) node.y;
-                    smoke[i * 4 + 2] = (float) node.z;
-                    smoke[i * 4 + 3] = (float) (node.alpha * timeAlpha);
-                }
-                float scale = in.config.getScaleX() * 0.5F * ParticleSpentCasing.dScale;
-                Vec3 vec = new Vec3(scale, 0, 0).yRot((float) Math.toRadians(-playerYaw));
-                in.smokeVecX = (float) vec.x;
-                in.smokeVecZ = (float) vec.z;
-                if (casing.ownsVisual()) {
-                    casing.smokeFrame(
-                            new ParticleSpentCasing.SmokeFrame(
-                                    pX,
-                                    pY,
-                                    pZ,
-                                    in.heightQuarter,
-                                    in.smokeVecX,
-                                    in.smokeVecZ,
-                                    in.light,
-                                    smoke));
-                } else {
-                    in.smoke = smoke;
-                }
-            } else if (casing.ownsVisual()) {
-                casing.smokeFrame(null);
+        private final RenderType meshType =
+                RenderTypes.entityCutoutCull(ResourceManager.casings_tex);
+        private final int[][] parts = new int[CasingShape.values().length][];
+        private final PoseStack origin = new PoseStack();
+        private final PoseStack work = new PoseStack();
+        private final Quaternionf turn = new Quaternionf();
+        private final SubmitNodeCollector.CustomGeometryRenderer meshes = this::drawMeshes;
+        private final SubmitNodeCollector.CustomGeometryRenderer smokes = this::drawSmoke;
+        private double camX;
+        private double camY;
+        private double camZ;
+        private Casing[] casings = new Casing[16];
+        private float[] poses = new float[16 * POSE_STRIDE];
+        private int[] lights = new int[16];
+        private int meshCount;
+        private CasingSmokeTrail[] trails = new CasingSmokeTrail[16];
+        private int smokeCount;
+
+        Frame() {
+            for (CasingShape shape : CasingShape.values()) {
+                parts[shape.ordinal()] = ResourceManager.casings.partIds(shape.parts());
             }
-
-            out.add(in);
         }
 
-        return new State(out);
-    }
+        void begin(double x, double y, double z, int capacity) {
+            camX = x;
+            camY = y;
+            camZ = z;
+            if (casings.length < capacity) {
+                int size = Math.max(capacity, casings.length * 2);
+                casings = Arrays.copyOf(casings, size);
+                poses = Arrays.copyOf(poses, size * POSE_STRIDE);
+                lights = Arrays.copyOf(lights, size);
+                trails = Arrays.copyOf(trails, size);
+            }
+        }
 
-    private static final class Instance {
-        double relX, relY, relZ;
-        float yaw, pitch;
-        SpentCasing config;
-        int light;
-        float[] smoke;
-        float smokeVecX, smokeVecZ;
-        float heightQuarter;
-        float scaleLift;
-    }
+        void addMesh(
+                Casing casing, double x, double y, double z, float yaw, float pitch, int light) {
+            int at = meshCount * POSE_STRIDE;
+            poses[at] = (float) (x - camX);
+            poses[at + 1] = (float) (y - camY);
+            poses[at + 2] = (float) (z - camZ);
+            poses[at + 3] = yaw;
+            poses[at + 4] = pitch;
+            casings[meshCount] = casing;
+            lights[meshCount] = light;
+            meshCount++;
+        }
 
-    private record State(List<Instance> instances) implements ParticleGroupRenderState {
+        void addSmoke(CasingSmokeTrail trail) {
+            trails[smokeCount++] = trail;
+        }
 
         @Override
         public void submit(SubmitNodeCollector collector, CameraRenderState camera) {
-            PoseStack pose = new PoseStack();
+            if (meshCount > 0) collector.submitCustomGeometry(origin, meshType, meshes);
+            if (smokeCount > 0)
+                collector.submitCustomGeometry(origin, WeaponRenderTypes.SMOKE_DEPTH, smokes);
+        }
 
-            for (Instance in : instances) {
-                pose.pushPose();
-                pose.translate(in.relX, in.relY - in.heightQuarter + in.scaleLift, in.relZ);
-                pose.scale(
-                        ParticleSpentCasing.dScale,
-                        ParticleSpentCasing.dScale,
-                        ParticleSpentCasing.dScale);
-                pose.mulPose(Axis.YP.rotationDegrees(180 - in.yaw));
-                pose.mulPose(Axis.XP.rotationDegrees(-in.pitch));
-                pose.scale(in.config.getScaleX(), in.config.getScaleY(), in.config.getScaleZ());
+        @Override
+        public void clear() {
+            Arrays.fill(casings, 0, meshCount, null);
+            Arrays.fill(trails, 0, smokeCount, null);
+            meshCount = 0;
+            smokeCount = 0;
+        }
 
-                Instance fin = in;
-                collector.submitCustomGeometry(
-                        pose,
-                        RenderTypes.entityCutoutCull(ResourceManager.casings_tex),
-                        (p, buffer) -> {
-                            int[] parts = fin.config.getType().partIds();
-                            for (int index = 0; index < parts.length; index++) {
-                                int col = fin.config.getColors()[index];
-                                ResourceManager.casings.renderPart(
-                                        p, buffer, fin.light, 0xFF000000 | col, parts[index]);
-                            }
-                        });
-                pose.popPose();
+        private void drawMeshes(PoseStack.Pose base, VertexConsumer buffer) {
+            for (int i = 0; i < meshCount; i++) {
+                Casing casing = casings[i];
+                int at = i * POSE_STRIDE;
+                work.last().set(base);
+                work.translate(poses[at], poses[at + 1] + casing.meshLift(), poses[at + 2]);
+                work.scale(Casing.MESH_SCALE, Casing.MESH_SCALE, Casing.MESH_SCALE);
+                work.mulPose(
+                        (Quaternionfc) turn.rotationY((180F - poses[at + 3]) * Mth.DEG_TO_RAD));
+                work.mulPose((Quaternionfc) turn.rotationX(-poses[at + 4] * Mth.DEG_TO_RAD));
+                work.scale(casing.scaleX(), casing.scaleY(), casing.scaleZ());
+                int[] ids = parts[casing.shape().ordinal()];
+                for (int part = 0; part < ids.length; part++) {
+                    ResourceManager.casings.renderPart(
+                            work.last(),
+                            buffer,
+                            lights[i],
+                            0xFF000000 | casing.tint(part),
+                            ids[part]);
+                }
+            }
+        }
 
-                if (in.smoke != null && in.smoke.length >= 8) {
-                    pose.pushPose();
-                    pose.translate(in.relX, in.relY - in.heightQuarter, in.relZ);
-                    float[] nodes = in.smoke;
-                    float vx = in.smokeVecX;
-                    float vz = in.smokeVecZ;
-                    int edge = ARGB.colorFromFloat(0F, 1F, 1F, 1F);
-                    int light = in.light;
-                    collector.submitCustomGeometry(
-                            pose,
-                            WeaponRenderTypes.SMOKE_DEPTH,
-                            (p, tess) -> {
-                                for (int i = 0; i + 7 < nodes.length; i += 4) {
-                                    float nx = nodes[i],
-                                            ny = nodes[i + 1],
-                                            nz = nodes[i + 2],
-                                            na = nodes[i + 3];
-                                    float px = nodes[i + 4],
-                                            py = nodes[i + 5],
-                                            pz = nodes[i + 6],
-                                            pa = nodes[i + 7];
+        private void drawSmoke(PoseStack.Pose pose, VertexConsumer buffer) {
+            for (int t = 0; t < smokeCount; t++) {
+                CasingSmokeTrail trail = trails[t];
+                float ox = (float) (trail.getFrameX() - camX);
+                float oy = (float) (trail.getFrameY() - camY);
+                float oz = (float) (trail.getFrameZ() - camZ);
+                float vx = trail.getFrameHalfWidth();
+                float vz = trail.getFrameHalfDepth();
+                int light = trail.getFrameLight();
+                float[] nodes = trail.getFrame();
+                for (int i = 0, end = trail.getSegmentCount() * 4; i < end; i += 4) {
+                    float ax = ox + nodes[i], ay = oy + nodes[i + 1], az = oz + nodes[i + 2];
+                    float bx = ox + nodes[i + 4], by = oy + nodes[i + 5], bz = oz + nodes[i + 6];
+                    int older = ARGB.colorFromFloat(nodes[i + 3], 1F, 1F, 1F);
+                    int newer = ARGB.colorFromFloat(nodes[i + 7], 1F, 1F, 1F);
 
-                                    int near = ARGB.colorFromFloat(na, 1F, 1F, 1F);
-                                    int far = ARGB.colorFromFloat(pa, 1F, 1F, 1F);
+                    Vertices.emit(buffer, pose, ax, ay, az, older, 0F, 0F, light, 0F, 1F, 0F);
+                    Vertices.emit(
+                            buffer, pose, ax + vx, ay, az + vz, EDGE, 0F, 0F, light, 0F, 1F, 0F);
+                    Vertices.emit(
+                            buffer, pose, bx + vx, by, bz + vz, EDGE, 0F, 0F, light, 0F, 1F, 0F);
+                    Vertices.emit(buffer, pose, bx, by, bz, newer, 0F, 0F, light, 0F, 1F, 0F);
 
-                                    Vertices.emit(
-                                            tess, p, nx, ny, nz, near, 0F, 0F, light, 0F, 1F, 0F);
-                                    Vertices.emit(
-                                            tess, p, nx + vx, ny, nz + vz, edge, 0F, 0F, light, 0F,
-                                            1F, 0F);
-                                    Vertices.emit(
-                                            tess, p, px + vx, py, pz + vz, edge, 0F, 0F, light, 0F,
-                                            1F, 0F);
-                                    Vertices.emit(
-                                            tess, p, px, py, pz, far, 0F, 0F, light, 0F, 1F, 0F);
-
-                                    Vertices.emit(
-                                            tess, p, nx, ny, nz, near, 0F, 0F, light, 0F, 1F, 0F);
-                                    Vertices.emit(
-                                            tess, p, nx - vx, ny, nz - vz, edge, 0F, 0F, light, 0F,
-                                            1F, 0F);
-                                    Vertices.emit(
-                                            tess, p, px - vx, py, pz - vz, edge, 0F, 0F, light, 0F,
-                                            1F, 0F);
-                                    Vertices.emit(
-                                            tess, p, px, py, pz, far, 0F, 0F, light, 0F, 1F, 0F);
-                                }
-                            });
-                    pose.popPose();
+                    Vertices.emit(buffer, pose, ax, ay, az, older, 0F, 0F, light, 0F, 1F, 0F);
+                    Vertices.emit(
+                            buffer, pose, ax - vx, ay, az - vz, EDGE, 0F, 0F, light, 0F, 1F, 0F);
+                    Vertices.emit(
+                            buffer, pose, bx - vx, by, bz - vz, EDGE, 0F, 0F, light, 0F, 1F, 0F);
+                    Vertices.emit(buffer, pose, bx, by, bz, newer, 0F, 0F, light, 0F, 1F, 0F);
                 }
             }
         }

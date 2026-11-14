@@ -1,0 +1,830 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
+
+package com.hbm.blockentity.machine;
+
+import com.hbm.api.block.MoltenMetalHandler;
+import com.hbm.api.tile.HeatHandler;
+import com.hbm.api.tile.HeatIntake;
+import com.hbm.blockentity.MachineBlockEntity;
+import com.hbm.blockentity.MaterialSettingsHandler;
+import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.capability.NtmContracts;
+import com.hbm.data.MachineData;
+import com.hbm.handler.pollution.PollutionHandler;
+import com.hbm.handler.pollution.PollutionType;
+import com.hbm.inventory.container.CrucibleMenu;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialRegistry;
+import com.hbm.inventory.material.MaterialResolver;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.MaterialStack;
+import com.hbm.inventory.recipes.CrucibleRecipe;
+import com.hbm.inventory.recipes.CrucibleRecipes;
+import com.hbm.items.machine.ScrapsItem;
+import com.hbm.packet.SyncList;
+import com.hbm.packet.SyncUnitSchema;
+import com.hbm.particle.CoolingTowerParticleOptions;
+import com.hbm.platform.BlockLookupCache;
+import com.hbm.util.CrucibleUtil;
+import com.hbm.util.TickPhase;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.DecoderException;
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
+
+public class CrucibleBlockEntity extends MachineBlockEntity
+        implements MenuProvider, MoltenMetalHandler, MaterialSettingsHandler, SyncUnitSchema {
+
+    public static final int SLOT_COUNT = 10;
+    private static final int[] ACCESSIBLE_SLOTS = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    private @Nullable BlockLookupCache<HeatHandler> heatBelow;
+    public final List<MaterialStack> recipeStack = new SyncList<>();
+    public final List<MaterialStack> wasteStack = new SyncList<>();
+    public final List<PourStream> streams = new ArrayList<>();
+    public int heat;
+    public int progress;
+    public String recipe;
+
+    {
+        hbm$syncSet$CrucibleBlockEntity$recipe("null");
+    }
+
+    private int recipePourColor;
+
+    {
+        hbm$syncSet$CrucibleBlockEntity$recipePourColor(-1);
+    }
+
+    private float recipePourLen;
+    private int wastePourColor;
+
+    {
+        hbm$syncSet$CrucibleBlockEntity$wastePourColor(-1);
+    }
+
+    private float wastePourLen;
+
+    public CrucibleBlockEntity(BlockPos pos, BlockState state) {
+        super(ModBlockEntities.CRUCIBLE.get(), pos, state, SLOT_COUNT);
+    }
+
+    @Override
+    protected Component getDefaultName() {
+        return Component.translatable("container.machineCrucible");
+    }
+
+    @Override
+    public int getMaxStackSize() {
+        return 1;
+    }
+
+    @Override
+    public void tickServer() {
+        this.hbm$syncSet$CrucibleBlockEntity$recipePourColor(-1);
+        this.hbm$syncSet$CrucibleBlockEntity$wastePourColor(-1);
+
+        tryPullHeat();
+
+        int x = worldPosition.getX(), y = worldPosition.getY(), z = worldPosition.getZ();
+
+        if (TickPhase.every(this, 5)) {
+            List<ItemEntity> list =
+                    level.getEntitiesOfClass(
+                            ItemEntity.class,
+                            new AABB(x - 0.5, y + 0.5, z - 0.5, x + 1.5, y + 1, z + 1.5));
+
+            for (ItemEntity item : list) {
+                if (item.isRemoved()) continue;
+                ItemStack stack = item.getItem();
+                if (!isItemSmeltable(stack)) continue;
+
+                for (int i = 1; i < SLOT_COUNT; i++) {
+                    if (!inventory.get(i).isEmpty()) continue;
+
+                    if (stack.getCount() == 1) {
+                        inventory.set(i, stack.copy());
+                        item.discard();
+                        setChanged();
+                        break;
+                    } else {
+                        inventory.set(i, stack.copyWithCount(1));
+                        stack.shrink(1);
+                        item.setItem(stack);
+                        setChanged();
+                    }
+                }
+            }
+        }
+
+        int totalCap =
+                MachineData.CRUCIBLE_RECIPE_CAPACITY.get()
+                        + MachineData.CRUCIBLE_WASTE_CAPACITY.get();
+        int totalMass = 0;
+        for (MaterialStack stack : recipeStack) totalMass += stack.amount;
+        for (MaterialStack stack : wasteStack) totalMass += stack.amount;
+
+        double fill = ((double) totalMass / (double) totalCap) * 0.875D;
+
+        List<LivingEntity> living =
+                level.getEntitiesOfClass(
+                        LivingEntity.class,
+                        new AABB(x + 0.5, y + 0.5, z + 0.5, x + 0.5, y + 0.5 + fill, z + 0.5)
+                                .inflate(1, 0, 1));
+        for (LivingEntity entity : living) {
+            entity.hurtServer((ServerLevel) level, level.damageSources().lava(), 5F);
+            entity.igniteForSeconds(5);
+        }
+
+        if (!trySmelt() && this.progress != 0) {
+            this.hbm$syncSet$CrucibleBlockEntity$progress(0);
+            markChanged();
+        }
+
+        tryRecipe();
+
+        Direction facing = MultiblockCoreBlock.coreFacing(getBlockState());
+
+        if (!this.wasteStack.isEmpty()) {
+            pourOut(facing.getOpposite(), this.wasteStack, true);
+        }
+
+        if (!this.recipeStack.isEmpty()) {
+            CrucibleRecipe loaded = getLoadedRecipe();
+            List<MaterialStack> toCast;
+
+            if (loaded == null) {
+                toCast = this.recipeStack;
+            } else {
+                toCast = new ArrayList<>();
+                for (MaterialStack stack : this.recipeStack) {
+                    for (MaterialStack output : loaded.output) {
+                        if (stack.material == output.material) {
+                            toCast.add(stack);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            pourOut(facing, toCast, false);
+        }
+
+        this.recipeStack.removeIf(o -> o.amount <= 0);
+        this.wasteStack.removeIf(o -> o.amount <= 0);
+
+        networkPackNT(25);
+    }
+
+    private void pourOut(Direction dir, List<MaterialStack> stacks, boolean waste) {
+        int x = worldPosition.getX(), y = worldPosition.getY(), z = worldPosition.getZ();
+        CrucibleUtil.Pour didPour =
+                CrucibleUtil.pourFirst(
+                        level,
+                        x + 0.5D + dir.getStepX() * 1.875D,
+                        y + 0.25D,
+                        z + 0.5D + dir.getStepZ() * 1.875D,
+                        6,
+                        stacks,
+                        MaterialShape.NUGGET.amount(3));
+
+        if (didPour != null) {
+            markChanged();
+            float len = Math.max(1F, y - (float) (Math.ceil(didPour.impact().y) - 0.875));
+            if (waste) {
+                this.hbm$syncSet$CrucibleBlockEntity$wastePourColor(
+                        didPour.material().moltenColor());
+                this.hbm$syncSet$CrucibleBlockEntity$wastePourLen(len);
+                markSyncEvent();
+            } else {
+                this.hbm$syncSet$CrucibleBlockEntity$recipePourColor(
+                        didPour.material().moltenColor());
+                this.hbm$syncSet$CrucibleBlockEntity$recipePourLen(len);
+                markSyncEvent();
+            }
+        }
+
+        PollutionHandler.add(
+                level, worldPosition, PollutionType.SOOT, PollutionHandler.SOOT_PER_SECOND / 20F);
+    }
+
+    @Override
+    public void tickClient() {
+        long now = level.getGameTime();
+        for (var it = streams.iterator(); it.hasNext(); ) {
+            if (now - it.next().birth() >= 20) it.remove();
+        }
+
+        if ((!this.recipeStack.isEmpty() || !this.wasteStack.isEmpty()) && now % 10 == 0) {
+            CoolingTowerParticleOptions opts =
+                    new CoolingTowerParticleOptions.Builder()
+                            .setLift(10F)
+                            .setBaseScale(0.75F)
+                            .setMaxScale(3.5F)
+                            .setLife(100 + level.getRandom().nextInt(20))
+                            .setColor(0x202020)
+                            .build();
+            level.addParticle(
+                    opts,
+                    worldPosition.getX() + 0.5,
+                    worldPosition.getY() + 1,
+                    worldPosition.getZ() + 0.5,
+                    0,
+                    0,
+                    0);
+        }
+    }
+
+    private void writeRecipe(ByteBuf output) {
+        ByteBufCodecs.STRING_UTF8.encode(output, recipe);
+    }
+
+    private void readRecipe(ByteBuf input) {
+        hbm$syncSet$CrucibleBlockEntity$recipe(ByteBufCodecs.STRING_UTF8.decode(input));
+    }
+
+    private void writeRecipeStack(ByteBuf output) {
+        writeMaterials(output, recipeStack);
+    }
+
+    private void readRecipeStack(ByteBuf input) {
+        readMaterials(input, recipeStack);
+    }
+
+    private void writeWasteStack(ByteBuf output) {
+        writeMaterials(output, wasteStack);
+    }
+
+    private void readWasteStack(ByteBuf input) {
+        readMaterials(input, wasteStack);
+    }
+
+    private static void writeMaterials(ByteBuf output, List<MaterialStack> materials) {
+        output.writeShort(materials.size());
+        for (MaterialStack material : materials) {
+            output.writeInt(material.material.id());
+            output.writeInt(material.amount);
+        }
+    }
+
+    private static void readMaterials(ByteBuf input, List<MaterialStack> materials) {
+        int count = input.readShort();
+        if (count < 0 || count > input.readableBytes() / 8)
+            throw new DecoderException("Invalid crucible material count");
+        materials.clear();
+        for (int i = 0; i < count; i++) {
+            materials.add(
+                    new MaterialStack(MaterialRegistry.byId(input.readInt()), input.readInt()));
+        }
+    }
+
+    private void writeRecipePour(ByteBuf output) {
+        output.writeInt(recipePourColor);
+        output.writeFloat(recipePourLen);
+    }
+
+    private void readRecipePour(ByteBuf input) {
+        hbm$syncSet$CrucibleBlockEntity$recipePourColor(input.readInt());
+        hbm$syncSet$CrucibleBlockEntity$recipePourLen(input.readFloat());
+    }
+
+    private void writeWastePour(ByteBuf output) {
+        output.writeInt(wastePourColor);
+        output.writeFloat(wastePourLen);
+    }
+
+    private void readWastePour(ByteBuf input) {
+        hbm$syncSet$CrucibleBlockEntity$wastePourColor(input.readInt());
+        hbm$syncSet$CrucibleBlockEntity$wastePourLen(input.readFloat());
+    }
+
+    @Override
+    public void afterSyncUnits(long units) {
+        if (level == null || !level.isClientSide()) return;
+        long now = level.getGameTime();
+        if ((units & 1L << 5) != 0 && recipePourColor != -1) {
+            streams.add(new PourStream(recipePourColor, false, recipePourLen, now));
+        }
+        if ((units & 1L << 6) != 0 && wastePourColor != -1) {
+            streams.add(new PourStream(wastePourColor, true, wastePourLen, now));
+        }
+    }
+
+    @Override
+    public void afterInitialSyncUnits() {}
+
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+
+        this.hbm$syncSet$CrucibleBlockEntity$recipe(input.getStringOr("recipe", "null"));
+
+        int[] rec = input.getIntArray("rec").orElse(new int[0]);
+        for (int i = 0; i < rec.length / 2; i++) {
+            recipeStack.add(new MaterialStack(savedMaterial(rec[i * 2]), rec[i * 2 + 1]));
+        }
+
+        int[] was = input.getIntArray("was").orElse(new int[0]);
+        for (int i = 0; i < was.length / 2; i++) {
+            wasteStack.add(new MaterialStack(savedMaterial(was[i * 2]), was[i * 2 + 1]));
+        }
+
+        this.hbm$syncSet$CrucibleBlockEntity$progress(input.getIntOr("progress", 0));
+        this.hbm$syncSet$CrucibleBlockEntity$heat(input.getIntOr("heat", 0));
+    }
+
+    private static Material savedMaterial(int id) {
+        Material material = MaterialRegistry.byId(id);
+        if (material == null) throw new IllegalStateException("Unknown crucible material id " + id);
+        return material;
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+
+        output.putString("recipe", this.recipe);
+
+        int[] rec = new int[recipeStack.size() * 2];
+        int[] was = new int[wasteStack.size() * 2];
+        for (int i = 0; i < recipeStack.size(); i++) {
+            MaterialStack sta = recipeStack.get(i);
+            rec[i * 2] = sta.material.id();
+            rec[i * 2 + 1] = sta.amount;
+        }
+        for (int i = 0; i < wasteStack.size(); i++) {
+            MaterialStack sta = wasteStack.get(i);
+            was[i * 2] = sta.material.id();
+            was[i * 2 + 1] = sta.amount;
+        }
+        output.putIntArray("rec", rec);
+        output.putIntArray("was", was);
+        output.putInt("progress", progress);
+        output.putInt("heat", heat);
+    }
+
+    protected void tryPullHeat() {
+        int maxHeat = MachineData.CRUCIBLE_MAX_HEAT.get();
+        if (this.heat >= maxHeat) return;
+
+        BlockPos heatPos = worldPosition.below();
+        if (heatBelow == null)
+            heatBelow = NtmContracts.HEAT_SOURCE.cacheAt((ServerLevel) level, heatPos);
+        int next =
+                HeatIntake.GAP_IN_ROOM.pull(
+                        heatBelow.find(), heat, maxHeat, MachineData.CRUCIBLE_DIFFUSION.get());
+        if (next != heat) {
+            hbm$syncSet$CrucibleBlockEntity$heat(next);
+            markChanged();
+        }
+    }
+
+    protected boolean trySmelt() {
+        if (this.heat < MachineData.CRUCIBLE_MAX_HEAT.get() / 2) return false;
+
+        int slot = getFirstSmeltableSlot();
+        if (slot == -1) return false;
+
+        int delta = this.heat - (MachineData.CRUCIBLE_MAX_HEAT.get() / 2);
+        delta *= 0.05;
+
+        this.hbm$syncSet$CrucibleBlockEntity$progress((int) (this.progress + (delta)));
+        this.hbm$syncSet$CrucibleBlockEntity$heat((int) (this.heat - (delta)));
+        if (delta != 0) markChanged();
+
+        if (this.progress >= MachineData.CRUCIBLE_PROCESS_TIME.get()) {
+            this.hbm$syncSet$CrucibleBlockEntity$progress(0);
+
+            List<MaterialStack> materials = MaterialResolver.smelting(inventory.get(slot));
+            CrucibleRecipe loaded = getLoadedRecipe();
+
+            for (MaterialStack material : materials) {
+                boolean recipeMaterial =
+                        loaded != null
+                                && (getQuantaFromType(loaded.input, material.material) > 0
+                                        || getQuantaFromType(loaded.output, material.material) > 0);
+
+                if (recipeMaterial) {
+                    addToStack(this.recipeStack, material);
+                } else {
+                    addToStack(this.wasteStack, material);
+                }
+            }
+
+            removeItem(slot, 1);
+        }
+
+        return true;
+    }
+
+    protected void tryRecipe() {
+        CrucibleRecipe loaded = getLoadedRecipe();
+
+        if (loaded == null) return;
+        if (!TickPhase.every(this, loaded.frequency)) return;
+
+        for (MaterialStack stack : loaded.input) {
+            if (getQuantaFromType(this.recipeStack, stack.material) < stack.amount) return;
+        }
+
+        for (MaterialStack stack : this.recipeStack) {
+            stack.hbm$syncSet$MaterialStack$amount(
+                    (int) (stack.amount - (getQuantaFromType(loaded.input, stack.material))));
+        }
+        markChanged();
+
+        outer:
+        for (MaterialStack out : loaded.output) {
+            for (MaterialStack stack : this.recipeStack) {
+                if (stack.material == out.material) {
+                    stack.hbm$syncSet$MaterialStack$amount((int) (stack.amount + (out.amount)));
+                    continue outer;
+                }
+            }
+            this.recipeStack.add(out.copy());
+        }
+    }
+
+    protected int getFirstSmeltableSlot() {
+        for (int i = 1; i < SLOT_COUNT; i++) {
+            ItemStack stack = inventory.get(i);
+            if (!stack.isEmpty() && isItemSmeltable(stack)) return i;
+        }
+        return -1;
+    }
+
+    public boolean isItemSmeltable(ItemStack stack) {
+        List<MaterialStack> materials = MaterialResolver.smelting(stack);
+
+        if (materials.isEmpty()) return false;
+        CrucibleRecipe loaded = getLoadedRecipe();
+
+        boolean matchesRecipe = loaded == null;
+
+        int recipeContent = loaded != null ? loaded.getInputAmount() : 0;
+        int recipeAmount = getQuantaFromType(this.recipeStack, null);
+        int wasteAmount = getQuantaFromType(this.wasteStack, null);
+
+        for (MaterialStack mat : materials) {
+            int recipeInputRequired =
+                    loaded != null ? getQuantaFromType(loaded.input, mat.material) : 0;
+
+            if (loaded != null && getQuantaFromType(loaded.output, mat.material) > 0) {
+                recipeAmount += mat.amount;
+                matchesRecipe = true;
+                continue;
+            }
+
+            if (recipeInputRequired == 0) {
+                wasteAmount += mat.amount;
+            } else {
+                int matMaximum =
+                        recipeInputRequired
+                                * MachineData.CRUCIBLE_RECIPE_CAPACITY.get()
+                                / recipeContent;
+                int amountStored = getQuantaFromType(recipeStack, mat.material);
+
+                matchesRecipe = true;
+                recipeAmount += mat.amount;
+
+                if (amountStored + mat.amount > matMaximum) return false;
+            }
+        }
+
+        return recipeAmount <= MachineData.CRUCIBLE_RECIPE_CAPACITY.get()
+                && wasteAmount <= MachineData.CRUCIBLE_WASTE_CAPACITY.get()
+                && matchesRecipe;
+    }
+
+    public void addToStack(List<MaterialStack> stack, MaterialStack matStack) {
+        for (MaterialStack mat : stack) {
+            if (mat.material == matStack.material) {
+                mat.hbm$syncSet$MaterialStack$amount((int) (mat.amount + (matStack.amount)));
+                return;
+            }
+        }
+        stack.add(matStack.copy());
+    }
+
+    public @Nullable CrucibleRecipe getLoadedRecipe() {
+        return CrucibleRecipes.INSTANCE.getRecipe(recipe);
+    }
+
+    public int getQuantaFromType(MaterialStack[] stacks, @Nullable Material mat) {
+        for (MaterialStack stack : stacks) {
+            if (mat == null || stack.material == mat) return stack.amount;
+        }
+        return 0;
+    }
+
+    public int getQuantaFromType(List<MaterialStack> stacks, @Nullable Material mat) {
+        int sum = 0;
+        for (MaterialStack stack : stacks) {
+            if (stack.material == mat) return stack.amount;
+            if (mat == null) sum += stack.amount;
+        }
+        return sum;
+    }
+
+    private List<ItemStack> takeMelt() {
+        List<ItemStack> scraps = new ArrayList<>();
+        for (MaterialStack stack : recipeStack) scraps.add(ScrapsItem.create(stack));
+        for (MaterialStack stack : wasteStack) scraps.add(ScrapsItem.create(stack));
+        recipeStack.clear();
+        wasteStack.clear();
+        setChanged();
+        return scraps;
+    }
+
+    public void scoopMelt(Player player) {
+        for (ItemStack scrap : takeMelt()) player.getInventory().placeItemBackInInventory(scrap);
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        if (level != null && !level.isClientSide()) {
+            for (ItemStack scrap : takeMelt()) {
+                level.addFreshEntity(
+                        new ItemEntity(
+                                level,
+                                pos.getX() + 0.5,
+                                pos.getY() + 0.5,
+                                pos.getZ() + 0.5,
+                                scrap));
+            }
+        }
+        super.preRemoveSideEffects(pos, state);
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+        return ACCESSIBLE_SLOTS;
+    }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return isItemSmeltable(stack);
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
+        return slot >= 1 && canPlaceItem(slot, stack);
+    }
+
+    @Override
+    public boolean canAcceptPour(
+            Level level, BlockPos pos, Vec3 hit, Direction side, MaterialStack stack) {
+        CrucibleRecipe loaded = getLoadedRecipe();
+
+        if (loaded == null) {
+            return getQuantaFromType(this.wasteStack, null)
+                    < MachineData.CRUCIBLE_WASTE_CAPACITY.get();
+        }
+
+        int recipeContent = loaded.getInputAmount();
+        int recipeInputRequired = getQuantaFromType(loaded.input, stack.material);
+        int matMaximum =
+                recipeInputRequired * MachineData.CRUCIBLE_RECIPE_CAPACITY.get() / recipeContent;
+        int amountStored = getQuantaFromType(recipeStack, stack.material);
+
+        return amountStored < matMaximum
+                && getQuantaFromType(this.recipeStack, null)
+                        < MachineData.CRUCIBLE_RECIPE_CAPACITY.get();
+    }
+
+    @Override
+    public MaterialStack acceptPour(
+            Level level, BlockPos pos, Vec3 hit, Direction side, MaterialStack stack) {
+        markChanged();
+        CrucibleRecipe loaded = getLoadedRecipe();
+
+        if (loaded == null) {
+            int amount = getQuantaFromType(this.wasteStack, null);
+
+            if (amount + stack.amount <= MachineData.CRUCIBLE_WASTE_CAPACITY.get()) {
+                addToStack(this.wasteStack, stack.copy());
+                return null;
+            } else {
+                int toAdd = MachineData.CRUCIBLE_WASTE_CAPACITY.get() - amount;
+                addToStack(this.wasteStack, new MaterialStack(stack.material, toAdd));
+                return new MaterialStack(stack.material, stack.amount - toAdd);
+            }
+        }
+
+        int recipeContent = loaded.getInputAmount();
+        int recipeInputRequired = getQuantaFromType(loaded.input, stack.material);
+        int matMaximum =
+                recipeInputRequired * MachineData.CRUCIBLE_RECIPE_CAPACITY.get() / recipeContent;
+        int amount = getQuantaFromType(this.recipeStack, stack.material);
+        int amountTotal = getQuantaFromType(this.recipeStack, null);
+
+        int toAdd =
+                Math.min(
+                        matMaximum - amount,
+                        MachineData.CRUCIBLE_RECIPE_CAPACITY.get() - amountTotal);
+        toAdd = Math.min(toAdd, stack.amount);
+        if (toAdd <= 0) return stack;
+
+        addToStack(this.recipeStack, new MaterialStack(stack.material, toAdd));
+        return toAdd < stack.amount
+                ? new MaterialStack(stack.material, stack.amount - toAdd)
+                : null;
+    }
+
+    @Override
+    public boolean canAcceptFlow(Level level, BlockPos pos, Direction side, MaterialStack stack) {
+        return false;
+    }
+
+    @Override
+    public MaterialStack acceptFlow(
+            Level level, BlockPos pos, Direction side, MaterialStack stack) {
+        return null;
+    }
+
+    @Override
+    public int[] settingsMaterials() {
+        int[] ids = new int[recipeStack.size() + wasteStack.size()];
+        int i = 0;
+        for (MaterialStack stack : recipeStack) ids[i++] = stack.material.id();
+        for (MaterialStack stack : wasteStack) ids[i++] = stack.material.id();
+        return ids;
+    }
+
+    public void selectRecipe(String recipe) {
+        this.hbm$syncSet$CrucibleBlockEntity$recipe(recipe);
+        setChanged();
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return getName();
+    }
+
+    @Override
+    public AbstractContainerMenu createMenu(
+            int containerId, Inventory playerInventory, Player player) {
+        return new CrucibleMenu(containerId, playerInventory, this);
+    }
+
+    public record PourStream(int color, boolean waste, float len, long birth) {}
+
+    @Override
+    public long syncUnitMask() {
+        return 0x7fL;
+    }
+
+    @Override
+    public void writeSyncUnit(int unit, ByteBuf output) {
+        switch (unit) {
+            case 0 -> output.writeInt(this.progress);
+            case 1 -> output.writeInt(this.heat);
+            case 2 -> writeRecipe(output);
+            case 3 -> writeRecipeStack(output);
+            case 4 -> writeWasteStack(output);
+            case 5 -> writeRecipePour(output);
+            case 6 -> writeWastePour(output);
+            default -> throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public void readSyncUnit(int unit, ByteBuf input) {
+        switch (unit) {
+            case 0 -> this.hbm$syncSet$CrucibleBlockEntity$progress(input.readInt());
+            case 1 -> this.hbm$syncSet$CrucibleBlockEntity$heat(input.readInt());
+            case 2 -> readRecipe(input);
+            case 3 -> readRecipeStack(input);
+            case 4 -> readWasteStack(input);
+            case 5 -> readRecipePour(input);
+            case 6 -> readWastePour(input);
+            default -> throw new IllegalArgumentException();
+        }
+    }
+
+    @Override
+    public long syncEventUnits() {
+        return 0x60L;
+    }
+
+    @Override
+    public void forgetBulkDrops() {
+        super.forgetBulkDrops();
+        recipeStack.clear();
+        wasteStack.clear();
+    }
+
+    public final void hbm$syncSet$CrucibleBlockEntity$heat(int next) {
+        if (this.heat != next) {
+            this.heat = next;
+            if ((1L << 1) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 1);
+        }
+    }
+
+    public final void hbm$syncSet$CrucibleBlockEntity$progress(int next) {
+        if (this.progress != next) {
+            this.progress = next;
+            if ((1L << 0) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 0);
+        }
+    }
+
+    public final void hbm$syncSet$CrucibleBlockEntity$recipe(String next) {
+        if (this.recipe != next) {
+            boolean changed = !java.util.Objects.equals(this.recipe, next);
+            this.recipe = next;
+            if (changed)
+                if ((1L << 2) == 0L) syncChanged(3);
+                else syncUnitsChanged(3, 1L << 2);
+        }
+    }
+
+    public final void hbm$syncSet$CrucibleBlockEntity$recipePourColor(int next) {
+        if (this.recipePourColor != next) {
+            this.recipePourColor = next;
+            if ((1L << 5) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 5);
+        }
+    }
+
+    public final void hbm$syncSet$CrucibleBlockEntity$recipePourLen(float next) {
+        if (Float.floatToRawIntBits(this.recipePourLen) != Float.floatToRawIntBits(next)) {
+            this.recipePourLen = next;
+            if ((1L << 5) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 5);
+        }
+    }
+
+    public final void hbm$syncSet$CrucibleBlockEntity$wastePourColor(int next) {
+        if (this.wastePourColor != next) {
+            this.wastePourColor = next;
+            if ((1L << 6) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 6);
+        }
+    }
+
+    public final void hbm$syncSet$CrucibleBlockEntity$wastePourLen(float next) {
+        if (Float.floatToRawIntBits(this.wastePourLen) != Float.floatToRawIntBits(next)) {
+            this.wastePourLen = next;
+            if ((1L << 6) == 0L) syncChanged(3);
+            else syncUnitsChanged(3, 1L << 6);
+        }
+    }
+
+    static {
+        com.hbm.packet.SyncBindings.field(CrucibleBlockEntity.class, "recipeStack", 3, 1L << 3);
+        com.hbm.packet.SyncBindings.field(CrucibleBlockEntity.class, "wasteStack", 3, 1L << 4);
+        com.hbm.packet.SyncBindings.field(CrucibleBlockEntity.class, "recipe", 3, 1L << 2);
+    }
+}

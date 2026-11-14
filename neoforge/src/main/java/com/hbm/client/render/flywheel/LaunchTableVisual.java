@@ -1,15 +1,31 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.bomb.BlockEntityLaunchTable;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.ordnance.launch.LaunchTableBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.MissilePronter;
 import com.hbm.handler.MissileStruct;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartSize;
-import com.hbm.items.weapon.ItemCustomMissilePart.PartType;
-import com.hbm.items.weapon.ItemCustomMissilePart;
+import com.hbm.items.weapon.CustomMissilePartItem.PartSize;
+import com.hbm.items.weapon.CustomMissilePartItem.PartType;
+import com.hbm.items.weapon.CustomMissilePartItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -19,6 +35,8 @@ import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractDynamicExtentBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,8 +48,9 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEntityLaunchTable>
-        implements ShaderLightVisual {
+public final class LaunchTableVisual
+        extends AbstractDynamicExtentBlockEntityVisual<LaunchTableBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final double MISSILE_Y = 2.0625D;
     private static final Map<PartKey, MeshPart[]> PART_MODELS = new ConcurrentHashMap<>();
     private static final MeshPart LARGE_PAD =
@@ -80,17 +99,16 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private @Nullable AABB lastLightBounds;
 
     public LaunchTableVisual(
-            VisualizationContext context, BlockEntityLaunchTable blockEntity, float partialTick) {
+            VisualizationContext context, LaunchTableBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         anchorBounds = new AABB(pos);
-        trackedMissile = blockEntity.loadedMissile;
-        height =
-                trackedMissile.fuselage() != null
-                        ? (int) trackedMissile.height()
-                        : blockEntity.height;
+        trackedMissile = blockEntity.observedAssembly;
+        if (trackedMissile.fuselage() != null)
+            blockEntity.lastTowerHeight = (int) trackedMissile.height();
+        height = blockEntity.lastTowerHeight;
         rootPose.translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 90)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 90)
                                 * Mth.DEG_TO_RAD);
         writeFrame();
     }
@@ -101,22 +119,24 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
         return MeshPart.obj(mesh.groups[0], mesh.smoothing(), MeshPart.litCutout(texture));
     }
 
-    private static boolean valid(@Nullable ItemCustomMissilePart part, PartType type) {
+    private static boolean valid(@Nullable CustomMissilePartItem part, PartType type) {
         return part != null && part.type == type && part.mesh != null && part.skin != null;
     }
 
     @Override
-    protected void trackExtent() {
-        MissileStruct missile = blockEntity.loadedMissile;
+    public void beforeFrame() {
+        MissileStruct missile = blockEntity.observedAssembly;
         if (missile == trackedMissile) return;
         trackedMissile = missile;
-        if (missile.fuselage() == null || (int) missile.height() == height) return;
-        height = (int) missile.height();
+        if (missile.fuselage() == null) return;
+        blockEntity.lastTowerHeight = (int) missile.height();
+        if (blockEntity.lastTowerHeight == height) return;
+        height = blockEntity.lastTowerHeight;
         refreshVisibleBounds();
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame();
     }
 
@@ -130,12 +150,12 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private void writeFrame() {
         MissileStruct missile = trackedMissile;
         if (currentKey != null
-                && currentKey.size == blockEntity.padSize
+                && currentKey.size == blockEntity.selectedSize
                 && currentKey.height == height
-                && currentKey.valid == blockEntity.missileValid
+                && currentKey.valid == blockEntity.assemblyFits
                 && currentKey.parts == missile) return;
         if (definition != null) definition.delete();
-        Key wanted = new Key(blockEntity.padSize, height, blockEntity.missileValid, missile);
+        Key wanted = new Key(blockEntity.selectedSize, height, blockEntity.assemblyFits, missile);
         currentKey = wanted;
         definition = build(wanted);
         LightBounds.resetBounds(lightBoundsAccumulator, anchorBounds);
@@ -159,7 +179,7 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
             else parts.add(new PartVisual(key.valid ? connector : base));
         }
 
-        ItemCustomMissilePart fuselage = key.parts.fuselage();
+        CustomMissilePartItem fuselage = key.parts.fuselage();
         List<MissilePartVisual> missile =
                 fuselage != null && fuselage.top == key.size ? missileParts(key.parts) : List.of();
         return new Definition(parts, missile, key.size, key.height);
@@ -234,20 +254,20 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
                 scaffold.translate(0F, 1F, 0F);
             }
 
-            ItemCustomMissilePart fuselage = source.fuselage();
+            CustomMissilePartItem fuselage = source.fuselage();
             if (fuselage == null || fuselage.top != size) return;
 
             missilePose.set(root).translate(0F, (float) MISSILE_Y, 0F);
             Matrix4f stack = stackPose.set(missilePose);
             int index = 0;
-            ItemCustomMissilePart thruster = source.thruster();
+            CustomMissilePartItem thruster = source.thruster();
             if (valid(thruster, PartType.THRUSTER)) {
                 missile.get(index++).write(stack);
                 missile.get(index - 1).include(lightBoundsAccumulator, stack);
                 stack.translate(0F, thruster.height, 0F);
             }
             if (valid(fuselage, PartType.FUSELAGE)) {
-                ItemCustomMissilePart fins = source.fins();
+                CustomMissilePartItem fins = source.fins();
                 if (valid(fins, PartType.FINS)) {
                     missile.get(index).write(stack);
                     missile.get(index++).include(lightBoundsAccumulator, stack);
@@ -256,7 +276,7 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
                 missile.get(index++).include(lightBoundsAccumulator, stack);
                 stack.translate(0F, fuselage.height, 0F);
             }
-            ItemCustomMissilePart warhead = source.warhead();
+            CustomMissilePartItem warhead = source.warhead();
             if (valid(warhead, PartType.WARHEAD)) {
                 missile.get(index).write(stack);
                 missile.get(index).include(lightBoundsAccumulator, stack);
@@ -309,7 +329,7 @@ public final class LaunchTableVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private final class MissilePartVisual {
         private final List<PartVisual> groups;
 
-        private MissilePartVisual(ItemCustomMissilePart source) {
+        private MissilePartVisual(CustomMissilePartItem source) {
             MeshPart[] parts =
                     PART_MODELS.computeIfAbsent(
                             new PartKey(source.mesh, source.skin),

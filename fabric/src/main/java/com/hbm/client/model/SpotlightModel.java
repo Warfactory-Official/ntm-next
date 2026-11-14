@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.machine.BlockSpotlight;
-import com.hbm.lib.Library;
+import com.hbm.blocks.machine.SpotlightBlock;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import com.mojang.math.OctahedralGroup;
 import java.util.List;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
@@ -21,14 +37,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public record SpotlightModel(BlockSpotlight.LightType type)
+public record SpotlightModel(SpotlightBlock.LightType type)
         implements BlockModel<SpotlightModel.Mesh> {
     static final float OFFSET_X = -0.5F;
     static final float OFFSET_Y = 0.5F;
     static final float OFFSET_Z = 0F;
 
-    private static Identifier objFor(BlockSpotlight.LightType type) {
-        return Library.id(
+    private static Identifier objFor(SpotlightBlock.LightType type) {
+        return RegistryUtil.id(
                 switch (type) {
                     case INCANDESCENT -> "models/lights/cage_lamp.obj";
                     case FLUORESCENT -> "models/lights/fluorescent_lamp.obj";
@@ -36,7 +52,7 @@ public record SpotlightModel(BlockSpotlight.LightType type)
                 });
     }
 
-    public static String[] partsFor(BlockSpotlight.LightType type) {
+    public static String[] partsFor(SpotlightBlock.LightType type) {
         return switch (type) {
             case INCANDESCENT -> new String[] {"CageLamp"};
             case FLUORESCENT -> new String[] {"FluoroSingle"};
@@ -44,15 +60,15 @@ public record SpotlightModel(BlockSpotlight.LightType type)
         };
     }
 
-    public static Identifier baseModel(BlockSpotlight.LightType type, BlockState state) {
+    public static Identifier baseModel(SpotlightBlock.LightType type, BlockState state) {
         String name =
                 switch (type) {
                     case INCANDESCENT -> "spotlight_incandescent";
                     case FLUORESCENT -> "spotlight_fluoro";
                     case HALOGEN -> "spotlight_halogen";
                 };
-        return Library.id(
-                "block/" + name + (state.getValue(BlockSpotlight.LIT) ? "" : "_off") + "_base");
+        return RegistryUtil.id(
+                "block/" + name + (state.getValue(SpotlightBlock.LIT) ? "" : "_off") + "_base");
     }
 
     static OctahedralGroup rotationFor(Direction facing) {
@@ -73,7 +89,7 @@ public record SpotlightModel(BlockSpotlight.LightType type)
 
     @Override
     public BlockStateModel.UnbakedRoot root(Mesh prepared, Block block, BlockState state) {
-        if (type == BlockSpotlight.LightType.FLUORESCENT) {
+        if (type == SpotlightBlock.LightType.FLUORESCENT) {
             return new FluoroModel.Root(
                     baseModel(type, state), state.getValue(DirectionalBlock.FACING));
         }

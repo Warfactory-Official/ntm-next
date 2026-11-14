@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.integration.rei;
 
-import com.hbm.blockentity.machine.BlockEntityMachineAutocrafter;
-import com.hbm.client.gui.ScreenAnvil;
-import com.hbm.client.gui.ScreenMachineAutocrafter;
-import com.hbm.client.gui.ScreenMachineCustom;
+import com.hbm.blockentity.machine.TemplateCrafterBlockEntity;
+import com.hbm.client.gui.AnvilScreen;
+import com.hbm.client.gui.AutocrafterScreen;
+import com.hbm.client.gui.CustomScreen;
 import com.hbm.client.qmaw.QMAWClient;
 import com.hbm.integration.recipeviewer.CraftingRows;
 import com.hbm.integration.recipeviewer.CustomMachinePage;
@@ -211,14 +227,14 @@ public class NTMReiClientPlugin implements REIClientPlugin {
         for (CustomMachinePage page : customMachines) {
             registry.registerContainerClickArea(
                     screen ->
-                            page.key().equals(screen.getMenu().blockEntity().machineType)
+                            page.key().equals(screen.getMenu().blockEntity().definitionKey)
                                     ? new Rectangle(
                                             RecipePages.CUSTOM_MACHINE_X,
                                             RecipePages.CUSTOM_MACHINE_Y,
                                             RecipePages.CUSTOM_MACHINE_WIDTH,
                                             RecipePages.CUSTOM_MACHINE_HEIGHT)
                                     : new Rectangle(),
-                    ScreenMachineCustom.class,
+                    CustomScreen.class,
                     CategoryIdentifier.of(page.id()));
         }
         registry.registerDraggableStackVisitor(new AutocrafterPatterns());
@@ -236,7 +252,7 @@ public class NTMReiClientPlugin implements REIClientPlugin {
     @Override
     public void registerExclusionZones(ExclusionZones zones) {
         zones.register(
-                ScreenAnvil.class,
+                AnvilScreen.class,
                 screen -> {
                     Rect2i panel = screen.recipePanelArea();
                     return List.of(
@@ -249,26 +265,26 @@ public class NTMReiClientPlugin implements REIClientPlugin {
     }
 
     private static final class AutocrafterPatterns
-            implements DraggableStackVisitor<ScreenMachineAutocrafter> {
+            implements DraggableStackVisitor<AutocrafterScreen> {
 
         @Override
         public <R extends Screen> boolean isHandingScreen(R screen) {
-            return screen instanceof ScreenMachineAutocrafter;
+            return screen instanceof AutocrafterScreen;
         }
 
-        private static Stream<Rect2i> areas(ScreenMachineAutocrafter screen) {
-            return IntStream.range(0, BlockEntityMachineAutocrafter.GRID_SIZE)
+        private static Stream<Rect2i> areas(AutocrafterScreen screen) {
+            return IntStream.range(0, TemplateCrafterBlockEntity.TEMPLATE_COUNT)
                     .mapToObj(slot -> screen.patternArea(slot));
         }
 
         @Override
         public DraggedAcceptorResult acceptDraggedStack(
-                DraggingContext<ScreenMachineAutocrafter> context, DraggableStack stack) {
+                DraggingContext<AutocrafterScreen> context, DraggableStack stack) {
             if (!(stack.getStack().getValue() instanceof ItemStack dropped))
                 return DraggedAcceptorResult.PASS;
-            ScreenMachineAutocrafter screen = context.getScreen();
+            AutocrafterScreen screen = context.getScreen();
             var at = context.getCurrentPosition();
-            for (int i = 0; i < BlockEntityMachineAutocrafter.GRID_SIZE; i++) {
+            for (int i = 0; i < TemplateCrafterBlockEntity.TEMPLATE_COUNT; i++) {
                 if (screen.patternArea(i).contains(at.x, at.y)) {
                     screen.sendPattern(i, dropped);
                     return DraggedAcceptorResult.ACCEPTED;
@@ -279,7 +295,7 @@ public class NTMReiClientPlugin implements REIClientPlugin {
 
         @Override
         public Stream<BoundsProvider> getDraggableAcceptingBounds(
-                DraggingContext<ScreenMachineAutocrafter> context, DraggableStack stack) {
+                DraggingContext<AutocrafterScreen> context, DraggableStack stack) {
             if (!(stack.getStack().getValue() instanceof ItemStack)) return Stream.empty();
             return areas(context.getScreen())
                     .map(

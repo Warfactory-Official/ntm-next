@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 218
+            "id": "hbm:weapon_mod_special_las_auto"
           }
         ],
         "parts": [
@@ -26,14 +26,14 @@
         ],
         "requires_mods": [
           {
-            "id": 218
+            "id": "hbm:weapon_mod_special_las_auto"
           }
         ]
       },
       {
         "excludes_mods": [
           {
-            "id": 216
+            "id": "hbm:weapon_mod_special_las_shotgun"
           }
         ],
         "parts": [
@@ -47,7 +47,7 @@
         ],
         "requires_mods": [
           {
-            "id": 216
+            "id": "hbm:weapon_mod_special_las_shotgun"
           }
         ],
         "texture": "hbm:textures/models/weapons/lasrifle_mods.png"
@@ -59,7 +59,7 @@
         ],
         "requires_mods": [
           {
-            "id": 217
+            "id": "hbm:weapon_mod_special_las_capacitor"
           }
         ],
         "texture": "hbm:textures/models/weapons/lasrifle_mods.png"

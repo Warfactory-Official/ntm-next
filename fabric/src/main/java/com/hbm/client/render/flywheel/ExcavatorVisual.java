@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityMachineExcavator;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.ExcavatorBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -17,6 +33,8 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.instance.UvTransformedInstance;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -24,8 +42,8 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class ExcavatorVisual extends HbmDynamicBlockEntityVisual<BlockEntityMachineExcavator>
-        implements ShaderLightVisual {
+public final class ExcavatorVisual extends AbstractBoundedBlockEntityVisual<ExcavatorBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final float BODY_LIFT = -3F;
     private static final double CRUSHER1_PIVOT_Z = 2.8125D;
     private static final double CRUSHER2_PIVOT_Z = 2.1875D;
@@ -99,13 +117,11 @@ public final class ExcavatorVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     private boolean initialized;
 
     public ExcavatorVisual(
-            VisualizationContext context,
-            BlockEntityMachineExcavator blockEntity,
-            float partialTick) {
+            VisualizationContext context, ExcavatorBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         basePose.translation(.5F, BODY_LIFT, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 180)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 180)
                                 * Mth.DEG_TO_RAD);
         bodyBounds = LightBounds.of(MODEL, "Main", basePose, pos);
         crusher1 =
@@ -293,7 +309,7 @@ public final class ExcavatorVisual extends HbmDynamicBlockEntityVisual<BlockEnti
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 
@@ -353,7 +369,7 @@ public final class ExcavatorVisual extends HbmDynamicBlockEntityVisual<BlockEnti
                     .translate(0F, (float) -CRUSHER_PIVOT_Y, (float) -CRUSHER2_PIVOT_Z);
             write(crusher2, crusher2Pose);
         }
-        if (drillChanged) {
+        if (drillChanged || extensionChanged) {
             drillPose
                     .set(basePose)
                     .rotateY(-(drillRotation) * Mth.DEG_TO_RAD)

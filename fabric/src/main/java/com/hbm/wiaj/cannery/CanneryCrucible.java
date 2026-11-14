@@ -1,24 +1,54 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.wiaj.cannery;
 
-import com.hbm.blockentity.machine.BlockEntityCrucible;
-import com.hbm.blockentity.machine.BlockEntityFoundryBasin;
+import com.hbm.blockentity.machine.CrucibleBlockEntity;
+import com.hbm.blockentity.machine.FoundryBasinBlockEntity;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.model.Meshes;
-import com.hbm.client.render.RenderCrucible;
+import com.hbm.client.render.CrucibleRenderer;
 import com.hbm.data.MachineData;
-import com.hbm.inventory.material.MaterialShapes;
-import com.hbm.inventory.material.Mats.MaterialStack;
-import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.Material;
+import com.hbm.inventory.material.MaterialShape;
+import com.hbm.inventory.material.MaterialStack;
+import com.hbm.inventory.material.Materials;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemScraps;
-import com.hbm.lib.Library;
+import com.hbm.items.machine.ScrapsItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import com.hbm.wiaj.JarRenderContext;
 import com.hbm.wiaj.JarScene;
 import com.hbm.wiaj.JarScript;
@@ -34,7 +64,7 @@ import com.hbm.wiaj.actions.ActionWait;
 import com.hbm.wiaj.actors.ActorBlockEntity;
 import com.hbm.wiaj.actors.ActorFancyPanel.Orientation;
 import com.hbm.wiaj.actors.ActorFancyPanel;
-import com.hbm.wiaj.actors.ITileActorRenderer;
+import com.hbm.wiaj.actors.ActorRenderer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
@@ -46,6 +76,7 @@ import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import org.joml.Quaternionfc;
 
 public class CanneryCrucible extends CanneryBase {
 
@@ -178,7 +209,7 @@ public class CanneryCrucible extends CanneryBase {
         scene2.add(new ActionWait(20));
         scene2.add(new ActionRemoveActor(0));
 
-        scene2.add(new ActionSetTile(2, 2, 2, crucible(MaterialShapes.BLOCK.q(16))));
+        scene2.add(new ActionSetTile(2, 2, 2, crucible(MaterialShape.BLOCK.amount(16))));
         scene2.add(new ActionWait(10));
         scene2.add(new ActionSetTile(0, 1, 2, basin(ItemStack.EMPTY, null, 0, ItemStack.EMPTY)));
         scene2.add(
@@ -211,7 +242,8 @@ public class CanneryCrucible extends CanneryBase {
         for (int i = 0; i < 60; i++) {
             int j = i;
             scene2.add(
-                    new ActionSetTile(2, 2, 2, crucible(MaterialShapes.BLOCK.q(60 - j, 60) * 16)));
+                    new ActionSetTile(
+                            2, 2, 2, crucible(MaterialShape.BLOCK.share(60 - j, 60) * 16)));
             scene2.add(
                     new ActionSetTile(
                             0,
@@ -219,8 +251,8 @@ public class CanneryCrucible extends CanneryBase {
                             2,
                             basin(
                                     new ItemStack(ModItems.byName("block")),
-                                    Mats.MAT_GOLD,
-                                    MaterialShapes.BLOCK.q(j + 1, 60),
+                                    Materials.GOLD,
+                                    MaterialShape.BLOCK.share(j + 1, 60),
                                     ItemStack.EMPTY)));
             scene2.add(new ActionWait(1));
         }
@@ -269,8 +301,8 @@ public class CanneryCrucible extends CanneryBase {
                                             {
                                                 new ItemStack(Items.IRON_SHOVEL),
                                                 Component.literal(" -> "),
-                                                ItemScraps.create(
-                                                        new MaterialStack(Mats.MAT_GOLD, 1))
+                                                ScrapsItem.create(
+                                                        new MaterialStack(Materials.GOLD, 1))
                                             }
                                         },
                                         200)
@@ -302,52 +334,49 @@ public class CanneryCrucible extends CanneryBase {
         return data;
     }
 
-    private static BlockEntityCrucible crucible(int gold) {
-        BlockEntityCrucible tile =
-                new BlockEntityCrucible(
+    private static CrucibleBlockEntity crucible(int gold) {
+        CrucibleBlockEntity tile =
+                new CrucibleBlockEntity(
                         new BlockPos(2, 2, 2),
                         ModBlocks.MACHINE_CRUCIBLE
                                 .get()
                                 .defaultBlockState()
-                                .setValue(BlockMultiblockCore.FACING, Direction.WEST));
-        if (gold > 0) tile.recipeStack.add(new MaterialStack(Mats.MAT_GOLD, gold));
+                                .setValue(MultiblockCoreBlock.FACING, Direction.WEST));
+        if (gold > 0) tile.recipeStack.add(new MaterialStack(Materials.GOLD, gold));
         return tile;
     }
 
-    private static BlockEntityFoundryBasin basin(
-            ItemStack mold,
-            com.hbm.inventory.material.NTMMaterial type,
-            int amount,
-            ItemStack output) {
-        BlockEntityFoundryBasin tile =
-                new BlockEntityFoundryBasin(
+    private static FoundryBasinBlockEntity basin(
+            ItemStack mold, Material type, int amount, ItemStack output) {
+        FoundryBasinBlockEntity tile =
+                new FoundryBasinBlockEntity(
                         new BlockPos(0, 1, 2), ModBlocks.FOUNDRY_BASIN.get().defaultBlockState());
         tile.inventory.set(0, mold);
         tile.inventory.set(1, output);
-        tile.type = type;
-        tile.amount = amount;
+        tile.hbm$syncSet$FoundryBaseBlockEntity$type(type);
+        tile.hbm$syncSet$FoundryBaseBlockEntity$amount(amount);
         return tile;
     }
 
-    public static class ActorCrucible implements ITileActorRenderer {
+    public static class ActorCrucible implements ActorRenderer {
         private static final HFRWavefrontObject MODEL =
-                Meshes.flatShaded(Meshes.load(Library.id("models/machines/crucible.obj")));
+                Meshes.flatShaded(Meshes.load(RegistryUtil.id("models/machines/crucible.obj")));
         private static final RenderType BODY =
                 RenderTypes.entityCutoutCull(ResourceManager.crucible_tex);
-        private final RenderCrucible renderer = new RenderCrucible();
+        private final CrucibleRenderer renderer = new CrucibleRenderer();
 
         @Override
         public void renderActor(
                 JarRenderContext context, int ticks, float interp, CompoundTag data) {
             int x = data.getIntOr("x", 0), y = data.getIntOr("y", 0), z = data.getIntOr("z", 0);
-            BlockEntityCrucible tile =
-                    (BlockEntityCrucible) context.world().getBlockEntity(x, y, z);
+            CrucibleBlockEntity tile =
+                    (CrucibleBlockEntity) context.world().getBlockEntity(x, y, z);
             var ps = context.pose();
             ps.pushPose();
             ps.translate(x, y, z);
             ps.pushPose();
             ps.translate(0.5, 0, 0.5);
-            ps.mulPose(Axis.YP.rotationDegrees(180));
+            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
             context.collector()
                     .submitCustomGeometry(
                             ps,
@@ -356,7 +385,7 @@ public class CanneryCrucible extends CanneryBase {
                                     MODEL.render(pose, buffer, LightCoordsUtil.FULL_BRIGHT, -1));
             ps.popPose();
 
-            RenderCrucible.State state = renderer.createRenderState();
+            CrucibleRenderer.State state = renderer.createRenderState();
             state.facing = Direction.WEST;
             state.lightCoords = LightCoordsUtil.FULL_BRIGHT;
             int mass = 0;

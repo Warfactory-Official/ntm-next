@@ -1,28 +1,59 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: Contributors to Hbm's Nuclear Tech Mod
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) Contributors to Hbm's Nuclear Tech Mod. All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.handler;
 
 import com.hbm.advancement.AwardRegions;
 import com.hbm.api.environment.Environment;
-import com.hbm.blockentity.BlockEntityPedestal.PedestalEntry;
-import com.hbm.blockentity.BlockEntityPedestal.PedestalEntryType;
-import com.hbm.blockentity.BlockEntityPedestal;
+import com.hbm.blockentity.prop.PedestalBlockEntity.CharmKind;
+import com.hbm.blockentity.prop.PedestalBlockEntity.CharmLease;
+import com.hbm.blockentity.prop.PedestalBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.data.MobData;
 import com.hbm.data.WorldData;
 import com.hbm.entity.ModEntities;
-import com.hbm.entity.mob.EntityRADBeast;
-import com.hbm.entity.projectile.EntityMeteor;
-import com.hbm.extprop.HbmLivingProps;
-import com.hbm.extprop.HbmPlayerProps;
+import com.hbm.entity.mob.RADBeastEntity;
+import com.hbm.entity.projectile.MeteorEntity;
+import com.hbm.extprop.LivingHazards;
+import com.hbm.extprop.PlayerState;
 import com.hbm.items.ModItems;
-import com.hbm.platform.NeoForgePlatform;
-import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.platform.Platform;
+import com.hbm.platform.ServerEvents;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.DropHeight;
 import com.hbm.world.gen.WorldgenHeight;
 import java.util.List;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -33,6 +64,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -52,9 +84,11 @@ public final class BossSpawnHandler {
     private BossSpawnHandler() {}
 
     public static void init() {
-        NeoForgeServerEvents.onServerTickPre(BossSpawnHandler::onServerTick);
-        NeoForgeServerEvents.onPlayerRespawn(
-                player -> HbmPlayerProps.getData(player).maskManTimer = 0);
+        final Consumer<MinecraftServer> callback = BossSpawnHandler::onServerTick;
+        ServerEvents.TICK_PRE.add(callback);
+        final Consumer<ServerPlayer> callback2 =
+                player -> PlayerState.getOrCreate(player).maskManTimer = 0;
+        ServerEvents.RESPAWN.add(callback2);
     }
 
     private static void onServerTick(MinecraftServer server) {
@@ -65,7 +99,7 @@ public final class BossSpawnHandler {
         RandomSource random = level.getRandom();
         long time = level.getGameTime();
         boolean surface = level.dimension() != Level.NETHER && level.dimension() != Level.END;
-        List<ServerPlayer> players = level.players();
+        List<ServerPlayer> players = level.getPlayers(EntitySelector.NO_SPECTATORS);
 
         if (MobData.ENABLE_MASKMAN.get()
                 && time % 20 == 0
@@ -105,7 +139,7 @@ public final class BossSpawnHandler {
                         || stats.getValue(Stats.ITEM_USED.get(acidizer)) > 0;
         boolean hasRads = ContaminationUtil.getRads(player) >= MobData.MASKMAN_MIN_RAD.get();
         boolean underground = underground(level, player) || !MobData.MASKMAN_UNDERGROUND.get();
-        HbmPlayerProps data = HbmPlayerProps.getData(player);
+        PlayerState data = PlayerState.getOrCreate(player);
 
         if (!(acidizerStat && hasRads && underground)) {
             data.maskManTimer = 0;
@@ -146,7 +180,7 @@ public final class BossSpawnHandler {
     }
 
     public static void raid(ServerLevel level, ServerPlayer player) {
-        if (HbmPlayerProps.getData(player).fbiMark >= level.getGameTime()) return;
+        if (PlayerState.getOrCreate(player).fbiMark >= level.getGameTime()) return;
 
         RandomSource random = level.getRandom();
         player.sendSystemMessage(
@@ -185,7 +219,7 @@ public final class BossSpawnHandler {
     }
 
     public static void elementals(ServerLevel level, ServerPlayer player) {
-        HbmPlayerProps data = HbmPlayerProps.getData(player);
+        PlayerState data = PlayerState.getOrCreate(player);
         if (!data.radMark) return;
 
         RandomSource random = level.getRandom();
@@ -202,7 +236,7 @@ public final class BossSpawnHandler {
             double spawnX = player.getX() + vec.x + random.nextGaussian();
             double spawnZ = player.getZ() + vec.z + random.nextGaussian();
 
-            EntityRADBeast rad = ModEntities.RAD_BEAST.get().create(level, EntitySpawnReason.EVENT);
+            RADBeastEntity rad = ModEntities.RAD_BEAST.get().create(level, EntitySpawnReason.EVENT);
             if (rad == null) continue;
             if (i == 0) rad.makeLeader();
 
@@ -211,7 +245,7 @@ public final class BossSpawnHandler {
     }
 
     public static void ghost(ServerLevel level, ServerPlayer player) {
-        if (HbmLivingProps.getDigamma(player) <= 0) return;
+        if (LivingHazards.digamma(player) <= 0) return;
 
         RandomSource random = level.getRandom();
         Vec3 vec = new Vec3(75, 0, 0).yRot((float) (Math.PI * 2) * random.nextFloat());
@@ -229,14 +263,14 @@ public final class BossSpawnHandler {
 
     public static void markFBI(Player player) {
         if (!player.level().isClientSide()) {
-            HbmPlayerProps.getData(player).fbiMark = player.level().getGameTime() + 20 * 60 * 20;
+            PlayerState.getOrCreate(player).fbiMark = player.level().getGameTime() + 20 * 60 * 20;
         }
     }
 
     public static void markRad(ServerLevel level, double x, double y, double z) {
         if (!MobData.ENABLE_ELEMENTALS.get()) return;
         AwardRegions.within(
-                level, x, y, z, 100, player -> HbmPlayerProps.getData(player).radMark = true);
+                level, x, y, z, 100, player -> PlayerState.getOrCreate(player).radMark = true);
     }
 
     private static boolean underground(ServerLevel level, Player player) {
@@ -263,7 +297,7 @@ public final class BossSpawnHandler {
                 z,
                 level.getRandom().nextFloat() * 360.0F,
                 0.0F);
-        NeoForgePlatform.finalizeSpawn(
+        Platform.finalizeSpawn(
                 mob,
                 level,
                 level.getCurrentDifficultyAt(mob.blockPosition()),
@@ -280,7 +314,7 @@ public final class BossSpawnHandler {
                                 : WorldData.METEOR_STRIKE_CHANCE.get())
                 == 0) {
 
-            List<ServerPlayer> players = level.players();
+            List<ServerPlayer> players = level.getPlayers(EntitySelector.NO_SPECTATORS);
 
             if (!players.isEmpty()) {
 
@@ -306,16 +340,13 @@ public final class BossSpawnHandler {
                         int x = Mth.floor(p.getX());
                         int z = Mth.floor(p.getZ());
 
-                        List<PedestalEntry> entries =
-                                BlockEntityPedestal.getEntriesForDimension(level.dimension());
+                        List<CharmLease> entries = PedestalBlockEntity.leases(level.dimension());
                         if (entries != null)
-                            for (PedestalEntry entry : entries) {
-                                if (Math.abs(entry.pos().getX() - x) <= 100
-                                        && Math.abs(entry.pos().getZ() - z) <= 100) {
-                                    if (entry.type() == PedestalEntryType.CHARM_OF_PROTECTION)
-                                        repell = true;
-                                    if (entry.type() == PedestalEntryType.METEORITE_CHARM)
-                                        strike = false;
+                            for (CharmLease entry : entries) {
+                                if (Math.abs(entry.position().getX() - x) <= 100
+                                        && Math.abs(entry.position().getZ() - z) <= 100) {
+                                    if (entry.kind() == CharmKind.PROTECTION) repell = true;
+                                    if (entry.kind() == CharmKind.METEORITE) strike = false;
                                 }
                             }
                     }
@@ -342,7 +373,7 @@ public final class BossSpawnHandler {
 
     public static void spawnMeteorAtPlayer(Player player, boolean repell) {
 
-        EntityMeteor meteor = new EntityMeteor(player.level());
+        MeteorEntity meteor = new MeteorEntity(player.level());
         double meteorX = player.getX() + meteorRand.nextInt(201) - 100;
         double meteorZ = player.getZ() + meteorRand.nextInt(201) - 100;
         meteor.snapTo(

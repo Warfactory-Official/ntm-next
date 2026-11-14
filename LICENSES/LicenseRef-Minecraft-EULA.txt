@@ -1,0 +1,11 @@
+Minecraft End User License Agreement
+
+Copyright Mojang AB. This material is Minecraft content, or is adapted from it.
+It is used and distributed under the Minecraft End User License Agreement and
+the Minecraft Usage Guidelines:
+
+    https://www.minecraft.net/en-us/eula
+    https://www.minecraft.net/en-us/usage-guidelines
+
+This repository grants no license to Mojang's material. Any other license named
+for the same file applies only to the changes its copyright holders made.

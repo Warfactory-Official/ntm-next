@@ -25,6 +25,9 @@
     "hbm:blacklung",
     "hbm:mku",
     "hbm:vacuum",
-    "hbm:overdose"
+    "hbm:overdose",
+    "hbm:health_drain",
+    "hbm:blood_loss",
+    "hbm:lethal_projectile"
   ]
 }

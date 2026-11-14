@@ -1,25 +1,61 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.explosion;
 
 import com.hbm.blocks.ModBlocks;
-import com.hbm.entity.particle.EntityCloudFX;
-import com.hbm.entity.particle.EntityOrangeFX;
-import com.hbm.entity.particle.EntityPinkCloudFX;
-import com.hbm.entity.projectile.EntityBulletBaseMK4;
+import com.hbm.entity.particle.CloudFXEntity;
+import com.hbm.entity.particle.OrangeFXEntity;
+import com.hbm.entity.particle.PinkCloudFXEntity;
+import com.hbm.entity.projectile.BulletBaseMK4Entity;
 import com.hbm.handler.ArmorUtil;
-import com.hbm.hazard.HazardClass;
+import com.hbm.hazard.Exposure;
 import com.hbm.items.weapon.sedna.factory.XFactoryCatapult;
 import com.hbm.lib.ModDamageTypes;
+import com.hbm.platform.Platform;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.ArmorRegistry;
+import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -28,122 +64,176 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public final class ExplosionChaos {
+
+    private static final int GAS_SUIT_WEAR = 25;
+    private static final float GAS_DAMAGE = 5F;
 
     private ExplosionChaos() {}
 
     public static void hardenVirus(Level level, BlockPos center, int radius) {
-        int threshold = radius * radius / 2;
-        Block virus = ModBlocks.CRYSTAL_VIRUS.get();
-        BlockState hardened = ModBlocks.CRYSTAL_HARDENED.get().defaultBlockState();
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        for (int xx = -radius; xx < radius; xx++) {
-            int xxSq = xx * xx;
-            for (int yy = -radius; yy < radius; yy++) {
-                int yySq = xxSq + yy * yy;
-                for (int zz = -radius; zz < radius; zz++) {
-                    if (yySq + zz * zz >= threshold) continue;
-                    pos.set(center.getX() + xx, center.getY() + yy, center.getZ() + zz);
-                    if (level.getBlockState(pos).is(virus)) level.setBlockAndUpdate(pos, hardened);
-                }
-            }
-        }
+        var virus = ModBlocks.CRYSTAL_VIRUS.get();
+        var hardened = ModBlocks.CRYSTAL_HARDENED.get().defaultBlockState();
+        SphereTraversal.forEach(
+                center,
+                radius,
+                cell -> {
+                    if (level.getBlockState(cell).is(virus))
+                        level.setBlockAndUpdate(cell, hardened);
+                });
     }
 
     public static void floater(Level level, BlockPos center, int radius, int height) {
-        int r2 = radius * radius;
-        int threshold = r2 / 2;
-        BlockPos.MutableBlockPos from = new BlockPos.MutableBlockPos();
-        BlockPos.MutableBlockPos to = new BlockPos.MutableBlockPos();
-        for (int xx = -radius; xx < radius; xx++) {
-            int xxSq = xx * xx;
-            for (int yy = -radius; yy < radius; yy++) {
-                int yySq = xxSq + yy * yy;
-                for (int zz = -radius; zz < radius; zz++) {
-                    if (yySq + zz * zz >= threshold) continue;
-                    from.set(center.getX() + xx, center.getY() + yy, center.getZ() + zz);
-                    BlockState save = level.getBlockState(from);
-                    level.setBlockAndUpdate(from, Blocks.AIR.defaultBlockState());
-                    if (save.isAir()) continue;
-                    to.set(from.getX(), from.getY() + height, from.getZ());
-                    level.setBlockAndUpdate(to, save);
-                }
-            }
-        }
+        var air = Blocks.AIR.defaultBlockState();
+        var landing = new BlockPos.MutableBlockPos();
+        SphereTraversal.forEach(
+                center,
+                radius,
+                cell -> {
+                    var lifted = level.getBlockState(cell);
+                    level.setBlockAndUpdate(cell, air);
+                    if (!lifted.isAir())
+                        level.setBlockAndUpdate(landing.setWithOffset(cell, 0, height, 0), lifted);
+                });
     }
 
     public static void move(Level level, BlockPos center, int radius, int a, int b, int c) {
-        double reach = radius;
-        int doubled = radius * 2;
-        AABB box =
+        double cx = center.getX(), cy = center.getY(), cz = center.getZ();
+        double scan = radius + 1D;
+        int renameReach = radius * 2;
+        double renameSq = (double) renameReach * renameReach;
+        double displaceSq = (double) radius * radius;
+        var random = level.getRandom();
+        var box =
                 new AABB(
-                        Math.floor(center.getX() - reach - 1D),
-                        Math.floor(center.getY() - reach - 1D),
-                        Math.floor(center.getZ() - reach - 1D),
-                        Math.floor(center.getX() + reach + 1D),
-                        Math.floor(center.getY() + reach + 1D),
-                        Math.floor(center.getZ() + reach + 1D));
+                        Math.floor(cx - scan),
+                        Math.floor(cy - scan),
+                        Math.floor(cz - scan),
+                        Math.floor(cx + scan),
+                        Math.floor(cy + scan),
+                        Math.floor(cz + scan));
 
-        for (Entity entity : level.getEntities((Entity) null, box, e -> true)) {
-            if (entity.distanceToSqr(center.getX(), center.getY(), center.getZ())
-                    > (double) doubled * doubled) continue;
+        var reached =
+                EntitySelector.NO_SPECTATORS.and(
+                        entity -> entity.distanceToSqr(cx, cy, cz) <= renameSq);
 
-            if (entity instanceof Sheep sheep) {
-                sheep.setCustomName(Component.literal("jeb_"));
-            } else if (entity instanceof Mob mob) {
-                mob.setCustomName(
-                        Component.literal(
-                                level.getRandom().nextInt(2) == 0 ? "Dinnerbone" : "Grumm"));
+        for (var entity : level.getEntities((Entity) null, box, reached)) {
+            if (entity instanceof Sheep) {
+                entity.setCustomName(Component.literal("jeb_"));
+            } else if (entity instanceof Mob) {
+                entity.setCustomName(
+                        Component.literal(random.nextInt(2) == 0 ? "Dinnerbone" : "Grumm"));
             }
 
-            double dx = entity.getX() - center.getX();
-            double dy = entity.getY() + entity.getEyeHeight() - center.getY();
-            double dz = entity.getZ() - center.getZ();
-            if (dx * dx + dy * dy + dz * dz < reach * reach) {
-                entity.setPos(entity.getX() + a, entity.getY() + b, entity.getZ() + c);
+            if (entity.getEyePosition().distanceToSqr(cx, cy, cz) < displaceSq) {
+                entity.setPos(entity.position().add(a, b, c));
             }
         }
     }
 
     public static void igniteFlammableBlocks(ServerLevel level, int x, int y, int z, int bound) {
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        int threshold = bound * bound / 2;
-        for (int xx = -bound; xx < bound; xx++) {
-            int xxSq = xx * xx;
-            for (int yy = -bound; yy < bound; yy++) {
-                int yySq = xxSq + yy * yy;
-                for (int zz = -bound; zz < bound; zz++) {
-                    if (yySq + zz * zz >= threshold) continue;
-                    pos.set(x + xx, y + yy, z + zz);
-                    if (!(((FireBlock) Blocks.FIRE).getBurnOdds(level.getBlockState(pos)) > 0))
-                        continue;
-                    BlockPos above = pos.above();
-                    if (level.getBlockState(above).isAir()) {
-                        level.setBlock(above, BaseFireBlock.getState(level, above), 3);
-                    }
+        var above = new BlockPos.MutableBlockPos();
+        SphereTraversal.forEach(
+                new BlockPos(x, y, z),
+                bound,
+                cell -> {
+                    if (!Platform.isFlammable(level, cell, level.getBlockState(cell), Direction.UP))
+                        return;
+                    if (level.getBlockState(above.setWithOffset(cell, Direction.UP)).isAir())
+                        light(level, above);
+                });
+    }
+
+    public static void igniteAllBlocks(ServerLevel level, int x, int y, int z, int bound) {
+        var above = new BlockPos.MutableBlockPos();
+        SphereTraversal.forEach(
+                new BlockPos(x, y, z),
+                bound,
+                cell -> {
+                    if (level.getBlockState(cell).isAir()) return;
+                    BlockState top = level.getBlockState(above.setWithOffset(cell, Direction.UP));
+                    if (top.isAir() || top.is(Blocks.SNOW)) light(level, above);
+                });
+    }
+
+    public static void pinkCloud(Level level, double x, double y, double z, double range) {
+        corrode(level, new Vec3(x, y, z), range, ModDamageTypes.PINK_CLOUD, false);
+    }
+
+    public static void chlorine(Level level, double x, double y, double z, double range) {
+        corrode(level, new Vec3(x, y, z), range, ModDamageTypes.CLOUD, true);
+    }
+
+    private static void corrode(
+            Level level,
+            Vec3 center,
+            double range,
+            ResourceKey<DamageType> damage,
+            boolean hazmatShields) {
+        var server = level instanceof ServerLevel s ? s : null;
+        var source = level.damageSources().source(damage);
+        for (var victim : livingWithin(level, center, range)) {
+            ArmorUtil.damageWholeSuit(victim, GAS_SUIT_WEAR);
+            if (hazmatShields) {
+                if (ArmorUtil.checkForHazmat(victim)) continue;
+                if (victim.hasEffect(HbmPotion.taint())) {
+                    victim.removeEffect(HbmPotion.taint());
+                    victim.addEffect(
+                            new MobEffectInstance(
+                                    HbmPotion.mutation(), 60 * 60 * 20, 0, false, false));
                 }
             }
+            if (server != null) victim.hurtServer(server, source, GAS_DAMAGE);
         }
+    }
+
+    public static void poison(Level level, double x, double y, double z, double range) {
+        for (var victim : livingWithin(level, new Vec3(x, y, z), range)) {
+            if (ArmorRegistry.hasProtection(victim, EquipmentSlot.HEAD, Exposure.GAS_LUNG)
+                    || ArmorRegistry.hasProtection(
+                            victim, EquipmentSlot.HEAD, Exposure.GAS_BLISTERING)) {
+                ArmorUtil.damageGasMaskFilter(victim, 1);
+                continue;
+            }
+            victim.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 5 * 20, 0));
+            victim.addEffect(new MobEffectInstance(MobEffects.POISON, 20 * 20, 2));
+            victim.addEffect(new MobEffectInstance(MobEffects.WITHER, 20, 1));
+            victim.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 30 * 20, 1));
+            victim.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 30 * 20, 2));
+        }
+    }
+
+    private static List<LivingEntity> livingWithin(Level level, Vec3 center, double range) {
+        double rangeSq = range * range;
+        double span = range * 2D;
+        return level.getEntitiesOfClass(
+                LivingEntity.class,
+                AABB.ofSize(center, span, span, span),
+                entity -> !entity.isSpectator() && entity.distanceToSqr(center) <= rangeSq);
+    }
+
+    private static void light(ServerLevel level, BlockPos pos) {
+        level.setBlock(pos, BaseFireBlock.getState(level, pos), Block.UPDATE_ALL);
     }
 
     public static void spawnPoisonCloud(
             Level level, double x, double y, double z, int count, double speed, int type) {
-        for (int i = 0; i < count; i++) {
-            Entity fx =
+        var random = level.getRandom();
+        while (count-- > 0) {
+            Entity puff =
                     switch (type) {
-                        case 1 -> new EntityCloudFX(level, x, y, z, 0D, 0D, 0D);
-                        case 2 -> new EntityPinkCloudFX(level, x, y, z, 0D, 0D, 0D);
-                        default -> new EntityOrangeFX(level, x, y, z, 0D, 0D, 0D);
+                        case 1 -> new CloudFXEntity(level, x, y, z, 0D, 0D, 0D);
+                        case 2 -> new PinkCloudFXEntity(level, x, y, z, 0D, 0D, 0D);
+                        default -> new OrangeFXEntity(level, x, y, z, 0D, 0D, 0D);
                     };
-            fx.setDeltaMovement(
-                    level.getRandom().nextGaussian() * speed,
-                    level.getRandom().nextGaussian() * speed,
-                    level.getRandom().nextGaussian() * speed);
-            level.addFreshEntity(fx);
+            double rise = random.nextGaussian() * speed;
+            puff.setDeltaMovement(
+                    random.nextGaussian() * speed, rise, random.nextGaussian() * speed);
+            level.addFreshEntity(puff);
         }
     }
 
@@ -158,107 +248,21 @@ public final class ExplosionChaos {
             float yawRand,
             float pitchRand,
             float speed) {
-
-        for (int i = 0; i < count; i++) {
-            EntityBulletBaseMK4 bullet =
-                    new EntityBulletBaseMK4(
+        var random = level.getRandom();
+        while (count-- > 0) {
+            float heading = yaw + (float) (yawRand * random.nextGaussian());
+            float elevation = pitch + (float) (pitchRand * random.nextGaussian());
+            var shard =
+                    new BulletBaseMK4Entity(
                             level,
                             XFactoryCatapult.cluster_submunition,
                             50F,
                             0F,
-                            yaw + (float) (yawRand * level.getRandom().nextGaussian()),
-                            pitch + (float) (pitchRand * level.getRandom().nextGaussian()));
-            bullet.setPos(x, y, z);
-            bullet.setDeltaMovement(bullet.getDeltaMovement().scale(speed));
-            level.addFreshEntity(bullet);
-        }
-    }
-
-    public static void pinkCloud(Level level, double x, double y, double z, double range) {
-        for (LivingEntity entity :
-                level.getEntitiesOfClass(
-                        LivingEntity.class,
-                        new AABB(
-                                x - range, y - range, z - range, x + range, y + range,
-                                z + range))) {
-            if (entity.distanceToSqr(x, y, z) > range * range) continue;
-
-            ArmorUtil.damageWholeSuit(entity, 25);
-
-            if (level instanceof ServerLevel server) {
-                entity.hurtServer(
-                        server, level.damageSources().source(ModDamageTypes.PINK_CLOUD), 5F);
-            }
-        }
-    }
-
-    public static void chlorine(Level level, double x, double y, double z, double range) {
-        for (LivingEntity entity :
-                level.getEntitiesOfClass(
-                        LivingEntity.class,
-                        new AABB(
-                                x - range, y - range, z - range, x + range, y + range,
-                                z + range))) {
-            if (entity.distanceToSqr(x, y, z) > range * range) continue;
-
-            ArmorUtil.damageWholeSuit(entity, 25);
-
-            if (ArmorUtil.checkForHazmat(entity)) continue;
-
-            if (entity.hasEffect(HbmPotion.taint())) {
-                entity.removeEffect(HbmPotion.taint());
-                entity.addEffect(
-                        new MobEffectInstance(HbmPotion.mutation(), 60 * 60 * 20, 0, false, false));
-            }
-
-            if (level instanceof ServerLevel server) {
-                entity.hurtServer(server, level.damageSources().source(ModDamageTypes.CLOUD), 5F);
-            }
-        }
-    }
-
-    public static void poison(Level level, double x, double y, double z, double range) {
-        for (LivingEntity entity :
-                level.getEntitiesOfClass(
-                        LivingEntity.class,
-                        new AABB(
-                                x - range, y - range, z - range, x + range, y + range,
-                                z + range))) {
-            if (entity.distanceToSqr(x, y, z) > range * range) continue;
-            boolean protectedFromGas =
-                    ArmorRegistry.hasProtection(entity, EquipmentSlot.HEAD, HazardClass.GAS_LUNG)
-                            || ArmorRegistry.hasProtection(
-                                    entity, EquipmentSlot.HEAD, HazardClass.GAS_BLISTERING);
-            if (protectedFromGas) {
-                ArmorUtil.damageGasMaskFilter(entity, 1);
-                continue;
-            }
-            entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 5 * 20, 0));
-            entity.addEffect(new MobEffectInstance(MobEffects.POISON, 20 * 20, 2));
-            entity.addEffect(new MobEffectInstance(MobEffects.WITHER, 20, 1));
-            entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 30 * 20, 1));
-            entity.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 30 * 20, 2));
-        }
-    }
-
-    public static void igniteAllBlocks(ServerLevel level, int x, int y, int z, int bound) {
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        int threshold = bound * bound / 2;
-        for (int xx = -bound; xx < bound; xx++) {
-            int xxSq = xx * xx;
-            for (int yy = -bound; yy < bound; yy++) {
-                int yySq = xxSq + yy * yy;
-                for (int zz = -bound; zz < bound; zz++) {
-                    if (yySq + zz * zz >= threshold) continue;
-                    pos.set(x + xx, y + yy, z + zz);
-                    if (level.getBlockState(pos).isAir()) continue;
-                    BlockPos above = pos.above();
-                    BlockState aboveState = level.getBlockState(above);
-                    if (aboveState.isAir() || aboveState.is(Blocks.SNOW)) {
-                        level.setBlock(above, BaseFireBlock.getState(level, above), 3);
-                    }
-                }
-            }
+                            heading,
+                            elevation);
+            shard.setDeltaMovement(shard.getDeltaMovement().scale(speed));
+            shard.setPos(x, y, z);
+            level.addFreshEntity(shard);
         }
     }
 }

@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleType;
@@ -30,29 +46,23 @@ public final class HbmParticles {
     private HbmParticles() {}
 
     public static void register() {
-        RAD_FOG =
-                FabricRegistrar.registerParticleType(
-                        "rad_fog", () -> new SimpleParticleType(false) {});
+        RAD_FOG = Registrar.registerParticleType("rad_fog", () -> new SimpleParticleType(false) {});
         RBMK_MUSH =
-                FabricRegistrar.registerParticleType(
-                        "rbmk_mush", () -> new SimpleParticleType(true) {});
+                Registrar.registerParticleType("rbmk_mush", () -> new SimpleParticleType(true) {});
         DIGAMMA_SMOKE =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "digamma_smoke", () -> new SimpleParticleType(true) {});
         LAUNCH_SMOKE =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "launch_smoke", () -> new SimpleParticleType(true) {});
         SCHRAB_FOG =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "schrab_fog", () -> new SimpleParticleType(false) {});
         GAS_FLAME =
-                FabricRegistrar.registerParticleType(
-                        "gas_flame", () -> new SimpleParticleType(true) {});
-        HADRON =
-                FabricRegistrar.registerParticleType(
-                        "hadron", () -> new SimpleParticleType(true) {});
+                Registrar.registerParticleType("gas_flame", () -> new SimpleParticleType(true) {});
+        HADRON = Registrar.registerParticleType("hadron", () -> new SimpleParticleType(true) {});
         ASH_REVEAL =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "ash_reveal",
                         () ->
                                 new ParticleType<AshRevealParticleOptions>(true) {
@@ -70,7 +80,7 @@ public final class HbmParticles {
                                     }
                                 });
         MIST_TOWER =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "mist_tower",
                         () ->
                                 new ParticleType<CoolingTowerParticleOptions>(true) {
@@ -88,7 +98,7 @@ public final class HbmParticles {
                                     }
                                 });
         SPLASH =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "particle_splash",
                         () ->
                                 new ParticleType<SplashParticleOptions>(true) {
@@ -106,7 +116,7 @@ public final class HbmParticles {
                                     }
                                 });
         FLAME =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "flame",
                         () ->
                                 new ParticleType<FlameParticleOptions>(true) {
@@ -124,10 +134,10 @@ public final class HbmParticles {
                                     }
                                 });
         BLACK_POWDER_SPARK =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "black_powder_spark", () -> new SimpleParticleType(true) {});
         VOLCANO_SMOKE =
-                FabricRegistrar.registerParticleType(
+                Registrar.registerParticleType(
                         "volcano_smoke", () -> new SimpleParticleType(true) {});
     }
 }

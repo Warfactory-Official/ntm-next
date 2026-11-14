@@ -1,0 +1,213 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
+package com.hbm.items.tool;
+
+import com.hbm.capability.NtmContracts;
+import com.hbm.extprop.PlayerState;
+import com.hbm.handler.ToolKey;
+import com.hbm.interfaces.SettingsHandler;
+import com.hbm.items.ModDataComponents;
+import com.hbm.util.KeyHints;
+import java.util.function.Consumer;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import org.jspecify.annotations.Nullable;
+
+public class SettingsToolItem extends Item {
+
+    public SettingsToolItem(Properties properties) {
+        super(properties);
+    }
+
+    public static InteractionResult useFirst(ItemStack stack, UseOnContext context) {
+        Player player = context.getPlayer();
+        if (player == null || player.isShiftKeyDown()) return InteractionResult.PASS;
+        NtmContracts.Target<SettingsHandler> copiable =
+                findSource(context.getLevel(), context.getClickedPos());
+        return copiable == null
+                ? InteractionResult.PASS
+                : pasteSettings(
+                        copiable.handler(), context.getLevel(), copiable.pos(), player, stack);
+    }
+
+    public static @Nullable CompoundTag getData(ItemStack stack) {
+        CustomData data = stack.get(ModDataComponents.SETTINGS_TOOL_DATA.get());
+        return data == null ? null : data.copyTag();
+    }
+
+    public static InteractionResult pasteSettings(
+            SettingsHandler copiable, Level level, BlockPos pos, Player player, ItemStack stack) {
+        if (level.isClientSide() || player.isSpectator()) return InteractionResult.PASS;
+        CompoundTag settings = getData(stack);
+        if (settings != null) {
+            copiable.pasteSettings(settings, settings.getIntOr("copyIndex", 0), level, player, pos);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    public static NtmContracts.@Nullable Target<SettingsHandler> findSource(
+            Level level, BlockPos clicked) {
+        NtmContracts.Target<SettingsHandler> source = NtmContracts.COPIABLE.target(level, clicked);
+        return source != null && source.handler().canCopySettings(level, source.pos())
+                ? source
+                : null;
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        var player = context.getPlayer();
+        if (player == null || player.isSpectator()) return InteractionResult.PASS;
+        Level level = context.getLevel();
+        NtmContracts.Target<SettingsHandler> source = findSource(level, context.getClickedPos());
+        if (source == null) return InteractionResult.PASS;
+        SettingsHandler copiable = source.handler();
+        BlockPos pos = source.pos();
+
+        ItemStack stack = context.getItemInHand();
+
+        if (player.isShiftKeyDown()) {
+            CompoundTag settings = copiable.copySettings(level, pos);
+            if (level.isClientSide()) {
+                if (settings != null) {
+                    player.sendSystemMessage(
+                            prefix().append(
+                                            Component.translatable(
+                                                            "desc.item.settingsTool.copiedSettingsOf")
+                                                    .withStyle(ChatFormatting.AQUA))
+                                    .append(
+                                            copiable.getSettingsSourceName(level, pos)
+                                                    .copy()
+                                                    .withStyle(ChatFormatting.AQUA)));
+                }
+                return InteractionResult.PASS;
+            }
+
+            if (settings == null) {
+                stack.remove(ModDataComponents.SETTINGS_TOOL_DATA.get());
+                player.sendSystemMessage(
+                        prefix().append(
+                                        Component.translatable(
+                                                        "desc.item.settingsTool.copyFailedMachineHas")
+                                                .withStyle(ChatFormatting.RED))
+                                .append(
+                                        copiable.getSettingsSourceName(level, pos)
+                                                .copy()
+                                                .withStyle(ChatFormatting.RED)));
+                return InteractionResult.SUCCESS;
+            }
+
+            settings = settings.copy();
+            settings.putString("tileName", copiable.getSettingsSourceId(level, pos));
+            settings.putInt("copyIndex", 0);
+            settings.putInt("inputDelay", 0);
+
+            String[] info = copiable.getSettingsOptions(level, pos);
+            if (info != null) {
+                ListTag displayInfo = new ListTag();
+                for (String key : info) {
+                    CompoundTag line = new CompoundTag();
+                    line.putString("info", key);
+                    displayInfo.add(line);
+                }
+                settings.put("displayInfo", displayInfo);
+            }
+
+            CustomData.set(ModDataComponents.SETTINGS_TOOL_DATA.get(), stack, settings);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (level.isClientSide()) return InteractionResult.PASS;
+        return pasteSettings(copiable, level, pos, player, stack);
+    }
+
+    @Override
+    public void inventoryTick(
+            ItemStack stack, ServerLevel level, Entity owner, @Nullable EquipmentSlot slot) {
+        if (!(owner instanceof Player player)
+                || player.isSpectator()
+                || player.getMainHandItem() != stack) return;
+        CompoundTag data = getData(stack);
+        if (data == null) return;
+
+        int delay = data.getIntOr("inputDelay", 0) + 1;
+        if (PlayerState.getOrCreate(player).held(ToolKey.ALT) && delay > 4) {
+            int count = data.getListOrEmpty("displayInfo").size();
+            int index = data.getIntOr("copyIndex", 0) + 1;
+            if (index > count - 1) index = 0;
+            data.putInt("copyIndex", index);
+            delay = 0;
+        }
+        data.putInt("inputDelay", delay);
+        CustomData.set(ModDataComponents.SETTINGS_TOOL_DATA.get(), stack, data);
+    }
+
+    @Override
+    public void appendHoverText(
+            ItemStack stack,
+            TooltipContext context,
+            TooltipDisplay display,
+            Consumer<Component> adder,
+            TooltipFlag flag) {
+        adder.accept(Component.translatable("desc.item.settingsTool.canCopyTheSettings"));
+        adder.accept(
+                Component.translatable(
+                        "tooltip.hbm.settings.copy_paste",
+                        KeyHints.key("key.sneak", "key.keyboard.left.shift"),
+                        KeyHints.key("key.use", "key.mouse.right"),
+                        KeyHints.key("key.use", "key.mouse.right")));
+        adder.accept(
+                Component.translatable(
+                        "tooltip.hbm.settings.bulk_paste",
+                        KeyHints.key("key.hbm.copyToolCtrl", "key.keyboard.left.control"),
+                        KeyHints.key("key.use", "key.mouse.right")));
+
+        CompoundTag data = getData(stack);
+        if (data == null) return;
+        String source = data.getStringOr("tileName", "");
+        if (source.isEmpty())
+            adder.accept(
+                    Component.translatable("desc.item.settingsTool.none")
+                            .withStyle(ChatFormatting.RED));
+        else adder.accept(Component.translatable(source).withStyle(ChatFormatting.BLUE));
+    }
+
+    private MutableComponent prefix() {
+        return Component.literal("[")
+                .withStyle(ChatFormatting.DARK_AQUA)
+                .append(getName(new ItemStack(this)).copy().withStyle(ChatFormatting.DARK_AQUA))
+                .append(Component.literal("] ").withStyle(ChatFormatting.DARK_AQUA));
+    }
+}

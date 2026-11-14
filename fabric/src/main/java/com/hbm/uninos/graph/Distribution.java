@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.uninos.graph;
 
@@ -61,6 +77,47 @@ public final class Distribution {
                 delivered.add(taken);
             }
             if (cursors != null) cursors[cursorOffset + t] = (start + 1) % count;
+        }
+    }
+
+    public static <E> void serveTiersRemaining(
+            Bucket<E>[] tiers,
+            Total budget,
+            Total delivered,
+            int @Nullable [] cursors,
+            int cursorOffset,
+            Apply<E> apply) {
+        for (int t = tiers.length - 1; t >= 0 && !budget.isZero(); t--) {
+            Bucket<E> tier = tiers[t];
+            if (tier == null || tier.isEmpty() || tier.total.isZero()) continue;
+            int count = tier.size();
+            int start = cursors == null ? 0 : normalizedCursor(cursors[cursorOffset + t], count);
+            boolean refused;
+            do {
+                refused = false;
+                Total weight = tier.weight.set(tier.total);
+                for (int step = 0; step < count && !budget.isZero(); step++) {
+                    int index = (start + step) % count;
+                    long want = tier.amount(index);
+                    if (want == 0) continue;
+                    long offer =
+                            weightedShare(budget, want, weight, Math.min(want, budget.limit()));
+                    weight.subtract(want);
+                    if (offer <= 0) continue;
+                    long taken =
+                            Math.max(0, Math.min(apply.give(tier.endpoint(index), offer), offer));
+                    tier.amount(index, want - taken);
+                    if (taken < offer) {
+                        tier.defer(index);
+                        refused = true;
+                    }
+                    if (taken <= 0) continue;
+                    budget.subtract(taken);
+                    delivered.add(taken);
+                }
+            } while (refused && !budget.isZero() && !tier.total.isZero());
+            if (cursors != null) cursors[cursorOffset + t] = (start + 1) % count;
+            tier.restoreDeferred();
         }
     }
 
@@ -246,6 +303,22 @@ public final class Distribution {
             return this;
         }
 
+        public Total scale(long numerator, long denominator) {
+            if (numerator == 0) return set(0);
+            if (wide == null && value <= Long.MAX_VALUE / numerator)
+                value = value * numerator / denominator;
+            else
+                narrow(
+                        exact().multiply(BigInteger.valueOf(numerator))
+                                .divide(BigInteger.valueOf(denominator)));
+            return this;
+        }
+
+        public Total proportional(Total amount, Total part, Total whole) {
+            narrow(amount.exact().multiply(part.exact()).divide(whole.exact()));
+            return this;
+        }
+
         public boolean isZero() {
             return wide == null && value == 0;
         }
@@ -324,6 +397,9 @@ public final class Distribution {
         private Object[] endpoints = new Object[4];
         private long[] amounts = new long[4];
         private int size;
+        private long @Nullable [] deferred;
+        private int @Nullable [] deferredIndices;
+        private int deferredCount;
         public final Total total = new Total();
         public final Total weight = new Total();
 
@@ -331,6 +407,10 @@ public final class Distribution {
             if (size == endpoints.length) {
                 endpoints = Arrays.copyOf(endpoints, size * 2);
                 amounts = Arrays.copyOf(amounts, size * 2);
+                if (deferred != null) {
+                    deferred = Arrays.copyOf(deferred, size * 2);
+                    deferredIndices = Arrays.copyOf(deferredIndices, size * 2);
+                }
             }
             endpoints[size] = endpoint;
             amounts[size++] = amount;
@@ -349,6 +429,24 @@ public final class Distribution {
         public void amount(int index, long amount) {
             total.subtract(amounts[index]).add(amount);
             amounts[index] = amount;
+        }
+
+        private void defer(int index) {
+            if (deferred == null) {
+                deferred = new long[amounts.length];
+                deferredIndices = new int[amounts.length];
+            }
+            deferred[index] = amount(index);
+            deferredIndices[deferredCount++] = index;
+            amount(index, 0);
+        }
+
+        private void restoreDeferred() {
+            for (int i = 0; i < deferredCount; i++) {
+                int index = deferredIndices[i];
+                amount(index, deferred[index]);
+            }
+            deferredCount = 0;
         }
 
         public int size() {

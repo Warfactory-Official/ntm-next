@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.machine.BlockEntityFurnaceIron;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.machine.thermal.IronFurnaceBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -18,6 +34,8 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.Mth;
@@ -25,8 +43,9 @@ import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
-public final class FurnaceIronVisual extends HbmDynamicBlockEntityVisual<BlockEntityFurnaceIron>
-        implements ShaderLightVisual {
+public final class FurnaceIronVisual
+        extends AbstractBoundedBlockEntityVisual<IronFurnaceBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final HFRWavefrontObject MODEL = ResourceManager.furnace_iron;
     private static final MeshPart ON_PART =
             MeshPart.obj(
@@ -58,11 +77,11 @@ public final class FurnaceIronVisual extends HbmDynamicBlockEntityVisual<BlockEn
     private boolean initialized;
 
     public FurnaceIronVisual(
-            VisualizationContext context, BlockEntityFurnaceIron blockEntity, float partialTick) {
+            VisualizationContext context, IronFurnaceBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         basePose.translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 180)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 180)
                                 * Mth.DEG_TO_RAD)
                 .translate(-.5F, 0F, -.5F);
         bodyBounds = LightBounds.of(MODEL, "Main", basePose, pos);
@@ -80,7 +99,7 @@ public final class FurnaceIronVisual extends HbmDynamicBlockEntityVisual<BlockEn
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         updateMovingParts(context.partialTick());
     }
 

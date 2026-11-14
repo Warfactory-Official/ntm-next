@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.integration.wthit;
 
 import com.hbm.NuclearTech;
-import com.hbm.api.energymk2.IEnergyHandlerMK2;
-import com.hbm.blocks.multiblock.BlockMultiblockCell;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.api.energymk2.EnergyHandler;
+import com.hbm.blocks.multiblock.MultiblockCellBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockSurface;
 import com.hbm.inventory.fluid.tank.FluidTankAccess;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
@@ -38,8 +54,8 @@ public final class NTMWthitPlugin implements IWailaCommonPlugin, IWailaClientPlu
 
     @Override
     public void register(IClientRegistrar registrar) {
-        registrar.redirect(ToCore.INSTANCE, BlockMultiblockCell.class);
-        registrar.redirect(ToCore.INSTANCE, BlockMultiblockCore.class);
+        registrar.redirect(ToCore.INSTANCE, MultiblockCellBlock.class);
+        registrar.redirect(ToCore.INSTANCE, MultiblockCoreBlock.class);
         EnergyData.describe(NuclearTech.MOD_ID).unit("HE");
     }
 
@@ -65,7 +81,7 @@ public final class NTMWthitPlugin implements IWailaCommonPlugin, IWailaClientPlu
         public void appendData(
                 IDataWriter data, IServerAccessor<BlockEntity> accessor, IPluginConfig config) {
             BlockEntity target = accessor.getTarget();
-            if (target instanceof IEnergyHandlerMK2 machine && machine.getMaxPower() > 0) {
+            if (target instanceof EnergyHandler machine && machine.getMaxPower() > 0) {
                 data.add(
                         EnergyData.TYPE,
                         result ->

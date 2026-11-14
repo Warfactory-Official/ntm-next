@@ -1,0 +1,84 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
+package com.hbm.blocks.machine;
+
+import com.hbm.blockentity.machine.CrucibleBlockEntity;
+import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.TickingEntityBlock;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.capability.CapabilityBlock;
+import com.hbm.capability.MachineCaps;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+
+public class CrucibleBlock extends MultiblockCoreBlock
+        implements TickingEntityBlock, CapabilityBlock {
+
+    public CrucibleBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public MachineCaps caps() {
+        return MachineCaps.of(ModBlockEntities.CRUCIBLE).items().itemsAtCells();
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CrucibleBlockEntity(pos, state);
+    }
+
+    @Override
+    protected InteractionResult useAtCore(
+            BlockState state, Level level, BlockPos core, Player player, BlockHitResult hit) {
+        if (level.isClientSide() || player.isShiftKeyDown()) return InteractionResult.SUCCESS;
+        if (level.getBlockEntity(core) instanceof MenuProvider menu) {
+            openCoreMenu(player, core, menu);
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    protected InteractionResult useItemOnAtCore(
+            ItemStack held,
+            BlockState state,
+            Level level,
+            BlockPos core,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit) {
+        if (!held.is(ItemTags.SHOVELS)) return InteractionResult.TRY_WITH_EMPTY_HAND;
+        if (level.isClientSide()) return InteractionResult.SUCCESS;
+        if (level.getBlockEntity(core) instanceof CrucibleBlockEntity machine) {
+            machine.scoopMelt(player);
+        }
+        return InteractionResult.SUCCESS;
+    }
+}

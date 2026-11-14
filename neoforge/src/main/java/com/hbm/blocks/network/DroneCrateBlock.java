@@ -1,18 +1,36 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.blocks.network;
 
-import com.hbm.blockentity.network.BlockEntityDroneCrate;
-import com.hbm.blocks.ITickingBlock;
+import com.hbm.blockentity.network.DroneCrateBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.capability.ICapabilityBlock;
+import com.hbm.blocks.TickingEntityBlock;
+import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.hbm.interfaces.ILookOverlay;
-import com.hbm.inventory.IGUIProvider;
+import com.hbm.interfaces.LookOverlay;
+import com.hbm.interfaces.LookOverlayProvider;
+import com.hbm.inventory.BlockMenus;
 import com.hbm.items.ModItems;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -26,8 +44,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class DroneCrateBlock extends Block
-        implements ITickingBlock, ICapabilityBlock, ILookOverlay {
-
+        implements TickingEntityBlock, CapabilityBlock, LookOverlayProvider {
     public static final MapCodec<DroneCrateBlock> CODEC = simpleCodec(DroneCrateBlock::new);
 
     public DroneCrateBlock(Properties props) {
@@ -41,7 +58,7 @@ public class DroneCrateBlock extends Block
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityDroneCrate(pos, state);
+        return new DroneCrateBlockEntity(pos, state);
     }
 
     @Override
@@ -68,21 +85,20 @@ public class DroneCrateBlock extends Block
         if (player.isSecondaryUseActive()) return InteractionResult.PASS;
         if (!(level.getBlockEntity(pos) instanceof MenuProvider provider))
             return InteractionResult.PASS;
-        if (!level.isClientSide()) IGUIProvider.openBlockMenu(player, provider, pos);
+        if (!level.isClientSide()) BlockMenus.open(player, provider);
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void buildLookOverlay(Level level, BlockPos pos, LookInfo info) {
-        if (!(level.getBlockEntity(pos) instanceof BlockEntityDroneCrate crate)
-                || crate.next == null) return;
-        info.title(getName().getString(), 0xffff00, 0x404000);
-        info.line(
-                "Next waypoint: "
-                        + crate.next.getX()
-                        + " / "
-                        + crate.next.getY()
-                        + " / "
-                        + crate.next.getZ());
+    public void buildLookOverlay(Level level, BlockPos pos, LookOverlay info) {
+        if (!(level.getBlockEntity(pos) instanceof DroneCrateBlockEntity crate)
+                || crate.successor == null) return;
+        info.title(getName());
+        info.row(
+                Component.translatable(
+                        "overlay.hbm.next_waypoint",
+                        crate.successor.getX(),
+                        crate.successor.getY(),
+                        crate.successor.getZ()));
     }
 }

@@ -1,10 +1,44 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-FileCopyrightText: HbmMods (The Bobcat)
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.integration.recipeviewer;
 
 import com.hbm.config.InteractionConfig;
+import com.hbm.integration.recipeviewer.PageIds;
+import com.hbm.integration.recipeviewer.PageLayout;
+import com.hbm.integration.recipeviewer.PageSlot;
+import com.hbm.integration.recipeviewer.RecipePanel;
+import com.hbm.integration.recipeviewer.TablePage;
 import com.hbm.inventory.fluid.FluidStackNTM;
 import com.hbm.inventory.recipes.CrystallizerRecipe;
 import com.hbm.inventory.recipes.FusionRecipe;
@@ -14,9 +48,9 @@ import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.inventory.recipes.loader.Outputs;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemBlueprints;
-import com.hbm.util.BobMathUtil;
+import com.hbm.items.machine.BlueprintsItem;
 import com.hbm.util.GameTime;
+import com.hbm.util.NumberFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -155,36 +189,39 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
         };
     }
 
-    static List<ItemStack> outputStacks(WeightedList<ItemStack> output) {
+    public static List<ItemStack> outputStacks(WeightedList<ItemStack> output) {
         List<ItemStack> stacks = new ArrayList<>();
         for (Weighted<ItemStack> entry : output.unwrap()) stacks.add(entry.value().copy());
         return stacks;
     }
 
-    static void outputSlot(PageSlot slot, WeightedList<ItemStack> output) {
+    public static void outputSlot(PageSlot slot, WeightedList<ItemStack> output) {
         ItemStack single = Outputs.single(output);
-        if (single == null || single.isEmpty() || output.unwrap().size() == 1) {
+        if (single == null || single.isEmpty()) {
             slot.items(outputStacks(output));
-            return;
+        } else {
+            slot.item(single.copy());
         }
+        if (output.unwrap().size() <= 1) return;
         int total = 0;
-        int present = 0;
-        for (Weighted<ItemStack> entry : output.unwrap()) {
-            total += entry.weight();
-            if (!entry.value().isEmpty()) present += entry.weight();
-        }
-        double percent = (int) ((long) present * Outputs.RESOLUTION / total) / 10D;
-        slot.item(single.copy())
-                .tooltip(
-                        (shown, lines) ->
-                                lines.accept(
-                                        Component.translatable("unit.percent", percent)
-                                                .withStyle(ChatFormatting.RED)));
+        for (Weighted<ItemStack> entry : output.unwrap()) total += entry.weight();
+        int totalWeight = total;
+        slot.tooltip(
+                (shown, lines) -> {
+                    int weight = 0;
+                    for (Weighted<ItemStack> entry : output.unwrap()) {
+                        if (ItemStack.matches(shown, entry.value())) weight += entry.weight();
+                    }
+                    double percent = Math.round(weight * 1000D / totalWeight) / 10D;
+                    lines.accept(
+                            Component.translatable("unit.percent", percent)
+                                    .withStyle(ChatFormatting.RED));
+                });
     }
 
     private static List<ItemStack> blueprintStacks(String[] pools) {
         List<ItemStack> blueprints = new ArrayList<>();
-        for (String pool : pools) blueprints.add(ItemBlueprints.make(pool));
+        for (String pool : pools) blueprints.add(BlueprintsItem.make(pool));
         return blueprints;
     }
 
@@ -210,14 +247,14 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
     }
 
     static Component ticks(int duration) {
-        return Component.translatable("jei.hbm.duration", BobMathUtil.getShortNumber(duration));
+        return Component.translatable("jei.hbm.duration", NumberFormatter.formatCompact(duration));
     }
 
     static Component consumption(long power) {
-        return Component.translatable("jei.hbm.consumption", BobMathUtil.getShortNumber(power));
+        return Component.translatable("jei.hbm.consumption", NumberFormatter.formatCompact(power));
     }
 
-    private static boolean isSecret(GenericRecipe recipe) {
+    public static boolean isSecret(GenericRecipe recipe) {
         if (recipe.isPooled()) {
             for (String pool : recipe.getPools()) {
                 if (pool.startsWith(GenericRecipes.POOL_PREFIX_SECRET)) return true;
@@ -467,8 +504,7 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
                     });
         }
 
-        public static UnaryOperator<List<FluidStackNTM>> append(
-                java.util.function.Supplier<FluidStackNTM> extra) {
+        public static UnaryOperator<List<FluidStackNTM>> append(Supplier<FluidStackNTM> extra) {
             return list -> {
                 List<FluidStackNTM> out = new ArrayList<>(list);
                 out.add(extra.get());
@@ -504,8 +540,8 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
                         graphics,
                         Component.translatable(
                                 "jei.hbm.duration_and_consumption",
-                                BobMathUtil.getShortNumber(recipe.duration),
-                                BobMathUtil.getShortNumber(recipe.power)),
+                                NumberFormatter.formatCompact(recipe.duration),
+                                NumberFormatter.formatCompact(recipe.power)),
                         57,
                         0xFF306030);
             }
@@ -525,11 +561,12 @@ public final class GenericMachinePage<T extends GenericRecipe> extends TablePage
             private Component ignition(GenericRecipe recipe) {
                 if (recipe instanceof FusionRecipe fusion) {
                     return Component.translatable(
-                            "jei.hbm.ignition_ky", BobMathUtil.getShortNumber(fusion.ignitionTemp));
+                            "jei.hbm.ignition_ky",
+                            NumberFormatter.formatCompact(fusion.ignitionTemp));
                 }
                 return Component.translatable(
                         "jei.hbm.ignition_tu",
-                        BobMathUtil.getShortNumber(((PlasmaForgeRecipe) recipe).ignitionTemp));
+                        NumberFormatter.formatCompact(((PlasmaForgeRecipe) recipe).ignitionTemp));
             }
         },
         EFFECTIVENESS {

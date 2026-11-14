@@ -1,14 +1,30 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.packet;
 
 import com.hbm.blockentity.Synced;
+import com.hbm.platform.Platform;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.util.IdentityHashMap;
 import java.util.Map;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,11 +42,18 @@ public final class SyncWire {
     private static volatile boolean recipesChanged;
 
     private static final class Replay {
-        static final boolean RECORDER = FabricLoader.getInstance().isModLoaded("flashback");
+        static final boolean RECORDER =
+                Platform.isModLoaded("flashback") || Platform.isModLoaded("tghindsight");
+        static final boolean TIMELINE =
+                Platform.isModLoaded("replaymod") || Platform.isModLoaded("tghindsight");
     }
 
     public static boolean replayCompat() {
         return Replay.RECORDER;
+    }
+
+    public static boolean replayTimeline() {
+        return Replay.TIMELINE;
     }
 
     public static void invalidateRecipeInputs() {

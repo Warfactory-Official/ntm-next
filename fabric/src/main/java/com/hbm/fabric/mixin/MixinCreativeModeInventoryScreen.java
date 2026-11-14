@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.fabric.mixin;
 
-import com.hbm.registration.FabricRegistrar;
+import com.hbm.registration.Registrar;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import java.util.Collection;
@@ -68,14 +84,14 @@ public abstract class MixinCreativeModeInventoryScreen
                                     "Lnet/minecraft/world/item/CreativeModeTab;getType()Lnet/minecraft/world/item/CreativeModeTab$Type;"))
     private CreativeModeTab.Type hbm$searchTab(
             CreativeModeTab tab, Operation<CreativeModeTab.Type> original) {
-        return FabricRegistrar.SEARCH_TABS.contains(tab)
+        return Registrar.SEARCH_TABS.contains(tab)
                 ? CreativeModeTab.Type.SEARCH
                 : original.call(tab);
     }
 
     @Inject(method = "refreshSearchResults", at = @At("HEAD"), cancellable = true)
     private void hbm$searchOwnItems(CallbackInfo ci) {
-        if (!FabricRegistrar.SEARCH_TABS.contains(selectedTab)) return;
+        if (!Registrar.SEARCH_TABS.contains(selectedTab)) return;
         ci.cancel();
         menu.items.clear();
         String term = searchBox.getValue();

@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items.armor;
 
@@ -9,6 +25,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -88,7 +105,7 @@ public final class ArmorMods {
     public ArmorMods with(int slot, ItemStack stack) {
         ItemStackTemplate next =
                 stack.isEmpty() ? null : ItemStackTemplate.fromNonEmptyStack(stack).withCount(1);
-        if (java.util.Objects.equals(slots[slot], next)) return this;
+        if (Objects.equals(slots[slot], next)) return this;
         if (next != null) validated(next);
         ItemStackTemplate[] changed = slots.clone();
         changed[slot] = next;
@@ -100,8 +117,8 @@ public final class ArmorMods {
         for (int i = 0; i < slots.length; i++) {
             Item before = other.item(i), after = item(i);
             if (before != after
-                    && (before instanceof ItemArmorMod beforeMod && beforeMod.hasAttributes()
-                            || after instanceof ItemArmorMod afterMod && afterMod.hasAttributes()))
+                    && (before instanceof ArmorModItem beforeMod && beforeMod.hasAttributes()
+                            || after instanceof ArmorModItem afterMod && afterMod.hasAttributes()))
                 return false;
         }
         return true;

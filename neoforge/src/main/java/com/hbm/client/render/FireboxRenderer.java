@@ -1,0 +1,142 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
+
+package com.hbm.client.render;
+
+import com.hbm.blockentity.machine.HeaterFireboxBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
+import com.hbm.main.ResourceManager;
+import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.Facing;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Quaternionfc;
+import org.jspecify.annotations.Nullable;
+
+public class FireboxRenderer
+        implements BlockEntityRenderer<HeaterFireboxBlockEntity, FireboxRenderer.State>,
+                ConcurrentRenderStateExtraction {
+    private static final int DOOR = ResourceManager.heater_firebox.partId("Door");
+    private static final int INNER_BURNING = ResourceManager.heater_firebox.partId("InnerBurning");
+    private static final int INNER_EMPTY = ResourceManager.heater_firebox.partId("InnerEmpty");
+
+    private final HFRWavefrontObject model;
+    private final RenderType bodyType;
+    private final RenderType hotType;
+
+    public FireboxRenderer() {
+        this.model = ResourceManager.heater_firebox;
+        this.bodyType = RenderTypes.entityCutoutCull(ResourceManager.heater_firebox_tex);
+        this.hotType = FlatCutout.of(ResourceManager.heater_firebox_tex);
+    }
+
+    private static float fireboxYaw(Direction facing) {
+        return Facing.yaw(facing, 180);
+    }
+
+    @Override
+    public State createRenderState() {
+        return new State();
+    }
+
+    @Override
+    public int getViewDistance() {
+        return 256;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(HeaterFireboxBlockEntity be) {
+        BlockPos pos = be.getBlockPos();
+        return new AABB(
+                pos.getX() - 1.6875,
+                pos.getY(),
+                pos.getZ() - 1.6875,
+                pos.getX() + 2.6875,
+                pos.getY() + 1,
+                pos.getZ() + 2.6875);
+    }
+
+    @Override
+    public boolean shouldRenderOffScreen() {
+        return true;
+    }
+
+    @Override
+    public void extractRenderState(
+            HeaterFireboxBlockEntity be,
+            State state,
+            float partialTicks,
+            Vec3 cameraPosition,
+            ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+        BlockEntityRenderer.super.extractRenderState(
+                be, state, partialTicks, cameraPosition, breakProgress);
+        state.facing = MultiblockCoreBlock.coreFacing(be.getBlockState());
+        state.doorAngle = Mth.lerp(partialTicks, be.prevDoorAngle, be.doorAngle);
+        state.wasOn = be.wasOn;
+    }
+
+    @Override
+    public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
+        int light = s.lightCoords;
+        ps.pushPose();
+        ps.translate(0.5, 0.0, 0.5);
+        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(fireboxYaw(s.facing) - 90F));
+
+        ps.pushPose();
+        ps.translate(1.375, 0.0, 0.375);
+        ps.mulPose((Quaternionfc) Axis.YN.rotationDegrees(s.doorAngle));
+        ps.translate(-1.375, 0.0, -0.375);
+        part(col, ps, bodyType, light, DOOR);
+        ps.popPose();
+
+        if (s.wasOn) {
+            part(col, ps, hotType, LightCoordsUtil.FULL_BRIGHT, INNER_BURNING);
+        } else {
+            part(col, ps, bodyType, light, INNER_EMPTY);
+        }
+
+        ps.popPose();
+    }
+
+    private void part(SubmitNodeCollector col, PoseStack ps, RenderType type, int light, int name) {
+        final HFRWavefrontObject m = this.model;
+        col.submitCustomGeometry(
+                ps, type, (pose, buffer) -> m.renderPart(pose, buffer, light, -1, name));
+    }
+
+    public static final class State extends BlockEntityRenderState {
+        public Direction facing = Direction.NORTH;
+        public float doorAngle;
+        public boolean wasOn;
+    }
+}

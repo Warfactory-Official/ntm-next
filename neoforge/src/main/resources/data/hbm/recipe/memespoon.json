@@ -7,11 +7,14 @@
     "I": "hbm:plate_polymer",
     "P": "hbm:photo_panel",
     "S": {
-      "neoforge:ingredient_type": "neoforge:components",
+      "neoforge:ingredient_type": "hbm:matchers",
+      "base": "hbm:steel_shovel",
       "components": {
         "minecraft:damage": 0
       },
-      "items": "hbm:steel_shovel"
+      "predicates": {
+        "hbm:consume_component": "minecraft:repair_cost"
+      }
     }
   },
   "pattern": [

@@ -2,13 +2,14 @@
   "net/minecraft/world/SimpleContainer": ["com/hbm/interfaces/injected/FuseContainerOwner"],
   "net/minecraft/world/inventory/AbstractContainerMenu": ["com/hbm/interfaces/injected/FuseContainerOwner"],
   "net/minecraft/server/MinecraftServer": ["com/hbm/interfaces/injected/UnstableFuseSchedule"],
-  "net/minecraft/client/multiplayer/ClientLevel": ["com/hbm/interfaces/injected/IClientLevelExtension"],
-  "net/minecraft/server/level/ServerLevel": ["com/hbm/interfaces/injected/IServerLevelExtension"],
+  "net/minecraft/client/multiplayer/ClientLevel": ["com/hbm/interfaces/injected/ClientLevelExtension"],
+  "net/minecraft/server/level/ServerLevel": ["com/hbm/interfaces/injected/ServerLevelExtension"],
   "net/minecraft/world/level/block/Block": ["com/hbm/interfaces/injected/BlockEntityLifecycle"],
-  "net/minecraft/world/level/chunk/ChunkAccess": ["com/hbm/interfaces/injected/IChunkExtension"],
-  "net/minecraft/world/level/chunk/storage/SerializableChunkData": ["com/hbm/interfaces/injected/IChunkExtension"],
+  "net/minecraft/world/level/block/entity/BlockEntity": ["com/hbm/interfaces/injected/BulkParticipant"],
+  "net/minecraft/world/level/chunk/ChunkAccess": ["com/hbm/interfaces/injected/ChunkExtension"],
+  "net/minecraft/world/level/chunk/storage/SerializableChunkData": ["com/hbm/interfaces/injected/ChunkExtension"],
   "net/minecraft/world/entity/player/Player": ["com/hbm/interfaces/injected/PlayerAppearance"],
   "net/minecraft/client/renderer/entity/state/AvatarRenderState": ["com/hbm/interfaces/injected/PlayerAppearance"],
   "net/minecraft/world/level/block/piston/PistonMovingBlockEntity": ["com/hbm/interfaces/injected/MovedBlockEntityData"],
-  "net/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo": ["com/hbm/interfaces/injected/IQuadLightOrigin"]
+  "net/minecraft/client/resources/model/geometry/BakedQuad$MaterialInfo": ["com/hbm/interfaces/injected/QuadLightOriginAccess"]
 }

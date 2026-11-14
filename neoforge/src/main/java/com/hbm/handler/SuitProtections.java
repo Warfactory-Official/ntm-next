@@ -1,17 +1,35 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler;
 
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public final class SuitProtections {
     private static Reference2IntOpenHashMap<Item> head = emptyPiece(),
@@ -53,11 +71,10 @@ public final class SuitProtections {
         for (var holder : rows) {
             if (holder.value().armor().isEmpty()) continue;
             var armor = holder.value().armor().get();
-            var selectors =
-                    java.util.List.of(armor.head(), armor.chest(), armor.legs(), armor.feet());
+            var selectors = List.of(armor.head(), armor.chest(), armor.legs(), armor.feet());
             for (int slot = 0; slot < 4; slot++) {
                 for (var item : selectors.get(slot)) {
-                    if (item.value() == net.minecraft.world.item.Items.AIR)
+                    if (item.value() == Items.AIR)
                         throw new IllegalStateException(
                                 "A suit selector cannot contain air: " + holder.key().identifier());
                     if (!pieces[slot].containsKey(item.value()))
@@ -82,8 +99,7 @@ public final class SuitProtections {
                 continue;
             }
             var armor = rule.armor().get();
-            var selectors =
-                    java.util.List.of(armor.head(), armor.chest(), armor.legs(), armor.feet());
+            var selectors = List.of(armor.head(), armor.chest(), armor.legs(), armor.feet());
             for (int slot = 0; slot < 4; slot++) {
                 for (var item : selectors.get(slot)) {
                     bits[slot][pieces[slot].getInt(item.value()) * nextWords + index / Long.SIZE] |=

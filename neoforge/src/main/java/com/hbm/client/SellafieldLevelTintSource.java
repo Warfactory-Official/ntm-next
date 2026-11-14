@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client;
 
-import com.hbm.blocks.generic.BlockSellafield;
+import com.hbm.blocks.generic.SellafieldBlock;
 import java.util.Set;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,19 +29,15 @@ public final class SellafieldLevelTintSource implements BlockTintSource {
 
     public static final SellafieldLevelTintSource INSTANCE = new SellafieldLevelTintSource();
 
-    private static final int[] LEVEL_COLORS = {
-        0x4C7939, 0x418223, 0x338C0E, 0x1C9E00, 0x02B200, 0x00D300
-    };
-
     private SellafieldLevelTintSource() {}
 
     @Override
     public int color(BlockState state) {
-        return LEVEL_COLORS[state.getValue(BlockSellafield.LEVEL)];
+        return SellafieldBlock.tint(state.getValue(SellafieldBlock.LEVEL));
     }
 
     @Override
     public Set<Property<?>> relevantProperties() {
-        return Set.of(BlockSellafield.LEVEL);
+        return Set.of(SellafieldBlock.LEVEL);
     }
 }

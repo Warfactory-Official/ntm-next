@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.integration.recipeviewer;
 
-import com.hbm.blockentity.machine.BlockEntityStorageDrum;
+import com.hbm.blockentity.machine.StorageDrumBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-import com.hbm.items.special.ItemWasteLong;
-import com.hbm.items.special.ItemWasteShort;
+import com.hbm.items.special.WasteLongItem;
+import com.hbm.items.special.WasteShortItem;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -25,7 +41,7 @@ public final class WasteDecayPage extends RecipePage<WasteDecayPage.Recipe> {
     @Override
     public List<Recipe> rows() {
         List<Recipe> rows = new ArrayList<>();
-        for (ItemWasteShort.WasteClass waste : ItemWasteShort.WasteClass.VALUES) {
+        for (WasteShortItem.WasteClass waste : WasteShortItem.WasteClass.VALUES) {
             rows.add(
                     row(
                             ModItems.NUCLEAR_WASTE_SHORT.stack(waste),
@@ -35,10 +51,10 @@ public final class WasteDecayPage extends RecipePage<WasteDecayPage.Recipe> {
                             ModItems.NUCLEAR_WASTE_SHORT_TINY.stack(waste),
                             ModItems.NUCLEAR_WASTE_SHORT_DEPLETED_TINY.stack(waste)));
         }
-        for (BlockEntityStorageDrum.AddonDecay decay : BlockEntityStorageDrum.addonDecays()) {
-            rows.add(row(new ItemStack(decay.from().get()), decay.into().get()));
+        for (StorageDrumBlockEntity.DecayExtension decay : StorageDrumBlockEntity.extensions()) {
+            rows.add(row(new ItemStack(decay.input().get()), decay.product().get()));
         }
-        for (ItemWasteLong.WasteClass waste : ItemWasteLong.WasteClass.VALUES) {
+        for (WasteLongItem.WasteClass waste : WasteLongItem.WasteClass.VALUES) {
             rows.add(
                     row(
                             ModItems.NUCLEAR_WASTE_LONG.stack(waste),

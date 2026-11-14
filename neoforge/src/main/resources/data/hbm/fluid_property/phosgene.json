@@ -27,7 +27,7 @@
           "damage": "hbm:cloud",
           "delay": 20,
           "full_body": false,
-          "hazard": "GAS_LUNG",
+          "hazard": "gas_lung",
           "kind": "direct_damage"
         }
       ]

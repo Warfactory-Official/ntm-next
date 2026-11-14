@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
 plugins {
     java
     `maven-publish`
@@ -7,6 +10,13 @@ plugins {
 version = property("mod_version")!!
 group = property("mod_group_id")!!
 val implementationVersion = "$version+${rootProject.extra["buildRevision"]}"
+
+val modMetadata = listOf(
+        "minecraft_version", "minecraft_next_version", "fabric_loader_minimum", "fabric_api_version", "crankshaft_version",
+        "neoforge_minimum", "neoforge_maximum", "iris_minimum", "sodium_minimum", "lithium_minimum", "lithium_maximum", "ae2_version",
+        "crankshaft_fabric_range", "crankshaft_minimum", "sophisticated_core_minimum", "sophisticated_storage_minimum",
+        "sophisticated_backpacks_minimum", "ctm_library_version"
+    ).associateWith { property(it) as String }
 
 base {
     archivesName = "${property("mod_id")}-neoforge"
@@ -43,15 +53,23 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 val javacInternalExports = listOf("api", "code", "comp", "jvm", "main", "model", "parser", "tree", "util")
     .map { "--add-exports=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
-val javacInternalOpens = listOf("main")
+val javacInternalOpens = listOf("main", "comp", "parser", "code", "jvm")
     .map { "--add-opens=jdk.compiler/com.sun.tools.javac.$it=ALL-UNNAMED" }
 
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
     options.compilerArgs.add("--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED")
     options.compilerArgs.add("--add-modules=jdk.incubator.vector")
-    options.isFork = true
+    options.compilerArgs.addAll(javacInternalExports)
+    options.forkOptions.jvmArgs!!.addAll(
+        listOf("-XX:+UnlockExperimentalVMOptions", "-XX:-UseJVMCICompiler", "-XX:-EnableJVMCI")
+    )
     options.forkOptions.memoryMaximumSize = "2g"
+    options.forkOptions.jvmArgs = (options.forkOptions.jvmArgs ?: emptyList()) + listOf(
+        "--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
+        "--add-opens=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED"
+    )
+    options.isFork = true
     options.forkOptions.jvmArgs!!.addAll(javacInternalExports)
     options.forkOptions.jvmArgs!!.addAll(javacInternalOpens)
 }
@@ -61,14 +79,7 @@ sourceSets.main {
 }
 
 tasks.named<JavaCompile>("compileJava") {
-    options.compilerArgs.addAll(listOf(
-        "-Xplugin:tenon-asm",
-        "-Xplugin:tenon-inject packages=com.hbm.interfaces.injected",
-        "-Xplugin:tenon-traits templates=" +
-                layout.projectDirectory.dir("src/main/templates/java/com/hbm/blockentity").asFile.absolutePath,
-        "-Xplugin:hbm-compiler syncTo=container-sync.idx"
-    ))
-    options.compilerArgs.addAll(javacInternalExports)
+    options.compilerArgs.add("-Xplugin:tenon-asm")
 }
 
 tasks.named<Jar>("jar") {
@@ -79,7 +90,17 @@ tasks.named<Jar>("jar") {
     exclude("assets/**/*.obj")
 }
 
+tasks.named<ProcessResources>("processResources") {
+    inputs.properties(modMetadata)
+    filesMatching("META-INF/neoforge.mods.toml") {
+        filter { line ->
+            modMetadata.entries.fold(line) { text, (name, value) -> text.replace("\${$name}", value) }
+        }
+    }
+}
+
 repositories {
+    maven("https://maven.fabricmc.net/")
     maven("https://maven.caffeinemc.net/releases") {
         content { includeGroup("net.caffeinemc") }
     }
@@ -88,7 +109,10 @@ repositories {
     maven("https://maven.blamejared.com/")
     maven("https://repo.warfactory.co/releases") {
         name = "Warfactory"
-        content { includeGroup("dev.engine_room") }
+        content {
+            includeGroup("dev.engine_room")
+            includeGroup("net.irisshaders")
+        }
     }
     maven("https://repo.warfactory.co/snapshots") {
         content { includeGroup("mov.movblock.tenon") }
@@ -117,77 +141,148 @@ repositories {
     }
 }
 
-val crankshaftVersion = "1.6.0+mc26.2"
+val crankshaftVersion = property("crankshaft_version") as String
 
-val crankshaftJar = configurations.create("crankshaftJar") {
-    isCanBeConsumed = false
-    isTransitive = false
-}
-val crankshaftIris = tasks.register<Sync>("crankshaftIris") {
-    from(crankshaftJar.elements.map { jars -> jars.map { zipTree(it.asFile) } }) {
-        include("META-INF/jarjar/dev.engine_room.crankshaft-iris-*.jar")
-        eachFile { path = "crankshaft-iris.jar" }
+fun nestedModClasses(
+    project: Project, taskName: String, coordinates: String, pattern: String,
+    directory: String, fileName: String
+): FileCollection {
+    val archives = project.configurations.create("${taskName}Archive") {
+        isCanBeConsumed = false
+        isTransitive = false
     }
-    includeEmptyDirs = false
-    into(layout.buildDirectory.dir("crankshaft-iris"))
-    doLast { check(destinationDir.resolve("crankshaft-iris.jar").isFile) { "no META-INF/jarjar/dev.engine_room.crankshaft-iris-*.jar in crankshaft-neoforge" } }
+    project.dependencies.add(archives.name, coordinates)
+    val output = project.layout.buildDirectory.dir("$directory/${coordinates.substringAfterLast(':')}")
+    val extracted = project.layout.buildDirectory.dir("$directory/archive")
+    val unpack = project.tasks.register<Sync>("${taskName}Archive") {
+        from(archives.elements.map { jars -> jars.map { project.zipTree(it.asFile) } }) {
+            include(pattern)
+            eachFile { path = fileName }
+        }
+        includeEmptyDirs = false
+        into(extracted)
+        doLast { check(extracted.get().file(fileName).asFile.isFile) { "No $pattern in $coordinates" } }
+    }
+    val publish = publishFile(project, taskName,
+        unpack.map { _ -> extracted.get().file(fileName) }, output.map { it.file(fileName) })
+    return project.files(publish)
 }
+
+fun publishFile(
+    project: Project, taskName: String, source: Provider<RegularFile>, destination: Provider<RegularFile>
+): TaskProvider<Task> = project.tasks.register(taskName) {
+    inputs.file(source).withPathSensitivity(PathSensitivity.NONE)
+    outputs.file(destination)
+    doLast {
+        val target = destination.get().asFile.toPath()
+        val input = source.get().asFile.toPath()
+        if (Files.exists(target) && Files.mismatch(input, target) == -1L) return@doLast
+        val pending = target.resolveSibling(target.fileName.toString() + ".tmp")
+        Files.createDirectories(target.parent)
+        Files.copy(input, pending, StandardCopyOption.REPLACE_EXISTING)
+        Files.move(pending, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+    }
+}
+
+val crankshaftIris = nestedModClasses(
+    project,
+    "crankshaftIris",
+    "dev.engine_room:crankshaft-neoforge:$crankshaftVersion",
+    "META-INF/jarjar/*crankshaft-iris-*.jar",
+    "crankshaft-iris",
+    "crankshaft-iris.jar"
+)
+
+val c2meSerializer = nestedModClasses(
+    project,
+    "c2meSerializer",
+    property("dependency_neoforge_c2me") as String,
+    "META-INF/jars/c2me-neoforge-rewrites-chunk-serializer-*.jar",
+    "c2me-serializer",
+    "c2me-serializer.jar"
+)
 
 dependencies {
-    compileOnly("org.appliedenergistics:appliedenergistics2:26.2.1-alpha") { isTransitive = false }
-    compileOnly("cc.tweaked:cc-tweaked-26.2-forge-api:1.120.2")
-    compileOnly("maven.modrinth:sophisticated-core:nj5gRTWv")
-    compileOnly("maven.modrinth:sophisticated-storage:eS0i3crP")
-    compileOnly("maven.modrinth:sophisticated-backpacks:QfSnSqMl")
-    compileOnly("maven.modrinth:compact-storage:nIOL2PLd")
-    compileOnly("maven.modrinth:travelersbackpack:EMeTJkWH")
-    compileOnly("maven.modrinth:balm:5wreNQrF")
-    compileOnly("maven.modrinth:trinkets-updated:YH8OYfzQ")
-    compileOnly("maven.modrinth:curios:BI7D0sbK")
-    compileOnly("maven.modrinth:iris:k55HdONq")
-    compileOnly("net.caffeinemc:sodium-neoforge-mod:0.9.2+mc26.2")
+    compileOnly(property("dependency_neoforge_appliedenergistics2") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_cc_tweaked_api") as String)
+    compileOnly(property("dependency_neoforge_alexscaves") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_codxlib") as String) { isTransitive = false }
+    compileOnly(property("dependency_worldedit") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_effortless_building") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_sophisticated_core") as String)
+    compileOnly(property("dependency_neoforge_sophisticated_storage") as String)
+    compileOnly(property("dependency_neoforge_sophisticated_backpacks") as String)
+    compileOnly(property("dependency_neoforge_compact_storage") as String)
+    compileOnly(property("dependency_neoforge_travelersbackpack") as String)
+    compileOnly(property("dependency_neoforge_balm") as String)
+    compileOnly(property("dependency_neoforge_trinkets_updated") as String)
+    compileOnly(property("dependency_neoforge_curios") as String)
+    compileOnly(property("dependency_neoforge_iris") as String)
+    compileOnly(property("dependency_neoforge_sodium") as String)
     compileOnly("io.github.douira:glsl-transformer:3.0.0-pre3")
     compileOnly("org.antlr:antlr4-runtime:4.13.1")
-    compileOnly("maven.modrinth:toms-storage:UdGowO79") { isTransitive = false }
-    compileOnly("maven.modrinth:storagedrawers:egaJwbqD") { isTransitive = false }
-    compileOnly("maven.modrinth:sound-physics-remastered:T2rk5I7r") { isTransitive = false }
-    compileOnly("maven.modrinth:entity-model-features:pR1lBt4h") { isTransitive = false }
-    compileOnly("maven.modrinth:punchy-fpa:obRINkQu") { isTransitive = false }
-    compileOnly("maven.modrinth:notenoughbandwidthfabric:hkfDkuqG") { isTransitive = false }
-    compileOnly("maven.modrinth:bandwidthoptimizer:R6HJYW0a") { isTransitive = false }
+    compileOnly(property("dependency_neoforge_toms_storage") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_storage_drawers") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_sound_physics") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_entity_model_features") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_punchy_fpa") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_not_enough_bandwidth") as String) { isTransitive = false }
+    compileOnly("com.github.luben:zstd-jni:1.5.6-9")
+    compileOnly(property("dependency_neoforge_bandwidth_optimizer") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_replaymod") as String) { isTransitive = false }
+    compileOnly(property("dependency_neoforge_hindsight") as String) { isTransitive = false }
     compileOnly("io.github.llamalad7:mixinextras-common:0.5.5")
     compileOnly("org.jspecify:jspecify:1.0.0")
-    compileOnly("maven.modrinth:scalablelux:0.3.0-alpha.0.16+26.2")
-    compileOnly("maven.modrinth:lithium:mc26.2-0.25.3-neoforge")
-    compileOnly("mov.movblock.tenon:tenon-strip-api:${property("tenon_version")}")
+    compileOnly(property("dependency_neoforge_scalablelux") as String)
+    compileOnly(property("dependency_neoforge_lithium") as String)
 
-    annotationProcessor(project(":processor"))
     annotationProcessor("mov.movblock.tenon:tenon-asm:${property("tenon_version")}")
-    annotationProcessor("mov.movblock.tenon:tenon-traits:${property("tenon_version")}")
-    annotationProcessor("mov.movblock.tenon:tenon-inject:${property("tenon_version")}")
 
     implementation("dev.engine_room:crankshaft-neoforge:${crankshaftVersion}")
-    crankshaftJar("dev.engine_room:crankshaft-neoforge:${crankshaftVersion}")
-    compileOnly(files(layout.buildDirectory.file("crankshaft-iris/crankshaft-iris.jar")).builtBy(crankshaftIris))
+    compileOnly(crankshaftIris)
+    compileOnly(c2meSerializer)
 
-    compileOnly("mezz.jei:jei-26.2-common-api:30.39.0.233")
+    compileOnly(property("dependency_neoforge_jei_common_api") as String)
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-api:${property("rei_version")}")
     compileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:${property("rei_version")}")
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${property("rei_version")}") { isTransitive = false }
 
-    compileOnly("maven.modrinth:jade:26.2.10+neoforge")
-    compileOnly("mcp.mobius.waila:wthit-api:neo-20.0.0")
-    compileOnly("maven.modrinth:the-one-probe:26.2_neo-15.0.1")
+    compileOnly(property("dependency_neoforge_jade") as String)
+    compileOnly(property("dependency_neoforge_wthit_api") as String)
+    compileOnly(property("dependency_neoforge_the_one_probe") as String)
 
     compileOnly("curse.maven:neocontinuity-1377279:8896544")
     compileOnly("maven.modrinth:fusion-connected-textures:1.3.16-neoforge-mc26.2")
-    compileOnly("maven.modrinth:ctmlib:26.2.0.1")
+    compileOnly("maven.modrinth:ctmlib:26.2.0.2")
 }
 
 neoForge {
     version = property("neo_version") as String
 
+    accessTransformers.files.setFrom(file("src/main/resources/META-INF/accesstransformer.cfg"))
+
     interfaceInjectionData.from(file("src/main/resources/interface-injection.json"))
 
+}
+
+tasks.named<Jar>("jar") {
+    from("../THIRD_PARTY_NOTICES")
+    from("../LICENSES") { into("LICENSES") }
+    from("../LICENSE") {
+        into("LICENSES")
+        rename { "GPL-3.0-only.txt" }
+    }
+}
+
+publishing.publications.named<MavenPublication>("mavenJar") {
+    pom {
+        licenses {
+            license {
+                name = "LGPL-3.0-only"
+                url = "https://www.gnu.org/licenses/lgpl-3.0.txt"
+            }
+        }
+        scm { url = "https://github.com/Warfactory-Official/ntm-next" }
+    }
 }

@@ -1,13 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render;
 
 import com.hbm.client.model.Meshes;
 import com.hbm.client.render.flywheel.ItemVisuals;
 import com.hbm.client.render.flywheel.MeshItemVisual;
-import com.hbm.items.weapon.sedna.ItemGunBaseNT;
-import com.hbm.items.weapon.sedna.mags.IMagazine;
+import com.hbm.items.weapon.sedna.GunBaseNTItem;
+import com.hbm.items.weapon.sedna.mags.Magazine;
 import com.hbm.items.weapon.sedna.mags.MagazineSingleTypeBase;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.GameTime;
@@ -246,9 +262,9 @@ public final class MeshItemRenderer
         int index(ItemStack stack) {
             return switch (this) {
                 case MAGAZINE -> {
-                    ItemGunBaseNT gun = (ItemGunBaseNT) stack.getItem();
-                    IMagazine<?> magazine =
-                            gun.getConfig(stack, 0).getReceivers(stack)[0].getMagazine(stack);
+                    GunBaseNTItem gun = (GunBaseNTItem) stack.getItem();
+                    Magazine<?> magazine =
+                            gun.getConfig(stack, 0).getReceivers(stack).get(0).getMagazine(stack);
                     yield magazine instanceof MagazineSingleTypeBase single
                             ? single.acceptedBullets.indexOf(single.getType(stack, null))
                             : 0;
@@ -415,7 +431,8 @@ public final class MeshItemRenderer
                     turn,
                     spin.isPresent(),
                     DynamicSpecialWrapper.properties(context, base),
-                    Map.of());
+                    Map.of(),
+                    transformation);
         }
 
         @Override

@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.data;
 
-import com.hbm.inventory.fluid.trait.FT_Combustible.FuelGrade;
-import com.hbm.lib.Library;
+import com.hbm.inventory.fluid.trait.CombustibleTrait;
 import com.hbm.util.DataCodecs;
+import com.hbm.util.RegistryUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
@@ -34,7 +50,7 @@ public final class DataGroups {
     public static Group group(List<Group> into, String legacyName) {
         return group(
                 into,
-                Library.id(
+                RegistryUtil.id(
                         legacyName
                                 .replaceAll("([a-z0-9])([A-Z])", "$1_$2")
                                 .toLowerCase(Locale.ROOT)));
@@ -225,7 +241,7 @@ public final class DataGroups {
         }
 
         public Param<List<Double>> fuelGrades(String key, List<Double> defaultValue) {
-            FuelGrade[] grades = FuelGrade.values();
+            CombustibleTrait.Grade[] grades = CombustibleTrait.Grade.values();
             assert grades.length == defaultValue.size();
             Codec<List<Double>> codec =
                     Codec.unboundedMap(Codec.STRING, finiteRange(0D, Double.MAX_VALUE))
@@ -233,7 +249,7 @@ public final class DataGroups {
                                     values -> {
                                         Set<String> unknown = new HashSet<>(values.keySet());
                                         List<Double> result = new ArrayList<>(grades.length);
-                                        for (FuelGrade grade : grades) {
+                                        for (CombustibleTrait.Grade grade : grades) {
                                             unknown.remove(grade.name());
                                             result.add(
                                                     values.getOrDefault(
@@ -247,7 +263,7 @@ public final class DataGroups {
                                     },
                                     values -> {
                                         Map<String, Double> result = new LinkedHashMap<>();
-                                        for (FuelGrade grade : grades)
+                                        for (CombustibleTrait.Grade grade : grades)
                                             result.put(grade.name(), values.get(grade.ordinal()));
                                         return result;
                                     });

@@ -1,53 +1,75 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.handler;
 
-import com.hbm.hazard.HazardClass;
-import com.hbm.lib.Library;
+import com.hbm.hazard.Exposure;
 import com.hbm.util.DataCodecs;
+import com.hbm.util.RegistryUtil;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 
 public record EquipmentProtection(
         HolderSet<Item> targets,
-        List<HazardClass> hazards,
-        Optional<List<HazardClass>> filterExclusions,
+        List<Exposure> hazards,
+        Optional<List<Exposure>> filterExclusions,
         boolean filter,
         boolean filterTooltipAfterItem,
         Optional<Cladding> cladding) {
 
     public static final ResourceKey<Registry<EquipmentProtection>> REGISTRY =
-            ResourceKey.createRegistryKey(Library.id("equipment_protection"));
+            ResourceKey.createRegistryKey(RegistryUtil.id("equipment_protection"));
 
     public static final Codec<EquipmentProtection> CODEC =
             DataCodecs.strict(
                             RecordCodecBuilder.<EquipmentProtection>mapCodec(
                                     i ->
                                             i.group(
-                                                            RegistryCodecs.homogeneousList(
-                                                                            Registries.ITEM)
+                                                            RegistryCodecs.<Item>homogeneousList(
+                                                                            (ResourceKey<
+                                                                                            ? extends
+                                                                                                    Registry<
+                                                                                                            Item>>)
+                                                                                    Registries.ITEM)
                                                                     .fieldOf("targets")
                                                                     .forGetter(
                                                                             EquipmentProtection
                                                                                     ::targets),
-                                                            HazardClass.CODEC
+                                                            Exposure.CODEC
                                                                     .listOf()
                                                                     .optionalFieldOf(
                                                                             "hazards", List.of())
                                                                     .forGetter(
                                                                             EquipmentProtection
                                                                                     ::hazards),
-                                                            HazardClass.CODEC
+                                                            Exposure.CODEC
                                                                     .listOf()
                                                                     .optionalFieldOf(
                                                                             "filter_exclusions")
@@ -110,17 +132,17 @@ public record EquipmentProtection(
                                                 : DataResult.success(c));
     }
 
-    public enum ArmorSlot implements net.minecraft.util.StringRepresentable {
+    public enum ArmorSlot implements StringRepresentable {
         HEAD,
         CHEST,
         LEGS,
         FEET;
         public static final Codec<ArmorSlot> CODEC =
-                net.minecraft.util.StringRepresentable.fromEnum(ArmorSlot::values);
+                StringRepresentable.fromEnum(ArmorSlot::values);
 
         @Override
         public String getSerializedName() {
-            return name().toLowerCase(java.util.Locale.ROOT);
+            return name().toLowerCase(Locale.ROOT);
         }
 
         public int bit() {

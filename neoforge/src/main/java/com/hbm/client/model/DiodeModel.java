@@ -1,37 +1,60 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.model;
 
+import com.hbm.blockentity.network.CableDiodeBlockEntity;
 import com.hbm.blocks.network.CableDiodeBlock;
-import com.hbm.lib.Library;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
 import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.ResolvedModel;
+import net.minecraft.client.resources.model.SimpleModelWrapper;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.sprite.TextureSlots;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
 
 public record DiodeModel() implements BlockModel<HFRWavefrontObject> {
 
-    public static final Identifier BASE = Library.id("block/cable_diode_base");
-    private static final Identifier OBJ = Library.id("models/blocks/cable_neo.obj");
+    public static final Identifier BASE = RegistryUtil.id("block/cable_diode_base");
+    private static final Identifier OBJ = RegistryUtil.id("models/blocks/cable_neo.obj");
     private static final float OFFSET_Y = 0.5F;
 
     private static final float WIDTH = 0.875F * 16F;
     private static final float PAD_MIN = 0.125F * 16F;
     private static final float PAD_MAX = 0.875F * 16F;
 
-    private static final int NORTH = 1, EAST = 2, SOUTH = 4, WEST = 8, UP = 16, DOWN = 32;
+    private static final int DOWN = 1, UP = 2, NORTH = 4, SOUTH = 8, WEST = 16, EAST = 32;
     private static final String[][] PARTS_BY_MASK = BlockModel.partsByMask(DiodeModel::selectParts);
 
     private static String[] selectParts(int mask) {
@@ -46,14 +69,7 @@ public record DiodeModel() implements BlockModel<HFRWavefrontObject> {
         return parts;
     }
 
-    public static String[] partsFor(BlockState state) {
-        int mask = 0;
-        if (state.getValue(CableDiodeBlock.connectionFor(Direction.NORTH))) mask |= NORTH;
-        if (state.getValue(CableDiodeBlock.connectionFor(Direction.EAST))) mask |= EAST;
-        if (state.getValue(CableDiodeBlock.connectionFor(Direction.SOUTH))) mask |= SOUTH;
-        if (state.getValue(CableDiodeBlock.connectionFor(Direction.WEST))) mask |= WEST;
-        if (state.getValue(CableDiodeBlock.connectionFor(Direction.UP))) mask |= UP;
-        if (state.getValue(CableDiodeBlock.connectionFor(Direction.DOWN))) mask |= DOWN;
+    public static String[] partsFor(int mask) {
         return PARTS_BY_MASK[mask];
     }
 
@@ -106,43 +122,95 @@ public record DiodeModel() implements BlockModel<HFRWavefrontObject> {
     @Override
     public BlockStateModel.UnbakedRoot root(
             HFRWavefrontObject prepared, Block block, BlockState state) {
-        return new Root(prepared, state.getValue(CableDiodeBlock.FACING), partsFor(state));
+        return new Root(prepared, state.getValue(CableDiodeBlock.FACING));
     }
 
-    public record Root(HFRWavefrontObject obj, Direction facing, String[] parts)
-            implements CarrierRoot {
+    public record Root(HFRWavefrontObject obj, Direction facing)
+            implements BlockStateModel.UnbakedRoot {
 
         @Override
-        public Identifier carrier() {
-            return BASE;
+        public void resolveDependencies(ResolvableModel.Resolver resolver) {
+            resolver.markDependency(BASE);
         }
 
         @Override
-        public QuadCollection quads(
-                BlockState blockState,
-                ModelBaker baker,
-                ResolvedModel carrier,
-                TextureSlots slots) {
+        public BlockStateModel bake(BlockState blockState, ModelBaker baker) {
+            ResolvedModel carrier = baker.getModel(BASE);
+            TextureSlots slots = carrier.getTopTextureSlots();
             Material.Baked housing = BlockModel.slot(baker, carrier, slots, "housing");
             Material.Baked pad = BlockModel.slot(baker, carrier, slots, "pad");
             Material.Baked stub = BlockModel.slot(baker, carrier, slots, "stub");
+            Material.Baked particle = carrier.resolveParticleMaterial(slots, baker);
 
             List<ObjUnbakedGeometry.BoxQuad> boxes = new ArrayList<>();
             addHousing(boxes, baker, facing, housing);
             addPad(boxes, baker, pad);
-            return ObjUnbakedGeometry.bakeGroups(
-                    List.of(
-                            new ObjUnbakedGeometry.Group(
-                                    obj, parts, stub, BlockModelRotation.IDENTITY)),
-                    boxes,
-                    0F,
-                    OFFSET_Y,
-                    0F);
+            BlockStateModelPart[] parts = new BlockStateModelPart[64];
+            GeometryKey[] keys = new GeometryKey[64];
+            int flags = 0;
+            for (int mask = 0; mask < parts.length; mask++) {
+                QuadCollection quads =
+                        ObjUnbakedGeometry.bakeGroups(
+                                List.of(
+                                        new ObjUnbakedGeometry.Group(
+                                                obj,
+                                                partsFor(mask),
+                                                stub,
+                                                BlockModelRotation.IDENTITY)),
+                                boxes,
+                                0F,
+                                OFFSET_Y,
+                                0F);
+                parts[mask] =
+                        new SimpleModelWrapper(quads, carrier.getTopAmbientOcclusion(), particle);
+                keys[mask] = new GeometryKey(facing, mask);
+                flags |= parts[mask].materialFlags();
+            }
+            return new Baked(parts, keys, particle, flags);
         }
 
         @Override
         public Object visualEqualityGroup(BlockState blockState) {
-            return List.of(facing, parts);
+            return this;
+        }
+    }
+
+    private record GeometryKey(Direction facing, int mask) {}
+
+    record Baked(
+            BlockStateModelPart[] parts,
+            GeometryKey[] keys,
+            Material.Baked particleMaterial,
+            int materialFlags)
+            implements BlockStateModel {
+        void prepareBoundaryFaces() {
+            for (int mask = 0; mask < parts.length; mask++)
+                parts[mask] = BoundaryFaces.cull(parts[mask]);
+        }
+
+        @Override
+        public void collectParts(RandomSource random, List<BlockStateModelPart> output) {
+            output.add(parts[0]);
+        }
+
+        private static int mask(BlockAndTintGetter level, BlockPos pos) {
+            Integer mask = level.getModelData(pos).get(CableDiodeBlockEntity.SOCKETS);
+            return mask == null ? 0 : mask;
+        }
+
+        public void collectParts(
+                BlockAndTintGetter level,
+                BlockPos pos,
+                BlockState state,
+                RandomSource random,
+                List<BlockStateModelPart> output) {
+            output.add(parts[mask(level, pos)]);
+        }
+
+        @Override
+        public Object createGeometryKey(
+                BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random) {
+            return keys[mask(level, pos)];
         }
     }
 }

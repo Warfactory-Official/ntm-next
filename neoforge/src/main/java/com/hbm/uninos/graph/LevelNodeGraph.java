@@ -1,12 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.uninos.graph;
 
 import com.hbm.api.fluidmk2.FlushIndex;
 import com.hbm.blockentity.GraphResident;
-import com.hbm.lib.Library;
-import com.hbm.platform.NeoForgeServerEvents;
+import com.hbm.platform.ServerEvents;
+import com.hbm.util.RegistryUtil;
+import com.hbm.world.bulk.BulkAction;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -39,7 +56,7 @@ public class LevelNodeGraph<D> extends SavedData {
     public static final long UNKNOWN = Long.MIN_VALUE + 1;
     public static final long PRESENT = Long.MIN_VALUE + 2;
     public static final long ABSENT = Long.MIN_VALUE + 3;
-    private static final List<Kind<?>> KINDS = new ArrayList<>();
+    public static final List<Kind<?>> KINDS = new ArrayList<>();
     private static final LevelNodeGraph<?>[] NO_GRAPHS = new LevelNodeGraph<?>[0];
     private static final Direction[] DIRS = Direction.VALUES;
     private static final int OPEN_ALL = 0x3F;
@@ -80,8 +97,7 @@ public class LevelNodeGraph<D> extends SavedData {
                                                     .forGetter(SegmentEntry::interior))
                                     .apply(i, SegmentEntry::new));
     private static final Consumer<Runnable> COMPILER = defaultCompiler();
-    private final IGraphProvider<D> provider;
-    private @Nullable ServerLevel ownerLevel;
+    private final GraphProvider<D> provider;
     private final Consumer<Runnable> compiler;
     private final Long2ObjectOpenHashMap<GraphNode<D>> nodesByPos = new Long2ObjectOpenHashMap<>();
     private final Long2ObjectOpenHashMap<GraphSegment<D>> interiorIndex =
@@ -89,6 +105,7 @@ public class LevelNodeGraph<D> extends SavedData {
     private final ReferenceOpenHashSet<NodeNetwork<D>> networks = new ReferenceOpenHashSet<>();
     private final Long2ObjectOpenHashMap<LongOpenHashSet> nodesByChunk =
             new Long2ObjectOpenHashMap<>();
+    private @Nullable ServerLevel ownerLevel;
     private @Nullable Long2IntOpenHashMap capabilityChunks;
 
     private final Long2ObjectOpenHashMap<ReferenceOpenHashSet<GraphNode<D>>> parkedByChunk =
@@ -96,19 +113,16 @@ public class LevelNodeGraph<D> extends SavedData {
     private final Long2ObjectOpenHashMap<ReferenceOpenHashSet<GraphSegment<D>>>
             parkedSegmentsByChunk = new Long2ObjectOpenHashMap<>();
     private final ConcurrentLinkedQueue<CompiledFold<D>> readySwaps = new ConcurrentLinkedQueue<>();
+    public @Nullable Object distributor;
     private int floodGeneration;
 
-    public LevelNodeGraph(IGraphProvider<D> provider) {
+    public LevelNodeGraph(GraphProvider<D> provider) {
         this(provider, COMPILER);
     }
 
-    public LevelNodeGraph(IGraphProvider<D> provider, Consumer<Runnable> compiler) {
+    public LevelNodeGraph(GraphProvider<D> provider, Consumer<Runnable> compiler) {
         this.provider = provider;
         this.compiler = compiler;
-    }
-
-    private static <D> void topologyChanged(NodeNetwork<D> net) {
-        net.attachment = null;
     }
 
     private static <D> void retire(
@@ -146,27 +160,25 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     public static void invalidateEndpointsAt(ServerLevel level, BlockPos pos) {
-        for (LevelNodeGraph<?> graph : level.hbm$graphs()) {
+        for (LevelNodeGraph<?> graph :
+                ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$graphs()) {
             if (graph != null) graph.invalidateNode(pos.asLong());
         }
         FlushIndex.invalidateAt(level, pos.asLong());
     }
 
     public static void init() {
-        NeoForgeServerEvents.onServerTickPost(LevelNodeGraph::tickAll);
+        final Consumer<MinecraftServer> callback = LevelNodeGraph::tickAll;
+        ServerEvents.TICK_POST.add(callback);
     }
 
     private static void tickAll(MinecraftServer server) {
         for (ServerLevel level : server.getAllLevels()) {
-            for (LevelNodeGraph<?> graph : level.hbm$graphs()) {
+            for (LevelNodeGraph<?> graph :
+                    ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$graphs()) {
                 if (graph != null) graph.tick(level);
             }
         }
-    }
-
-    private void tick(ServerLevel level) {
-        applyCompiledSwaps();
-        if (!networks.isEmpty()) provider.tick(level, this);
     }
 
     public static long chunkOf(long posKey) {
@@ -320,12 +332,12 @@ public class LevelNodeGraph<D> extends SavedData {
         c.cells = cells;
     }
 
-    public static <D> Kind<D> kind(IGraphProvider<D> provider, String name) {
+    public static <D> Kind<D> kind(GraphProvider<D> provider, String name) {
         Kind<D> kind =
                 new Kind<>(
                         KINDS.size(),
                         new SavedDataType<>(
-                                Library.id(name),
+                                RegistryUtil.id(name),
                                 () -> new LevelNodeGraph<>(provider),
                                 codec(provider),
                                 null));
@@ -335,7 +347,8 @@ public class LevelNodeGraph<D> extends SavedData {
 
     @SuppressWarnings("unchecked")
     public static <D> LevelNodeGraph<D> getOrCreate(ServerLevel level, Kind<D> kind) {
-        LevelNodeGraph<?>[] slots = level.hbm$graphs();
+        LevelNodeGraph<?>[] slots =
+                ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$graphs();
         if (kind.index < slots.length && slots[kind.index] != null)
             return (LevelNodeGraph<D>) slots[kind.index];
         LevelNodeGraph<D> graph = level.getDataStorage().computeIfAbsent(kind.type);
@@ -352,25 +365,18 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     private static <D> void attach(ServerLevel level, Kind<D> kind, LevelNodeGraph<D> graph) {
-        LevelNodeGraph<?>[] slots = level.hbm$graphs();
+        LevelNodeGraph<?>[] slots =
+                ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$graphs();
         if (kind.index >= slots.length)
-            level.hbm$graphs(slots = Arrays.copyOf(slots, KINDS.size()));
+            ((com.hbm.interfaces.injected.ServerLevelExtension) (level))
+                    .hbm$graphs(slots = Arrays.copyOf(slots, KINDS.size()));
         slots[kind.index] = graph;
         graph.ownerLevel = level;
-        graph.capabilityChunks = level.hbm$capGraphChunks();
+        graph.capabilityChunks =
+                ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$capGraphChunks();
         for (LongIterator it = graph.nodesByChunk.keySet().iterator(); it.hasNext(); ) {
             graph.capabilityChunks.addTo(it.nextLong(), 1);
         }
-    }
-
-    private void detachChunks() {
-        Long2IntOpenHashMap chunks = capabilityChunks;
-        if (chunks == null) return;
-        for (LongIterator it = nodesByChunk.keySet().iterator(); it.hasNext(); ) {
-            long chunkKey = it.nextLong();
-            if (chunks.addTo(chunkKey, -1) == 1) chunks.remove(chunkKey);
-        }
-        capabilityChunks = null;
     }
 
     public static LevelNodeGraph<?>[] emptySlots() {
@@ -383,7 +389,8 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     public static void invalidateTransportAround(ServerLevel level, BlockPos pos) {
-        for (LevelNodeGraph<?> graph : level.hbm$graphs()) {
+        for (LevelNodeGraph<?> graph :
+                ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$graphs()) {
             if (graph != null) graph.invalidateAround(pos.asLong());
         }
         FlushIndex.invalidateAt(level, pos.asLong());
@@ -391,7 +398,8 @@ public class LevelNodeGraph<D> extends SavedData {
 
     public static void onChunkFull(ServerLevel level, LevelChunk chunk) {
         long chunkKey = chunk.getPos().pack();
-        for (LevelNodeGraph<?> graph : level.hbm$graphs()) {
+        for (LevelNodeGraph<?> graph :
+                ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$graphs()) {
             if (graph == null || graph.nodeCount() == 0) continue;
             graph.queueNodesIn(chunkKey);
             graph.unparkChunk(chunkKey);
@@ -402,11 +410,11 @@ public class LevelNodeGraph<D> extends SavedData {
         }
     }
 
-    public static <D> Codec<LevelNodeGraph<D>> codec(IGraphProvider<D> provider) {
+    public static <D> Codec<LevelNodeGraph<D>> codec(GraphProvider<D> provider) {
         return graphDataCodec(provider).xmap(gd -> fromData(gd, provider), LevelNodeGraph::toData);
     }
 
-    private static <D> Codec<GraphData<D>> graphDataCodec(IGraphProvider<D> provider) {
+    private static <D> Codec<GraphData<D>> graphDataCodec(GraphProvider<D> provider) {
         return RecordCodecBuilder.create(
                 i ->
                         i.group(
@@ -470,7 +478,7 @@ public class LevelNodeGraph<D> extends SavedData {
         return di;
     }
 
-    private static <D> LevelNodeGraph<D> fromData(GraphData<D> gd, IGraphProvider<D> provider) {
+    private static <D> LevelNodeGraph<D> fromData(GraphData<D> gd, GraphProvider<D> provider) {
         LevelNodeGraph<D> graph = new LevelNodeGraph<>(provider);
         for (NodeEntry e : gd.nodes()) {
             GraphNode<D> node = new GraphNode<>(e.pos(), gd.data().get(e.dataIdx()), e.mask());
@@ -505,6 +513,58 @@ public class LevelNodeGraph<D> extends SavedData {
             for (GraphNode<D> node : new ArrayList<>(graph.nodesByPos.values())) graph.foldAt(node);
         }
         return graph;
+    }
+
+    private static <D> @Nullable GraphSegment<D> resolveFrom(
+            GraphSegment<D> root, long posKey, boolean indexed) {
+        ArrayDeque<GraphSegment<D>> stack = new ArrayDeque<>();
+        ReferenceOpenHashSet<GraphSegment<D>> seen = new ReferenceOpenHashSet<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            GraphSegment<D> s = stack.pop();
+            if (!seen.add(s)) continue;
+            if (indexed ? s.offsetOf(posKey) >= 0 : rangeContains(s, posKey)) return s;
+            if (s.forwardTo != null) stack.push(s.forwardTo);
+            for (GraphSegment<D> peel = s.pendingPeel; peel != null; peel = peel.peelNext)
+                stack.push(peel);
+        }
+        return null;
+    }
+
+    private static <D> void unlinkPeel(GraphSegment<D> origin, GraphSegment<D> peel) {
+        if (peel.peelOrigin != origin) return;
+        if (origin.pendingPeel == peel) {
+            origin.pendingPeel = peel.peelNext;
+        } else {
+            for (GraphSegment<D> p = origin.pendingPeel; p != null; p = p.peelNext) {
+                if (p.peelNext == peel) {
+                    p.peelNext = peel.peelNext;
+                    break;
+                }
+            }
+        }
+        peel.peelOrigin = null;
+        peel.peelNext = null;
+    }
+
+    private void topologyChanged(NodeNetwork<D> net) {
+        net.attachment = null;
+        provider.onNetTopologyChanged(net);
+    }
+
+    private void tick(ServerLevel level) {
+        applyCompiledSwaps();
+        if (!networks.isEmpty()) provider.tick(level, this);
+    }
+
+    private void detachChunks() {
+        Long2IntOpenHashMap chunks = capabilityChunks;
+        if (chunks == null) return;
+        for (LongIterator it = nodesByChunk.keySet().iterator(); it.hasNext(); ) {
+            long chunkKey = it.nextLong();
+            if (chunks.addTo(chunkKey, -1) == 1) chunks.remove(chunkKey);
+        }
+        capabilityChunks = null;
     }
 
     private void park(GraphNode<D> node, long chunkKey) {
@@ -574,6 +634,7 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     public void addNode(long posKey, D data, int openConnections) {
+        if (BulkAction.deferGraph(ownerLevel, posKey)) return;
         if (containsCell(posKey)) return;
         addNode(new GraphNode<>(posKey, data, openConnections));
     }
@@ -761,22 +822,6 @@ public class LevelNodeGraph<D> extends SavedData {
         setDirty();
     }
 
-    private static <D> @Nullable GraphSegment<D> resolveFrom(
-            GraphSegment<D> root, long posKey, boolean indexed) {
-        ArrayDeque<GraphSegment<D>> stack = new ArrayDeque<>();
-        ReferenceOpenHashSet<GraphSegment<D>> seen = new ReferenceOpenHashSet<>();
-        stack.push(root);
-        while (!stack.isEmpty()) {
-            GraphSegment<D> s = stack.pop();
-            if (!seen.add(s)) continue;
-            if (indexed ? s.offsetOf(posKey) >= 0 : rangeContains(s, posKey)) return s;
-            if (s.forwardTo != null) stack.push(s.forwardTo);
-            for (GraphSegment<D> peel = s.pendingPeel; peel != null; peel = peel.peelNext)
-                stack.push(peel);
-        }
-        return null;
-    }
-
     private @Nullable GraphSegment<D> segmentAt(long posKey) {
         GraphSegment<D> s = interiorIndex.get(posKey);
         if (s == null) return null;
@@ -901,6 +946,7 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     public void removeNode(long posKey) {
+        if (BulkAction.deferGraph(ownerLevel, posKey)) return;
         removeNode(posKey, false);
     }
 
@@ -1901,22 +1947,6 @@ public class LevelNodeGraph<D> extends SavedData {
         setDirty();
     }
 
-    private static <D> void unlinkPeel(GraphSegment<D> origin, GraphSegment<D> peel) {
-        if (peel.peelOrigin != origin) return;
-        if (origin.pendingPeel == peel) {
-            origin.pendingPeel = peel.peelNext;
-        } else {
-            for (GraphSegment<D> p = origin.pendingPeel; p != null; p = p.peelNext) {
-                if (p.peelNext == peel) {
-                    p.peelNext = peel.peelNext;
-                    break;
-                }
-            }
-        }
-        peel.peelOrigin = null;
-        peel.peelNext = null;
-    }
-
     @FunctionalInterface
     public interface FaceProbe<D> {
         long present(
@@ -1929,17 +1959,18 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     public static final class Kind<D> {
-        private final int index;
         public final SavedDataType<LevelNodeGraph<D>> type;
+        private final int index;
 
-        private Kind(int index, SavedDataType<LevelNodeGraph<D>> type) {
+        public Kind(int index, SavedDataType<LevelNodeGraph<D>> type) {
             this.index = index;
             this.type = type;
         }
 
         @SuppressWarnings("unchecked")
         public @Nullable LevelNodeGraph<D> loaded(ServerLevel level) {
-            LevelNodeGraph<?>[] slots = level.hbm$graphs();
+            LevelNodeGraph<?>[] slots =
+                    ((com.hbm.interfaces.injected.ServerLevelExtension) (level)).hbm$graphs();
             return index < slots.length ? (LevelNodeGraph<D>) slots[index] : null;
         }
     }
@@ -1999,4 +2030,8 @@ public class LevelNodeGraph<D> extends SavedData {
 
     private record GraphData<D>(
             int version, List<D> data, List<NodeEntry> nodes, List<SegmentEntry> segments) {}
+
+    public static void visitKinds(Consumer<Kind<?>> visitor) {
+        KINDS.forEach(visitor);
+    }
 }

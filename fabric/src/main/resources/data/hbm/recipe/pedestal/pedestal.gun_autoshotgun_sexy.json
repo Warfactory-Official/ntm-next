@@ -19,7 +19,10 @@
       "ingredient": "hbm:card_qos"
     },
     "E": {
-      "ingredient": "hbm:gun_autoshotgun"
+      "ingredient": "hbm:gun_autoshotgun",
+      "predicates": {
+        "hbm:unmodified_gun": {}
+      }
     },
     "F": {
       "ingredient": "hbm:card_aos"

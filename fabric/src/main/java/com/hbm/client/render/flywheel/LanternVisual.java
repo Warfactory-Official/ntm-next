@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.BlockEntityLantern;
-import com.hbm.client.render.RenderLantern;
+import com.hbm.blockentity.LanternBlockEntity;
+import com.hbm.client.render.LanternRenderer;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.GameTime;
@@ -17,16 +33,19 @@ import dev.engine_room.flywheel.lib.material.CutoutShaders;
 import dev.engine_room.flywheel.lib.material.LightShaders;
 import dev.engine_room.flywheel.lib.material.Materials;
 import dev.engine_room.flywheel.lib.material.SimpleMaterial;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.AABB;
 import org.joml.Matrix4f;
 
-public final class LanternVisual extends HbmDynamicBlockEntityVisual<BlockEntityLantern> {
+public final class LanternVisual extends AbstractBoundedBlockEntityVisual<LanternBlockEntity>
+        implements CulledDynamicVisual {
     private static final HFRWavefrontObject MODEL = ResourceManager.lantern;
     private static final MeshPart LIGHT_PART =
             MeshPart.obj(
-                    MODEL.groups[RenderLantern.LIGHT_PART],
+                    MODEL.groups[LanternRenderer.LIGHT_PART],
                     MODEL.smoothing(),
                     SimpleMaterial.builderOf(Materials.CUTOUT_NO_CULL)
                             .texture(ResourceManager.white_tex)
@@ -44,7 +63,7 @@ public final class LanternVisual extends HbmDynamicBlockEntityVisual<BlockEntity
     private boolean initialized;
 
     public LanternVisual(
-            VisualizationContext context, BlockEntityLantern blockEntity, float partialTick) {
+            VisualizationContext context, LanternBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         var basePose = new Matrix4f().translation(.5F, 0F, .5F);
         rawBodyBounds = new AABB(pos).minmax(LightBounds.of(MODEL, "Lantern", basePose, pos));
@@ -63,12 +82,12 @@ public final class LanternVisual extends HbmDynamicBlockEntityVisual<BlockEntity
     public static void initModels() {}
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame();
     }
 
     private void writeFrame() {
-        int color = RenderLantern.flicker(GameTime.now());
+        int color = LanternRenderer.flicker(GameTime.now());
         if (initialized && color == lastColor) return;
         light.colorArgb(color).setChanged();
         lastColor = color;

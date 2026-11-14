@@ -1,12 +1,28 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.bomb.BlockEntityLaunchPadLarge;
-import com.hbm.blocks.multiblock.BlockMultiblockCore;
+import com.hbm.blockentity.ordnance.launch.MissileErectorBlockEntity;
+import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.client.render.PadMissiles;
-import com.hbm.items.weapon.ItemMissile.MissileFormFactor;
+import com.hbm.items.weapon.MissileItem.MissileFormFactor;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.loader.HFRWavefrontObject;
 import com.hbm.util.Facing;
@@ -15,6 +31,8 @@ import dev.engine_room.flywheel.api.visual.ShaderLightVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
+import dev.engine_room.flywheel.lib.visual.AbstractBoundedBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.CulledDynamicVisual;
 import java.util.function.Consumer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -24,8 +42,8 @@ import org.joml.Matrix4f;
 import org.jspecify.annotations.Nullable;
 
 public final class LaunchPadLargeVisual
-        extends HbmDynamicBlockEntityVisual<BlockEntityLaunchPadLarge>
-        implements ShaderLightVisual {
+        extends AbstractBoundedBlockEntityVisual<MissileErectorBlockEntity>
+        implements ShaderLightVisual, CulledDynamicVisual {
     private static final int PARTS_PER_FORM = 4;
     private static final double MISSILE_Y = 2D;
     private static final HFRWavefrontObject MODEL = ResourceManager.missile_erector;
@@ -45,7 +63,7 @@ public final class LaunchPadLargeVisual
 
     public LaunchPadLargeVisual(
             VisualizationContext context,
-            BlockEntityLaunchPadLarge blockEntity,
+            MissileErectorBlockEntity blockEntity,
             float partialTick) {
         super(context, blockEntity, partialTick);
         erectorParts = new PartVisual[STATIC_ROWS.length * PARTS_PER_FORM];
@@ -59,7 +77,7 @@ public final class LaunchPadLargeVisual
         rootPose.identity()
                 .translate(.5F, 0F, .5F)
                 .rotateY(
-                        Facing.yaw(BlockMultiblockCore.coreFacing(blockState), 90)
+                        Facing.yaw(MultiblockCoreBlock.coreFacing(blockState), 90)
                                 * Mth.DEG_TO_RAD);
         writeFrame(partialTick);
     }
@@ -114,12 +132,12 @@ public final class LaunchPadLargeVisual
     }
 
     @Override
-    protected void frame(Context context) {
+    public void frame(Context context) {
         writeFrame(context.partialTick());
     }
 
     private void writeFrame(float partialTick) {
-        Item item = blockEntity.loadedMissile;
+        Item item = blockEntity.displayedMissile;
         boolean itemChanged = item != currentItem;
         if (itemChanged) {
             if (missile != null) missile.delete();
@@ -130,19 +148,20 @@ public final class LaunchPadLargeVisual
         }
 
         int selected =
-                blockEntity.formFactor >= 0 && blockEntity.formFactor < STATIC_ROWS.length
-                        ? blockEntity.formFactor
+                blockEntity.formIndex >= 0 && blockEntity.formIndex < STATIC_ROWS.length
+                        ? blockEntity.formIndex
                         : -1;
-        boolean erected = blockEntity.erected;
-        boolean hasMissile = blockEntity.loadedMissile != null;
-        float erectorAngle = Mth.lerp(partialTick, blockEntity.prevErector, blockEntity.erector);
-        float lift = Mth.lerp(partialTick, blockEntity.prevLift, blockEntity.lift);
+        boolean erected = blockEntity.standingMissile;
+        boolean hasMissile = blockEntity.displayedMissile != null;
+        float erectorAngle =
+                Mth.lerp(partialTick, blockEntity.previousArmAngle, blockEntity.armAngle);
+        float lift = Mth.lerp(partialTick, blockEntity.previousLiftHeight, blockEntity.liftHeight);
         boolean selectedChanged = !initialized || selected != lastSelected;
         boolean angleChanged = !initialized || erectorAngle != lastErectorAngle;
         boolean liftChanged = !initialized || lift != lastLift;
         boolean erectedChanged = !initialized || erected != lastErected;
         boolean missilePresenceChanged = !initialized || hasMissile != lastHasMissile;
-        boolean readyChanged = !initialized || blockEntity.readyToLoad != lastReadyToLoad;
+        boolean readyChanged = !initialized || blockEntity.deploymentAvailable != lastReadyToLoad;
         if (selected >= 0) {
             Row row = STATIC_ROWS[selected];
             pivotPose
@@ -183,7 +202,7 @@ public final class LaunchPadLargeVisual
             if (selected >= 0) {
                 missilePose.set(erected ? rootPose : armPose).translate(0F, (float) MISSILE_Y, 0F);
                 if (missile.scale != 1F) missilePose.scale(missile.scale);
-                missile.write(missilePose, erected || blockEntity.readyToLoad);
+                missile.write(missilePose, erected || blockEntity.deploymentAvailable);
             } else {
                 missile.write(rootPose, false);
             }
@@ -193,7 +212,7 @@ public final class LaunchPadLargeVisual
         lastLift = lift;
         lastErected = erected;
         lastHasMissile = hasMissile;
-        lastReadyToLoad = blockEntity.readyToLoad;
+        lastReadyToLoad = blockEntity.deploymentAvailable;
         initialized = true;
     }
 

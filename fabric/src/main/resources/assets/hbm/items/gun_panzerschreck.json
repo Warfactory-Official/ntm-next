@@ -6,7 +6,7 @@
       {
         "excludes_mods": [
           {
-            "id": 204
+            "id": "hbm:weapon_mod_special_saw/no_shield"
           }
         ],
         "parts": [
@@ -20,7 +20,7 @@
         ],
         "requires_mods": [
           {
-            "id": 204
+            "id": "hbm:weapon_mod_special_saw/no_shield"
           }
         ]
       }

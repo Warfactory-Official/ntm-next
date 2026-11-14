@@ -1,15 +1,46 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client;
 
 import com.hbm.config.HudConfig;
-import com.hbm.extprop.HbmLivingProps;
+import com.hbm.extprop.LivingHazards;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ArmorFullSetBonus;
 import com.hbm.items.armor.ArmorSuitEffects;
 import com.hbm.items.armor.ModArmorItem;
-import com.hbm.lib.Library;
+import com.hbm.util.GameTime;
+import com.hbm.util.RegistryUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -21,9 +52,9 @@ import net.minecraft.world.entity.EquipmentSlot;
 
 public final class RadiationHudRenderer {
 
-    private static final Identifier MISC = Library.id("textures/misc/overlay_misc.png");
+    private static final Identifier MISC = RegistryUtil.id("textures/misc/overlay_misc.png");
 
-    private static long lastRadSurvey;
+    private static long lastRadSurvey = -1_000L;
     private static float prevRadResult;
     private static float lastRadResult;
 
@@ -40,11 +71,11 @@ public final class RadiationHudRenderer {
             if (bonus != null && bonus.geigerHUD()) return;
         }
 
-        float dose = (float) HbmLivingProps.getData(player).radiation;
+        float dose = (float) LivingHazards.storedRadiation(player);
 
         float rate = lastRadResult - prevRadResult;
-        long now = System.currentTimeMillis();
-        if (now >= lastRadSurvey + 1000L) {
+        long now = GameTime.millis();
+        if (now < lastRadSurvey || now >= lastRadSurvey + 1000L) {
             lastRadSurvey = now;
             prevRadResult = lastRadResult;
             lastRadResult = dose;

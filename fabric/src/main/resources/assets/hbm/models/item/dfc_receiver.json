@@ -167,5 +167,8 @@
   "textures": {
     "all": "hbm:block/models/core_receiver",
     "particle": "hbm:block/models/core_receiver"
-  }
+  },
+  "tiled": [
+    "Cube_Cube.001"
+  ]
 }

@@ -6,10 +6,10 @@
       {
         "excludes_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           },
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "parts": [
@@ -23,10 +23,10 @@
       {
         "excludes_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           },
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "matrix": [
@@ -54,13 +54,13 @@
       {
         "excludes_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           },
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           },
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "parts": [
@@ -70,13 +70,13 @@
       {
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           },
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           },
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "parts": [
@@ -93,7 +93,7 @@
         ],
         "requires_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
@@ -122,7 +122,7 @@
         ],
         "requires_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
@@ -130,7 +130,7 @@
       {
         "excludes_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           }
         ],
         "parts": [
@@ -138,7 +138,7 @@
         ],
         "requires_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
@@ -146,7 +146,7 @@
       {
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "parts": [
@@ -154,7 +154,7 @@
         ],
         "requires_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_green.png"
@@ -162,7 +162,7 @@
       {
         "excludes_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "parts": [
@@ -174,7 +174,7 @@
         ],
         "requires_mods": [
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
@@ -182,7 +182,7 @@
       {
         "excludes_mods": [
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "matrix": [
@@ -208,7 +208,7 @@
         ],
         "requires_mods": [
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
@@ -216,10 +216,10 @@
       {
         "excludes_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           },
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "parts": [
@@ -227,7 +227,7 @@
         ],
         "requires_mods": [
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
@@ -235,10 +235,10 @@
       {
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           },
           {
-            "id": 211
+            "id": "hbm:weapon_mod_special_furniture_green"
           }
         ],
         "parts": [
@@ -246,7 +246,7 @@
         ],
         "requires_mods": [
           {
-            "id": 212
+            "id": "hbm:weapon_mod_special_furniture_black"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_polymer_black.png"
@@ -257,7 +257,7 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_attachments.png"
@@ -268,7 +268,7 @@
         ],
         "requires_mods": [
           {
-            "id": 202
+            "id": "hbm:weapon_mod_special_scope"
           }
         ],
         "texture": "hbm:textures/models/weapons/g3_attachments.png"
@@ -279,7 +279,7 @@
         "duration": 75,
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "kind": "normal",
@@ -328,7 +328,7 @@
       {
         "excludes_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           }
         ],
         "gui": [
@@ -351,14 +351,14 @@
         ],
         "requires_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       },
       {
         "excludes_mods": [
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ],
         "gui": [
@@ -381,7 +381,7 @@
         ],
         "requires_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           }
         ]
       },
@@ -406,10 +406,10 @@
         ],
         "requires_mods": [
           {
-            "id": 205
+            "id": "hbm:weapon_mod_special_saw/no_stock"
           },
           {
-            "id": 201
+            "id": "hbm:weapon_mod_special_silencer"
           }
         ]
       }

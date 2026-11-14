@@ -1,12 +1,40 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
 
 package com.hbm.client.model;
 
-import com.hbm.blocks.generic.BlockWoodBarrier;
+import com.hbm.blocks.generic.WoodBarrierBlock;
 import com.mojang.math.Quadrant;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import java.util.List;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
@@ -36,7 +64,7 @@ public final class NtBoxModel implements BlockStateModel {
     private NtBoxModel(Shared shared, Shape shape, BlockState state) {
         this.shared = shared;
         this.shape = shape;
-        this.fallback = shared.part(shape, shape.key(state));
+        this.fallback = shared.part(shape.key(state));
     }
 
     @Override
@@ -60,7 +88,7 @@ public final class NtBoxModel implements BlockStateModel {
             BlockState state,
             RandomSource random,
             List<BlockStateModelPart> output) {
-        output.add(shared.part(shape, shape.key(level, pos, state)));
+        output.add(shared.part(shape.key(level, pos, state)));
     }
 
     @Override
@@ -95,10 +123,10 @@ public final class NtBoxModel implements BlockStateModel {
         WOOD_BARRIER {
             @Override
             public int key(BlockState state) {
-                return (BlockWoodBarrier.panel(state, Direction.WEST) ? W : 0)
-                        | (BlockWoodBarrier.panel(state, Direction.EAST) ? E : 0)
-                        | (BlockWoodBarrier.panel(state, Direction.NORTH) ? N : 0)
-                        | (BlockWoodBarrier.panel(state, Direction.SOUTH) ? S : 0);
+                return (WoodBarrierBlock.panel(state, Direction.WEST) ? W : 0)
+                        | (WoodBarrierBlock.panel(state, Direction.EAST) ? E : 0)
+                        | (WoodBarrierBlock.panel(state, Direction.NORTH) ? N : 0)
+                        | (WoodBarrierBlock.panel(state, Direction.SOUTH) ? S : 0);
             }
 
             @Override
@@ -217,85 +245,75 @@ public final class NtBoxModel implements BlockStateModel {
         private final Material.Baked sheet;
         private final Material.Baked particle;
         private final boolean ambientOcclusion;
-        private final Int2ObjectMap<BlockStateModelPart> parts = new Int2ObjectOpenHashMap<>();
+        private final ModelPartCache parts;
 
-        private Shared(ModelBaker baker, ResolvedModel carrier) {
+        private Shared(ModelBaker baker, ResolvedModel carrier, Shape shape) {
             this.baker = RuntimeBaker.capture(baker, carrier);
             TextureSlots slots = carrier.getTopTextureSlots();
             this.sheet = BlockModel.slot(baker, carrier, slots, "texture");
             this.particle = carrier.resolveParticleMaterial(slots, baker);
             this.ambientOcclusion = carrier.getTopAmbientOcclusion();
+            this.parts = ModelPartCache.dense(32, key -> buildPart(shape, key));
         }
 
-        private BlockStateModelPart part(Shape shape, int key) {
-            synchronized (parts) {
-                BlockStateModelPart part = parts.get(key);
-                if (part == null) {
-                    QuadCollection.Builder b = new QuadCollection.Builder();
-                    shape.boxes(
-                            key,
-                            (x0, y0, z0, x1, y1, z1) -> {
-                                Vector3f from = new Vector3f(x0, y0, z0);
-                                Vector3f to = new Vector3f(x1, y1, z1);
-                                UvRotation[] uvs =
-                                        (new UvRotation[] {
-                                            new UvRotation(
-                                                    new CuboidFace.UVs(
-                                                            from.x(), to.z(), to.x(), from.z()),
-                                                    Quadrant.R0),
-                                            new UvRotation(
-                                                    new CuboidFace.UVs(
-                                                            from.x(), from.z(), to.x(), to.z()),
-                                                    Quadrant.R0),
-                                            new UvRotation(
-                                                    new CuboidFace.UVs(
-                                                            16F - to.x(),
-                                                            16F - to.y(),
-                                                            16F - from.x(),
-                                                            16F - from.y()),
-                                                    Quadrant.R0),
-                                            new UvRotation(
-                                                    new CuboidFace.UVs(
-                                                            from.x(),
-                                                            16F - to.y(),
-                                                            to.x(),
-                                                            16F - from.y()),
-                                                    Quadrant.R0),
-                                            new UvRotation(
-                                                    new CuboidFace.UVs(
-                                                            from.z(),
-                                                            16F - to.y(),
-                                                            to.z(),
-                                                            16F - from.y()),
-                                                    Quadrant.R0),
-                                            new UvRotation(
-                                                    new CuboidFace.UVs(
-                                                            16F - to.z(),
-                                                            16F - to.y(),
-                                                            16F - from.z(),
-                                                            16F - from.y()),
-                                                    Quadrant.R0)
-                                        });
-                                for (Direction dir : Direction.VALUES) {
-                                    UvRotation uv = uvs[dir.ordinal()];
-                                    b.addUnculledFace(
-                                            Boxes.face(
-                                                    baker,
-                                                    from,
-                                                    to,
-                                                    dir,
-                                                    sheet,
-                                                    uv.uvs(),
-                                                    uv.quadrant(),
-                                                    CuboidFace.NO_TINT,
-                                                    Boxes.IDENTITY));
-                                }
-                            });
-                    part = new SimpleModelWrapper(b.build(), ambientOcclusion, particle);
-                    parts.put(key, part);
-                }
-                return part;
-            }
+        private BlockStateModelPart part(int key) {
+            return parts.get(key);
+        }
+
+        private BlockStateModelPart buildPart(Shape shape, int key) {
+            QuadCollection.Builder b = new QuadCollection.Builder();
+            shape.boxes(
+                    key,
+                    (x0, y0, z0, x1, y1, z1) -> {
+                        Vector3f from = new Vector3f(x0, y0, z0);
+                        Vector3f to = new Vector3f(x1, y1, z1);
+                        UvRotation[] uvs =
+                                (new UvRotation[] {
+                                    new UvRotation(
+                                            new CuboidFace.UVs(from.x(), to.z(), to.x(), from.z()),
+                                            Quadrant.R0),
+                                    new UvRotation(
+                                            new CuboidFace.UVs(from.x(), from.z(), to.x(), to.z()),
+                                            Quadrant.R0),
+                                    new UvRotation(
+                                            new CuboidFace.UVs(
+                                                    16F - to.x(),
+                                                    16F - to.y(),
+                                                    16F - from.x(),
+                                                    16F - from.y()),
+                                            Quadrant.R0),
+                                    new UvRotation(
+                                            new CuboidFace.UVs(
+                                                    from.x(), 16F - to.y(), to.x(), 16F - from.y()),
+                                            Quadrant.R0),
+                                    new UvRotation(
+                                            new CuboidFace.UVs(
+                                                    from.z(), 16F - to.y(), to.z(), 16F - from.y()),
+                                            Quadrant.R0),
+                                    new UvRotation(
+                                            new CuboidFace.UVs(
+                                                    16F - to.z(),
+                                                    16F - to.y(),
+                                                    16F - from.z(),
+                                                    16F - from.y()),
+                                            Quadrant.R0)
+                                });
+                        for (Direction dir : Direction.VALUES) {
+                            UvRotation uv = uvs[dir.ordinal()];
+                            b.addUnculledFace(
+                                    Boxes.face(
+                                            baker,
+                                            from,
+                                            to,
+                                            dir,
+                                            sheet,
+                                            uv.uvs(),
+                                            uv.quadrant(),
+                                            CuboidFace.NO_TINT,
+                                            Boxes.IDENTITY));
+                        }
+                    });
+            return new SimpleModelWrapper(b.build(), ambientOcclusion, particle);
         }
     }
 
@@ -329,7 +347,7 @@ public final class NtBoxModel implements BlockStateModel {
 
         @Override
         public Shared compute(ModelBaker baker) {
-            return new Shared(baker, baker.getModel(root.carrier()));
+            return new Shared(baker, baker.getModel(root.carrier()), root.shape());
         }
     }
 }

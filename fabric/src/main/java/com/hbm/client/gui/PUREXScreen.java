@@ -1,0 +1,292 @@
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-FileCopyrightText: HbmMods (The Bobcat)
+ * SPDX-License-Identifier: LGPL-3.0-only
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ * Copyright (C) HbmMods (The Bobcat). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This code is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 3 only,
+ * as published by the Free Software Foundation.
+ * This code is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+ * License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this code. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * Under GPLv3 §7(c) and §7(e), these additional terms apply to LGPL-covered
+ * material authored by movblock:
+ *
+ * - the license grants no rights to the name "NTM NEXT";
+ * - a modified version must not be named NTM NEXT or presented as the
+ *   official release, and must be marked as different from it.
+ *
+ * Accurately identifying a work as derived from NTM NEXT does not violate
+ * these additional terms, provided it is clearly distinguished from the
+ * official release and does not imply endorsement. Ports are encouraged to
+ * acknowledge NTM NEXT as their upstream project and provide a link to it.
+ */
+
+package com.hbm.client.gui;
+
+import com.hbm.blockentity.machine.PurexBlockEntity;
+import com.hbm.inventory.container.PUREXMenu;
+import com.hbm.inventory.recipes.PUREXRecipes;
+import com.hbm.inventory.recipes.loader.GenericRecipe;
+import com.hbm.items.ModItems;
+import com.hbm.items.machine.BlueprintsItem;
+import com.hbm.packet.PacketWire;
+import com.hbm.packet.layout.PurexRecipeLayout;
+import com.hbm.util.RegistryUtil;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+
+public class PUREXScreen extends InfoContainerScreen<PUREXMenu> {
+
+    private static final Identifier TEXTURE =
+            RegistryUtil.id("textures/gui/processing/gui_purex.png");
+
+    private static final int POWER_X = 152, POWER_Y = 18, POWER_W = 16, POWER_H = 61;
+    private static final int TANK_TOP = 18, TANK_W = 16, TANK_H = 52;
+    private static final int IN_X0 = 8, TANK_STRIDE = 18;
+    private static final int OUT_X = 116, OUT_TOP = 36;
+    private static final int ARROW_X = 62,
+            ARROW_Y = 126,
+            ARROW_U = 176,
+            ARROW_V = 61,
+            ARROW_W = 70,
+            ARROW_H = 16;
+    private static final int BTN_X = 7, BTN_Y = 125, BTN_W = 18, BTN_H = 18;
+    private static final int LED_LEFT_X = 51, LED_RIGHT_X = 56, LED_Y = 121, LED_W = 3, LED_H = 6;
+    private static final int LED_LIT_U = 195, LED_ARMED_U = 192, LED_V = 0;
+    private static final int ICON_X = 8, ICON_Y = 126;
+    private static final int ITEM_IN_Y = 90;
+
+    public PUREXScreen(PUREXMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title, 176, 256);
+        inventoryLabelY = imageHeight - 96 + 2;
+    }
+
+    @Override
+    protected int titleCenterX() {
+        return 70;
+    }
+
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        graphics.blit(
+                RenderPipelines.GUI_TEXTURED,
+                TEXTURE,
+                0,
+                0,
+                0.0F,
+                0.0F,
+                imageWidth,
+                imageHeight,
+                256,
+                256);
+
+        long power = menu.getPower();
+        long max = purex().maxPower;
+        if (power > 0 && max > 0) {
+            int filled = (int) Math.min(POWER_H, power * POWER_H / max);
+            if (filled > 0) {
+                graphics.blit(
+                        RenderPipelines.GUI_TEXTURED,
+                        TEXTURE,
+                        POWER_X,
+                        POWER_Y + (POWER_H - filled),
+                        176,
+                        POWER_H - filled,
+                        POWER_W,
+                        filled,
+                        256,
+                        256);
+            }
+        }
+
+        int arrow = menu.getProgressScaled(ARROW_W);
+        if (arrow > 0) {
+            graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    TEXTURE,
+                    ARROW_X,
+                    ARROW_Y,
+                    ARROW_U,
+                    ARROW_V,
+                    arrow,
+                    ARROW_H,
+                    256,
+                    256);
+        }
+
+        PurexBlockEntity be = purex();
+        GenericRecipe recipe = be.module.getRecipe();
+
+        if (be.isProgressing) {
+            graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    TEXTURE,
+                    LED_LEFT_X,
+                    LED_Y,
+                    LED_LIT_U,
+                    LED_V,
+                    LED_W,
+                    LED_H,
+                    256,
+                    256);
+        } else if (recipe != null) {
+            graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    TEXTURE,
+                    LED_LEFT_X,
+                    LED_Y,
+                    LED_ARMED_U,
+                    LED_V,
+                    LED_W,
+                    LED_H,
+                    256,
+                    256);
+        }
+        if (be.isProgressing) {
+            graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    TEXTURE,
+                    LED_RIGHT_X,
+                    LED_Y,
+                    LED_LIT_U,
+                    LED_V,
+                    LED_W,
+                    LED_H,
+                    256,
+                    256);
+        } else if (recipe != null && be.power >= recipe.power) {
+            graphics.blit(
+                    RenderPipelines.GUI_TEXTURED,
+                    TEXTURE,
+                    LED_RIGHT_X,
+                    LED_Y,
+                    LED_ARMED_U,
+                    LED_V,
+                    LED_W,
+                    LED_H,
+                    256,
+                    256);
+        }
+
+        graphics.item(
+                recipe != null ? recipe.getIcon() : new ItemStack(ModItems.TEMPLATE_FOLDER),
+                ICON_X,
+                ICON_Y);
+
+        if (recipe != null && recipe.inputItem != null) {
+            for (int i = 0; i < recipe.inputItem.length; i++) {
+                if (be.getItem(PurexBlockEntity.SLOT_ITEM_IN_START + i).isEmpty()) {
+                    graphics.item(
+                            recipe.inputItem[i].extractForCyclingDisplay(20),
+                            IN_X0 + i * TANK_STRIDE,
+                            ITEM_IN_Y);
+                }
+            }
+            for (int i = 0; i < recipe.inputItem.length; i++) {
+                if (be.getItem(PurexBlockEntity.SLOT_ITEM_IN_START + i).isEmpty()) {
+                    int x = IN_X0 + i * TANK_STRIDE, y = ITEM_IN_Y;
+                    graphics.blit(
+                            RenderPipelines.GUI_TEXTURED,
+                            TEXTURE,
+                            x,
+                            y,
+                            (float) x,
+                            (float) y,
+                            16,
+                            16,
+                            256,
+                            256,
+                            ARGB.white(0.5F));
+                }
+            }
+        }
+
+        for (int i = 0; i < PurexBlockEntity.INPUT_TANK_COUNT; i++) {
+            drawFluidBar(
+                    graphics, IN_X0 + i * TANK_STRIDE, TANK_TOP, TANK_W, TANK_H, be.inputTanks[i]);
+        }
+        drawFluidBar(graphics, OUT_X, OUT_TOP, TANK_W, TANK_H, be.outputTanks[0]);
+
+        drawElectricityInfo(
+                graphics, mouseX, mouseY, POWER_X, POWER_Y, POWER_W, POWER_H, menu.getPower(), max);
+
+        for (int i = 0; i < PurexBlockEntity.INPUT_TANK_COUNT; i++) {
+            drawFluidGaugeInfo(
+                    graphics,
+                    mouseX,
+                    mouseY,
+                    IN_X0 + i * TANK_STRIDE,
+                    TANK_TOP,
+                    TANK_W,
+                    TANK_H,
+                    be.inputTanks[i]);
+        }
+        drawFluidGaugeInfo(
+                graphics, mouseX, mouseY, OUT_X, OUT_TOP, TANK_W, TANK_H, be.outputTanks[0]);
+
+        super.extractLabels(graphics, mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        if (event.button() == InputConstants.MOUSE_BUTTON_LEFT
+                && checkClick((int) event.x(), (int) event.y(), BTN_X, BTN_Y, BTN_W, BTN_H)) {
+            PurexBlockEntity be = purex();
+            String current = be.module.getRecipeName().isEmpty() ? null : be.module.getRecipeName();
+            String pool = BlueprintsItem.grabPool(be.getItem(PurexBlockEntity.SLOT_BLUEPRINT));
+            GUIScreenRecipeSelector.openSelector(
+                    PUREXRecipes.INSTANCE,
+                    be.getBlockPos(),
+                    current,
+                    0,
+                    pool,
+                    this,
+                    (pos, index, selection) ->
+                            PacketWire.sendToServer(
+                                    PurexRecipeLayout.encode(menu.containerId, selection)));
+            playClick();
+            return true;
+        }
+        return super.mouseClicked(event, doubleClick);
+    }
+
+    @Override
+    protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+        super.extractTooltip(graphics, mouseX, mouseY);
+        if (!checkClick(mouseX, mouseY, BTN_X, BTN_Y, BTN_W, BTN_H)) return;
+
+        GenericRecipe recipe = purex().module.getRecipe();
+        if (recipe != null) {
+            GUIElements.drawHoveringTextRecipe(
+                    graphics, font, recipe.print(), mouseX, mouseY, width, height);
+        } else {
+            graphics.setTooltipForNextFrame(
+                    font,
+                    Component.translatable("gui.recipe.setRecipe").withStyle(ChatFormatting.YELLOW),
+                    mouseX,
+                    mouseY);
+        }
+    }
+
+    private PurexBlockEntity purex() {
+        return menu.blockEntity();
+    }
+}

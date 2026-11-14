@@ -1,12 +1,29 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world;
 
-import com.hbm.lib.Library;
-import com.hbm.platform.NeoForgeBiomeInjection.Request;
-import com.hbm.platform.NeoForgeBiomeInjection.SpawnRequest;
-import com.hbm.platform.NeoForgeBiomeInjection;
+import com.hbm.NuclearTech;
+import com.hbm.platform.BiomeInjection.Request;
+import com.hbm.platform.BiomeInjection.SpawnRequest;
+import com.hbm.platform.BiomeInjection;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.Holder;
@@ -35,7 +52,9 @@ public final class HbmBiomeModifiers {
         HolderGetter<Biome> biomes = ctx.lookup(Registries.BIOME);
         HolderGetter<PlacedFeature> placed = ctx.lookup(Registries.PLACED_FEATURE);
 
-        for (Request req : NeoForgeBiomeInjection.REQUESTS) {
+        for (Request req : BiomeInjection.requests()) {
+            if (!req.features().getFirst().identifier().getNamespace().equals(NuclearTech.MOD_ID))
+                continue;
             List<Holder<PlacedFeature>> features = new ArrayList<>(req.features().size());
             for (ResourceKey<PlacedFeature> key : req.features())
                 features.add(placed.getOrThrow(key));
@@ -44,7 +63,7 @@ public final class HbmBiomeModifiers {
                     new BiomeModifiers.AddFeaturesBiomeModifier(
                             holders(biomes, req.biomes()), HolderSet.direct(features), req.step()));
         }
-        for (SpawnRequest req : NeoForgeBiomeInjection.SPAWNS) {
+        for (SpawnRequest req : BiomeInjection.spawns()) {
             EntityType<?> type = req.type().get();
             String path = "spawn/" + BuiltInRegistries.ENTITY_TYPE.getKey(type).getPath();
             ctx.register(
@@ -76,6 +95,6 @@ public final class HbmBiomeModifiers {
     }
 
     private static ResourceKey<BiomeModifier> key(String path) {
-        return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Library.id(path));
+        return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, RegistryUtil.id(path));
     }
 }

@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.particle;
 
@@ -18,7 +34,7 @@ import net.minecraft.client.renderer.state.level.ParticleGroupRenderState;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.phys.Vec3;
 
-public class RiftParticleGroup extends ParticleGroup<ParticleRift> {
+public class RiftParticleGroup extends ParticleGroup<RiftParticle> {
 
     public RiftParticleGroup(ParticleEngine engine) {
         super(engine);
@@ -30,7 +46,7 @@ public class RiftParticleGroup extends ParticleGroup<ParticleRift> {
         List<float[]> out = new ArrayList<>(this.particles.size());
         Vec3 cam = camera.position();
 
-        for (ParticleRift fx : this.particles) {
+        for (RiftParticle fx : this.particles) {
             out.add(
                     new float[] {
                         (float) (fx.interpX(partialTicks) - cam.x),
@@ -55,7 +71,7 @@ public class RiftParticleGroup extends ParticleGroup<ParticleRift> {
                     ParticleRenderTypes.RIFT,
                     (p, tess) -> {
                         for (float[] in : instances) {
-                            for (float shell : ParticleRift.SHELLS) {
+                            for (float shell : RiftParticle.SHELLS) {
                                 float s = in[3] * shell;
                                 pose.pushPose();
                                 pose.translate(in[0], in[1], in[2]);

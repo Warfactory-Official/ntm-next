@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.items;
 
@@ -10,6 +26,7 @@ import com.hbm.blockentity.machine.storage.BatteryCharge;
 import com.hbm.blockentity.machine.storage.CapacitorCharge;
 import com.hbm.blockentity.machine.storage.FluidTankContents;
 import com.hbm.blockentity.machine.storage.LockedContents;
+import com.hbm.blockentity.machine.storage.TransferMode;
 import com.hbm.handler.MissileStruct;
 import com.hbm.handler.ability.ToolPreset;
 import com.hbm.inventory.BlockItemContents;
@@ -18,17 +35,17 @@ import com.hbm.inventory.machine.CustomMachineDefinition;
 import com.hbm.items.armor.ArmorMods;
 import com.hbm.items.machine.FluidIdentifierData;
 import com.hbm.items.machine.ICFPelletData;
-import com.hbm.items.machine.ItemRBMKPellet;
-import com.hbm.items.machine.ItemScraps;
 import com.hbm.items.machine.RBMKFuelData;
+import com.hbm.items.machine.RBMKPelletItem;
+import com.hbm.items.machine.ScrapsItem;
+import com.hbm.items.special.BedrockOreNewItem;
 import com.hbm.items.special.BedrockOreSample;
-import com.hbm.items.special.ItemBedrockOreNew;
+import com.hbm.items.tool.CMStructureItem;
 import com.hbm.items.tool.ConveyorRunData;
-import com.hbm.items.tool.ItemCMStructure;
-import com.hbm.items.tool.ItemModMinecart;
+import com.hbm.items.tool.ModMinecartItem;
 import com.hbm.items.weapon.grenade.GrenadeData;
 import com.hbm.items.weapon.sedna.GunStateData;
-import com.hbm.registration.NeoForgeRegistrar;
+import com.hbm.registration.Registrar;
 import com.hbm.registration.RegistryHandle;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -76,15 +93,15 @@ public final class ModDataComponents {
     public static RegistryHandle<DataComponentType<Boolean>> ROASTED;
     public static RegistryHandle<DataComponentType<Boolean>> POLARIZED;
     public static RegistryHandle<DataComponentType<Integer>> FORGE_COUNT;
-    public static RegistryHandle<DataComponentType<ItemRBMKPellet.Stage>> RBMK_PELLET;
-    public static RegistryHandle<DataComponentType<ItemBedrockOreNew.Ore>> BEDROCK_ORE;
+    public static RegistryHandle<DataComponentType<RBMKPelletItem.Stage>> RBMK_PELLET;
+    public static RegistryHandle<DataComponentType<BedrockOreNewItem.Ore>> BEDROCK_ORE;
     public static RegistryHandle<DataComponentType<BedrockOreSample>> BEDROCK_ORE_SAMPLE;
     public static RegistryHandle<DataComponentType<Boolean>> HAS_COG;
     public static RegistryHandle<DataComponentType<Boolean>> HAS_BLADE;
     public static RegistryHandle<DataComponentType<Integer>> CANTEEN_COOLDOWN;
     public static RegistryHandle<DataComponentType<Integer>> PIPETTE_CAPACITY;
 
-    public static RegistryHandle<DataComponentType<ItemModMinecart.EnumCartBase>> CART_BASE;
+    public static RegistryHandle<DataComponentType<ModMinecartItem.EnumCartBase>> CART_BASE;
 
     public static RegistryHandle<DataComponentType<Integer>> HOT_ITEM_HEAT;
 
@@ -142,7 +159,7 @@ public final class ModDataComponents {
     public static RegistryHandle<DataComponentType<ResourceKey<CustomMachineDefinition>>>
             CUSTOM_MACHINE_TYPE;
 
-    public static RegistryHandle<DataComponentType<ItemCMStructure.Selection>> CM_STRUCTURE;
+    public static RegistryHandle<DataComponentType<CMStructureItem.Selection>> CM_STRUCTURE;
 
     public static RegistryHandle<DataComponentType<Integer>> HBM_PRESSURE;
 
@@ -151,6 +168,7 @@ public final class ModDataComponents {
     public static RegistryHandle<DataComponentType<Float>> NEUTRON_ACTIVATION;
 
     public static RegistryHandle<DataComponentType<FluidStackNTM>> FLUID_CONTENT;
+    public static RegistryHandle<DataComponentType<TransferMode>> TRANSFER_MODE;
 
     public static RegistryHandle<DataComponentType<Long>> TARGET_DESIGNATOR;
 
@@ -184,7 +202,7 @@ public final class ModDataComponents {
 
     public static RegistryHandle<DataComponentType<Double>> WATZ_YIELD;
 
-    public static RegistryHandle<DataComponentType<ItemScraps.ScrapData>> SCRAP;
+    public static RegistryHandle<DataComponentType<ScrapsItem.ScrapData>> SCRAP;
     public static RegistryHandle<DataComponentType<Identifier>> BROKEN_ITEM_SOURCE;
 
     public static RegistryHandle<DataComponentType<Long>> WRENCH_TARGET;
@@ -229,14 +247,14 @@ public final class ModDataComponents {
 
     public static void registerBlockItemStates() {
         HAS_COG =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "has_cog",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         HAS_BLADE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "has_blade",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
@@ -246,7 +264,7 @@ public final class ModDataComponents {
 
     public static void register() {
         BLOCK_INVENTORY =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "block_inventory",
                         DataComponentType.<BlockItemContents>builder()
                                 .persistent(BlockItemContents.CODEC)
@@ -254,63 +272,63 @@ public final class ModDataComponents {
                                 .cacheEncoding()
                                 .build());
         DECAY_HEAT =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "decay_heat",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         ROASTED =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "roasted",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         POLARIZED =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "polarized",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         FORGE_COUNT =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "forge_count",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.intRange(0, 9))
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         RBMK_PELLET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "rbmk_pellet",
-                        DataComponentType.<ItemRBMKPellet.Stage>builder()
-                                .persistent(ItemRBMKPellet.Stage.CODEC)
-                                .networkSynchronized(ItemRBMKPellet.Stage.STREAM_CODEC)
+                        DataComponentType.<RBMKPelletItem.Stage>builder()
+                                .persistent(RBMKPelletItem.Stage.CODEC)
+                                .networkSynchronized(RBMKPelletItem.Stage.STREAM_CODEC)
                                 .build());
         BEDROCK_ORE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "bedrock_ore",
-                        DataComponentType.<ItemBedrockOreNew.Ore>builder()
-                                .persistent(ItemBedrockOreNew.Ore.CODEC)
-                                .networkSynchronized(ItemBedrockOreNew.Ore.STREAM_CODEC)
+                        DataComponentType.<BedrockOreNewItem.Ore>builder()
+                                .persistent(BedrockOreNewItem.Ore.CODEC)
+                                .networkSynchronized(BedrockOreNewItem.Ore.STREAM_CODEC)
                                 .build());
         BEDROCK_ORE_SAMPLE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "bedrock_ore_sample",
                         DataComponentType.<BedrockOreSample>builder()
                                 .persistent(BedrockOreSample.CODEC)
                                 .networkSynchronized(BedrockOreSample.STREAM_CODEC)
                                 .build());
         FOOD_ADDITIVES =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "food_additives",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.intRange(0, 3))
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         PIPETTE_CAPACITY =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "pipette_capacity",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.intRange(1, 1_000))
@@ -318,7 +336,7 @@ public final class ModDataComponents {
                                 .ignoreSwapAnimation()
                                 .build());
         CANTEEN_COOLDOWN =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "canteen_cooldown",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.intRange(0, 180))
@@ -326,17 +344,17 @@ public final class ModDataComponents {
                                 .ignoreSwapAnimation()
                                 .build());
         CART_BASE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "cart_base",
-                        DataComponentType.<ItemModMinecart.EnumCartBase>builder()
-                                .persistent(ItemModMinecart.EnumCartBase.CODEC)
+                        DataComponentType.<ModMinecartItem.EnumCartBase>builder()
+                                .persistent(ModMinecartItem.EnumCartBase.CODEC)
                                 .networkSynchronized(
                                         ByteBufCodecs.idMapper(
-                                                i -> ItemModMinecart.EnumCartBase.VALUES[i],
-                                                ItemModMinecart.EnumCartBase::ordinal))
+                                                i -> ModMinecartItem.EnumCartBase.VALUES[i],
+                                                ModMinecartItem.EnumCartBase::ordinal))
                                 .build());
         HOT_ITEM_HEAT =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "hot_item_heat",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
@@ -344,7 +362,7 @@ public final class ModDataComponents {
                                 .ignoreSwapAnimation()
                                 .build());
         UNSTABLE_AT =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "unstable_at",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
@@ -352,7 +370,7 @@ public final class ModDataComponents {
                                 .ignoreSwapAnimation()
                                 .build());
         HOT_UNTIL =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "hot_until",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
@@ -360,48 +378,48 @@ public final class ModDataComponents {
                                 .ignoreSwapAnimation()
                                 .build());
         BATTERY_CHARGE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "battery_charge",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         ARMOR_MODS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "armor_mods",
                         DataComponentType.<ArmorMods>builder()
                                 .persistent(ArmorMods.CODEC)
                                 .networkSynchronized(ArmorMods.STREAM_CODEC)
                                 .build());
         ARMOR_MOD_NV_ACTIVE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "armor_mod_nv_active",
                         DataComponentType.<Unit>builder()
                                 .persistent(Unit.CODEC)
                                 .networkSynchronized(StreamCodec.unit(Unit.INSTANCE))
                                 .build());
         PERSISTENT_DATA =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "persistent_data",
                         DataComponentType.<CustomData>builder()
                                 .persistent(CustomData.CODEC)
                                 .build());
         LOCKED_CONTENTS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "locked_contents",
                         DataComponentType.<LockedContents>builder()
                                 .persistent(LockedContents.CODEC)
                                 .networkSynchronized(LockedContents.STREAM_CODEC)
                                 .build());
         SPIDERS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "spiders",
                         DataComponentType.<Unit>builder()
                                 .persistent(Unit.CODEC)
                                 .networkSynchronized(StreamCodec.unit(Unit.INSTANCE))
                                 .build());
         STACKLOCK =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "stacklock",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
@@ -409,98 +427,98 @@ public final class ModDataComponents {
                                 .ignoreSwapAnimation()
                                 .build());
         LOCK_STATE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "lock_state",
                         DataComponentType.<LockStateData>builder()
                                 .persistent(LockStateData.CODEC)
                                 .networkSynchronized(LockStateData.STREAM_CODEC)
                                 .build());
         MASS_STOCKPILE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "mass_stockpile",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         GUN_STATE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "gun_state",
                         DataComponentType.<GunStateData>builder()
                                 .persistent(GunStateData.CODEC)
                                 .ignoreSwapAnimation()
                                 .build());
         AKIMBO_GHOST =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "akimbo_ghost",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         NO9_LAMP =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "no9_lamp",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         CONTAGION =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "contagion",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         TOOLBOX_OPEN =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "toolbox_open",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         MUFFLED =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "muffled",
                         DataComponentType.<Boolean>builder()
                                 .persistent(Codec.BOOL)
                                 .networkSynchronized(ByteBufCodecs.BOOL)
                                 .build());
         ANCHOR_POS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "anchor_pos",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         REACTOR_POS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "reactor_pos",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         POTATO_TIMER =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "potato_timer",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         B92_ENERGY =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "b92_energy",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         B92_ANIMATION =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "b92_animation",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         CASING_PROGRESS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "casing_progress",
                         DataComponentType.<Map<String, Float>>builder()
                                 .persistent(Codec.unboundedMap(Codec.STRING, Codec.FLOAT))
@@ -511,35 +529,35 @@ public final class ModDataComponents {
                                                 ByteBufCodecs.FLOAT))
                                 .build());
         GRENADE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "grenade",
                         DataComponentType.<GrenadeData>builder()
                                 .persistent(GrenadeData.CODEC)
                                 .networkSynchronized(GrenadeData.STREAM_CODEC)
                                 .build());
         SETTINGS_TOOL_DATA =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "settings_tool_data",
                         DataComponentType.<CustomData>builder()
                                 .persistent(CustomData.CODEC)
                                 .ignoreSwapAnimation()
                                 .build());
         FLUID_IDENTIFIER =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "fluid_identifier",
                         DataComponentType.<FluidIdentifierData>builder()
                                 .persistent(FluidIdentifierData.CODEC)
                                 .networkSynchronized(FluidIdentifierData.STREAM_CODEC)
                                 .build());
         CM_STRUCTURE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "cm_structure",
-                        DataComponentType.<ItemCMStructure.Selection>builder()
-                                .persistent(ItemCMStructure.Selection.CODEC)
-                                .networkSynchronized(ItemCMStructure.Selection.STREAM_CODEC)
+                        DataComponentType.<CMStructureItem.Selection>builder()
+                                .persistent(CMStructureItem.Selection.CODEC)
+                                .networkSynchronized(CMStructureItem.Selection.STREAM_CODEC)
                                 .build());
         CUSTOM_MACHINE_TYPE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "custom_machine_type",
                         DataComponentType.<ResourceKey<CustomMachineDefinition>>builder()
                                 .persistent(ResourceKey.codec(CustomMachineDefinition.REGISTRY))
@@ -547,14 +565,14 @@ public final class ModDataComponents {
                                         ResourceKey.streamCodec(CustomMachineDefinition.REGISTRY))
                                 .build());
         HBM_PRESSURE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "pressure",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         PNEUMATIC_BULK =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "pneumatic_bulk",
                         DataComponentType.<List<Integer>>builder()
                                 .persistent(Codec.INT.listOf())
@@ -562,7 +580,7 @@ public final class ModDataComponents {
                                         ByteBufCodecs.VAR_INT.apply(ByteBufCodecs.list()))
                                 .build());
         TURRET_WHITELIST =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "turret_whitelist",
                         DataComponentType.<List<String>>builder()
                                 .persistent(Codec.STRING.listOf())
@@ -570,49 +588,49 @@ public final class ModDataComponents {
                                         ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list()))
                                 .build());
         HAZ_RADIATION =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "haz_radiation",
                         DataComponentType.<Float>builder()
                                 .persistent(Codec.FLOAT)
                                 .networkSynchronized(ByteBufCodecs.FLOAT)
                                 .build());
         NEUTRON_ACTIVATION =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "neutron_activation",
                         DataComponentType.<Float>builder()
                                 .persistent(Codec.FLOAT)
                                 .networkSynchronized(ByteBufCodecs.FLOAT)
                                 .build());
         CAPACITOR_STATE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "capacitor_state",
                         DataComponentType.<CapacitorCharge>builder()
                                 .persistent(CapacitorCharge.CODEC)
                                 .networkSynchronized(CapacitorCharge.STREAM_CODEC)
                                 .build());
         DRILL_CONTENTS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "drill_contents",
                         DataComponentType.<DrillContents>builder()
                                 .persistent(DrillContents.CODEC)
                                 .networkSynchronized(DrillContents.STREAM_CODEC)
                                 .build());
         REFINERY_CONTENTS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "refinery_contents",
                         DataComponentType.<RefineryContents>builder()
                                 .persistent(RefineryContents.CODEC)
                                 .networkSynchronized(RefineryContents.STREAM_CODEC)
                                 .build());
         FLUID_TANK_CONTENTS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "fluid_tank_contents",
                         DataComponentType.<FluidTankContents>builder()
                                 .persistent(FluidTankContents.CODEC)
                                 .networkSynchronized(FluidTankContents.STREAM_CODEC)
                                 .build());
         TANK_CONTENTS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "tank_contents",
                         DataComponentType.<List<FluidStackNTM>>builder()
                                 .persistent(FluidStackNTM.CODEC.listOf())
@@ -620,42 +638,49 @@ public final class ModDataComponents {
                                         FluidStackNTM.STREAM_CODEC.apply(ByteBufCodecs.list()))
                                 .build());
         REDD_CHARGE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "redd_charge",
                         DataComponentType.<BigInteger>builder()
                                 .persistent(BIG_INTEGER)
                                 .networkSynchronized(BIG_INTEGER_STREAM)
                                 .build());
         MACHINE_BATTERY_STATE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "machine_battery_state",
                         DataComponentType.<BatteryCharge>builder()
                                 .persistent(BatteryCharge.CODEC)
                                 .networkSynchronized(BatteryCharge.STREAM_CODEC)
                                 .build());
         FLUID_CONTENT =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "fluid_content",
                         DataComponentType.<FluidStackNTM>builder()
                                 .persistent(FluidStackNTM.CODEC)
                                 .networkSynchronized(FluidStackNTM.STREAM_CODEC)
                                 .build());
+        TRANSFER_MODE =
+                Registrar.registerDataComponent(
+                        "transfer_mode",
+                        DataComponentType.<TransferMode>builder()
+                                .persistent(TransferMode.CODEC)
+                                .networkSynchronized(TransferMode.STREAM_CODEC)
+                                .build());
         TARGET_DESIGNATOR =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "target_designator",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         DETONATOR_POS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "detonator_pos",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         DETONATOR_POS_LIST =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "detonator_pos_list",
                         DataComponentType.<List<Long>>builder()
                                 .persistent(Codec.LONG.listOf())
@@ -663,7 +688,7 @@ public final class ModDataComponents {
                                         ByteBufCodecs.VAR_LONG.apply(ByteBufCodecs.list()))
                                 .build());
         TOOL_PRESETS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "tool_presets",
                         DataComponentType.<List<ToolPreset>>builder()
                                 .persistent(ToolPreset.CODEC.listOf())
@@ -672,196 +697,196 @@ public final class ModDataComponents {
                                                 ByteBufCodecs.list(MAX_TOOL_PRESETS)))
                                 .build());
         TOOL_PRESET_INDEX =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "tool_preset_index",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         CONVEYOR_RUN =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "conveyor_run",
                         DataComponentType.<ConveyorRunData>builder()
                                 .persistent(ConveyorRunData.CODEC)
                                 .networkSynchronized(ConveyorRunData.STREAM_CODEC)
                                 .build());
         RBMK_FUEL =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "rbmk_fuel",
                         DataComponentType.<RBMKFuelData>builder()
                                 .persistent(RBMKFuelData.CODEC)
                                 .networkSynchronized(RBMKFuelData.STREAM_CODEC)
                                 .build());
         RBMK_TOOL_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "rbmk_tool_target",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         MIRROR_TOOL_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "mirror_tool_target",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         ARTY_DESIGNATOR_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "arty_designator_target",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         RADAR_LINKER_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "radar_linker_target",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         ARTY_CARGO =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "arty_cargo",
                         DataComponentType.<ItemStackTemplate>builder()
                                 .persistent(ItemStackTemplate.CODEC)
                                 .networkSynchronized(ItemStackTemplate.STREAM_CODEC)
                                 .build());
         PELLET_DEPLETION =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "pellet_depletion",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         ICF_PELLET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "icf_pellet",
                         DataComponentType.<ICFPelletData>builder()
                                 .persistent(ICFPelletData.CODEC)
                                 .networkSynchronized(ICFPelletData.STREAM_CODEC)
                                 .build());
         ZIRNOX_LIFE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "zirnox_life",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         PLATE_FUEL_LIFE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "plate_fuel_life",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         WATZ_YIELD =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "watz_yield",
                         DataComponentType.<Double>builder()
                                 .persistent(Codec.DOUBLE)
                                 .networkSynchronized(ByteBufCodecs.DOUBLE)
                                 .build());
         SCRAP =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "scrap",
-                        DataComponentType.<ItemScraps.ScrapData>builder()
-                                .persistent(ItemScraps.ScrapData.CODEC)
-                                .networkSynchronized(ItemScraps.ScrapData.STREAM_CODEC)
+                        DataComponentType.<ScrapsItem.ScrapData>builder()
+                                .persistent(ScrapsItem.ScrapData.CODEC)
+                                .networkSynchronized(ScrapsItem.ScrapData.STREAM_CODEC)
                                 .build());
         BROKEN_ITEM_SOURCE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "broken_item_source",
                         DataComponentType.<Identifier>builder()
                                 .persistent(Identifier.CODEC)
                                 .networkSynchronized(Identifier.STREAM_CODEC)
                                 .build());
         WRENCH_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "wrench_target",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         REBAR_CORNER =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "rebar_corner",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         REBAR_CONCRETE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "rebar_concrete",
                         DataComponentType.<ItemContainerContents>builder()
                                 .persistent(ItemContainerContents.CODEC)
                                 .networkSynchronized(ItemContainerContents.STREAM_CODEC)
                                 .build());
         LINKER_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "linker_target",
                         DataComponentType.<GlobalPos>builder()
                                 .persistent(GlobalPos.CODEC)
                                 .networkSynchronized(GlobalPos.STREAM_CODEC)
                                 .build());
         DRONE_LINK_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "drone_link_target",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         WIRE_TARGET =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "wire_target",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         BLUEPRINT_POOL =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "blueprint_pool",
                         DataComponentType.<String>builder()
                                 .persistent(Codec.STRING)
                                 .networkSynchronized(ByteBufCodecs.STRING_UTF8)
                                 .build());
         RTTY_PAGER_CHANNEL =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "rtty_pager_channel",
                         DataComponentType.<String>builder()
                                 .persistent(Codec.STRING)
                                 .networkSynchronized(ByteBufCodecs.STRING_UTF8)
                                 .build());
         TABLET_SEED =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "tablet_seed",
                         DataComponentType.<Long>builder()
                                 .persistent(Codec.LONG)
                                 .networkSynchronized(ByteBufCodecs.VAR_LONG)
                                 .build());
         LORE_BOOK_KEY =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "lore_book_key",
                         DataComponentType.<String>builder()
                                 .persistent(Codec.STRING)
                                 .networkSynchronized(ByteBufCodecs.STRING_UTF8)
                                 .build());
         LORE_BOOK_PAGES =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "lore_book_pages",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         LORE_BOOK_COVER =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "lore_book_cover",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         LORE_BOOK_TITLE =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "lore_book_title",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
@@ -870,7 +895,7 @@ public final class ModDataComponents {
         Codec<Map<String, List<String>>> argCodec =
                 Codec.unboundedMap(Codec.STRING, Codec.STRING.listOf());
         LORE_BOOK_ARGS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "lore_book_args",
                         DataComponentType.<Map<String, List<String>>>builder()
                                 .persistent(argCodec)
@@ -882,28 +907,28 @@ public final class ModDataComponents {
                                                         ByteBufCodecs.list())))
                                 .build());
         ARC_ELECTRODE_DURABILITY =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "arc_electrode_durability",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.VAR_INT)
                                 .build());
         MISSILE_PARTS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "missile_parts",
                         DataComponentType.<MissileStruct>builder()
                                 .persistent(MissileStruct.CODEC)
                                 .networkSynchronized(MissileStruct.STREAM_CODEC)
                                 .build());
         MISSILE_CHIP =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "missile_chip",
                         DataComponentType.<Item>builder()
                                 .persistent(BuiltInRegistries.ITEM.byNameCodec())
                                 .networkSynchronized(ByteBufCodecs.registry(Registries.ITEM))
                                 .build());
         KIT_CONTENTS =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "kit_contents",
                         DataComponentType.<List<ItemStackTemplate>>builder()
                                 .persistent(ItemStackTemplate.CODEC.listOf())
@@ -911,14 +936,14 @@ public final class ModDataComponents {
                                         ItemStackTemplate.STREAM_CODEC.apply(ByteBufCodecs.list()))
                                 .build());
         KIT_COLOR_1 =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "kit_color_1",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)
                                 .networkSynchronized(ByteBufCodecs.INT)
                                 .build());
         KIT_COLOR_2 =
-                NeoForgeRegistrar.registerDataComponent(
+                Registrar.registerDataComponent(
                         "kit_color_2",
                         DataComponentType.<Integer>builder()
                                 .persistent(Codec.INT)

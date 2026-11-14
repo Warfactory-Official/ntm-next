@@ -1,11 +1,27 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.client.render.flywheel;
 
-import com.hbm.blockentity.BlockEntitySnowglobe;
-import com.hbm.blocks.generic.BlockSnowglobe.SnowglobeType;
-import com.hbm.client.render.RenderSnowglobe;
+import com.hbm.blockentity.SnowglobeBlockEntity;
+import com.hbm.blocks.generic.SnowglobeBlock.SnowglobeType;
+import com.hbm.client.render.SnowglobeRenderer;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import java.util.ArrayList;
@@ -25,7 +41,7 @@ public final class SnowglobeItemVisual extends HbmItemVisual {
     private final Matrix4f globe = new Matrix4f();
     private final Matrix4f labelBase = new Matrix4f();
     private final WorldText.Posing labelPosing =
-            (width, out) -> RenderSnowglobe.labelWidth(out.set(labelBase), width, lineHeight);
+            (width, out) -> SnowglobeRenderer.labelWidth(out.set(labelBase), width, lineHeight);
 
     public SnowglobeItemVisual(VisualizationContext ctx, SnowglobeType type) {
         super(ctx);
@@ -35,22 +51,22 @@ public final class SnowglobeItemVisual extends HbmItemVisual {
         @Nullable MeshPart feature = SnowglobeVisual.FEATURE_PARTS[type.ordinal()];
         if (feature != null) parts.add(transformed(ItemMaterials.item(feature.model())));
         label = new WorldText(instancers, WorldText.Style.NORMAL, true);
-        label.set(Component.literal(type.label), 0F, 0F, RenderSnowglobe.LABEL_COLOR);
+        label.set(Component.literal(type.label), 0F, 0F, SnowglobeRenderer.LABEL_COLOR);
     }
 
     @Override
     public boolean update(ItemStack stack) {
-        return BlockEntitySnowglobe.typeOf(stack) == type;
+        return SnowglobeBlockEntity.typeOf(stack) == type;
     }
 
     @Override
     protected void frame(Matrix4fc pose, int light, int overlay, float partialTick) {
-        globe.set(pose).scale(RenderSnowglobe.SCALE);
+        globe.set(pose).scale(SnowglobeRenderer.SCALE);
         for (TransformedInstance part : parts) {
             write(part, globe, -1, light);
         }
         label.setVisible(true);
-        RenderSnowglobe.labelBase(labelBase.set(globe));
+        SnowglobeRenderer.labelBase(labelBase.set(globe));
         label.write(labelPosing);
     }
 

@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.inventory.recipes.loader;
 
@@ -16,6 +32,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.Weighted;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
@@ -24,6 +41,7 @@ import net.minecraft.world.item.ItemStackTemplate;
 import org.jspecify.annotations.Nullable;
 
 public final class Outputs {
+
     public static final int RESOLUTION = 1000;
     public static final float RAW_SHARE = 2F / 3F;
 
@@ -179,13 +197,28 @@ public final class Outputs {
         return first.isEmpty() ? second : first;
     }
 
+    public static @Nullable ItemStack maximum(WeightedList<ItemStack> out) {
+        List<Weighted<ItemStack>> entries = out.unwrap();
+        if (entries.size() == 1) return entries.getFirst().value();
+        if (entries.isEmpty()) return null;
+        ItemStack maximum = ItemStack.EMPTY;
+        for (Weighted<ItemStack> entry : entries) {
+            ItemStack stack = entry.value();
+            if (stack.isEmpty()) continue;
+            if (!maximum.isEmpty() && !ItemStack.isSameItemSameComponents(maximum, stack))
+                return null;
+            if (stack.getCount() > maximum.getCount()) maximum = stack;
+        }
+        return maximum;
+    }
+
     public static boolean fits(ItemStack slot, WeightedList<ItemStack> out) {
         if (slot.isEmpty()) return true;
-        ItemStack single = single(out);
-        if (single == null) return false;
-        if (single.isEmpty()) return true;
-        return ItemStack.isSameItemSameComponents(slot, single)
-                && slot.getCount() + single.getCount() <= slot.getMaxStackSize();
+        ItemStack maximum = maximum(out);
+        if (maximum == null) return false;
+        if (maximum.isEmpty()) return true;
+        return ItemStack.isSameItemSameComponents(slot, maximum)
+                && slot.getCount() + maximum.getCount() <= slot.getMaxStackSize();
     }
 
     public static boolean fits(
@@ -193,10 +226,52 @@ public final class Outputs {
         return outputs == null || index >= outputs.length || fits(slot, outputs[index]);
     }
 
+    public static boolean fitsFixed(
+            List<ItemStack> slots, int from, WeightedList<ItemStack>[] outputs) {
+        for (int i = 0; i < outputs.length; i++) {
+            ItemStack slot = slots.get(from + i);
+            ItemStack output = outputs[i].unwrap().get(0).value();
+            if (!slot.isEmpty()
+                    && (!ItemStack.isSameItemSameComponents(slot, output)
+                            || slot.getCount() + output.getCount() > slot.getMaxStackSize()))
+                return false;
+        }
+        return true;
+    }
+
+    public static void insertFixed(
+            List<ItemStack> slots, int from, WeightedList<ItemStack>[] outputs) {
+        for (int i = 0; i < outputs.length; i++) {
+            ItemStack slot = slots.get(from + i);
+            ItemStack output = outputs[i].unwrap().get(0).value();
+            if (slot.isEmpty()) slots.set(from + i, output.copy());
+            else slot.grow(output.getCount());
+        }
+    }
+
     public static List<ItemStack> outcomes(WeightedList<ItemStack> out) {
         return out.unwrap().stream()
                 .map(Weighted::value)
                 .filter(stack -> !stack.isEmpty())
                 .toList();
+    }
+
+    public static ItemStack rollMachine(
+            WeightedList<ItemStack> output, RandomSource owningLevelRandom) {
+        ItemStack result = ItemStack.EMPTY;
+        long resultWeight = 0;
+        long totalWeight = 0;
+        boolean hasResult = false;
+        for (var entry : output.unwrap()) {
+            int weight = entry.weight();
+            totalWeight += weight;
+            if (weight == 0 || entry.value().isEmpty()) continue;
+            if (hasResult) return output.getRandomOrThrow(GenericRecipes.RNG);
+            result = entry.value();
+            resultWeight = weight;
+            hasResult = true;
+        }
+        float probability = hasResult ? (float) ((double) resultWeight / totalWeight) : 0.0F;
+        return owningLevelRandom.nextFloat() < probability ? result : ItemStack.EMPTY;
     }
 }

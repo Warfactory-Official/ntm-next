@@ -1,5 +1,21 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.explosion;
 
@@ -7,17 +23,17 @@ import com.hbm.NuclearTech;
 import com.hbm.config.BombConfig;
 import com.hbm.handler.threading.BombForkJoinPool;
 import com.hbm.interfaces.BitMask;
-import com.hbm.interfaces.IExplosionRay;
-import com.hbm.interfaces.ServerThread;
-import com.hbm.lib.Library;
+import com.hbm.interfaces.ExplosionRay;
 import com.hbm.lib.TLPool;
 import com.hbm.lib.maps.NonBlockingHashMapLong;
 import com.hbm.lib.queues.MpscUnboundedXaddArrayLongQueue;
 import com.hbm.util.BulkSectionUpdates;
 import com.hbm.util.ChunkUtil;
 import com.hbm.util.ConcurrentBitSet;
+import com.hbm.util.LocalBlockIndex;
 import com.hbm.util.MpscIntArrayListCollector;
 import com.hbm.util.OffHeapBitSet;
+import com.hbm.util.SectionAccess;
 import com.hbm.util.SectionSnapshot;
 import it.unimi.dsi.fastutil.ints.*;
 import it.unimi.dsi.fastutil.longs.*;
@@ -29,7 +45,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ChunkResult;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.BitStorage;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -45,7 +60,7 @@ import static com.hbm.lib.internal.UnsafeHolder.U;
 import static com.hbm.lib.internal.UnsafeHolder.fieldOffset;
 
 public class ExplosionNukeRayParallelized
-        implements IExplosionRay, BombForkJoinPool.IJobCancellable {
+        implements ExplosionRay, BombForkJoinPool.IJobCancellable {
 
     private static long nextCacheEpoch;
     private final long cacheEpoch = allocateCacheEpoch();
@@ -263,7 +278,10 @@ public class ExplosionNukeRayParallelized
     }
 
     static float getNukeResistance(BlockState state) {
-        return ExplosionNukeRayBatched.getNukeResistance(state);
+        if (state.liquid()) return 0.1F;
+        if (state.is(Blocks.SANDSTONE)) return Blocks.STONE.getExplosionResistance();
+        if (state.is(Blocks.OBSIDIAN)) return Blocks.STONE.getExplosionResistance() * 3.0F;
+        return state.getBlock().getExplosionResistance();
     }
 
     static double getEnergyLossFactor(float resistance, double distFrac) {
@@ -341,11 +359,7 @@ public class ExplosionNukeRayParallelized
     static long emptySubMask(EmptySubMaskCache cache, LevelChunkSection[] sections) {
         int slot = (System.identityHashCode(sections) * 0x9E3775CD) >>> (32 - EMPTY_CACHE_SHIFT);
         if (cache.arrays[slot] == sections) return cache.masks[slot];
-        long mask = 0;
-        int counted = Math.min(sections.length, Long.SIZE);
-        for (int i = 0; i < counted; i++) {
-            if (sections[i].hasOnlyAir()) mask |= (1L << i);
-        }
+        long mask = SectionAccess.emptyMask(sections);
         cache.arrays[slot] = sections;
         cache.masks[slot] = mask;
         return mask;
@@ -364,7 +378,7 @@ public class ExplosionNukeRayParallelized
             ds = new DecodedSection();
             cache[slot] = ds;
         }
-        if (ds.section != section) ds.decode(section);
+        if (!ds.matches(section)) ds.decode(section);
         return ds;
     }
 
@@ -579,7 +593,6 @@ public class ExplosionNukeRayParallelized
         server.schedule(server.wrapRunnable(this::pumpChunkAdmissions));
     }
 
-    @ServerThread
     private void pumpChunkAdmissions() {
         U.putIntRelease(this, OFF_ADMISSION_PUMP_QUEUED, 0);
         long deadline = admissionDeadline;
@@ -591,13 +604,11 @@ public class ExplosionNukeRayParallelized
         }
     }
 
-    @ServerThread
     void trackChunkFuture(long chunkPos, CompletableFuture<ChunkResult<LevelChunk>> future) {
         chunksInFlight.put(chunkPos, future);
         if (!future.isDone()) future.whenComplete((result, cause) -> requestChunkPump());
     }
 
-    @ServerThread
     void loadMissingChunksUntil(long deadline) {
         while (System.nanoTime() < deadline
                 && chunksInFlight.size() + ticketsPendingFlush.size()
@@ -624,7 +635,6 @@ public class ExplosionNukeRayParallelized
         harvestLoadedChunks(deadline);
     }
 
-    @ServerThread
     private void harvestLoadedChunks(long deadlineNanos) {
         if (chunksInFlight.isEmpty()) return;
         var it = chunksInFlight.long2ObjectEntrySet().fastIterator();
@@ -646,7 +656,6 @@ public class ExplosionNukeRayParallelized
         }
     }
 
-    @ServerThread
     void releaseChunkTickets() {
         for (long ck : ticketedChunks) ChunkUtil.releaseChunkAsync(world, ck);
         ticketedChunks.clear();
@@ -656,7 +665,6 @@ public class ExplosionNukeRayParallelized
         chunksInFlight.clear();
     }
 
-    @ServerThread
     void processChunkLoadRequest(long chunkPos, @Nullable LevelChunk chunk) {
         if (chunk == null) return;
         readinessLoads.remove(chunkPos);
@@ -747,7 +755,6 @@ public class ExplosionNukeRayParallelized
         if (prev - 1 == 0) maybeFinish();
     }
 
-    @ServerThread
     private boolean wakesUncarvedFluid(BlockPos pos, BlockPos.MutableBlockPos scratch) {
         for (Direction dir : Direction.VALUES) {
             scratch.setWithOffset(pos, dir);
@@ -760,7 +767,6 @@ public class ExplosionNukeRayParallelized
         return false;
     }
 
-    @ServerThread
     void flushDeferredFluidWakes() {
         publishedChunks.clear();
         if (deferredFluidWakes.isEmpty()) return;
@@ -775,7 +781,6 @@ public class ExplosionNukeRayParallelized
         deferredFluidWakes.clear();
     }
 
-    @ServerThread
     void secondPass() {
         flushDeferredFluidWakes();
         if (sectionMaskByChunk.isEmpty()) return;
@@ -812,7 +817,6 @@ public class ExplosionNukeRayParallelized
         return failure != null;
     }
 
-    @Override
     public boolean isContained() {
         return isContained;
     }
@@ -827,7 +831,7 @@ public class ExplosionNukeRayParallelized
                 int xLocal = (bit >>> 4) & 0xF;
                 int zLocal = bit & 0xF;
                 int yLocal = yGlobal & 0xF;
-                int localIndex = Library.packLocal(xLocal, yLocal, zLocal);
+                int localIndex = LocalBlockIndex.pack(xLocal, yLocal, zLocal);
                 m.computeIfAbsent(subY, k -> new OffHeapBitSet(SUB_MASK_SIZE)).set(localIndex);
                 bit = chunkMask.nextSetBit(bit + 1);
             }
@@ -855,7 +859,7 @@ public class ExplosionNukeRayParallelized
                     int xLocal = (bitIndex >>> 4) & 0xF;
                     int zLocal = bitIndex & 0xF;
                     int yLocal = yGlobal & 0xF;
-                    int localIndex = Library.packLocal(xLocal, yLocal, zLocal);
+                    int localIndex = LocalBlockIndex.pack(xLocal, yLocal, zLocal);
                     if (shouldDestroy(
                             cpLong, bitIndex, sections, e.getDoubleValue(), len.get(bitIndex))) {
                         sub.computeIfAbsent(subY, k -> new OffHeapBitSet(SUB_MASK_SIZE))
@@ -874,7 +878,7 @@ public class ExplosionNukeRayParallelized
                     int xLocal = (bitIndex >>> 4) & 0xF;
                     int zLocal = bitIndex & 0xF;
                     int yLocal = yGlobal & 0xF;
-                    int localIndex = Library.packLocal(xLocal, yLocal, zLocal);
+                    int localIndex = LocalBlockIndex.pack(xLocal, yLocal, zLocal);
                     if (shouldDestroy(cpLong, bitIndex, sections, 0.0, e.getDoubleValue())) {
                         sub.computeIfAbsent(subY, k -> new OffHeapBitSet(SUB_MASK_SIZE))
                                 .set(localIndex);
@@ -900,14 +904,9 @@ public class ExplosionNukeRayParallelized
             double accumulatedDamage,
             double passLen) {
         int yGlobal = worldHeight - 1 - (bitIndex >>> 8);
-        int subY = yGlobal >>> 4;
-        if (subY < 0 || subY >= sections.length) return false;
-        LevelChunkSection s = sections[subY];
-        if (s.hasOnlyAir()) return false;
         int xLocal = (bitIndex >>> 4) & 0xF;
         int zLocal = bitIndex & 0xF;
-        int yLocal = yGlobal & 0xF;
-        BlockState st = s.getBlockState(xLocal, yLocal, zLocal);
+        BlockState st = SectionAccess.read(sections, 0, xLocal, yGlobal, zLocal);
         if (st.isAir()) return false;
         float resistance = getNukeResistance(st);
         if (accumulatedDamage >= (resistance * DAMAGE_THRESHOLD_MULT)) return true;
@@ -1198,7 +1197,7 @@ public class ExplosionNukeRayParallelized
         return ready && !notificationTicketsPendingFlush;
     }
 
-    void chunkFixup(
+    protected void chunkFixup(
             long cpLong,
             Long2ObjectOpenHashMap<BlockState> modified,
             LongArrayList neighborNotifies,
@@ -1698,21 +1697,16 @@ public class ExplosionNukeRayParallelized
         empty.epoch = cacheEpoch;
         Arrays.fill(empty.arrays, null);
         for (DecodedSection decoded : resistance) {
-            if (decoded != null) decoded.section = null;
+            if (decoded != null) decoded.clear();
         }
     }
 
-    static final class DecodedSection {
+    static final class DecodedSection extends SectionAccess.PaletteView {
         static final int MAX_LUT = 4096;
 
-        @Nullable LevelChunkSection section;
-        @Nullable BitStorage storage;
-        @Nullable Palette<BlockState> pal;
         float @Nullable [] lut;
-        boolean single;
         boolean direct;
         float singleRes;
-        @Nullable BlockState singleState;
 
         static float resistanceOf(BlockState state) {
             if (state.isAir()) return -1f;
@@ -1720,33 +1714,24 @@ public class ExplosionNukeRayParallelized
         }
 
         void decode(LevelChunkSection sec) {
-            PalettedContainer<BlockState> container = sec.getStates();
-            PalettedContainer.Data data = container.data;
-            BitStorage bits = data.storage();
-            Palette<BlockState> palette = data.palette();
-            if (bits.getBits() == 0 || palette instanceof SingleValuePalette<?>) {
-                single = true;
-                singleState = palette.valueFor(0);
+            capture(sec);
+            if (single) {
                 singleRes = resistanceOf(singleState);
             } else {
-                single = false;
-                int palSize = palette.getSize();
+                int palSize = pal.getSize();
                 direct = palSize > MAX_LUT;
                 if (!direct) {
-                    int capacity = Math.max(1 << bits.getBits(), palSize);
+                    int capacity = Math.max(1 << storage.getBits(), palSize);
                     if (lut == null || lut.length < capacity)
                         lut = new float[Math.max(capacity, 64)];
                     Arrays.fill(lut, 0, capacity, Float.NaN);
                 }
-                storage = bits;
-                pal = palette;
             }
-            section = sec;
         }
 
         float resistanceAt(int xLocal, int yLocal, int zLocal) {
             if (single) return singleRes;
-            int pi = storage.get(Library.packLocal(xLocal, yLocal, zLocal));
+            int pi = storage.get(LocalBlockIndex.pack(xLocal, yLocal, zLocal));
             if (direct) return resistanceOf(pal.valueFor(pi));
             float r = lut[pi];
             if (Float.isNaN(r)) {
@@ -1754,11 +1739,6 @@ public class ExplosionNukeRayParallelized
                 lut[pi] = r;
             }
             return r;
-        }
-
-        BlockState stateAt(int xLocal, int yLocal, int zLocal) {
-            if (single) return singleState;
-            return pal.valueFor(storage.get(Library.packLocal(xLocal, yLocal, zLocal)));
         }
     }
 

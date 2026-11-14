@@ -7,10 +7,20 @@
   ],
   "order": 67328,
   "output_items": [
-    {
-      "chance": 0.667,
-      "count": 2,
-      "id": "hbm:powder_titanium"
-    }
+    [
+      {
+        "data": {
+          "id": "hbm:powder_titanium"
+        },
+        "weight": 2
+      },
+      {
+        "data": {
+          "count": 2,
+          "id": "hbm:powder_titanium"
+        },
+        "weight": 1
+      }
+    ]
   ]
 }

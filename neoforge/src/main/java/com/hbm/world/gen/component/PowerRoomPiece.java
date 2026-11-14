@@ -1,10 +1,26 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.world.gen.component;
 
 import com.hbm.blocks.network.GeneratedConductors;
-import com.hbm.lib.Library;
+import com.hbm.util.RegistryUtil;
 import com.hbm.world.gen.nbt.PieceGeometry;
 import com.hbm.world.structure.HbmStructureTypes;
 import java.util.ArrayList;
@@ -72,7 +88,7 @@ public class PowerRoomPiece extends NtmBranchingPiece {
         this.path = this.generateChildEast(start, accessor, random, 4, 1) != null;
     }
 
-    public static final Identifier TEMPLATE_ID = Library.id("component/power_room");
+    public static final Identifier TEMPLATE_ID = RegistryUtil.id("component/power_room");
 
     public static final List<PieceGeometry.Variant> VARIANTS = buildVariants();
 
@@ -86,7 +102,7 @@ public class PowerRoomPiece extends NtmBranchingPiece {
 
     @Override
     protected Identifier templateId() {
-        return Library.id(TEMPLATE_ID.getPath() + "_" + this.powerType);
+        return RegistryUtil.id(TEMPLATE_ID.getPath() + "_" + this.powerType);
     }
 
     @Override

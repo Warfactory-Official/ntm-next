@@ -1,9 +1,25 @@
-// SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
-// SPDX-License-Identifier: LGPL-3.0-only
+/*
+ * SPDX-FileCopyrightText: 2026 movblock <admin@movblock.mov>
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (C) 2026 movblock. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * You may not use this file under the Apache License except in
+ * compliance with that License. You may obtain a copy at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Apache License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Apache License for the specific language governing permissions
+ * and limitations under the License.
+ */
 
 package com.hbm.render.util;
 
-import com.hbm.interfaces.injected.IBufferBuilderExtension;
+import com.hbm.interfaces.injected.BufferBuilderExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -22,7 +38,7 @@ public final class Vertices {
 
     public static void emit(VertexConsumer buf, Matrix3x2fc pose, float x, float y, int color) {
         Vector2f p = pose.transformPosition(x, y, POSITION_2D);
-        if (buf instanceof IBufferBuilderExtension fast
+        if (buf instanceof BufferBuilderExtension fast
                 && fast.hbm$positionColor(p.x, p.y, 0F, color)) return;
         buf.addVertex(p.x, p.y, 0F).setColor(color);
     }
@@ -30,13 +46,37 @@ public final class Vertices {
     public static void emit(
             VertexConsumer buf, PoseStack.Pose pose, float x, float y, float z, int color) {
         Vector3f p = pose.pose().transformPosition(x, y, z, POSITION);
-        if (buf instanceof IBufferBuilderExtension fast
+        if (buf instanceof BufferBuilderExtension fast
                 && fast.hbm$positionColor(p.x, p.y, p.z, color)) return;
         buf.addVertex(p.x, p.y, p.z).setColor(color);
     }
 
+    public static void emitOpenPrism(
+            VertexConsumer buf,
+            PoseStack.Pose pose,
+            double x0,
+            double y0,
+            double z0,
+            double x1,
+            double y1,
+            double z1,
+            float half,
+            int color) {
+        for (int face = 0; face < 4; face++) {
+            double out = (face & 1) == 0 ? half : -half;
+            boolean acrossX = face < 2;
+            for (int corner = 0; corner < 4; corner++) {
+                double side = corner == 0 || corner == 3 ? half : -half;
+                boolean end = corner >= 2;
+                double x = (end ? x1 : x0) + (acrossX ? out : side);
+                double z = (end ? z1 : z0) + (acrossX ? side : out);
+                emit(buf, pose, (float) x, (float) (end ? y1 : y0), (float) z, color);
+            }
+        }
+    }
+
     public static void emitColorBlock(
-            IBufferBuilderExtension block,
+            BufferBuilderExtension block,
             PoseStack.Pose pose,
             float x,
             float y,
@@ -121,7 +161,7 @@ public final class Vertices {
         Vector3f p = matrix.transformPosition(0F, 0F, 0F, POSITION);
         float hx = p.x, hy = p.y, hz = p.z;
         matrix.transformPosition(length, 0F, 0F, p);
-        ((IBufferBuilderExtension) buf)
+        ((BufferBuilderExtension) buf)
                 .hbm$ribbon(
                         hx,
                         hy,
@@ -137,7 +177,7 @@ public final class Vertices {
     }
 
     public static void emitBlock(
-            IBufferBuilderExtension block,
+            BufferBuilderExtension block,
             PoseStack.Pose pose,
             float x,
             float y,
