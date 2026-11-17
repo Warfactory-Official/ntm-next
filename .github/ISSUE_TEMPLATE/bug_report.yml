@@ -51,7 +51,8 @@ body:
     attributes:
       label: Logs
       description: >
-        Provide client and server logs (both are required for dedicated servers) and any crash reports. https://mclo.gs is preferred.
+        Provide client and server logs (both are required for dedicated servers) and any crash reports. Please make sure it does not contain any sensitive information. https://mclo.gs is preferred.
+      placeholder: You MUST supply logs even if you believe they are useless for this specific bug, unless such bug prevented you from attaining them. IF NOTHING MEANINGFUL IS SUBMITTED YOU WILL BE BANNED.
     validations:
       required: true
 
