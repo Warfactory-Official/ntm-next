@@ -160,6 +160,8 @@ public abstract class TurretBaseNTBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(250);
+        afterSync();
         long powerBefore = power;
         int killsBefore = stattrak;
         beforeTracking();
@@ -199,8 +201,6 @@ public abstract class TurretBaseNTBlockEntity extends MachineBlockEntity
                                         this, SLOT_BATTERY, getMaxPower() - power, false))));
         if (power != powerBefore || stattrak != killsBefore) markChanged();
         if (level instanceof ServerLevel server) refreshConnectors(server);
-        networkPackNT(250);
-        afterSync();
     }
 
     private boolean dropDeadTarget() {

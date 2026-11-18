@@ -158,6 +158,7 @@ public class AssemblyMachineBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         var recipe = recipeModule.getRecipe();
         long ceiling =
                 Math.max(
@@ -184,7 +185,6 @@ public class AssemblyMachineBlockEntity extends MachineBlockEntity
                     ModItems.METEORITE_SWORD_MACHINED);
         }
         if (isProgressing || recipeModule.markDirty) setChanged();
-        networkPackNT(100);
     }
 
     @Override

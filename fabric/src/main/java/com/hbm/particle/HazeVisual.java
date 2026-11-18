@@ -58,6 +58,8 @@ public final class HazeVisual implements EffectVisual<HazeParticle>, SimpleTicka
     private final BillboardInstance[] instances = new BillboardInstance[HazeParticle.QUADS.length];
     private final Vec3i origin;
 
+    public static void initModels() {}
+
     public HazeVisual(VisualizationContext context, HazeParticle particle) {
         this.particle = particle;
         this.origin = context.renderOrigin();

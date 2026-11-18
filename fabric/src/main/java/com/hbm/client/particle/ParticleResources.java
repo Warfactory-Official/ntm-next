@@ -19,6 +19,8 @@
 
 package com.hbm.client.particle;
 
+import com.hbm.particle.HazeVisual;
+
 public final class ParticleResources {
     private ParticleResources() {}
 
@@ -28,5 +30,8 @@ public final class ParticleResources {
         ContrailVisual.initModels();
         RadiationFogVisual.initModels();
         RocketFlameVisual.initModels();
+        AmatFlashVisual.initModels();
+        CasingSmokeVisual.initModels();
+        HazeVisual.initModels();
     }
 }

@@ -5498,6 +5498,8 @@ public final class ModBlocks {
     public static RegistryHandle<Block> ORE_COLTAN;
     public static RegistryHandle<Block> ORE_LIGNITE;
     public static RegistryHandle<Block> DECO_STEEL;
+    public static RegistryHandle<Block> DECO_RBMK;
+    public static RegistryHandle<Block> DECO_RBMK_SMOOTH;
     public static RegistryHandle<PlatemetalBlock> PLATEMETAL;
     public static RegistryHandle<Block> WASTE_PLANKS;
     public static RegistryHandle<FrozenEarthBlock> FROZEN_DIRT;
@@ -7398,8 +7400,8 @@ public final class ModBlocks {
         deco("block_smore", 15.0F, 360.0F);
         deco("basalt", 5.0F, 6.0F);
         deco("basalt_smooth", 5.0F, 6.0F);
-        deco("deco_rbmk", 5.0F, 60.0F, MapColor.METAL);
-        deco("deco_rbmk_smooth", 5.0F, 60.0F, MapColor.METAL);
+        DECO_RBMK = deco("deco_rbmk", 5.0F, 60.0F, MapColor.METAL);
+        DECO_RBMK_SMOOTH = deco("deco_rbmk_smooth", 5.0F, 60.0F, MapColor.METAL);
         deco("basalt_brick", 5.0F, 6.0F);
         deco("basalt_polished", 5.0F, 6.0F);
         deco("basalt_tiles", 5.0F, 6.0F);

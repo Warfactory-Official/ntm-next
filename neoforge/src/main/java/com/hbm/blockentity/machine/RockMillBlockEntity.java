@@ -104,6 +104,7 @@ public final class RockMillBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         long capacity = SelectedProcessorSupport.capacity(module, maxPower, power, MIN_POWER);
         if (maxPower != capacity) {
             hbm$syncSet$RockMillBlockEntity$maxPower(capacity);
@@ -129,7 +130,6 @@ public final class RockMillBlockEntity extends MachineBlockEntity
                     0.75F);
         }
         flush.provide((ServerLevel) level, this);
-        networkPackNT(100);
     }
 
     @Override

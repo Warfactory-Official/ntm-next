@@ -36,6 +36,7 @@
   },
   "mixins": [
     "hbm-common.mixins.json",
+    "hbm-c2me-compat.mixins.json",
     "hbm-iris-compat.mixins.json",
     "hbm-jigsaw-optimizer.mixins.json",
     "hbm-network-optimizer.mixins.json",

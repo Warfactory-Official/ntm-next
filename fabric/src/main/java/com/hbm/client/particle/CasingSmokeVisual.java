@@ -75,6 +75,8 @@ public final class CasingSmokeVisual implements EffectVisual<CasingParticle>, Si
     private InstanceParticle[] instances = new InstanceParticle[0];
     private int active;
 
+    public static void initModels() {}
+
     public CasingSmokeVisual(VisualizationContext context, CasingParticle particle) {
         this.particle = particle;
         this.smoke = Objects.requireNonNull(particle.getSmokeTrail());

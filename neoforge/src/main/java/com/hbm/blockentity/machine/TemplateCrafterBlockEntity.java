@@ -188,10 +188,10 @@ public final class TemplateCrafterBlockEntity extends MachineBlockEntity
     @Override
     public void tickServer() {
         if (restoreCandidates) discoverCandidates((ServerLevel) level, true);
+        networkPackNT(15);
         long supplied = ItemEnergyTransfer.extract(this, BATTERY_SLOT, HE_CAPACITY - energy, false);
         if (supplied != 0) setPower(energy + supplied);
         if (!candidates.isEmpty() && energy >= CRAFT_COST) craftSelectedRecipe();
-        networkPackNT(15);
     }
 
     private void craftSelectedRecipe() {

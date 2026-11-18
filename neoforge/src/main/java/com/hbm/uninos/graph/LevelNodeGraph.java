@@ -49,6 +49,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import org.jspecify.annotations.Nullable;
 
 public class LevelNodeGraph<D> extends SavedData {
@@ -168,8 +170,22 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     public static void init() {
-        final Consumer<MinecraftServer> callback = LevelNodeGraph::tickAll;
-        ServerEvents.TICK_POST.add(callback);
+        final Consumer<ServerLevel> callback = LevelNodeGraph::attachSaved;
+        NeoForge.EVENT_BUS.addListener(
+                (LevelEvent.Load event) -> {
+                    if (event.getLevel() instanceof ServerLevel level) callback.accept(level);
+                });
+        final Consumer<MinecraftServer> callback2 = LevelNodeGraph::tickAll;
+        ServerEvents.TICK_POST.add(callback2);
+    }
+
+    private static void attachSaved(ServerLevel level) {
+        for (Kind<?> kind : KINDS) attachSaved(level, kind);
+    }
+
+    private static <D> void attachSaved(ServerLevel level, Kind<D> kind) {
+        LevelNodeGraph<D> graph = level.getDataStorage().get(kind.type);
+        if (graph != null) attach(level, kind, graph);
     }
 
     private static void tickAll(MinecraftServer server) {

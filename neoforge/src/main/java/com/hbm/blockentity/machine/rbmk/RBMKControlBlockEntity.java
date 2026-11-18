@@ -89,6 +89,7 @@ public abstract class RBMKControlBlockEntity extends RBMKBaseBlockEntity
 
     @Override
     public void tickServer() {
+        super.tickServer();
         boolean powered = isPowered();
         hbm$syncSet$RBMKControlBlockEntity$powerAvailable(!powered || energy >= MOVE_COST);
         double previous = extraction;
@@ -102,7 +103,6 @@ public abstract class RBMKControlBlockEntity extends RBMKBaseBlockEntity
                 hbm$syncSet$RBMKControlBlockEntity$energy((long) (energy - (MOVE_COST)));
         }
         if (extraction != previous) markChanged();
-        super.tickServer();
     }
 
     @Override

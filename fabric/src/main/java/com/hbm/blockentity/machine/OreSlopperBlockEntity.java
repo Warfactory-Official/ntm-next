@@ -161,6 +161,7 @@ public class OreSlopperBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         hbm$syncSet$OreSlopperBlockEntity$power(
                 (long)
                         (power
@@ -239,8 +240,6 @@ public class OreSlopperBlockEntity extends MachineBlockEntity
         }
 
         flush.provide((ServerLevel) level, this);
-
-        networkPackNT(150);
     }
 
     private void shred() {

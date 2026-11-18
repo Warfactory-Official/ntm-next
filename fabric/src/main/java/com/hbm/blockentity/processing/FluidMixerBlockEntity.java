@@ -169,6 +169,7 @@ public class FluidMixerBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         long previousPower = power;
         int previousProgress = progress;
         int previousDuration = processTime;
@@ -211,7 +212,6 @@ public class FluidMixerBlockEntity extends MachineBlockEntity
                 || progress != previousProgress
                 || processTime != previousDuration
                 || recipeIndex != previousSelection) setChanged();
-        networkPackNT(50);
     }
 
     public void cycleRecipe() {

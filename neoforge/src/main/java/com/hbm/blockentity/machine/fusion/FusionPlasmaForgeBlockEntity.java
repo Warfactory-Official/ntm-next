@@ -323,6 +323,7 @@ public class FusionPlasmaForgeBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         ServerLevel serverLevel = (ServerLevel) level;
 
         if (maxPower <= 0) hbm$syncSet$FusionPlasmaForgeBlockEntity$maxPower(1_000_000);
@@ -384,8 +385,6 @@ public class FusionPlasmaForgeBlockEntity extends MachineBlockEntity
         if (didProcess && booster > 0)
             hbm$syncSet$FusionPlasmaForgeBlockEntity$booster((int) (booster - 1));
         neutronEnergy = 0D;
-
-        networkPackNT(100);
     }
 
     @Override

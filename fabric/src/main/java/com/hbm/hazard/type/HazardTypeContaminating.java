@@ -37,8 +37,12 @@ public class HazardTypeContaminating implements HazardKind {
 
     private static final int MAX_RADIUS = 500;
 
-    private static int computeRadius(double level) {
+    protected static int computeRadius(double level) {
         return (int) Math.min(Math.sqrt(level) + 0.5D, MAX_RADIUS);
+    }
+
+    protected boolean enabled() {
+        return RadiationData.ENABLE_CONTAMINATION_ON_GROUND.get();
     }
 
     @Override
@@ -47,7 +51,7 @@ public class HazardTypeContaminating implements HazardKind {
     @Override
     public void onDropped(ItemEntity item, float base) {
         double level = base;
-        if (!RadiationData.ENABLE_CONTAMINATION_ON_GROUND.get()) return;
+        if (!enabled()) return;
         Level world = item.level();
         if (!(world instanceof ServerLevel server)) return;
         if (!item.onGround()) return;
@@ -68,7 +72,7 @@ public class HazardTypeContaminating implements HazardKind {
             ItemStack stack,
             List<HazardModifier> modifiers) {
         double level = base;
-        if (!RadiationData.ENABLE_CONTAMINATION_ON_GROUND.get()) return;
+        if (!enabled()) return;
         int radius = computeRadius(level);
         if (radius > 1) {
             list.add(

@@ -26,6 +26,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
 public record LockStateData(int lock, boolean isLocked, double lockMod, boolean cheesable) {
+    public static final LockStateData DEFAULT = new LockStateData(0, false, 0.1D, true);
 
     public static final Codec<LockStateData> CODEC =
             RecordCodecBuilder.create(
@@ -58,6 +59,6 @@ public record LockStateData(int lock, boolean isLocked, double lockMod, boolean 
                     LockStateData::new);
 
     public boolean isDefault() {
-        return lock == 0 && !isLocked && lockMod == 0.1D && cheesable;
+        return equals(DEFAULT);
     }
 }

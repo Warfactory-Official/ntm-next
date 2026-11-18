@@ -60,12 +60,11 @@ public final class RFCavityBlockEntity extends CooledAcceleratorBlockEntity
     }
 
     @Override
-    public void tickServer() {
+    protected void tickAccelerator() {
         long discharged =
                 ItemEnergyTransfer.extract(this, BATTERY_SLOT, getMaxPower() - power, false);
         if (discharged != 0)
             hbm$syncSet$CooledAcceleratorBlockEntity$power((long) (power + (discharged)));
-        super.tickServer();
     }
 
     private Direction beamDirection() {

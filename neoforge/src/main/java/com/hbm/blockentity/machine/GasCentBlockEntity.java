@@ -168,6 +168,7 @@ public class GasCentBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         long prevPower = power;
         int prevProgress = progress;
         boolean prevProgressing = isProgressing;
@@ -209,7 +210,6 @@ public class GasCentBlockEntity extends MachineBlockEntity
 
         if (power != prevPower || progress != prevProgress || isProgressing != prevProgressing)
             setChanged();
-        networkPackNT(50);
     }
 
     @Override

@@ -30,11 +30,12 @@ import net.minecraft.nbt.NbtOps;
 public final class HbmDataFixers {
 
     public static final String VERSION_KEY = "hbm_data_version";
-    public static final int CURRENT = 13;
-    static final DSL.TypeReference CHUNK = () -> "hbm:chunk";
-    static final DSL.TypeReference ENTITY_CHUNK = () -> "hbm:entity_chunk";
-    static final DSL.TypeReference PLAYER = () -> "hbm:player";
-    static final DSL.TypeReference SEALED_ITEMS = () -> "hbm:sealed_items";
+    public static final int CURRENT = 14;
+    public static final DSL.TypeReference CHUNK = () -> "hbm:chunk";
+    public static final DSL.TypeReference ENTITY_CHUNK = () -> "hbm:entity_chunk";
+    public static final DSL.TypeReference PLAYER = () -> "hbm:player";
+    public static final DSL.TypeReference SEALED_ITEMS = () -> "hbm:sealed_items";
+    public static final DSL.TypeReference STRUCTURE = () -> "hbm:structure";
     private static final DataFixer FIXER = build();
 
     private HbmDataFixers() {}
@@ -69,6 +70,8 @@ public final class HbmDataFixers {
         builder.addFixer(new FalloutJournalIntroductionFix(v12));
         Schema v13 = builder.addSchema(13, Schema::new);
         builder.addFixer(new WeaponModKeyFix(v13));
+        Schema v14 = builder.addSchema(14, Schema::new);
+        builder.addFixer(new Release14Fix(v14));
         return builder.build().fixer();
     }
 
@@ -84,22 +87,34 @@ public final class HbmDataFixers {
         return upgrade(PLAYER, tag);
     }
 
+    public static CompoundTag upgradeStructure(CompoundTag tag) {
+        return upgrade(STRUCTURE, tag);
+    }
+
     public static CompoundTag upgradeSealedItems(CompoundTag tag) {
         return upgrade(SEALED_ITEMS, tag);
     }
 
     private static CompoundTag upgrade(DSL.TypeReference type, CompoundTag tag) {
         int version = tag.getIntOr(VERSION_KEY, 0);
-        if (version >= CURRENT) return tag;
+        if (version >= CURRENT) {
+            tag.remove(DataFixClock.GAME_TIME);
+            return tag;
+        }
         var fixed =
                 (CompoundTag)
                         FIXER.update(type, new Dynamic<>(NbtOps.INSTANCE, tag), version, CURRENT)
                                 .getValue();
+        fixed.remove(DataFixClock.GAME_TIME);
         fixed.putInt(VERSION_KEY, CURRENT);
         return fixed;
     }
 
     public static void stamp(CompoundTag chunkTag) {
         chunkTag.putInt(VERSION_KEY, CURRENT);
+    }
+
+    public static boolean chunkCurrent(CompoundTag chunkTag) {
+        return chunkTag.getIntOr(VERSION_KEY, 0) >= CURRENT;
     }
 }

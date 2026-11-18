@@ -21,6 +21,10 @@ config = "hbm-common.mixins.json"
 behaviorVersion = "0.17.4"
 
 [[mixins]]
+config = "hbm-c2me-compat.mixins.json"
+behaviorVersion = "0.17.4"
+
+[[mixins]]
 config = "hbm-iris-compat.mixins.json"
 behaviorVersion = "0.17.4"
 

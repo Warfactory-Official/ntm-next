@@ -39,6 +39,7 @@ import dev.engine_room.flywheel.lib.model.SingleMeshModel;
 import dev.engine_room.flywheel.lib.util.OverlayTexture;
 import dev.engine_room.flywheel.lib.util.RendererReloadCache;
 import dev.engine_room.flywheel.lib.util.ResourceUtil;
+import dev.engine_room.flywheel.lib.util.ShaderWarmupRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -96,26 +97,39 @@ public final class WorldText {
         light = fullBright ? LightCoordsUtil.FULL_BRIGHT : 0;
     }
 
-    private static Model model(Sheet sheet) {
+    public static void registerWarmupVariants() {
+        for (Style style : new Style[] {Style.NORMAL, Style.ADDITIVE}) {
+            ShaderWarmupRegistry.register(material(style, false, false).variant());
+            ShaderWarmupRegistry.register(material(style, true, false).variant());
+        }
+    }
+
+    private static SimpleMaterial.Builder material(Style style, boolean grayscale, boolean front) {
         var builder =
                 SimpleMaterial.builder()
-                        .texture(sheet.atlas())
                         .light(LightShaders.SMOOTH)
                         .cutout(CutoutShaders.ONE_TENTH)
                         .transparency(Transparency.TRANSLUCENT)
                         .cardinalLightingMode(CardinalLightingMode.OFF)
                         .useOverlay(false)
                         .mipmap(false)
-                        .polygonOffset(sheet.style() == Style.POLYGON_OFFSET || sheet.front());
-        if (sheet.style() == Style.ADDITIVE)
+                        .polygonOffset(style == Style.POLYGON_OFFSET || front);
+        if (style == Style.ADDITIVE)
             builder.transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
                     .cutout(CutoutShaders.OFF)
                     .backfaceCulling(false)
                     .fog(EffectVisuals.FADE);
-        if (sheet.style() == Style.TWO_SIDED) builder.backfaceCulling(false);
-        if (sheet.style() == Style.COLOR_ONLY) builder.writeMask(WriteMask.COLOR);
-        if (sheet.grayscale()) builder.shaders(GRAYSCALE);
-        Material material = builder.build();
+        if (style == Style.TWO_SIDED) builder.backfaceCulling(false);
+        if (style == Style.COLOR_ONLY) builder.writeMask(WriteMask.COLOR);
+        if (grayscale) builder.shaders(GRAYSCALE);
+        return builder;
+    }
+
+    private static Model model(Sheet sheet) {
+        Material material =
+                material(sheet.style(), sheet.grayscale(), sheet.front())
+                        .texture(sheet.atlas())
+                        .build();
         return new SingleMeshModel(UnitQuad.INSTANCE, material);
     }
 

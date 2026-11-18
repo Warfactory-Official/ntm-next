@@ -45,6 +45,8 @@ public final class AmatFlashVisual implements EffectVisual<AmatFlashParticle>, S
     private final Vec3i origin;
     private final Matrix4f pose = new Matrix4f();
 
+    public static void initModels() {}
+
     public AmatFlashVisual(
             VisualizationContext context, AmatFlashParticle particle, float partialTick) {
         this.particle = particle;

@@ -150,6 +150,7 @@ public final class ArcFurnaceBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         long previousPower = power;
         float previousProgress = progress;
         float previousLift = lid;
@@ -190,7 +191,6 @@ public final class ArcFurnaceBlockEntity extends MachineBlockEntity
                 || progress != previousProgress
                 || lid != previousLift
                 || delay != previousDelay) setChanged();
-        networkPackNT(150);
     }
 
     private void refreshRecipes(boolean updateVisible) {

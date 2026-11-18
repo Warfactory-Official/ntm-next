@@ -133,6 +133,7 @@ public abstract class PumpBlockEntity extends BlockEntity
     }
 
     public final void tickServer() {
+        networkPackNT(150);
         var server = (ServerLevel) level;
         outputs.provide(server, this);
         hbm$syncSet$PumpBlockEntity$onGround(sampleGround(server));
@@ -156,7 +157,6 @@ public abstract class PumpBlockEntity extends BlockEntity
                 completedNoiseTurn = true;
             }
         }
-        networkPackNT(150);
     }
 
     private boolean sampleGround(ServerLevel server) {

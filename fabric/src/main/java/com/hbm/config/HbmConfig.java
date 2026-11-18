@@ -42,7 +42,7 @@ import net.minecraft.util.Mth;
 public class HbmConfig {
     private static final Path PATH =
             FabricLoader.getInstance().getConfigDir().resolve(ConfigFiles.FABRIC_FILE);
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson GSON = new Gson();
     private static final String INDENT = "  ";
 
     private static final File FILE = PATH.toFile();
@@ -117,6 +117,9 @@ public class HbmConfig {
             case STRING -> {
                 if (e instanceof JsonPrimitive p && p.isString()) return p.getAsString();
             }
+            case STRING_LIST -> {
+                if (e instanceof JsonArray array) return elements(array, entry);
+            }
         }
         if (e != null) {
             NuclearTech.LOGGER.warn(
@@ -125,6 +128,20 @@ public class HbmConfig {
                     entry.kind().name().toLowerCase(Locale.ROOT));
         }
         return entry.defaultValue();
+    }
+
+    private static List<String> elements(JsonArray array, ConfigEntry<?> entry) {
+        List<String> elements = new ArrayList<>(array.size());
+        for (JsonElement element : array) {
+            if (element instanceof JsonPrimitive p
+                    && p.isString()
+                    && entry.element().test(p.getAsString())) {
+                elements.add(p.getAsString());
+            } else {
+                NuclearTech.LOGGER.warn("'{}' rejects element {}", entry.key(), element);
+            }
+        }
+        return List.copyOf(elements);
     }
 
     public static void load() {
@@ -225,13 +242,18 @@ public class HbmConfig {
         return out.append("}\n").toString();
     }
 
-    private static JsonPrimitive literal(ConfigEntry<?> entry) {
+    private static JsonElement literal(ConfigEntry<?> entry) {
         Object value = values.get(entry);
         return switch (entry.kind()) {
             case BOOL -> new JsonPrimitive((Boolean) value);
             case INT -> new JsonPrimitive((Integer) value);
             case DOUBLE -> new JsonPrimitive((Double) value);
             case STRING -> new JsonPrimitive((String) value);
+            case STRING_LIST -> {
+                JsonArray array = new JsonArray();
+                for (Object element : (List<?>) value) array.add((String) element);
+                yield array;
+            }
         };
     }
 }

@@ -109,6 +109,7 @@ public class TeleporterBlockEntity extends BlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(15);
         if (target != null && power >= CONSUMPTION) {
             var pos = getBlockPos();
             var column =
@@ -124,7 +125,6 @@ public class TeleporterBlockEntity extends BlockEntity
                 attemptTravel(entities.get(index));
             }
         }
-        networkPackNT(15);
     }
 
     public void teleport(Entity entity) {

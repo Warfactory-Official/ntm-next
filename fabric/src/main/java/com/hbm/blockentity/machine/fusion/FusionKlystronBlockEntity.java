@@ -117,6 +117,7 @@ public class FusionKlystronBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         hbm$syncSet$FusionKlystronBlockEntity$maxPower(Math.max(1_000_000L, outputTarget * 100L));
         hbm$syncSet$FusionKlystronBlockEntity$power(
                 (long) (power + (ItemEnergyTransfer.extract(this, 0, maxPower - power, false))));
@@ -150,8 +151,6 @@ public class FusionKlystronBlockEntity extends MachineBlockEntity
             peerFacing = facing;
         }
         provideKyU(peer, output);
-
-        networkPackNT(100);
     }
 
     @Override

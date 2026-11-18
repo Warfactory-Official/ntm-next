@@ -34,6 +34,7 @@ import dev.engine_room.flywheel.lib.material.SimpleMaterial;
 import dev.engine_room.flywheel.lib.model.SimpleModel;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
 import dev.engine_room.flywheel.lib.util.RendererReloadCache;
+import dev.engine_room.flywheel.lib.util.ShaderWarmupRegistry;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.resources.Identifier;
@@ -108,52 +109,59 @@ public final class ItemMaterials {
         return builder.build();
     }
 
+    public static void registerWarmupVariants() {
+        for (Kind kind : new Kind[] {Kind.FLASH_DEPTH, Kind.BALEFIRE_GLINT}) {
+            ShaderWarmupRegistry.register(builder(kind, false).variant());
+        }
+    }
+
+    public static SimpleMaterial.Builder cutoutBuilder(boolean cull) {
+        return builder(Kind.CUTOUT, cull);
+    }
+
     private static Material build(Key key) {
+        return builder(key.kind(), key.cull()).texture(key.texture()).build();
+    }
+
+    private static SimpleMaterial.Builder builder(Kind kind, boolean cull) {
         var builder =
                 SimpleMaterial.builder()
-                        .texture(key.texture())
                         .mipmap(false)
-                        .backfaceCulling(key.cull())
+                        .backfaceCulling(cull)
                         .ambientOcclusion(false);
-        return switch (key.kind()) {
-            case CUTOUT -> builder.cutout(CutoutShaders.ONE_TENTH).build();
+        return switch (kind) {
+            case CUTOUT -> builder.cutout(CutoutShaders.ONE_TENTH);
             case TRANSLUCENT ->
                     builder.cutout(CutoutShaders.ONE_TENTH)
                             .transparency(Transparency.ORDER_INDEPENDENT)
-                            .writeMask(WriteMask.COLOR)
-                            .build();
+                            .writeMask(WriteMask.COLOR);
             case FLAT_CUTOUT ->
                     builder.cutout(CutoutShaders.ONE_TENTH)
                             .cardinalLightingMode(CardinalLightingMode.OFF)
-                            .useOverlay(false)
-                            .build();
+                            .useOverlay(false);
             case FLASH ->
                     builder.transparency(Transparency.ORDER_INDEPENDENT_ADDITIVE)
                             .writeMask(WriteMask.COLOR)
                             .useOverlay(false)
-                            .fog(EffectVisuals.FADE)
-                            .build();
+                            .fog(EffectVisuals.FADE);
             case FLASH_DEPTH ->
                     builder.transparency(Transparency.LIGHTNING)
                             .writeMask(WriteMask.COLOR_DEPTH)
                             .useOverlay(false)
-                            .fog(EffectVisuals.FADE)
-                            .build();
+                            .fog(EffectVisuals.FADE);
             case LIGHTS ->
                     builder.transparency(Transparency.ORDER_INDEPENDENT)
                             .writeMask(WriteMask.COLOR)
                             .useLight(false)
                             .useOverlay(false)
-                            .cardinalLightingMode(CardinalLightingMode.OFF)
-                            .build();
+                            .cardinalLightingMode(CardinalLightingMode.OFF);
             case BALEFIRE_GLINT ->
                     builder.transparency(Transparency.GLINT)
                             .writeMask(WriteMask.COLOR)
                             .depthTest(DepthTest.EQUAL)
                             .useOverlay(false)
                             .cardinalLightingMode(CardinalLightingMode.OFF)
-                            .fog(EffectVisuals.FADE)
-                            .build();
+                            .fog(EffectVisuals.FADE);
         };
     }
 

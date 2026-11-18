@@ -25,11 +25,14 @@ import dev.engine_room.flywheel.api.layout.FloatRepr;
 import dev.engine_room.flywheel.api.layout.Layout;
 import dev.engine_room.flywheel.api.layout.LayoutBuilder;
 import dev.engine_room.flywheel.api.layout.UnsignedIntegerRepr;
+import dev.engine_room.flywheel.lib.util.ShaderWarmupRegistry;
 import java.util.function.LongConsumer;
 import net.minecraft.resources.Identifier;
 import org.lwjgl.system.MemoryUtil;
 
 public final class ArmatureType implements InstanceType<ArmatureInstance> {
+    static final ArmatureType TYPE = new ArmatureType();
+
     private final Layout layout =
             LayoutBuilder.create()
                     .matrix("rootPose", FloatRepr.FLOAT, 4)
@@ -41,6 +44,12 @@ public final class ArmatureType implements InstanceType<ArmatureInstance> {
                     .vector("sphere", FloatRepr.FLOAT, 4)
                     .build();
     private final LongConsumer seed = address -> MemoryUtil.memSet(address, 0, layout.byteSize());
+
+    private ArmatureType() {}
+
+    public static void initTypes() {
+        ShaderWarmupRegistry.register(TYPE);
+    }
 
     @Override
     public ArmatureInstance create(InstanceHandle handle) {

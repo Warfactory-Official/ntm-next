@@ -121,6 +121,7 @@ public final class CyclotronBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(25);
         setPower(power + ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false));
         upgrades.scan(this, SLOT_UPGRADE_START, SLOT_UPGRADE_END);
         if (canProcess()) {
@@ -139,7 +140,6 @@ public final class CyclotronBlockEntity extends MachineBlockEntity
             setChanged();
         }
         flush.provide((ServerLevel) level, this);
-        networkPackNT(25);
     }
 
     public int getSpeed() {

@@ -155,6 +155,7 @@ public abstract class FabricationBlockEntity extends MachineBlockEntity
     }
 
     protected final void tickFabrication() {
+        networkPackNT(25);
         long oldPower = power;
         long oldCapacity = maxPower;
         long oldCost = consumption;
@@ -214,7 +215,6 @@ public abstract class FabricationBlockEntity extends MachineBlockEntity
                 || consumption != oldCost
                 || progress != oldProgress
                 || processTime != oldDuration) setChanged();
-        networkPackNT(25);
     }
 
     private boolean inputsChanged(List<? extends GenericRecipe> rows) {

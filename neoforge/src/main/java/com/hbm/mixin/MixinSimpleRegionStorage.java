@@ -19,11 +19,17 @@
 
 package com.hbm.mixin;
 
+import com.hbm.util.datafix.CellDataFixContext;
+import com.hbm.util.datafix.DataFixClock;
 import com.hbm.util.datafix.HbmDataFixers;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.datafix.DataFixTypes;
+import net.minecraft.world.level.chunk.storage.IOWorker;
 import net.minecraft.world.level.chunk.storage.SimpleRegionStorage;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,14 +40,33 @@ public abstract class MixinSimpleRegionStorage {
 
     @Shadow @Final private DataFixTypes dataFixType;
 
+    @Shadow @Final private IOWorker worker;
+
+    @ModifyReturnValue(method = "read", at = @At("RETURN"))
+    private CompletableFuture<Optional<CompoundTag>> hbm$datafixOwners(
+            CompletableFuture<Optional<CompoundTag>> read) {
+        return dataFixType == DataFixTypes.CHUNK
+                ? read.thenCompose(tag -> CellDataFixContext.prepare(tag, worker::loadAsync))
+                : read;
+    }
+
     @ModifyReturnValue(
             method =
                     "upgradeChunkTag(Lnet/minecraft/nbt/CompoundTag;ILnet/minecraft/nbt/CompoundTag;I)Lnet/minecraft/nbt/CompoundTag;",
             at = @At("RETURN"))
-    private CompoundTag hbm$upgradeNtmData(CompoundTag chunkTag) {
+    private CompoundTag hbm$upgradeNtmData(
+            CompoundTag chunkTag,
+            CompoundTag original,
+            int defaultVersion,
+            @Nullable CompoundTag context,
+            int targetVersion) {
         if (dataFixType == DataFixTypes.CHUNK) return HbmDataFixers.upgradeChunk(chunkTag);
-        if (dataFixType == DataFixTypes.ENTITY_CHUNK)
-            return HbmDataFixers.upgradeEntityChunk(chunkTag);
-        return chunkTag;
+        if (dataFixType != DataFixTypes.ENTITY_CHUNK) return chunkTag;
+        if (context != null && context.contains(DataFixClock.CONTEXT_GAME_TIME))
+            chunkTag =
+                    DataFixClock.withGameTime(
+                            chunkTag,
+                            context.getLong(DataFixClock.CONTEXT_GAME_TIME).orElseThrow());
+        return HbmDataFixers.upgradeEntityChunk(chunkTag);
     }
 }

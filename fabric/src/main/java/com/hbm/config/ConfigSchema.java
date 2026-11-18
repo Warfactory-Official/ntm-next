@@ -66,6 +66,37 @@ public final class ConfigSchema {
                     "ultra_larp_mode",
                     false,
                     "Require redstone or remote control to operate large doors by hand, except the water door.");
+    private static final String DOOR_SELECTORS =
+            " Entries name a block id (hbm:fire_door), every block of a "
+                    + "namespace (hbm:*) or a block tag (#c:doors); ids and namespaces of absent mods are allowed.";
+    public static final ConfigEntry<List<String>> DOOR_PULSE =
+            textList(
+                    Domain.RUNTIME,
+                    "doors",
+                    "pulse",
+                    List.of(),
+                    BlockSelector::valid,
+                    "Doors that toggle on each rising redstone edge instead of staying open while powered."
+                            + DOOR_SELECTORS);
+    public static final ConfigEntry<List<String>> DOOR_TOOLABLE =
+            textList(
+                    Domain.RUNTIME,
+                    "doors",
+                    "toolable",
+                    List.of(),
+                    BlockSelector::valid,
+                    "Doors whose redstone-only operation a screwdriver toggles per door; a locked door needs its key in "
+                            + "the off hand."
+                            + DOOR_SELECTORS);
+    public static final ConfigEntry<List<String>> DOOR_REDSTONE_ONLY =
+            textList(
+                    Domain.RUNTIME,
+                    "doors",
+                    "redstone_only",
+                    List.of(),
+                    BlockSelector::valid,
+                    "Doors that refuse operation by hand. A door also matched by toolable takes neither list."
+                            + DOOR_SELECTORS);
 
     public static final ConfigEntry<Boolean> ENABLE_BOMBER_SHORT_MODE =
             bool(
@@ -578,6 +609,9 @@ public final class ConfigSchema {
                     CONVEYOR_CRAM_MAX,
                     CONVEYOR_CRAM_EXPLODE,
                     ULTRA_LARP_MODE,
+                    DOOR_PULSE,
+                    DOOR_TOOLABLE,
+                    DOOR_REDSTONE_ONLY,
                     ENABLE_BOMBER_SHORT_MODE,
                     FAR_TRACKING_RANGE,
                     ENABLE_LBSM,

@@ -111,6 +111,14 @@ public class HbmConfig {
                                         entry.min(),
                                         entry.max());
                         case STRING -> b.define(path, (String) entry.defaultValue());
+                        case STRING_LIST ->
+                                b.defineListAllowEmpty(
+                                        path,
+                                        (List<?>) entry.defaultValue(),
+                                        () -> "",
+                                        value ->
+                                                value instanceof String text
+                                                        && entry.element().test(text));
                     });
         }
         return b.build();

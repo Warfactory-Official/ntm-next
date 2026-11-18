@@ -165,6 +165,8 @@ final class BobbleDraws {
     @Nullable Matrix4f propPivot;
     final Matrix4f labelLocal;
 
+    static void initModels() {}
+
     BobbleDraws(Bobble type, PoseStack root) {
         part(root, SOCKET_MESH, 0xFFFFFFFF, 0);
         Supplier<BobbleRenderer.Body> body =

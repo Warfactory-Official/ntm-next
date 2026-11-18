@@ -258,6 +258,7 @@ public final class MiningLaserBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(250);
         var server = (ServerLevel) level;
         fluidOutputs.provide(server, this);
         hbm$syncSet$MiningLaserBlockEntity$power(
@@ -305,7 +306,6 @@ public final class MiningLaserBlockEntity extends MachineBlockEntity
         }
         if (unloadRefreshPending) refreshUnloadTargets();
         unloadItems();
-        networkPackNT(250);
     }
 
     private void projectSpecialUpgrades() {

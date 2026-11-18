@@ -66,6 +66,7 @@ abstract class ItemComponentFix extends DataFix {
                                         .update("entities", this::walk)),
                 rule(HbmDataFixers.ENTITY_CHUNK, chunk -> chunk.update("Entities", this::walk)),
                 rule(HbmDataFixers.PLAYER, this::walk),
+                rule(HbmDataFixers.STRUCTURE, this::walk),
                 rule(HbmDataFixers.SEALED_ITEMS, contents -> contents.update("items", this::walk)));
     }
 

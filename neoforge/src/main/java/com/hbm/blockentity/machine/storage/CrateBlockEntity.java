@@ -199,7 +199,10 @@ public class CrateBlockEntity extends LockableBlockEntity implements PersistentD
 
     @Override
     public void writePersistent(DataComponentMap.Builder components) {
-        if (!ItemData.CRATE_KEEP_CONTENTS.get()) return;
+        if (!ItemData.CRATE_KEEP_CONTENTS.get()) {
+            components.set(ModDataComponents.STACKLOCK.get(), null);
+            return;
+        }
         unpackLootTable(null);
         boolean filled = !isEmpty();
         if (filled) {
@@ -216,9 +219,11 @@ public class CrateBlockEntity extends LockableBlockEntity implements PersistentD
         if (!lock.isDefault()) components.set(ModDataComponents.LOCK_STATE.get(), lock);
         if (spiders) components.set(ModDataComponents.SPIDERS.get(), Unit.INSTANCE);
         components.set(DataComponents.CUSTOM_NAME, getCustomName());
-        if (level != null && (filled || isLocked() || spiders)) {
-            components.set(ModDataComponents.STACKLOCK.get(), level.getRandom().nextLong());
-        }
+        components.set(
+                ModDataComponents.STACKLOCK.get(),
+                level != null && (filled || isLocked() || spiders)
+                        ? level.getRandom().nextLong()
+                        : null);
     }
 
     @Override

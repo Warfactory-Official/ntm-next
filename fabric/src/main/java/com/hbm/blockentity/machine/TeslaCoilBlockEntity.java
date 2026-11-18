@@ -56,6 +56,7 @@ public class TeslaCoilBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         arcTargets.clear();
         if (meteorBattery) power = MAX_POWER;
         if (power >= POWER_PER_ZAP) {
@@ -69,7 +70,6 @@ public class TeslaCoilBlockEntity extends MachineBlockEntity
                     null,
                     arcTargets);
         }
-        networkPackNT(100);
     }
 
     public void refreshMeteorBattery() {

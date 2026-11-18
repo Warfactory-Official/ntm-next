@@ -163,6 +163,7 @@ public class RadarBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         long before = power;
         hbm$syncSet$RadarBlockEntity$power(
                 (long)
@@ -175,10 +176,10 @@ public class RadarBlockEntity extends MachineBlockEntity
                                 + (ItemEnergyTransfer.extract(
                                         this, 0, getMaxPower() - power, false))));
         hbm$syncSet$RadarBlockEntity$jammed(false);
-        scan((ServerLevel) level);
+        boolean spent = scan((ServerLevel) level);
         if (power != before) setChanged();
         updateRedstone();
-        if (!isMuffled() && ++pingTicks >= 80 && power > 0) {
+        if (!isMuffled() && ++pingTicks >= 80 && (spent || power > 0)) {
             WorldSounds.machine(
                     level,
                     null,
@@ -192,7 +193,6 @@ public class RadarBlockEntity extends MachineBlockEntity
         if (showMap) sampleTerrain((ServerLevel) level);
         pushDisplay();
         if (clearMap && terrain.clear()) setChanged();
-        networkPackNT(50);
         hbm$syncSet$RadarBlockEntity$clearMap(false);
         flushSyncBlob();
     }
@@ -210,16 +210,16 @@ public class RadarBlockEntity extends MachineBlockEntity
         return parameters;
     }
 
-    private void scan(ServerLevel server) {
+    private boolean scan(ServerLevel server) {
         if (worldPosition.getY() < MachineData.RADAR_ALTITUDE.get()) {
             entries.clear();
-            return;
+            return false;
         }
         long cost = MachineData.RADAR_CONSUMPTION.get();
         if (power < cost) {
             hbm$syncSet$RadarBlockEntity$power(0);
             entries.clear();
-            return;
+            return false;
         }
         hbm$syncSet$RadarBlockEntity$power((long) (power - (cost)));
         var settings = scanParameters();
@@ -235,7 +235,7 @@ public class RadarBlockEntity extends MachineBlockEntity
             if (entity instanceof LivingEntity living && LivingHazards.digamma(living) > 0.001D) {
                 hbm$syncSet$RadarBlockEntity$jammed(true);
                 entries.clear();
-                return;
+                return true;
             }
             if (entity instanceof RadarProvider contact
                     && contact.canBeSeenBy(this)
@@ -264,6 +264,7 @@ public class RadarBlockEntity extends MachineBlockEntity
                     worldPosition.getZ());
             SatelliteRayEvents.report(server, worldPosition, SatelliteRayEvents.RADAR_WAVES, 200);
         }
+        return true;
     }
 
     private void retainContact(

@@ -104,6 +104,7 @@ public class WavelengthLaserBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(250);
         long priorEnergy = energy;
         var priorWavelength = wavelength;
         int priorReach = reach;
@@ -117,7 +118,6 @@ public class WavelengthLaserBlockEntity extends MachineBlockEntity
         if (changed != 0) syncUnitsChanged(1, changed);
         if (energy != priorEnergy || wavelength != priorWavelength || reach != priorReach)
             markChanged();
-        networkPackNT(250);
     }
 
     public void runServerOperation() {

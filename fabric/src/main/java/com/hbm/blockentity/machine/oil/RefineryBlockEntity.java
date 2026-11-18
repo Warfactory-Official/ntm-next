@@ -183,12 +183,12 @@ public class RefineryBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         tickTilt(Tiltable.Policy.CONFIGURED, false);
         boolean ran = false;
         if (!hasExploded()) ran = operate();
         else if (onFire) burn();
         if (running != ran) hbm$syncSet$RefineryBlockEntity$running(ran);
-        networkPackNT(150);
     }
 
     private boolean operate() {

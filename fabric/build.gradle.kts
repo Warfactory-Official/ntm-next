@@ -4,7 +4,7 @@ import java.nio.file.StandardCopyOption
 plugins {
     java
     `maven-publish`
-    id("net.fabricmc.fabric-loom") version ("1.19.3")
+    id("net.fabricmc.fabric-loom") version ("1.19.4")
 }
 
 version = property("mod_version")!!

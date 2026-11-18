@@ -21,8 +21,8 @@ package com.hbm.blockentity.door;
 
 import com.hbm.blockentity.MachineSoundProvider;
 import com.hbm.blockentity.SoundEmitter;
-import com.hbm.blockentity.security.LockableBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
+import com.hbm.blocks.generic.DoorBaseBlock;
 import com.hbm.blocks.generic.GenericDoorBlock;
 import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.blocks.multiblock.MultiblockGeometryCellBlock;
@@ -50,7 +50,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
-public class DoorBlockEntity extends LockableBlockEntity
+public class DoorBlockEntity extends DoorBaseBlockEntity
         implements SyncUnitSchema, MachineSoundProvider, SoundEmitter {
     public static final byte CLOSED = 0;
     public static final byte OPEN = 1;
@@ -86,7 +86,7 @@ public class DoorBlockEntity extends LockableBlockEntity
     }
 
     protected DoorBlockEntity(BlockEntityType<?> type, BlockPos position, BlockState state) {
-        super(type, position, state, 0);
+        super(type, position, state);
         declaration = ((GenericDoorBlock) state.getBlock()).kind;
     }
 
@@ -133,16 +133,22 @@ public class DoorBlockEntity extends LockableBlockEntity
         }
         var state = getBlockState();
         boolean open = phase != CLOSED;
-        if (state.getValue(GenericDoorBlock.OPEN) != open)
+        if (state.getValue(DoorBaseBlock.OPEN) != open)
             level.setBlock(
-                    worldPosition, state.setValue(GenericDoorBlock.OPEN, open), Block.UPDATE_ALL);
+                    worldPosition, state.setValue(DoorBaseBlock.OPEN, open), Block.UPDATE_ALL);
         networkPackNT(100);
-        if (phase == OPEN && signalCount < 0 || phase == CLOSED && signalCount > 0)
+        if (!pulses() && (phase == OPEN && signalCount < 0 || phase == CLOSED && signalCount > 0))
             requestToggle(-1);
+        tickRedstone(signalCount > 0);
         if (signalCount < 0) {
             signalCount = 0;
             markChanged();
         }
+    }
+
+    @Override
+    protected void toggleOnSignal() {
+        requestToggle(-1);
     }
 
     private void applyRows(boolean opening) {

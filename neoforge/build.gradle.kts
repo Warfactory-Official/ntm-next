@@ -254,7 +254,7 @@ dependencies {
 
     compileOnly("curse.maven:neocontinuity-1377279:8896544")
     compileOnly("maven.modrinth:fusion-connected-textures:1.3.16-neoforge-mc26.2")
-    compileOnly("maven.modrinth:ctmlib:26.2.0.2")
+    compileOnly("maven.modrinth:ctmlib:26.2.0.3")
 }
 
 neoForge {

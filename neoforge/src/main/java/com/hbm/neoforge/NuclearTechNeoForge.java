@@ -20,6 +20,7 @@
 package com.hbm.neoforge;
 
 import com.hbm.NuclearTech;
+import com.hbm.blocks.generic.DoorControls;
 import com.hbm.capability.CapabilityInvalidation;
 import com.hbm.capability.NtmCapabilities;
 import com.hbm.command.ModCommands;
@@ -145,6 +146,7 @@ public final class NuclearTechNeoForge {
                     HazardSystem.clearCaches();
                     BlockConversionTable.forgetTags();
                     NTMFluidProperties.bindEquivalents();
+                    DoorControls.tagsBound();
                 });
         NeoForge.EVENT_BUS.addListener(
                 (PlayerInteractEvent.RightClickBlock event) -> {

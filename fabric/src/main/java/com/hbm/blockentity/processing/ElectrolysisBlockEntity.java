@@ -185,6 +185,7 @@ public class ElectrolysisBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         long previousPower = power;
         int previousFluidProgress = progressFluid;
         int previousOreProgress = progressOre;
@@ -268,7 +269,6 @@ public class ElectrolysisBlockEntity extends MachineBlockEntity
                 || progressOre != previousOreProgress
                 || processFluidTime != previousFluidTime
                 || processOreTime != previousOreTime) setChanged();
-        networkPackNT(50);
     }
 
     private boolean admitsFluid(ElectrolyserFluidRecipe recipe) {

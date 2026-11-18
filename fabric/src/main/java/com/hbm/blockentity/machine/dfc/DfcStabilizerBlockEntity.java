@@ -68,6 +68,7 @@ public class DfcStabilizerBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(250);
         setWatts(watts);
         hbm$syncSet$DfcStabilizerBlockEntity$beam(0);
         int square = watts * watts, demand = square * square;
@@ -93,7 +94,6 @@ public class DfcStabilizerBlockEntity extends MachineBlockEntity
                 setChanged();
             }
         }
-        networkPackNT(250);
     }
 
     public void setWatts(int value) {

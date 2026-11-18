@@ -20,6 +20,7 @@
 package com.hbm.command;
 
 import com.hbm.config.ConfigEntry.Domain;
+import com.hbm.config.ConfigEntry.Kind;
 import com.hbm.config.ConfigEntry;
 import com.hbm.config.ConfigSchema;
 import com.hbm.config.ConfigStore;
@@ -34,6 +35,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,10 +101,11 @@ public final class ConfigCommand {
                                                             entry,
                                                             store.get(),
                                                             feedback)));
-            sets.computeIfAbsent(entry.section(), LiteralArgumentBuilder::literal)
-                    .then(
-                            LiteralArgumentBuilder.<S>literal(entry.key())
-                                    .then(valueNode(entry, feedback)));
+            LiteralArgumentBuilder<S> key =
+                    LiteralArgumentBuilder.<S>literal(entry.key()).then(valueNode(entry, feedback));
+            if (entry.kind() == Kind.STRING_LIST)
+                key.executes(ctx -> apply(ctx, entry, List.of(), feedback));
+            sets.computeIfAbsent(entry.section(), LiteralArgumentBuilder::literal).then(key);
         }
         gets.values().forEach(get::then);
         sets.values().forEach(set::then);
@@ -166,7 +169,33 @@ public final class ConfigCommand {
                                                     entry,
                                                     StringArgumentType.getString(ctx, VALUE),
                                                     feedback));
+            case STRING_LIST ->
+                    RequiredArgumentBuilder.<S, String>argument(
+                                    VALUE, StringArgumentType.greedyString())
+                            .executes(
+                                    ctx ->
+                                            apply(
+                                                    ctx,
+                                                    entry,
+                                                    elements(
+                                                            entry,
+                                                            StringArgumentType.getString(
+                                                                    ctx, VALUE)),
+                                                    feedback));
         };
+    }
+
+    private static List<String> elements(ConfigEntry<?> entry, String text)
+            throws CommandSyntaxException {
+        List<String> elements = List.of(text.trim().split("\\s+"));
+        for (String element : elements) {
+            if (!entry.element().test(element)) {
+                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS
+                        .dispatcherParseException()
+                        .create(element);
+            }
+        }
+        return elements;
     }
 
     @SuppressWarnings("unchecked")

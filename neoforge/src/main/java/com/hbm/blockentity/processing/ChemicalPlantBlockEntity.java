@@ -140,6 +140,7 @@ public class ChemicalPlantBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         var recipe = module.getRecipe();
         long ceiling =
                 Math.max(
@@ -172,7 +173,6 @@ public class ChemicalPlantBlockEntity extends MachineBlockEntity
         }
         if (isProgressing || module.markDirty) setChanged();
         flush.provide((ServerLevel) level, this);
-        networkPackNT(100);
     }
 
     @Override

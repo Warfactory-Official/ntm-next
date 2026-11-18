@@ -69,7 +69,6 @@ public class TurretRichardBlockEntity extends TurretBaseNTBlockEntity {
         slotsAfterShot = SLOTS_UNREAD;
         super.tickServer();
 
-        int fired = magazine;
         if (reload > 0 && --reload == 0) hbm$syncSet$TurretRichardBlockEntity$magazine(MAGAZINE);
         boolean rounds =
                 switch (slotsAfterShot) {
@@ -81,7 +80,6 @@ public class TurretRichardBlockEntity extends TurretBaseNTBlockEntity {
         else if (magazine <= 0 && reload <= 0) reload = RELOAD_TICKS;
 
         if (magazine != before) markChanged();
-        if (magazine != fired) networkPackNT(250);
     }
 
     @Override

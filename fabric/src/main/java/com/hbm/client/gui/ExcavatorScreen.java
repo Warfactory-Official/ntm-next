@@ -103,7 +103,7 @@ public class ExcavatorScreen extends InfoContainerScreen<ExcavatorMenu> {
                     256);
         }
 
-        if (menu.getPower() > be.getPowerConsumption()) {
+        if (menu.getPower() >= be.getPowerConsumption()) {
             graphics.blit(
                     RenderPipelines.GUI_TEXTURED, TEXTURE, 224, 4, 239.0F, 156.0F, 9, 12, 256, 256);
         }

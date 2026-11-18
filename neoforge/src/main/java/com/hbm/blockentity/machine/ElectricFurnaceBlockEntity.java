@@ -92,6 +92,7 @@ public final class ElectricFurnaceBlockEntity extends SmeltingFurnaceBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         if (restartDelay > 0) restartDelay--;
         long received = ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
         if (received != 0) setPower(power + received);
@@ -138,7 +139,6 @@ public final class ElectricFurnaceBlockEntity extends SmeltingFurnaceBlockEntity
         if (state.getValue(BlockStateProperties.LIT) != lit) {
             level.setBlock(worldPosition, state.setValue(BlockStateProperties.LIT, lit), 3);
         }
-        networkPackNT(50);
     }
 
     private @Nullable RecipeHolder<SmeltingRecipe> currentRecipe(ServerLevel server) {

@@ -24,7 +24,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 
 public interface Synced extends SyncSource {
-
     void networkPackNT(int range);
 
     void networkPackNTTracking();

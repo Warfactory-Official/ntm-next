@@ -826,6 +826,7 @@ public class FalloutRainEntity extends ExplosionChunkloadingEntity
         if (pendingChunks != 0) return;
         if (sectionUpdates != null && sectionUpdates.hasPending()) return;
         if (!waitingRoom.isEmpty()) return;
+        if (!relighting.isEmpty()) return;
         if (!U.compareAndSetInt(this, OFF_FINISH_QUEUED, 0, 1)) return;
 
         ConcurrentLinkedQueue<Runnable> tasks = mainTasks;
@@ -840,6 +841,7 @@ public class FalloutRainEntity extends ExplosionChunkloadingEntity
         if (pendingChunks != 0) return;
         if (sectionUpdates != null && sectionUpdates.hasPending()) return;
         if (!waitingRoom.isEmpty()) return;
+        if (!relighting.isEmpty()) return;
 
         U.putIntRelease(this, OFF_FINISHED, 1);
         if (!isRemoved()) discard();

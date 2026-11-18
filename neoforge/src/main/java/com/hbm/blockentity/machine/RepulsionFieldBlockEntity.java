@@ -113,6 +113,7 @@ public final class RepulsionFieldBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(500);
         long oldEnergy = storedEnergy;
         int oldHealth = shieldHealth;
         int oldRecovery = recoveryTicks;
@@ -135,7 +136,6 @@ public final class RepulsionFieldBlockEntity extends MachineBlockEntity
                 || oldHealth != shieldHealth
                 || oldRecovery != recoveryTicks
                 || oldFlash != hitFlashTicks) markChanged();
-        networkPackNT(500);
     }
 
     @Override

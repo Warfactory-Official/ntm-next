@@ -83,4 +83,6 @@ public final class GlyphidInstance extends TransformedInstance {
                 MemoryUtil.memGetFloat(address + JOINTS + Float.BYTES),
                 MemoryUtil.memGetFloat(address + JOINTS + 2 * Float.BYTES));
     }
+
+    public static void initTypes() {}
 }

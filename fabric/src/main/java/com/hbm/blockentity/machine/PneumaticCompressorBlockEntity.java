@@ -148,6 +148,7 @@ public class PneumaticCompressorBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         long charged = ItemEnergyTransfer.extract(this, SLOT_BATTERY, maxPower - power, false);
         if (charged != 0) {
             hbm$syncSet$PneumaticCompressorBlockEntity$power((long) (power + (charged)));
@@ -205,7 +206,6 @@ public class PneumaticCompressorBlockEntity extends MachineBlockEntity
         }
 
         flush.provide((ServerLevel) level, this);
-        networkPackNT(100);
     }
 
     private boolean configureOutput(@Nullable CompressorRecipe recipe) {

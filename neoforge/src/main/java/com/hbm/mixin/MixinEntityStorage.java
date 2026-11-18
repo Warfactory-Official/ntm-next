@@ -19,15 +19,32 @@
 
 package com.hbm.mixin;
 
+import com.hbm.util.datafix.DataFixClock;
 import com.hbm.util.datafix.HbmDataFixers;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.storage.EntityStorage;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(EntityStorage.class)
 public abstract class MixinEntityStorage {
+    @Shadow @Final private ServerLevel level;
+
+    @ModifyArg(
+            method = "*",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/world/level/chunk/storage/SimpleRegionStorage;upgradeChunkTag(Lnet/minecraft/nbt/CompoundTag;I)Lnet/minecraft/nbt/CompoundTag;"),
+            index = 0)
+    private CompoundTag hbm$datafixClock(CompoundTag tag) {
+        return DataFixClock.withGameTime(tag, level.getGameTime());
+    }
 
     @ModifyArg(
             method = "storeEntities",

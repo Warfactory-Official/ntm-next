@@ -40,6 +40,7 @@ final class HbmRootSchema extends Schema {
         schema.registerType(false, HbmDataFixers.ENTITY_CHUNK, DSL::remainder);
         schema.registerType(false, HbmDataFixers.PLAYER, DSL::remainder);
         schema.registerType(false, HbmDataFixers.SEALED_ITEMS, DSL::remainder);
+        schema.registerType(false, HbmDataFixers.STRUCTURE, DSL::remainder);
     }
 
     @Override

@@ -213,6 +213,7 @@ public class CrystalProcessorBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(25);
         long previousPower = power;
         short previousProgress = progress;
         hbm$syncSet$CrystalProcessorBlockEntity$power(
@@ -247,7 +248,6 @@ public class CrystalProcessorBlockEntity extends MachineBlockEntity
             }
         }
         if (power != previousPower || progress != previousProgress) setChanged();
-        networkPackNT(25);
     }
 
     @Override

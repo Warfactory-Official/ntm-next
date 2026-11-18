@@ -129,6 +129,7 @@ public final class PurexBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         long capacity = SelectedProcessorSupport.capacity(module, maxPower, power, MAX_POWER);
         if (capacity != maxPower) {
             hbm$syncSet$PurexBlockEntity$maxPower(capacity);
@@ -144,7 +145,6 @@ public final class PurexBlockEntity extends MachineBlockEntity
         hbm$syncSet$PurexBlockEntity$isProgressing(module.didProcess);
         if (module.markDirty || isProgressing) setChanged();
         flush.provide((ServerLevel) level, this);
-        networkPackNT(100);
     }
 
     @Override

@@ -176,6 +176,7 @@ public class PyroOvenBlockEntity extends PollutingMachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         ServerLevel server = (ServerLevel) level;
         hbm$syncSet$PyroOvenBlockEntity$power(
                 (long)
@@ -221,8 +222,6 @@ public class PyroOvenBlockEntity extends PollutingMachineBlockEntity
             if (progress != 0F) markChanged();
             hbm$syncSet$PyroOvenBlockEntity$progress(0F);
         }
-
-        networkPackNT(50);
     }
 
     @Override

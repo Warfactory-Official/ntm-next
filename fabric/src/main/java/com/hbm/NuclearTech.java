@@ -20,8 +20,12 @@
 package com.hbm;
 
 import com.hbm.advancement.HbmCriteria;
+import com.hbm.api.energymk2.PowerGraph;
 import com.hbm.api.energymk2.PowerNetwork;
 import com.hbm.api.fluidmk2.FluidNetwork;
+import com.hbm.api.fluidmk2.FluidPipeGraph;
+import com.hbm.api.foundry.FoundryChannelGraph;
+import com.hbm.api.ntl.PneumaticNetwork;
 import com.hbm.blockentity.ChunkPublication;
 import com.hbm.blockentity.StructureAssemblyBlockEntity;
 import com.hbm.blockentity.machine.RadarBlockEntity;
@@ -29,6 +33,7 @@ import com.hbm.blockentity.prop.PedestalBlockEntity;
 import com.hbm.blocks.FlammableBlocks;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.DoorControls;
 import com.hbm.blocks.multiblock.AssembledMembers;
 import com.hbm.blocks.network.ChunkDuctNodes;
 import com.hbm.blocks.network.GeneratedConductors;
@@ -97,6 +102,7 @@ import com.hbm.sound.ModSounds;
 import com.hbm.stats.ModStats;
 import com.hbm.uninos.graph.EndpointRegistry;
 import com.hbm.uninos.graph.LevelNodeGraph;
+import com.hbm.uninos.networkproviders.RebarGraph;
 import com.hbm.util.ChunkUtil;
 import com.hbm.world.HbmFeatures;
 import com.hbm.world.HbmWorldgen;
@@ -183,6 +189,12 @@ public final class NuclearTech {
         Registrar.registerDataPackRegistry(FalloutConfigJSON.REGISTRY, FalloutConfigJSON.CODEC);
         NtmCapabilities.registerTokens();
         NTMFluids.init();
+        load(
+                PowerGraph.class,
+                FluidPipeGraph.class,
+                PneumaticNetwork.class,
+                FoundryChannelGraph.class,
+                RebarGraph.class);
         LevelNodeGraph.init();
         PowerNetwork.init();
         FluidNetwork.init();
@@ -304,6 +316,7 @@ public final class NuclearTech {
         ConfigStore runtime = ((RuntimeConfig) HbmConfig.RUNTIME).store();
         RadiationConfig.loadFrom(runtime);
         BombConfig.loadFrom(runtime);
+        DoorControls.reload(runtime);
     }
 
     public static void deriveClientConfigFacades() {

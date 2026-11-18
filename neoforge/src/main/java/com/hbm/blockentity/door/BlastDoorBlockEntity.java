@@ -19,9 +19,8 @@
 
 package com.hbm.blockentity.door;
 
-import com.hbm.blockentity.security.LockableBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
-import com.hbm.blocks.generic.GenericDoorBlock;
+import com.hbm.blocks.generic.DoorBaseBlock;
 import com.hbm.blocks.multiblock.MultiblockGeometryCellBlock;
 import com.hbm.sound.ModSounds;
 import com.hbm.sound.WorldSounds;
@@ -38,7 +37,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
-public class BlastDoorBlockEntity extends LockableBlockEntity {
+public class BlastDoorBlockEntity extends DoorBaseBlockEntity {
     public static final int SEALED = 0;
     public static final int TRAVELLING = 1;
     public static final int RETRACTED = 2;
@@ -55,10 +54,9 @@ public class BlastDoorBlockEntity extends LockableBlockEntity {
     public int phase;
     public int elapsedTicks;
     private boolean poweredNow;
-    private boolean powerLatched;
 
     public BlastDoorBlockEntity(BlockPos pos, BlockState state) {
-        super(ModBlockEntities.BLAST_DOOR.get(), pos, state, 0);
+        super(ModBlockEntities.BLAST_DOOR.get(), pos, state);
     }
 
     public void requestToggle(@Nullable Player player) {
@@ -150,20 +148,22 @@ public class BlastDoorBlockEntity extends LockableBlockEntity {
                     !isLocked()
                             && (server.hasNeighborSignal(worldPosition)
                                     || server.hasNeighborSignal(worldPosition.above(6)));
-            if (!poweredNow && powerLatched) {
-                powerLatched = false;
-                setChanged();
-            }
         }
     }
 
     @Override
+    protected boolean pulses() {
+        return true;
+    }
+
+    @Override
+    protected void toggleOnSignal() {
+        requestToggle(null);
+    }
+
+    @Override
     public void tickServer() {
-        if (poweredNow && !powerLatched) {
-            powerLatched = true;
-            setChanged();
-            requestToggle(null);
-        }
+        tickRedstone(poweredNow);
         if (phase == TRAVELLING) {
             hbm$syncSet$BlastDoorBlockEntity$elapsedTicks((int) (elapsedTicks + 1));
             setChanged();
@@ -195,9 +195,9 @@ public class BlastDoorBlockEntity extends LockableBlockEntity {
         }
         var state = getBlockState();
         boolean open = phase != SEALED;
-        if (state.getValue(GenericDoorBlock.OPEN) != open)
+        if (state.getValue(DoorBaseBlock.OPEN) != open)
             level.setBlock(
-                    worldPosition, state.setValue(GenericDoorBlock.OPEN, open), Block.UPDATE_ALL);
+                    worldPosition, state.setValue(DoorBaseBlock.OPEN, open), Block.UPDATE_ALL);
         networkPackNT(100);
     }
 
@@ -239,7 +239,6 @@ public class BlastDoorBlockEntity extends LockableBlockEntity {
         hbm$syncSet$BlastDoorBlockEntity$retracting(input.getBooleanOr("isOpening", false));
         hbm$syncSet$BlastDoorBlockEntity$phase(decodedPhase(input.getIntOr("state", SEALED)));
         hbm$syncSet$BlastDoorBlockEntity$elapsedTicks(input.getIntOr("timer", 0));
-        powerLatched = input.getBooleanOr("redstoned", false);
     }
 
     @Override
@@ -248,7 +247,6 @@ public class BlastDoorBlockEntity extends LockableBlockEntity {
         output.putBoolean("isOpening", retracting);
         output.putInt("state", phase);
         output.putInt("timer", elapsedTicks);
-        output.putBoolean("redstoned", powerLatched);
     }
 
     private static final class LockVisit {

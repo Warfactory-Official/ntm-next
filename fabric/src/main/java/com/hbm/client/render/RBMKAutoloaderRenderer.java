@@ -39,7 +39,6 @@ public class RBMKAutoloaderRenderer
         implements BlockEntityRenderer<RBMKAutoloaderBlockEntity, RBMKAutoloaderRenderer.State>,
                 ConcurrentRenderStateExtraction {
 
-    private static final int PART_BASE = ResourceManager.rbmk_autoloader.partId("Base");
     private static final int PART_PISTON = ResourceManager.rbmk_autoloader.partId("Piston");
 
     private static final RenderType LOADER =
@@ -85,11 +84,6 @@ public class RBMKAutoloaderRenderer
 
         int light = state.lightCoords;
         HFRWavefrontObject model = ResourceManager.rbmk_autoloader;
-
-        collector.submitCustomGeometry(
-                poseStack,
-                LOADER,
-                (pose, buffer) -> model.renderPart(pose, buffer, light, -1, PART_BASE));
 
         poseStack.translate(0.0, state.piston * -TRAVEL + TRAVEL, 0.0);
         collector.submitCustomGeometry(

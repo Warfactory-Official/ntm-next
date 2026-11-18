@@ -83,6 +83,7 @@ public class DeuteriumExtractorBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         if (energyReady()
                 && feed.getFill() >= REQUIRED_INPUT
                 && product.getFill() < product.getMaxFill()) {
@@ -95,7 +96,6 @@ public class DeuteriumExtractorBlockEntity extends MachineBlockEntity
             setPower(energy - getMaxPower() / 20L);
         }
         flush.provide((ServerLevel) level, this);
-        networkPackNT(50);
     }
 
     @Override

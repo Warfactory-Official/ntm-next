@@ -193,6 +193,7 @@ public abstract class OilDrillBaseBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(25);
         long priorPower = power;
 
         boolean unloaded = tanks[0].unloadTank(SLOT_OIL_IN, SLOT_OIL_OUT, inventory);
@@ -250,7 +251,6 @@ public abstract class OilDrillBaseBlockEntity extends MachineBlockEntity
         }
 
         if (power != priorPower) markChanged();
-        networkPackNT(25);
     }
 
     private long getPowerReqEff() {

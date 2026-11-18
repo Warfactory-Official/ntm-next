@@ -115,6 +115,7 @@ public class VacuumRefineryBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         long charged = ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
         if (charged != 0L) hbm$syncSet$VacuumRefineryBlockEntity$power((long) (power + (charged)));
         boolean changed = column.fillFeed(inventory, SLOT_FLUID_ID);
@@ -123,7 +124,6 @@ public class VacuumRefineryBlockEntity extends MachineBlockEntity
         if (changed) markChanged();
         flush.provide((ServerLevel) level, this);
         if (running != ran) hbm$syncSet$VacuumRefineryBlockEntity$running(ran);
-        networkPackNT(150);
     }
 
     private boolean refine() {

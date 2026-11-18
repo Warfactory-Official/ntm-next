@@ -54,7 +54,8 @@ import org.joml.Vector4f;
 import org.joml.Vector4fc;
 import org.jspecify.annotations.Nullable;
 
-final class RadVisVisual implements EffectVisual<RadVisVisual.RadVisEffect>, SimpleDynamicVisual {
+public final class RadVisVisual
+        implements EffectVisual<RadVisVisual.RadVisEffect>, SimpleDynamicVisual {
 
     private static final Material DEPTH = material(DepthTest.LEQUAL);
     private static final Material THROUGH = material(DepthTest.OFF);
@@ -72,6 +73,8 @@ final class RadVisVisual implements EffectVisual<RadVisVisual.RadVisEffect>, Sim
     private Map<ModelKey, Model> models = new HashMap<>();
     private final Matrix4f pose = new Matrix4f();
     private RadVisOverlay.@Nullable Frame last;
+
+    public static void initModels() {}
 
     private RadVisVisual(VisualizationContext context) {
         this.context = context;

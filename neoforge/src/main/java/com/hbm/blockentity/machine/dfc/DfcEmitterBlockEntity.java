@@ -100,6 +100,7 @@ public class DfcEmitterBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(250);
         setWatts(watts);
         hbm$syncSet$DfcEmitterBlockEntity$beam(0);
         if (joules > 0 || prev > 0) {
@@ -131,7 +132,6 @@ public class DfcEmitterBlockEntity extends MachineBlockEntity
             hbm$syncSet$DfcEmitterBlockEntity$prev(0);
             setChanged();
         }
-        networkPackNT(250);
     }
 
     private void fire(long energy) {

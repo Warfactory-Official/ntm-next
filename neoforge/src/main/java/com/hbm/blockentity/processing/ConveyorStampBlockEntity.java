@@ -130,6 +130,7 @@ public final class ConveyorStampBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         if (pause > 0) {
             pause--;
         } else if (power >= 100 && (retracting || press > 0 || admit())) {
@@ -150,7 +151,6 @@ public final class ConveyorStampBlockEntity extends MachineBlockEntity
             }
             setChanged();
         }
-        networkPackNT(50);
     }
 
     @Override

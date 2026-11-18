@@ -236,6 +236,7 @@ public class AssemblyFactoryBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         long prevPower = power;
         long prevMaxPower = maxPower;
         boolean changed = false;
@@ -282,8 +283,6 @@ public class AssemblyFactoryBlockEntity extends MachineBlockEntity
 
         if (dirtyThisTick || power != prevPower) setChanged();
         else if (changed || maxPower != prevMaxPower) markChanged();
-
-        networkPackNT(100);
     }
 
     @Override

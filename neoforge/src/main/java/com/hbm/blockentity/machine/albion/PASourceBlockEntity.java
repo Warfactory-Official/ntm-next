@@ -126,7 +126,7 @@ public class PASourceBlockEntity extends CooledAcceleratorBlockEntity
     }
 
     @Override
-    public void tickServer() {
+    protected void tickAccelerator() {
         hbm$syncSet$CooledAcceleratorBlockEntity$power(
                 (long)
                         (power
@@ -149,8 +149,6 @@ public class PASourceBlockEntity extends CooledAcceleratorBlockEntity
                 break;
             }
         }
-
-        super.tickServer();
     }
 
     public void steppy() {

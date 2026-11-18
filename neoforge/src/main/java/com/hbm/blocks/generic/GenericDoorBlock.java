@@ -22,7 +22,6 @@ package com.hbm.blocks.generic;
 import com.hbm.blockentity.door.DoorBlockEntity;
 import com.hbm.blockentity.door.DoorType;
 import com.hbm.blocks.TickingEntityBlock;
-import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.config.HbmConfig;
 import com.hbm.config.RuntimeConfig;
 import com.hbm.interfaces.ToolInteractionHandler;
@@ -42,7 +41,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -50,10 +48,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-public class GenericDoorBlock extends MultiblockCoreBlock
+public class GenericDoorBlock extends DoorBaseBlock
         implements TickingEntityBlock, TriggerHandler, ToolInteractionHandler {
     public static final IntegerProperty SKIN = IntegerProperty.create("skin", 0, 6);
-    public static final BooleanProperty OPEN = BooleanProperty.create("open");
 
     private static @Nullable IntegerProperty constructionSkin;
 
@@ -96,7 +93,6 @@ public class GenericDoorBlock extends MultiblockCoreBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(OPEN);
         if (constructionSkin != null) {
             builder.add(constructionSkin);
         }
@@ -166,7 +162,7 @@ public class GenericDoorBlock extends MultiblockCoreBlock
             return InteractionResult.SUCCESS;
         }
         var door = doorAt(level, pos);
-        return door != null && door.requestToggle(player)
+        return door != null && !door.isRedstoneOnly() && door.requestToggle(player)
                 ? InteractionResult.SUCCESS
                 : InteractionResult.PASS;
     }

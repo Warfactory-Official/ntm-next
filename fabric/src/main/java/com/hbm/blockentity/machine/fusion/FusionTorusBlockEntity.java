@@ -225,6 +225,7 @@ public class FusionTorusBlockEntity extends CooledAcceleratorBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         ServerLevel serverLevel = (ServerLevel) level;
 
         tickTilt(Tiltable.Policy.CONFIGURED, true);
@@ -324,7 +325,6 @@ public class FusionTorusBlockEntity extends CooledAcceleratorBlockEntity
             }
         }
 
-        networkPackNT(150);
         hbm$syncSet$FusionTorusBlockEntity$klystronEnergy(0);
     }
 

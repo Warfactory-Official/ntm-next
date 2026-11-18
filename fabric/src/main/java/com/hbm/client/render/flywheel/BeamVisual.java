@@ -39,6 +39,7 @@ import dev.engine_room.flywheel.lib.model.LineModelBuilder;
 import dev.engine_room.flywheel.lib.model.QuadIndexSequence;
 import dev.engine_room.flywheel.lib.model.SingleMeshModel;
 import dev.engine_room.flywheel.lib.util.OverlayTexture;
+import dev.engine_room.flywheel.lib.util.ShaderWarmupRegistry;
 import dev.engine_room.flywheel.lib.visual.AbstractVisual;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -98,31 +99,30 @@ public final class BeamVisual extends AbstractVisual {
         this.width = width;
     }
 
+    public static void registerWarmupVariants() {
+        ShaderWarmupRegistry.register(material(false, false).variant());
+        ShaderWarmupRegistry.register(material(false, true).variant());
+        ShaderWarmupRegistry.register(material(true, false).variant());
+    }
+
+    private static SimpleMaterial.Builder material(boolean line, boolean fogless) {
+        return SimpleMaterial.builder()
+                .shaders(line ? StandardMaterialShaders.LINE : StandardMaterialShaders.DEFAULT)
+                .cutout(CutoutShaders.ONE_TENTH)
+                .light(LightShaders.NONE)
+                .useLight(false)
+                .useOverlay(false)
+                .ambientOcclusion(false)
+                .cardinalLightingMode(CardinalLightingMode.OFF)
+                .backfaceCulling(false)
+                .transparency(line ? Transparency.OPAQUE : Transparency.ORDER_INDEPENDENT_ADDITIVE)
+                .writeMask(WriteMask.COLOR)
+                .fog(fogless ? FogShaders.NONE : line ? FogShaders.LINEAR : EffectVisuals.FADE);
+    }
+
     private static Model model(Style style) {
         Material material =
-                SimpleMaterial.builder()
-                        .texture(ResourceManager.white_tex)
-                        .shaders(
-                                style.line
-                                        ? StandardMaterialShaders.LINE
-                                        : StandardMaterialShaders.DEFAULT)
-                        .cutout(CutoutShaders.ONE_TENTH)
-                        .light(LightShaders.NONE)
-                        .useLight(false)
-                        .useOverlay(false)
-                        .ambientOcclusion(false)
-                        .cardinalLightingMode(CardinalLightingMode.OFF)
-                        .backfaceCulling(false)
-                        .transparency(
-                                style.line
-                                        ? Transparency.OPAQUE
-                                        : Transparency.ORDER_INDEPENDENT_ADDITIVE)
-                        .writeMask(WriteMask.COLOR)
-                        .fog(
-                                style.fogless
-                                        ? FogShaders.NONE
-                                        : style.line ? FogShaders.LINEAR : EffectVisuals.FADE)
-                        .build();
+                material(style.line, style.fogless).texture(ResourceManager.white_tex).build();
         if (style.line) return new SingleMeshModel(lineMesh(style.count, style.width), material);
         assert style.layers > 0;
         return new SingleMeshModel(new SolidMesh(style.count, style.layers), material);

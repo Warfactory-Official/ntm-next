@@ -66,6 +66,8 @@ public final class FalloutRainVisual extends HbmDynamicEntityVisual<FalloutRainE
     private final Matrix4f pose = new Matrix4f();
     private int active;
 
+    public static void initModels() {}
+
     public FalloutRainVisual(
             VisualizationContext context, FalloutRainEntity entity, float partialTick) {
         super(context, entity, partialTick);

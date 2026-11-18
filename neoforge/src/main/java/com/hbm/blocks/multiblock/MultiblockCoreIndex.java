@@ -19,14 +19,12 @@
 
 package com.hbm.blocks.multiblock;
 
-import com.hbm.blocks.machine.CMPortBlock;
 import com.hbm.interfaces.injected.ChunkExtension;
 import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import org.jspecify.annotations.Nullable;
 
@@ -91,32 +89,6 @@ public final class MultiblockCoreIndex {
 
     public static int populationOf(long entry) {
         return (int) (entry >>> POPULATION_SHIFT) & 3;
-    }
-
-    public static void resolveLegacy(ChunkAccess chunk, LevelHeightAccessor level) {
-        long[] entries = ((com.hbm.interfaces.injected.ChunkExtension) (chunk)).hbm$coreIndex();
-        boolean changed = false;
-        for (int i = 0,
-                        n =
-                                entries == null
-                                        ? 0
-                                        : ((com.hbm.interfaces.injected.ChunkExtension) (chunk))
-                                                .hbm$coreIndexSize();
-                i < n;
-                i++) {
-            long entry = entries[i];
-            if (populationOf(entry) != LEGACY) continue;
-            Block block =
-                    chunk.getBlockState(BlockPos.of(cellPacked(chunk.getPos(), level, entry)))
-                            .getBlock();
-            int population =
-                    block instanceof AssembledMembers.Member
-                            ? MEMBER
-                            : block instanceof CMPortBlock ? PORT : FOLDED;
-            entries[i] = entry & ~(3L << POPULATION_SHIFT) | (long) population << POPULATION_SHIFT;
-            changed = true;
-        }
-        if (changed) chunk.markUnsaved();
     }
 
     private static int mask(int bits) {

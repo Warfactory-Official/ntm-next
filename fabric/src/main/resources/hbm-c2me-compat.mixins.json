@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8.7",
+  "package": "com.hbm.mixin.compat.c2me",
+  "plugin": "com.hbm.mixin.compat.c2me.C2meMixinPlugin",
+  "mixins": [
+    "MixinChunkMap"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

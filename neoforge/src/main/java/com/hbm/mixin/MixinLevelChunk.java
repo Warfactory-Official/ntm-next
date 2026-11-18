@@ -22,7 +22,6 @@ package com.hbm.mixin;
 import com.hbm.api.environment.Environment;
 import com.hbm.blockentity.ChunkPublication;
 import com.hbm.blockentity.StructureAssemblyBlockEntity;
-import com.hbm.blocks.multiblock.MultiblockCoreIndex;
 import com.hbm.explosion.FalloutJournal;
 import com.hbm.handler.radiation.RadiationSystemNT;
 import com.hbm.registration.Reg;
@@ -119,7 +118,6 @@ public abstract class MixinLevelChunk extends ChunkAccess {
             return;
         }
         LevelChunk self = (LevelChunk) (Object) this;
-        MultiblockCoreIndex.resolveLegacy(self, server);
         ChunkPublication.enter(server, self);
         try {
             original.call();

@@ -83,6 +83,7 @@ public final class ElectricPressBlockEntity extends StampingMachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         long charge = ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
         hbm$syncSet$ElectricPressBlockEntity$power((long) (power + (charge)));
         boolean changed = charge != 0;
@@ -115,7 +116,6 @@ public final class ElectricPressBlockEntity extends StampingMachineBlockEntity
             }
         }
         if (changed) setChanged();
-        networkPackNT(50);
     }
 
     @Override

@@ -231,13 +231,13 @@ public final class ICFControllerBlockEntity extends BlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         hbm$syncSet$ICFControllerBlockEntity$beamLength(0);
         if (assembled && energy > 0) {
             pulse((ServerLevel) level);
             hbm$syncSet$ICFControllerBlockEntity$energy(0);
             setChanged();
         }
-        networkPackNT(50);
     }
 
     private void pulse(ServerLevel server) {

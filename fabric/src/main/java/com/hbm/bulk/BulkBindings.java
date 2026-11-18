@@ -38,6 +38,7 @@ import com.hbm.blockentity.bomb.NukePrototypeBlockEntity;
 import com.hbm.blockentity.bomb.NukeSoliniumBlockEntity;
 import com.hbm.blockentity.bomb.NukeTsarBlockEntity;
 import com.hbm.blockentity.door.BlastDoorBlockEntity;
+import com.hbm.blockentity.door.DoorBaseBlockEntity;
 import com.hbm.blockentity.door.DoorBlockEntity;
 import com.hbm.blockentity.generator.IsotopeGeneratorBlockEntity;
 import com.hbm.blockentity.generator.RadGenBlockEntity;
@@ -291,6 +292,7 @@ import com.hbm.blocks.bomb.RustedLaunchPadBlock;
 import com.hbm.blocks.bomb.ShrapnelLandmineBlock;
 import com.hbm.blocks.bomb.VolcanoBlock;
 import com.hbm.blocks.generic.ChlorineSealBlock;
+import com.hbm.blocks.generic.DoorBaseBlock;
 import com.hbm.blocks.generic.DungeonSpawnerBlock;
 import com.hbm.blocks.generic.EmitterBlock;
 import com.hbm.blocks.generic.FileCabinetBlock;
@@ -652,6 +654,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
             NukeSoliniumBlockEntity.class,
             NukeTsarBlockEntity.class,
             BlastDoorBlockEntity.class,
+            DoorBaseBlockEntity.class,
             DoorBlockEntity.class,
             IsotopeGeneratorBlockEntity.class,
             RadGenBlockEntity.class,
@@ -905,6 +908,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
             ShrapnelLandmineBlock.class,
             VolcanoBlock.class,
             ChlorineSealBlock.class,
+            DoorBaseBlock.class,
             DungeonSpawnerBlock.class,
             EmitterBlock.class,
             FileCabinetBlock.class,
@@ -1241,121 +1245,119 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
 
     public boolean relevant(int kind, BlockState state) {
         switch (kind) {
-            case 253,
-                    528,
-                    529,
+            case 254,
                     530,
                     531,
                     532,
-                    535,
-                    536,
+                    533,
+                    534,
                     537,
                     538,
-                    552,
-                    553,
+                    539,
+                    540,
                     554,
+                    555,
                     556,
-                    557,
+                    558,
                     559,
                     561,
-                    562,
-                    602 -> {
+                    563,
+                    564,
+                    604 -> {
                 boolean result = false;
                 result |= ((PhysicalConnector) state.getBlock()).bulkPhysicalRelevant(state);
                 return result;
             }
-            case 254,
-                    255,
+            case 255,
                     256,
-                    258,
+                    257,
                     259,
                     260,
                     261,
                     262,
-                    266,
+                    263,
                     267,
-                    269,
+                    268,
                     270,
                     271,
                     272,
-                    273,
                     274,
-                    277,
-                    278,
+                    275,
+                    276,
                     279,
-                    282,
-                    283,
+                    280,
+                    281,
                     284,
                     285,
+                    286,
                     287,
-                    288,
                     289,
-                    325,
+                    290,
+                    291,
                     327,
-                    328,
-                    340,
-                    344,
-                    345,
+                    329,
+                    330,
+                    342,
+                    346,
                     347,
-                    348,
                     349,
-                    361,
-                    369,
-                    375,
-                    379,
-                    386,
-                    396,
-                    411,
-                    415,
-                    433,
-                    438,
-                    443,
+                    350,
+                    351,
+                    363,
+                    371,
+                    377,
+                    381,
+                    388,
+                    398,
+                    413,
+                    417,
+                    435,
+                    440,
                     445,
-                    453,
-                    456,
-                    475,
-                    476,
+                    447,
+                    455,
+                    458,
                     477,
                     478,
                     479,
                     480,
-                    484,
-                    495,
-                    496,
+                    481,
+                    482,
+                    486,
                     497,
+                    498,
                     499,
                     501,
-                    502,
-                    505,
-                    512,
-                    520,
-                    539,
-                    545,
-                    550,
-                    569,
+                    503,
+                    504,
+                    507,
+                    514,
+                    522,
+                    541,
+                    547,
+                    552,
                     571,
-                    572 -> {
+                    573,
+                    574 -> {
                 boolean result = false;
                 result |= ((TickingEntityBlock) state.getBlock()).bulkTickingRelevant(state);
                 return result;
             }
-            case 257,
-                    263,
+            case 258,
                     264,
                     265,
-                    290,
-                    291,
+                    266,
                     292,
                     293,
                     294,
                     295,
                     296,
-                    299,
+                    297,
+                    298,
                     301,
-                    304,
-                    305,
+                    303,
+                    306,
                     307,
-                    308,
                     309,
                     310,
                     311,
@@ -1364,79 +1366,79 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     314,
                     315,
                     316,
+                    317,
                     318,
-                    321,
-                    322,
+                    320,
                     323,
-                    326,
-                    331,
+                    324,
+                    325,
+                    328,
                     333,
-                    334,
+                    335,
                     336,
-                    337,
                     338,
                     339,
-                    350,
+                    340,
+                    341,
                     352,
-                    355,
-                    356,
+                    354,
                     357,
                     358,
                     359,
                     360,
+                    361,
                     362,
-                    363,
                     364,
                     365,
                     366,
                     367,
                     368,
+                    369,
                     370,
-                    373,
-                    376,
-                    377,
+                    372,
+                    375,
                     378,
-                    381,
-                    382,
+                    379,
+                    380,
+                    383,
                     384,
-                    385,
-                    388,
+                    386,
+                    387,
                     390,
-                    391,
                     392,
                     393,
-                    399,
-                    400,
+                    394,
+                    395,
+                    401,
                     402,
-                    403,
                     404,
+                    405,
                     406,
                     408,
-                    413,
-                    414,
+                    410,
+                    415,
                     416,
-                    417,
                     418,
+                    419,
                     420,
-                    421,
                     422,
                     423,
-                    426,
-                    431,
-                    432,
+                    424,
+                    425,
+                    428,
+                    433,
                     434,
-                    435,
+                    436,
                     437,
                     439,
-                    440,
+                    441,
                     442,
                     444,
-                    450,
-                    451,
-                    454,
-                    457,
-                    460,
-                    461,
+                    446,
+                    452,
+                    453,
+                    456,
+                    459,
                     462,
                     463,
                     464,
@@ -1447,25 +1449,25 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     469,
                     470,
                     471,
+                    472,
                     473,
-                    474,
-                    486,
-                    489,
+                    475,
+                    476,
+                    488,
                     491,
-                    492,
                     493,
-                    498,
-                    506,
-                    509,
-                    510,
+                    494,
+                    495,
+                    500,
+                    508,
                     511,
-                    514,
-                    517,
+                    512,
+                    513,
+                    516,
                     519,
                     521,
-                    566,
-                    586,
-                    587,
+                    523,
+                    568,
                     588,
                     589,
                     590,
@@ -1476,164 +1478,166 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     595,
                     596,
                     597,
-                    600 -> {
+                    598,
+                    599,
+                    602 -> {
                 boolean result = false;
                 result |= ((MultiblockCoreBlock) state.getBlock()).bulkCoreRelevant(state);
                 result |= ((TickingEntityBlock) state.getBlock()).bulkTickingRelevant(state);
                 result |= ((CapabilityBlock) state.getBlock()).bulkCapabilityRelevant(state);
                 return result;
             }
-            case 268,
-                    276,
-                    280,
-                    281,
-                    300,
-                    303,
-                    329,
-                    401,
-                    410,
-                    424,
-                    459,
-                    472,
-                    485,
+            case 269,
+                    278,
+                    282,
+                    283,
+                    302,
+                    305,
+                    331,
+                    403,
+                    412,
+                    426,
+                    461,
+                    474,
                     487,
-                    488,
+                    489,
                     490,
-                    494,
-                    504,
-                    508,
-                    546,
-                    567,
-                    568 -> {
+                    492,
+                    496,
+                    506,
+                    510,
+                    548,
+                    569,
+                    570 -> {
                 boolean result = false;
                 result |= ((MultiblockCoreBlock) state.getBlock()).bulkCoreRelevant(state);
                 result |= ((TickingEntityBlock) state.getBlock()).bulkTickingRelevant(state);
                 return result;
             }
-            case 275,
-                    297,
-                    298,
-                    306,
-                    317,
+            case 273, 353, 382, 454, 457, 460, 528, 566, 572, 581, 582, 583, 584, 585, 586, 587 -> {
+                boolean result = false;
+                result |= ((MultiblockCoreBlock) state.getBlock()).bulkCoreRelevant(state);
+                return result;
+            }
+            case 277,
+                    299,
+                    300,
+                    308,
                     319,
-                    320,
-                    324,
-                    330,
+                    321,
+                    322,
+                    326,
                     332,
-                    335,
-                    341,
-                    342,
+                    334,
+                    337,
                     343,
-                    346,
-                    353,
-                    354,
-                    372,
+                    344,
+                    345,
+                    348,
+                    355,
+                    356,
                     374,
-                    387,
+                    376,
                     389,
-                    395,
+                    391,
                     397,
-                    398,
-                    405,
+                    399,
+                    400,
                     407,
-                    412,
-                    419,
-                    429,
-                    430,
-                    436,
-                    441,
-                    446,
-                    447,
+                    409,
+                    414,
+                    421,
+                    431,
+                    432,
+                    438,
+                    443,
                     448,
                     449,
-                    482,
-                    483,
-                    500,
-                    507,
-                    513,
+                    450,
+                    451,
+                    484,
+                    485,
+                    502,
+                    509,
                     515,
-                    516,
+                    517,
                     518,
-                    522,
-                    523,
-                    533,
-                    540,
-                    541,
+                    520,
+                    524,
+                    525,
+                    535,
                     542,
                     543,
                     544,
-                    547,
-                    548,
+                    545,
+                    546,
                     549,
-                    560,
-                    573,
-                    574,
+                    550,
+                    551,
+                    562,
                     575,
                     576,
                     577,
                     578,
-                    598,
-                    599 -> {
+                    579,
+                    580,
+                    600,
+                    601 -> {
                 boolean result = false;
                 result |= ((TickingEntityBlock) state.getBlock()).bulkTickingRelevant(state);
                 result |= ((CapabilityBlock) state.getBlock()).bulkCapabilityRelevant(state);
                 return result;
             }
-            case 286, 425, 503, 601 -> {
+            case 288, 427, 505, 603 -> {
                 boolean result = false;
                 result |= ((CapabilityBlock) state.getBlock()).bulkCapabilityRelevant(state);
                 return result;
             }
-            case 302 -> {
+            case 304 -> {
                 boolean result = false;
                 result |= ((CMPortBlock) state.getBlock()).bulkPortRelevant(state);
                 return result;
             }
-            case 351, 380, 452, 455, 458, 526, 564, 570, 579, 580, 581, 582, 583, 584, 585 -> {
-                boolean result = false;
-                result |= ((MultiblockCoreBlock) state.getBlock()).bulkCoreRelevant(state);
-                return result;
-            }
-            case 371, 394 -> {
+            case 373, 396 -> {
                 boolean result = false;
                 result |= ((CapabilityBlock) state.getBlock()).bulkCapabilityRelevant(state);
                 result |= ((Member) state.getBlock()).bulkMemberRelevant(state);
                 return result;
             }
-            case 383 -> {
+            case 385 -> {
                 boolean result = false;
                 result |= ((MultiblockCellBlock) state.getBlock()).bulkCellRelevant(state);
                 result |= ((TickingEntityBlock) state.getBlock()).bulkTickingRelevant(state);
                 return result;
             }
-            case 409, 525, 527 -> {
+            case 411, 527, 529 -> {
                 boolean result = false;
                 result |= ((MultiblockCellBlock) state.getBlock()).bulkCellRelevant(state);
                 return result;
             }
-            case 427 -> {
+            case 429 -> {
                 boolean result = false;
                 result |= ((SealBlock) state.getBlock()).bulkSealRelevant(state);
                 return result;
             }
-            case 428, 524 -> {
+            case 430, 526 -> {
                 boolean result = false;
                 result |= ((Member) state.getBlock()).bulkMemberRelevant(state);
                 return result;
             }
-            case 481 -> {
+            case 483 -> {
                 boolean result = false;
                 result |= ((TickingEntityBlock) state.getBlock()).bulkTickingRelevant(state);
                 result |= ((Member) state.getBlock()).bulkMemberRelevant(state);
                 return result;
             }
-            case 534, 551, 555, 558 -> {
+            case 536, 553, 557, 560 -> {
                 boolean result = false;
                 result |= ((PhysicalConnector) state.getBlock()).bulkPhysicalRelevant(state);
                 result |= ((TickingEntityBlock) state.getBlock()).bulkTickingRelevant(state);
                 return result;
             }
-            case 563, 565 -> {
+            case 565, 567 -> {
                 boolean result = false;
                 result |= ((MultiblockCoreBlock) state.getBlock()).bulkCoreRelevant(state);
                 result |= ((PhysicalConnector) state.getBlock()).bulkPhysicalRelevant(state);
@@ -1647,29 +1651,28 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
 
     public boolean cell(int kind, BlockState state) {
         switch (kind) {
-            case 257,
-                    263,
+            case 258,
                     264,
                     265,
-                    268,
-                    276,
-                    280,
-                    281,
-                    290,
-                    291,
+                    266,
+                    269,
+                    273,
+                    278,
+                    282,
+                    283,
                     292,
                     293,
                     294,
                     295,
                     296,
-                    299,
-                    300,
+                    297,
+                    298,
                     301,
+                    302,
                     303,
-                    304,
                     305,
+                    306,
                     307,
-                    308,
                     309,
                     310,
                     311,
@@ -1678,86 +1681,86 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     314,
                     315,
                     316,
+                    317,
                     318,
-                    321,
-                    322,
+                    320,
                     323,
-                    326,
-                    329,
+                    324,
+                    325,
+                    328,
                     331,
                     333,
-                    334,
+                    335,
                     336,
-                    337,
                     338,
                     339,
-                    350,
-                    351,
+                    340,
+                    341,
                     352,
-                    355,
-                    356,
+                    353,
+                    354,
                     357,
                     358,
                     359,
                     360,
+                    361,
                     362,
-                    363,
                     364,
                     365,
                     366,
                     367,
                     368,
+                    369,
                     370,
-                    373,
-                    376,
-                    377,
+                    372,
+                    375,
                     378,
+                    379,
                     380,
-                    381,
                     382,
+                    383,
                     384,
-                    385,
-                    388,
+                    386,
+                    387,
                     390,
-                    391,
                     392,
                     393,
-                    399,
-                    400,
+                    394,
+                    395,
                     401,
                     402,
                     403,
                     404,
+                    405,
                     406,
                     408,
                     410,
-                    413,
-                    414,
+                    412,
+                    415,
                     416,
-                    417,
                     418,
+                    419,
                     420,
-                    421,
                     422,
                     423,
                     424,
+                    425,
                     426,
-                    431,
-                    432,
+                    428,
+                    433,
                     434,
-                    435,
+                    436,
                     437,
                     439,
-                    440,
+                    441,
                     442,
                     444,
-                    450,
-                    451,
+                    446,
                     452,
+                    453,
                     454,
-                    455,
+                    456,
                     457,
-                    458,
                     459,
                     460,
                     461,
@@ -1774,8 +1777,8 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     472,
                     473,
                     474,
-                    485,
-                    486,
+                    475,
+                    476,
                     487,
                     488,
                     489,
@@ -1784,28 +1787,28 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     492,
                     493,
                     494,
-                    498,
-                    504,
+                    495,
+                    496,
+                    500,
                     506,
                     508,
-                    509,
                     510,
                     511,
-                    514,
-                    517,
+                    512,
+                    513,
+                    516,
                     519,
                     521,
-                    526,
-                    546,
-                    563,
-                    564,
+                    523,
+                    528,
+                    548,
                     565,
                     566,
                     567,
                     568,
+                    569,
                     570,
-                    579,
-                    580,
+                    572,
                     581,
                     582,
                     583,
@@ -1823,22 +1826,24 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     595,
                     596,
                     597,
-                    600 -> {
+                    598,
+                    599,
+                    602 -> {
                 boolean result = false;
                 result |= ((MultiblockCoreBlock) state.getBlock()).bulkSnapshotCell(state);
                 return result;
             }
-            case 302 -> {
+            case 304 -> {
                 boolean result = false;
                 result |= ((CMPortBlock) state.getBlock()).bulkSnapshotCell(state);
                 return result;
             }
-            case 371, 394, 428, 481, 524 -> {
+            case 373, 396, 430, 483, 526 -> {
                 boolean result = false;
                 result |= ((Member) state.getBlock()).bulkMemberCell(state);
                 return result;
             }
-            case 383, 409, 525, 527 -> {
+            case 385, 411, 527, 529 -> {
                 boolean result = false;
                 result |= ((MultiblockCellBlock) state.getBlock()).bulkSnapshotCell(state);
                 return result;
@@ -1857,29 +1862,28 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
             CompoundTag data,
             Consumer<BlockPos> cells) {
         switch (kind) {
-            case 257,
-                    263,
+            case 258,
                     264,
                     265,
-                    268,
-                    276,
-                    280,
-                    281,
-                    290,
-                    291,
+                    266,
+                    269,
+                    273,
+                    278,
+                    282,
+                    283,
                     292,
                     293,
                     294,
                     295,
                     296,
-                    299,
-                    300,
+                    297,
+                    298,
                     301,
+                    302,
                     303,
-                    304,
                     305,
+                    306,
                     307,
-                    308,
                     309,
                     310,
                     311,
@@ -1888,86 +1892,86 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     314,
                     315,
                     316,
+                    317,
                     318,
-                    321,
-                    322,
+                    320,
                     323,
-                    326,
-                    329,
+                    324,
+                    325,
+                    328,
                     331,
                     333,
-                    334,
+                    335,
                     336,
-                    337,
                     338,
                     339,
-                    350,
-                    351,
+                    340,
+                    341,
                     352,
-                    355,
-                    356,
+                    353,
+                    354,
                     357,
                     358,
                     359,
                     360,
+                    361,
                     362,
-                    363,
                     364,
                     365,
                     366,
                     367,
                     368,
+                    369,
                     370,
-                    373,
-                    376,
-                    377,
+                    372,
+                    375,
                     378,
+                    379,
                     380,
-                    381,
                     382,
+                    383,
                     384,
-                    385,
-                    388,
+                    386,
+                    387,
                     390,
-                    391,
                     392,
                     393,
-                    399,
-                    400,
+                    394,
+                    395,
                     401,
                     402,
                     403,
                     404,
+                    405,
                     406,
                     408,
                     410,
-                    413,
-                    414,
+                    412,
+                    415,
                     416,
-                    417,
                     418,
+                    419,
                     420,
-                    421,
                     422,
                     423,
                     424,
+                    425,
                     426,
-                    431,
-                    432,
+                    428,
+                    433,
                     434,
-                    435,
+                    436,
                     437,
                     439,
-                    440,
+                    441,
                     442,
                     444,
-                    450,
-                    451,
+                    446,
                     452,
+                    453,
                     454,
-                    455,
+                    456,
                     457,
-                    458,
                     459,
                     460,
                     461,
@@ -1984,8 +1988,8 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     472,
                     473,
                     474,
-                    485,
-                    486,
+                    475,
+                    476,
                     487,
                     488,
                     489,
@@ -1994,28 +1998,28 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     492,
                     493,
                     494,
-                    498,
-                    504,
+                    495,
+                    496,
+                    500,
                     506,
                     508,
-                    509,
                     510,
                     511,
-                    514,
-                    517,
+                    512,
+                    513,
+                    516,
                     519,
                     521,
-                    526,
-                    546,
-                    563,
-                    564,
+                    523,
+                    528,
+                    548,
                     565,
                     566,
                     567,
                     568,
+                    569,
                     570,
-                    579,
-                    580,
+                    572,
                     581,
                     582,
                     583,
@@ -2033,21 +2037,23 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     595,
                     596,
                     597,
-                    600 -> {
+                    598,
+                    599,
+                    602 -> {
                 boolean result = false;
                 result |=
                         ((MultiblockCoreBlock) state.getBlock())
                                 .captureBulkCells(level, pos, state, data, cells);
                 return result;
             }
-            case 427 -> {
+            case 429 -> {
                 boolean result = false;
                 result |=
                         ((SealBlock) state.getBlock())
                                 .captureBulkLids(level, pos, state, data, cells);
                 return result;
             }
-            case 553, 554, 559 -> {
+            case 555, 556, 561 -> {
                 boolean result = false;
                 result |=
                         ((FluidPipeBlock) state.getBlock())
@@ -2063,15 +2069,15 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
 
     public void relocate(int kind, CompoundTag tag, BulkTransform transform) {
         switch (kind) {
-            case 372 -> {
+            case 374 -> {
                 ICFControllerBlock.relocateBulkData(tag, transform);
                 return;
             }
-            case 395 -> {
+            case 397 -> {
                 PWRControllerBlock.relocateBulkData(tag, transform);
                 return;
             }
-            case 481 -> {
+            case 483 -> {
                 PileBlock.relocateBulkData(tag, transform);
                 return;
             }
@@ -2083,7 +2089,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
 
     public void transform(int kind, CompoundTag tag, BulkTransform transform) {
         switch (kind) {
-            case 481 -> {
+            case 483 -> {
                 PileBlock.transformBulkData(tag, transform);
                 return;
             }
@@ -2095,13 +2101,13 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
 
     public CompoundTag publicData(int kind, CompoundTag tag) {
         switch (kind) {
-            case 372 -> {
+            case 374 -> {
                 return ICFControllerBlock.publicBulkData(tag);
             }
-            case 395 -> {
+            case 397 -> {
                 return PWRControllerBlock.publicBulkData(tag);
             }
-            case 481 -> {
+            case 483 -> {
                 return PileBlock.publicBulkData(tag);
             }
             default -> {
@@ -2113,29 +2119,28 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
     public void blockPublished(
             int kind, ServerLevel level, BlockPos pos, BlockState state, CompoundTag data) {
         switch (kind) {
-            case 257,
-                    263,
+            case 258,
                     264,
                     265,
-                    268,
-                    276,
-                    280,
-                    281,
-                    290,
-                    291,
+                    266,
+                    269,
+                    273,
+                    278,
+                    282,
+                    283,
                     292,
                     293,
                     294,
                     295,
                     296,
-                    299,
-                    300,
+                    297,
+                    298,
                     301,
+                    302,
                     303,
-                    304,
                     305,
+                    306,
                     307,
-                    308,
                     309,
                     310,
                     311,
@@ -2144,86 +2149,86 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     314,
                     315,
                     316,
+                    317,
                     318,
-                    321,
-                    322,
+                    320,
                     323,
-                    326,
-                    329,
+                    324,
+                    325,
+                    328,
                     331,
                     333,
-                    334,
+                    335,
                     336,
-                    337,
                     338,
                     339,
-                    350,
-                    351,
+                    340,
+                    341,
                     352,
-                    355,
-                    356,
+                    353,
+                    354,
                     357,
                     358,
                     359,
                     360,
+                    361,
                     362,
-                    363,
                     364,
                     365,
                     366,
                     367,
                     368,
+                    369,
                     370,
-                    373,
-                    376,
-                    377,
+                    372,
+                    375,
                     378,
+                    379,
                     380,
-                    381,
                     382,
+                    383,
                     384,
-                    385,
-                    388,
+                    386,
+                    387,
                     390,
-                    391,
                     392,
                     393,
-                    399,
-                    400,
+                    394,
+                    395,
                     401,
                     402,
                     403,
                     404,
+                    405,
                     406,
                     408,
                     410,
-                    413,
-                    414,
+                    412,
+                    415,
                     416,
-                    417,
                     418,
+                    419,
                     420,
-                    421,
                     422,
                     423,
                     424,
+                    425,
                     426,
-                    431,
-                    432,
+                    428,
+                    433,
                     434,
-                    435,
+                    436,
                     437,
                     439,
-                    440,
+                    441,
                     442,
                     444,
-                    450,
-                    451,
+                    446,
                     452,
+                    453,
                     454,
-                    455,
+                    456,
                     457,
-                    458,
                     459,
                     460,
                     461,
@@ -2240,8 +2245,8 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     472,
                     473,
                     474,
-                    485,
-                    486,
+                    475,
+                    476,
                     487,
                     488,
                     489,
@@ -2250,28 +2255,28 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     492,
                     493,
                     494,
-                    498,
-                    504,
+                    495,
+                    496,
+                    500,
                     506,
                     508,
-                    509,
                     510,
                     511,
-                    514,
-                    517,
+                    512,
+                    513,
+                    516,
                     519,
                     521,
-                    526,
-                    546,
-                    563,
-                    564,
+                    523,
+                    528,
+                    548,
                     565,
                     566,
                     567,
                     568,
+                    569,
                     570,
-                    579,
-                    580,
+                    572,
                     581,
                     582,
                     583,
@@ -2289,11 +2294,13 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     595,
                     596,
                     597,
-                    600 -> {
+                    598,
+                    599,
+                    602 -> {
                 ((MultiblockCoreBlock) state.getBlock()).publishBulkCells(level, pos, state, data);
                 return;
             }
-            case 553, 554, 559 -> {
+            case 555, 556, 561 -> {
                 ((FluidPipeBlock) state.getBlock()).publishBulkFluid(level, pos, state, data);
                 return;
             }
@@ -2306,22 +2313,22 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
     public boolean entityCells(
             int kind, BlockEntity be, ServerLevel level, Consumer<BlockPos> cells) {
         switch (kind) {
-            case 31 -> {
+            case 32 -> {
                 boolean result = false;
                 result |= ((CustomMachineBlockEntity) be).capturePortCells(level, cells);
                 return result;
             }
-            case 57 -> {
+            case 58 -> {
                 boolean result = false;
                 result |= ((ICFControllerBlockEntity) be).captureBulkCells(level, cells);
                 return result;
             }
-            case 68 -> {
+            case 69 -> {
                 boolean result = false;
                 result |= ((PWRControllerBlockEntity) be).captureBulkCells(level, cells);
                 return result;
             }
-            case 136 -> {
+            case 137 -> {
                 boolean result = false;
                 result |= ((PileCoreBlockEntity) be).captureBulkCells(level, cells);
                 return result;
@@ -2362,7 +2369,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     26,
                     27,
                     28,
-                    30,
+                    29,
                     31,
                     32,
                     33,
@@ -2372,7 +2379,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     37,
                     38,
                     39,
-                    47,
+                    40,
                     48,
                     49,
                     50,
@@ -2382,7 +2389,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     54,
                     55,
                     56,
-                    58,
+                    57,
                     59,
                     60,
                     61,
@@ -2411,7 +2418,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     84,
                     85,
                     86,
-                    88,
+                    87,
                     89,
                     90,
                     91,
@@ -2459,7 +2466,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     133,
                     134,
                     135,
-                    137,
+                    136,
                     138,
                     139,
                     140,
@@ -2558,7 +2565,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     233,
                     234,
                     235,
-                    237,
+                    236,
                     238,
                     239,
                     240,
@@ -2573,7 +2580,8 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     249,
                     250,
                     251,
-                    252 -> {
+                    252,
+                    253 -> {
                 ((MachineBlockEntity) be).clearBulkInventory();
                 return;
             }
@@ -2581,15 +2589,15 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                 ((SkeletonHolderBlockEntity) be).clearBulkInventory();
                 return;
             }
-            case 29, 40, 41, 42, 43, 44, 45, 46, 87 -> {
+            case 30, 41, 42, 43, 44, 45, 46, 47, 88 -> {
                 ((FoundryBaseBlockEntity) be).clearBulkInventory();
                 return;
             }
-            case 136 -> {
+            case 137 -> {
                 ((PileCoreBlockEntity) be).clearBulkInventory();
                 return;
             }
-            case 236 -> {
+            case 237 -> {
                 ((PedestalBlockEntity) be).clearDisplay();
                 return;
             }
@@ -2629,7 +2637,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     26,
                     27,
                     28,
-                    30,
+                    29,
                     31,
                     32,
                     33,
@@ -2639,7 +2647,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     37,
                     38,
                     39,
-                    47,
+                    40,
                     48,
                     49,
                     50,
@@ -2649,7 +2657,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     54,
                     55,
                     56,
-                    58,
+                    57,
                     59,
                     60,
                     61,
@@ -2678,7 +2686,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     84,
                     85,
                     86,
-                    88,
+                    87,
                     89,
                     90,
                     91,
@@ -2726,7 +2734,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     133,
                     134,
                     135,
-                    137,
+                    136,
                     138,
                     139,
                     140,
@@ -2825,7 +2833,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     233,
                     234,
                     235,
-                    237,
+                    236,
                     238,
                     239,
                     240,
@@ -2840,11 +2848,12 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
                     249,
                     250,
                     251,
-                    252 -> {
+                    252,
+                    253 -> {
                 ((MachineBlockEntity) be).forgetBulkDrops();
                 return;
             }
-            case 29, 40, 41, 42, 43, 44, 45, 46, 87 -> {
+            case 30, 41, 42, 43, 44, 45, 46, 47, 88 -> {
                 ((FoundryBaseBlockEntity) be).forgetBulkDrops();
                 return;
             }
@@ -2856,7 +2865,7 @@ public final class BulkBindings implements com.hbm.world.bulk.BulkBindings {
 
     public void entityPublished(int kind, BlockEntity be) {
         switch (kind) {
-            case 31 -> {
+            case 32 -> {
                 ((CustomMachineBlockEntity) be).publishPortCells();
                 return;
             }

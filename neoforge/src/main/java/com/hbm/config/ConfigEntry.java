@@ -19,6 +19,10 @@
 
 package com.hbm.config;
 
+import java.util.List;
+import java.util.function.Predicate;
+import org.jspecify.annotations.Nullable;
+
 public record ConfigEntry<T>(
         Domain domain,
         String section,
@@ -27,16 +31,17 @@ public record ConfigEntry<T>(
         String comment,
         T defaultValue,
         double min,
-        double max) {
+        double max,
+        @Nullable Predicate<String> element) {
 
     public static ConfigEntry<Boolean> bool(
             Domain domain, String section, String key, boolean def, String comment) {
-        return new ConfigEntry<>(domain, section, Kind.BOOL, key, comment, def, 0, 0);
+        return new ConfigEntry<>(domain, section, Kind.BOOL, key, comment, def, 0, 0, null);
     }
 
     public static ConfigEntry<Integer> integer(
             Domain domain, String section, String key, int def, int min, int max, String comment) {
-        return new ConfigEntry<>(domain, section, Kind.INT, key, comment, def, min, max);
+        return new ConfigEntry<>(domain, section, Kind.INT, key, comment, def, min, max, null);
     }
 
     public static ConfigEntry<Double> real(
@@ -47,12 +52,23 @@ public record ConfigEntry<T>(
             double min,
             double max,
             String comment) {
-        return new ConfigEntry<>(domain, section, Kind.DOUBLE, key, comment, def, min, max);
+        return new ConfigEntry<>(domain, section, Kind.DOUBLE, key, comment, def, min, max, null);
     }
 
     public static ConfigEntry<String> text(
             Domain domain, String section, String key, String def, String comment) {
-        return new ConfigEntry<>(domain, section, Kind.STRING, key, comment, def, 0, 0);
+        return new ConfigEntry<>(domain, section, Kind.STRING, key, comment, def, 0, 0, null);
+    }
+
+    public static ConfigEntry<List<String>> textList(
+            Domain domain,
+            String section,
+            String key,
+            List<String> def,
+            Predicate<String> element,
+            String comment) {
+        return new ConfigEntry<>(
+                domain, section, Kind.STRING_LIST, key, comment, List.copyOf(def), 0, 0, element);
     }
 
     public int intMin() {
@@ -73,6 +89,7 @@ public record ConfigEntry<T>(
         BOOL,
         INT,
         DOUBLE,
-        STRING
+        STRING,
+        STRING_LIST
     }
 }

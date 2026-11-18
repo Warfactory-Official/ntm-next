@@ -1471,7 +1471,6 @@ public final class ResourceManager {
     public static final HFRWavefrontObject strut = load("models/strut.obj");
     public static final Identifier strut_tex = RegistryUtil.id("textures/block/models/strut.png");
 
-    public static final HFRWavefrontObject compact_launcher = load("models/compact_launcher.obj");
     public static final HFRWavefrontObject missile_erector =
             load("models/weapons/launch_pad_erector.obj");
     public static final HFRWavefrontObject launch_table_small_pad =
@@ -1490,10 +1489,6 @@ public final class ResourceManager {
             load("models/launch_table/launch_table_large_scaffold_connector.obj");
     public static final HFRWavefrontObject launch_table_large_scaffold_empty =
             load("models/launch_table/launch_table_large_scaffold_empty.obj");
-    public static final Identifier compact_launcher_tex =
-            RegistryUtil.id("textures/block/models/compact_launcher.png");
-    public static final Identifier missile_erector_pad_tex =
-            RegistryUtil.id("textures/block/models/launchpad/pad.png");
     public static final Identifier missile_erector_abm_tex =
             RegistryUtil.id("textures/block/models/launchpad/erector_abm.png");
     public static final Identifier missile_erector_micro_tex =
@@ -1539,16 +1534,8 @@ public final class ResourceManager {
             load("models/machines/launchpad_soyuz.obj");
     public static final Identifier launchpad_soyuz_tex =
             RegistryUtil.id("textures/models/machines/launchpad_soyuz.png");
-    public static final Identifier soyuz_launcher_legs_tex =
-            RegistryUtil.id("textures/models/soyuz_launcher/launcher_leg.png");
-    public static final Identifier soyuz_launcher_table_tex =
-            RegistryUtil.id("textures/models/soyuz_launcher/launcher_table.png");
-    public static final Identifier soyuz_launcher_tower_base_tex =
-            RegistryUtil.id("textures/models/soyuz_launcher/launcher_tower_base.png");
     public static final Identifier soyuz_launcher_tower_tex =
             RegistryUtil.id("textures/models/soyuz_launcher/launcher_tower.png");
-    public static final Identifier soyuz_launcher_support_base_tex =
-            RegistryUtil.id("textures/models/soyuz_launcher/launcher_support_base.png");
     public static final Identifier soyuz_launcher_support_tex =
             RegistryUtil.id("textures/models/soyuz_launcher/launcher_support.png");
 

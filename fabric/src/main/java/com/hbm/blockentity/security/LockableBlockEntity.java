@@ -57,17 +57,27 @@ import org.jspecify.annotations.Nullable;
 
 public abstract class LockableBlockEntity extends MachineBlockEntity implements SyncUnitSchema {
     private int configuredPins;
+
+    {
+        hbm$syncSet$LockableBlockEntity$configuredPins(LockStateData.DEFAULT.lock());
+    }
+
     private boolean secureState;
+
+    {
+        hbm$syncSet$LockableBlockEntity$secureState(LockStateData.DEFAULT.isLocked());
+    }
+
     private double pickThreshold;
 
     {
-        hbm$syncSet$LockableBlockEntity$pickThreshold(0.1D);
+        hbm$syncSet$LockableBlockEntity$pickThreshold(LockStateData.DEFAULT.lockMod());
     }
 
     private boolean allowCounterfeit;
 
     {
-        hbm$syncSet$LockableBlockEntity$allowCounterfeit(true);
+        hbm$syncSet$LockableBlockEntity$allowCounterfeit(LockStateData.DEFAULT.cheesable());
     }
 
     protected LockableBlockEntity(

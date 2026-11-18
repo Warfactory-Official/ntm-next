@@ -107,6 +107,7 @@ public class ElectricHeatBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(25);
         int previousHeat = heatEnergy;
         long previousPower = power;
         boolean previousRunning = isOn;
@@ -124,7 +125,6 @@ public class ElectricHeatBlockEntity extends MachineBlockEntity
         }
         if (previousHeat != heatEnergy || previousPower != power || previousRunning != isOn)
             markChanged();
-        networkPackNT(25);
     }
 
     @Override

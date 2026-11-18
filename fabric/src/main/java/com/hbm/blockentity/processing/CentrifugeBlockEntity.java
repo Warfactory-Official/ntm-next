@@ -131,6 +131,7 @@ public class CentrifugeBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         long previousPower = power;
         int previousProgress = progress;
         power += ItemEnergyTransfer.extract(this, SLOT_BATTERY, getMaxPower() - power, false);
@@ -158,7 +159,6 @@ public class CentrifugeBlockEntity extends MachineBlockEntity
         }
         if (!isProgressing) progress = 0;
         if (power != previousPower || progress != previousProgress) setChanged();
-        networkPackNT(50);
     }
 
     @Override

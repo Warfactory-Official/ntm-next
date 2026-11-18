@@ -168,6 +168,7 @@ public final class IntakeBlockEntity extends BlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         if (power >= 100) {
             if (Environment.compressAir(
                     (ServerLevel) level, worldPosition, compair.getMaxFill() - compair.getFill())) {
@@ -212,7 +213,6 @@ public final class IntakeBlockEntity extends BlockEntity
                 }
             }
         }
-        networkPackNT(50);
     }
 
     @Override

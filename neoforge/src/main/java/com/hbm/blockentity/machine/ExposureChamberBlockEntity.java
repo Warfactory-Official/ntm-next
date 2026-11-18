@@ -106,6 +106,7 @@ public final class ExposureChamberBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         hbm$syncSet$ExposureChamberBlockEntity$running(false);
         long received =
                 ItemEnergyTransfer.extract(this, BATTERY_SLOT, ENERGY_CAPACITY - energy, false);
@@ -154,7 +155,6 @@ public final class ExposureChamberBlockEntity extends MachineBlockEntity
             inventory.set(MARKER_SLOT, ItemStack.EMPTY);
             setChanged();
         }
-        networkPackNT(50);
     }
 
     private boolean loadCapsule() {

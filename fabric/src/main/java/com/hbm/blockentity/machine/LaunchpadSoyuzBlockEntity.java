@@ -149,6 +149,7 @@ public class LaunchpadSoyuzBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(300);
         long priorPower = power;
         SoyuzStatus priorStatus = soyuzStatus;
         int priorLoadedType = loadedType;
@@ -183,7 +184,6 @@ public class LaunchpadSoyuzBlockEntity extends MachineBlockEntity
                 || power != priorPower
                 || soyuzStatus != priorStatus
                 || loadedType != priorLoadedType) setChanged();
-        networkPackNT(300);
         syncRenderAnchors((ServerLevel) level);
     }
 

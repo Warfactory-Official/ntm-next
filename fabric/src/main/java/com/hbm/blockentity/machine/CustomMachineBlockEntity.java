@@ -301,6 +301,7 @@ public class CustomMachineBlockEntity extends PollutingMachineBlockEntity
                 return;
             }
         }
+        networkPackNT(50);
 
         if (energy < definition.maxPower()) {
             long charged =
@@ -340,7 +341,6 @@ public class CustomMachineBlockEntity extends PollutingMachineBlockEntity
             hbm$syncSet$CustomMachineBlockEntity$progress(0);
             setChanged();
         }
-        networkPackNT(50);
     }
 
     private CustomMachineRecipe matchingRecipe() {

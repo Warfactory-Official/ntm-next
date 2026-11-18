@@ -70,6 +70,8 @@ public final class OrbitalLaserVisual extends HbmDynamicEntityVisual<OrbitalLase
     private final Matrix4f pose = new Matrix4f();
     private final Vector3f position = new Vector3f();
 
+    public static void initModels() {}
+
     public OrbitalLaserVisual(
             VisualizationContext context, OrbitalLaserEntity entity, float partialTick) {
         super(context, entity, partialTick);

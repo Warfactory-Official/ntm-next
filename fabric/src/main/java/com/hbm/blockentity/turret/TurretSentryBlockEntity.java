@@ -236,8 +236,8 @@ public class TurretSentryBlockEntity extends TurretBaseNTBlockEntity {
     }
 
     @Override
-    public void tickServer() {
-        super.tickServer();
+    protected void afterSync() {
+        super.afterSync();
         hbm$syncSet$TurretSentryBlockEntity$didJustShootLeft(false);
         hbm$syncSet$TurretSentryBlockEntity$didJustShootRight(false);
     }

@@ -20,6 +20,8 @@
 package com.hbm.client.render.flywheel;
 
 import com.hbm.client.particle.ParticleResources;
+import com.hbm.client.render.flywheel.armature.ArmatureType;
+import com.hbm.handler.radiation.RadVisVisual;
 import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 
@@ -52,10 +54,15 @@ public final class FlywheelResources {
     }
 
     private static void initialize() {
+        ArmatureType.initTypes();
         BeamInstance.initTypes();
         ChainInstance.initTypes();
         DoorInstance.initTypes();
+        GlyphidInstance.initTypes();
         ScrollInstance.initTypes();
+        BeamVisual.registerWarmupVariants();
+        WorldText.registerWarmupVariants();
+        ItemMaterials.registerWarmupVariants();
         ParticleResources.initialize();
         AmmoPressVisual.initModels();
         AnnihilatorVisual.initModels();
@@ -104,6 +111,7 @@ public final class FlywheelResources {
         EmpBlastVisual.initModels();
         ExcavatorVisual.initModels();
         ExposureChamberVisual.initModels();
+        FalloutRainVisual.initModels();
         FanVisual.initModels();
         FELVisual.initModels();
         FENSUVisual.initModels();
@@ -155,6 +163,7 @@ public final class FlywheelResources {
         MultiCloudVisual.initModels();
         NukeCloudVisual.initModels();
         NukeFstbmbVisual.initModels();
+        OrbitalLaserVisual.initModels();
         OrbusVisual.initModels();
         OrdnanceVisuals.initModels();
         OreSlopperVisual.initModels();
@@ -177,6 +186,7 @@ public final class FlywheelResources {
         RadarScreenVisual.initModels();
         RadarVisual.initModels();
         RadGenVisual.initModels();
+        RadVisVisual.initModels();
         RailVisual.initModels();
         RBMKAutoloaderVisual.initModels();
         RBMKConsoleVisual.initModels();

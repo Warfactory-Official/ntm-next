@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.LongStream;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLevelEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
@@ -166,8 +167,19 @@ public class LevelNodeGraph<D> extends SavedData {
     }
 
     public static void init() {
-        final Consumer<MinecraftServer> callback = LevelNodeGraph::tickAll;
-        ServerEvents.TICK_POST.add(callback);
+        final Consumer<ServerLevel> callback = LevelNodeGraph::attachSaved;
+        ServerLevelEvents.LOAD.register((server, level) -> callback.accept(level));
+        final Consumer<MinecraftServer> callback2 = LevelNodeGraph::tickAll;
+        ServerEvents.TICK_POST.add(callback2);
+    }
+
+    private static void attachSaved(ServerLevel level) {
+        for (Kind<?> kind : KINDS) attachSaved(level, kind);
+    }
+
+    private static <D> void attachSaved(ServerLevel level, Kind<D> kind) {
+        LevelNodeGraph<D> graph = level.getDataStorage().get(kind.type);
+        if (graph != null) attach(level, kind, graph);
     }
 
     private static void tickAll(MinecraftServer server) {

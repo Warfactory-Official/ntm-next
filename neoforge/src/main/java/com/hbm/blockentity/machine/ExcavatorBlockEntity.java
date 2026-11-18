@@ -259,6 +259,7 @@ public final class ExcavatorBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         refreshDrill();
         if (tank.setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) setChanged();
         if (TickPhase.every(this, 20)) ejectBuffer();
@@ -278,7 +279,6 @@ public final class ExcavatorBlockEntity extends MachineBlockEntity
             hbm$syncSet$ExcavatorBlockEntity$targetDepth(0);
             setChanged();
         }
-        networkPackNT(150);
     }
 
     @Override

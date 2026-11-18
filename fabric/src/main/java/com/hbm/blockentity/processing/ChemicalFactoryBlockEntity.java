@@ -209,6 +209,7 @@ public class ChemicalFactoryBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         long selectedPower = 0L;
         for (var engine : module) {
             var recipe = engine.getRecipe();
@@ -242,7 +243,6 @@ public class ChemicalFactoryBlockEntity extends MachineBlockEntity
         }
         if (changed) setChanged();
         exchangeFluids();
-        networkPackNT(100);
     }
 
     private void exchangeFluids() {

@@ -161,6 +161,7 @@ public final class PrecisionAssemblerBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         long capacity = SelectedProcessorSupport.capacity(module, maxPower, power, MIN_POWER);
         if (maxPower != capacity) {
             maxPower = capacity;
@@ -176,7 +177,6 @@ public final class PrecisionAssemblerBlockEntity extends MachineBlockEntity
         hbm$syncSet$PrecisionAssemblerBlockEntity$isProgressing(module.didProcess);
         if (module.markDirty || isProgressing) setChanged();
         flush.provide((ServerLevel) level, this);
-        networkPackNT(100);
     }
 
     @Override

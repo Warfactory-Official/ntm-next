@@ -59,9 +59,6 @@ import org.jspecify.annotations.Nullable;
 public final class LaunchPadLargeRenderer
         implements BlockEntityRenderer<MissileErectorBlockEntity, LaunchPadLargeRenderer.State>,
                 ConcurrentRenderStateExtraction {
-
-    private static final RenderType PLATFORM =
-            RenderTypes.entityCutoutCull(ResourceManager.missile_erector_pad_tex);
     private static final double MISSILE_Y = 2D;
 
     private @Nullable Erectors erectors;
@@ -83,7 +80,7 @@ public final class LaunchPadLargeRenderer
         rows[MissileFormFactor.ATLAS.ordinal()] =
                 row("Atlas", 4D, 1.5D, ResourceManager.missile_erector_atlas_tex);
         rows[MissileFormFactor.OTHER.ordinal()] = rows[MissileFormFactor.ABM.ordinal()];
-        resolved = new Erectors(rows, ResourceManager.missile_erector.partId("Pad"));
+        resolved = new Erectors(rows);
         erectors = resolved;
         return resolved;
     }
@@ -129,7 +126,6 @@ public final class LaunchPadLargeRenderer
         Erector[] rows = resolved.rows();
         state.erector =
                 pad.formIndex >= 0 && pad.formIndex < rows.length ? rows[pad.formIndex] : null;
-        state.platformPart = resolved.platformPart();
         state.erected = pad.standingMissile;
         state.readyToLoad = pad.deploymentAvailable;
         state.erectorAngle = Mth.lerp(partialTicks, pad.previousArmAngle, pad.armAngle);
@@ -148,8 +144,6 @@ public final class LaunchPadLargeRenderer
         poseStack.pushPose();
         poseStack.translate(0.5D, 0D, 0.5D);
         poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
-
-        draw(poseStack, collector, light, PLATFORM, state.platformPart);
 
         Erector erector = state.erector;
         if (erector != null) {
@@ -198,7 +192,7 @@ public final class LaunchPadLargeRenderer
                 poseStack, type, (pose, buffer) -> mesh.renderPart(pose, buffer, light, -1, part));
     }
 
-    private record Erectors(Erector[] rows, int platformPart) {}
+    private record Erectors(Erector[] rows) {}
 
     private record Erector(
             int pad, int arm, int pivot, int rope, double pivotZ, double pivotY, RenderType skin) {}
@@ -206,7 +200,6 @@ public final class LaunchPadLargeRenderer
     public static final class State extends BlockEntityRenderState {
         Direction facing = Direction.NORTH;
         @Nullable Erector erector;
-        int platformPart;
         boolean erected;
         boolean readyToLoad;
         float erectorAngle;

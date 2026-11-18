@@ -38,15 +38,14 @@ import org.lwjgl.system.MemoryUtil;
 public final class ArmatureModel {
     private static final int COMPONENTS_PER_NODE = 24;
     private static final float LINEAR_QUATERNION_THRESHOLD = 0.9999999f;
+    private static final int POST_OFFSET = ArmatureType.TYPE.offset("postRows");
+    private static final int KEYS_OFFSET = ArmatureType.TYPE.offset("poseKeys");
+    private static final int CURVE_OFFSET = ArmatureType.TYPE.offset("orientationCurve");
 
     private final ArmatureScene scene;
     private final SampledClip clip;
     private final float[] windows;
     private final GeometryBinding[] bindings;
-    private final ArmatureType animatedType = new ArmatureType();
-    private final int postOffset = animatedType.offset("postRows");
-    private final int keysOffset = animatedType.offset("poseKeys");
-    private final int curveOffset = animatedType.offset("orientationCurve");
 
     public ArmatureModel(ArmatureScene scene, SampledClip clip, Material material) {
         this(scene, clip, materials(scene.getGeometryCount(), material));
@@ -130,7 +129,7 @@ public final class ArmatureModel {
     }
 
     ArmatureType animatedType() {
-        return animatedType;
+        return ArmatureType.TYPE;
     }
 
     GeometryBinding binding(int ordinal) {
@@ -138,7 +137,7 @@ public final class ArmatureModel {
     }
 
     void writePost(long destination, GeometryBinding binding) {
-        long output = destination + postOffset;
+        long output = destination + POST_OFFSET;
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 4; column++) {
                 MemoryUtil.memPutFloat(
@@ -161,13 +160,13 @@ public final class ArmatureModel {
         int t1 = start + nodes * 12;
         int q1 = start + nodes * 16;
         int s1 = start + nodes * 20;
-        long output = destination + keysOffset;
+        long output = destination + KEYS_OFFSET;
         putVector(output, windows[t0], windows[t0 + 1], windows[t0 + 2], windows[t1]);
         putVector(output + 16, windows[t1 + 1], windows[t1 + 2], windows[s0], windows[s0 + 1]);
         putVector(output + 32, windows[s0 + 2], windows[s1], windows[s1 + 1], windows[s1 + 2]);
         putVector(output + 48, windows[q0], windows[q0 + 1], windows[q0 + 2], windows[q0 + 3]);
         putVector(output + 64, windows[q1], windows[q1 + 1], windows[q1 + 2], windows[q1 + 3]);
-        output = destination + curveOffset;
+        output = destination + CURVE_OFFSET;
         putVector(output, windows[s0 + 3], windows[s1 + 3], windows[t1 + 3], 0);
     }
 
@@ -176,13 +175,13 @@ public final class ArmatureModel {
         int poseStart = endpoint * 16;
         for (int component = 0; component < 16; component++) {
             MemoryUtil.memPutFloat(
-                    destination + keysOffset + component * 4L,
+                    destination + KEYS_OFFSET + component * 4L,
                     binding.endpointData[poseStart + component]);
         }
         int normalStart = 32 + endpoint * 12;
         for (int component = 0; component < 12; component++) {
             MemoryUtil.memPutFloat(
-                    destination + postOffset + component * 4L,
+                    destination + POST_OFFSET + component * 4L,
                     binding.endpointData[normalStart + component]);
         }
     }

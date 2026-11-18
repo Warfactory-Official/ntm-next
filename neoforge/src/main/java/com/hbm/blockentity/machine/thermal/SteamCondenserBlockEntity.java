@@ -80,6 +80,7 @@ public class SteamCondenserBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         if (waterTimer > 0)
             hbm$syncSet$SteamCondenserBlockEntity$waterTimer((int) (waterTimer - 1));
         int amount = Math.min(input.getFill(), output.getMaxFill() - output.getFill());
@@ -93,7 +94,6 @@ public class SteamCondenserBlockEntity extends MachineBlockEntity
             if (amount > 0) markChanged();
         }
         flush.provide((ServerLevel) level, this);
-        networkPackNT(150);
     }
 
     @Override

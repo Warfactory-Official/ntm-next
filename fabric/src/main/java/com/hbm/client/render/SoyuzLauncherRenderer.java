@@ -91,25 +91,6 @@ public final class SoyuzLauncherRenderer
         poseStack.pushPose();
         poseStack.translate(0.5D, -MESH_DROP, 0.5D);
 
-        part(
-                poseStack,
-                collector,
-                light,
-                ResourceManager.soyuz_launcher_legs,
-                ResourceManager.soyuz_launcher_legs_tex);
-        part(
-                poseStack,
-                collector,
-                light,
-                ResourceManager.soyuz_launcher_table,
-                ResourceManager.soyuz_launcher_table_tex);
-        part(
-                poseStack,
-                collector,
-                light,
-                ResourceManager.soyuz_launcher_tower_base,
-                ResourceManager.soyuz_launcher_tower_base_tex);
-
         poseStack.pushPose();
         poseStack.translate(0D, TOWER_PIVOT_Y, TOWER_PIVOT_Z);
         poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.swing));
@@ -121,13 +102,6 @@ public final class SoyuzLauncherRenderer
                 ResourceManager.soyuz_launcher_tower,
                 ResourceManager.soyuz_launcher_tower_tex);
         poseStack.popPose();
-
-        part(
-                poseStack,
-                collector,
-                light,
-                ResourceManager.soyuz_launcher_support_base,
-                ResourceManager.soyuz_launcher_support_base_tex);
 
         poseStack.pushPose();
         poseStack.translate(0D, TOWER_PIVOT_Y, SUPPORT_PIVOT_Z);
@@ -155,7 +129,7 @@ public final class SoyuzLauncherRenderer
             int light,
             HFRWavefrontObject mesh,
             Identifier texture) {
-        RenderType type = RenderTypes.entityCutoutCull(texture);
+        RenderType type = RenderTypes.entityCutout(texture);
         collector.submitCustomGeometry(
                 poseStack, type, (pose, buffer) -> mesh.render(pose, buffer, light, -1));
     }

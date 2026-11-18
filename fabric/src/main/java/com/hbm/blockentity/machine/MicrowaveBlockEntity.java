@@ -73,6 +73,7 @@ public final class MicrowaveBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
         long charged =
                 ItemEnergyTransfer.extract(this, BATTERY_SLOT, ENERGY_CAPACITY - energy, false);
         if (charged != 0) {
@@ -104,7 +105,6 @@ public final class MicrowaveBlockEntity extends MachineBlockEntity
                 setChanged();
             }
         }
-        networkPackNT(50);
     }
 
     private ItemStack eligibleProduct() {

@@ -97,6 +97,7 @@ public abstract sealed class PhaseConverterBlockEntity extends MachineBlockEntit
 
     @Override
     public final void tickServer() {
+        networkPackNT(50);
         long charged = ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false);
         if (charged != 0L) hbm$syncSet$PhaseConverterBlockEntity$power((long) (power + (charged)));
         prepare();
@@ -120,7 +121,6 @@ public abstract sealed class PhaseConverterBlockEntity extends MachineBlockEntit
             markChanged();
         }
         push();
-        networkPackNT(50);
     }
 
     void prepare() {}

@@ -78,7 +78,9 @@ public final class BobbleVisual extends AbstractBoundedBlockEntityVisual<BobbleB
         updateMovingParts(partialTick);
     }
 
-    public static void initModels() {}
+    public static void initModels() {
+        BobbleDraws.initModels();
+    }
 
     public static boolean vanillaNeeded(BobbleBlockEntity be) {
         if (!(be.type instanceof BobbleType ntm))

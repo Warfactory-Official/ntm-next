@@ -99,6 +99,7 @@ public final class CatalyticReformerBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(150);
         setPower(power + ItemEnergyTransfer.extract(this, SLOT_BATTERY, MAX_POWER - power, false));
         if (tanks[0].setType(SLOT_FLUID_ID, SLOT_FLUID_ID, inventory)) setChanged();
         if (tanks[0].loadTank(SLOT_INPUT_IN, SLOT_INPUT_OUT, inventory)) setChanged();
@@ -110,7 +111,6 @@ public final class CatalyticReformerBlockEntity extends MachineBlockEntity
             }
         }
         flush.provide((ServerLevel) level, this);
-        networkPackNT(150);
     }
 
     private void processBatch() {

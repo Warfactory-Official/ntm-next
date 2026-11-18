@@ -79,10 +79,13 @@ public abstract class CooledAcceleratorBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(50);
+        tickAccelerator();
         flush.provide((ServerLevel) level, this);
         tickCooling();
-        networkPackNT(50);
     }
+
+    protected void tickAccelerator() {}
 
     protected void tickCooling() {
         float previousTemperature = temperature;

@@ -147,6 +147,7 @@ public class SuperComputerBlockEntity extends MachineBlockEntity
 
     @Override
     public void tickServer() {
+        networkPackNT(100);
         long previousPower = power;
         long previousMaxPower = maxPower;
         double previousProgress = module.progress;
@@ -167,7 +168,6 @@ public class SuperComputerBlockEntity extends MachineBlockEntity
                 || module.progress != previousProgress
                 || !module.getRecipeName().equals(previousRecipe)) markChanged();
         flush.provide((ServerLevel) level, this);
-        networkPackNT(100);
     }
 
     public void selectRecipe(String recipe) {

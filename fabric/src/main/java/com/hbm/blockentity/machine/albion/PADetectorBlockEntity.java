@@ -105,13 +105,12 @@ public class PADetectorBlockEntity extends CooledAcceleratorBlockEntity
     }
 
     @Override
-    public void tickServer() {
+    protected void tickAccelerator() {
         hbm$syncSet$CooledAcceleratorBlockEntity$power(
                 (long)
                         (power
                                 + (ItemEnergyTransfer.extract(
                                         this, SLOT_BATTERY, getMaxPower() - power, false))));
-        super.tickServer();
     }
 
     @Override
