@@ -148,13 +148,13 @@ public class RBMKCraneConsoleRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.facing));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.facing));
         poseStack.translate(0.5, 0.0, 0.0);
 
         poseStack.pushPose();
         poseStack.translate(0.75, 1.0, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.tiltFront));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.tiltLeft));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.tiltFront));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.tiltLeft));
         poseStack.translate(-0.75, -1.015, 0.0);
         collector.submitCustomGeometry(
                 poseStack,
@@ -193,12 +193,12 @@ public class RBMKCraneConsoleRenderer
             poseStack.pushPose();
             poseStack.translate(0.5, -1.0, 0.5);
             poseStack.translate(state.cranePosX, state.cranePosY, state.cranePosZ);
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.facing));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.facing));
             poseStack.translate(-state.posFront, 0.0, state.posLeft);
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.rotationOffset));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.rotationOffset));
 
             poseStack.pushPose();
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-state.rotationOffset));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-state.rotationOffset));
             int girderSpan;
             switch (state.rotationOffset) {
                 case 90 -> {
@@ -218,7 +218,7 @@ public class RBMKCraneConsoleRenderer
                     poseStack.translate(state.posFront + state.spanB, 0, 0);
                 }
             }
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.rotationOffset));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.rotationOffset));
             for (int i = 0; i < girderSpan; i++) {
                 collector.submitCustomGeometry(
                         poseStack,
@@ -277,7 +277,7 @@ public class RBMKCraneConsoleRenderer
             int part) {
         poseStack.pushPose();
         poseStack.translate(0.0, 1.25, z);
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) angle));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) angle));
         poseStack.translate(0.0, -1.25, -z);
         collector.submitCustomGeometry(
                 poseStack,

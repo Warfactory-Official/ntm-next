@@ -97,7 +97,7 @@ public final class RadarItemRenderer implements SpecialModelRenderer<ItemDisplay
                 light);
 
         pose.pushPose();
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.YP.rotationDegrees(-(GameTime.now() % SPIN_PERIOD) * SPIN_RATE));
         pose.translate(-0.125D, 0D, 0D);

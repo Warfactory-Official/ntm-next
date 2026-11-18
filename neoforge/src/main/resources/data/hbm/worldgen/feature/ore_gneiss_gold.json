@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:ore",
+  "discard_chance_on_air_exposure": 0.0,
+  "size": 6,
+  "targets": [
+    {
+      "state": "hbm:ore_gneiss_gold",
+      "target": {
+        "block": "hbm:stone_gneiss",
+        "predicate_type": "minecraft:block_match"
+      }
+    }
+  ]
+}

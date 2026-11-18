@@ -25,21 +25,20 @@ import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 
-public abstract class PlaceTemplateFeature extends Feature<NoneFeatureConfiguration> {
+public abstract class PlaceTemplateFeature implements Feature {
     private final Identifier templateId;
 
     protected PlaceTemplateFeature(String templateId) {
-        super(NoneFeatureConfiguration.CODEC);
         this.templateId = RegistryUtil.id(templateId);
     }
 
@@ -56,9 +55,12 @@ public abstract class PlaceTemplateFeature extends Feature<NoneFeatureConfigurat
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        WorldGenLevel level = ctx.level();
-        BlockPos origin = ctx.origin();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        BlockPos origin = featureOrigin;
         BlockPos.MutableBlockPos guard = new BlockPos.MutableBlockPos();
 
         for (BlockPos offset : guardOffsets()) {
@@ -66,7 +68,7 @@ public abstract class PlaceTemplateFeature extends Feature<NoneFeatureConfigurat
             if (!isValidSpawn(level, guard)) return false;
         }
 
-        StructureTemplateManager manager = level.getLevel().getStructureManager();
+        StructureTemplateManager manager = level.getLevel().getStructureTemplateManager();
         Optional<StructureTemplate> template = manager.get(templateId);
         if (template.isEmpty()) return false;
 
@@ -75,7 +77,6 @@ public abstract class PlaceTemplateFeature extends Feature<NoneFeatureConfigurat
             settings.addProcessor(processor);
         }
         BlockPos placeOrigin = templateOrigin(origin);
-        return template.get()
-                .placeInWorld(level, placeOrigin, placeOrigin, settings, ctx.random(), 2);
+        return template.get().placeInWorld(level, placeOrigin, placeOrigin, settings, random, 2);
     }
 }

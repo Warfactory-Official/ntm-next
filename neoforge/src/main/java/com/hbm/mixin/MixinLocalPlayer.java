@@ -19,21 +19,8 @@
 
 package com.hbm.mixin;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LocalPlayer.class)
-public class MixinLocalPlayer {
-    @ModifyReturnValue(method = "getViewXRot", at = @At("RETURN"))
-    private float hbm$interpolateViewPitch(float rotation, float partialTick) {
-        return ((LocalPlayer) (Object) this).getXRot(partialTick);
-    }
-
-    @ModifyReturnValue(method = "getViewYRot", at = @At("RETURN"))
-    private float hbm$interpolateViewYaw(float rotation, float partialTick) {
-        var player = (LocalPlayer) (Object) this;
-        return player.isPassenger() ? rotation : player.getYRot(partialTick);
-    }
-}
+public class MixinLocalPlayer {}

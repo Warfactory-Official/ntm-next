@@ -7,12 +7,7 @@
       ],
       "primary": [
         {
-          "state": {
-            "Name": "hbm:waste_log",
-            "Properties": {
-              "axis": "y"
-            }
-          },
+          "state": "hbm:waste_log",
           "weight": 1
         }
       ],
@@ -22,12 +17,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:waste_log",
-            "Properties": {
-              "axis": "y"
-            }
-          },
+          "state": "hbm:waste_log",
           "weight": 1
         }
       ],
@@ -37,9 +27,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -49,9 +37,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -61,9 +47,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -73,9 +57,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:waste_planks"
-          },
+          "state": "hbm:waste_planks",
           "weight": 1
         }
       ],
@@ -85,9 +67,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -97,9 +77,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -109,9 +87,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -121,9 +97,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -133,9 +107,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -145,9 +117,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -157,9 +127,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -173,10 +141,12 @@
         "minecraft:dark_oak_sapling",
         "minecraft:pale_oak_sapling",
         "minecraft:mangrove_propagule",
+        "minecraft:poplar_sapling",
         "minecraft:short_grass",
         "minecraft:fern",
         "minecraft:dead_bush",
         "minecraft:bush",
+        "minecraft:red_shrub",
         "minecraft:short_dry_grass",
         "minecraft:tall_dry_grass",
         "minecraft:seagrass",
@@ -258,9 +228,7 @@
       "max_distance_percent": 65.0,
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:air"
-          },
+          "state": "minecraft:air",
           "weight": 1
         }
       ],
@@ -270,12 +238,7 @@
       "min_distance_percent": 60.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:waste_leaves",
-            "Properties": {
-              "waterlogged": "false"
-            }
-          },
+          "state": "hbm:waste_leaves",
           "weight": 1
         }
       ],
@@ -284,9 +247,7 @@
     {
       "primary": [
         {
-          "state": {
-            "Name": "hbm:glyphid_base_rad"
-          },
+          "state": "hbm:glyphid_base_rad",
           "weight": 1
         }
       ],
@@ -299,9 +260,7 @@
     {
       "primary": [
         {
-          "state": {
-            "Name": "hbm:glyphid_spawner_rad"
-          },
+          "state": "hbm:glyphid_spawner_rad",
           "weight": 1
         }
       ],
@@ -314,9 +273,7 @@
     {
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:coal_ore"
-          },
+          "state": "minecraft:coal_ore",
           "weight": 1
         }
       ],
@@ -325,15 +282,11 @@
     {
       "primary": [
         {
-          "state": {
-            "Name": "hbm:ore_nether_schrabidium"
-          },
+          "state": "hbm:ore_nether_schrabidium",
           "weight": 1
         },
         {
-          "state": {
-            "Name": "hbm:ore_nether_uranium_scorched"
-          },
+          "state": "hbm:ore_nether_uranium_scorched",
           "weight": 99
         }
       ],
@@ -342,9 +295,7 @@
     {
       "primary": [
         {
-          "state": {
-            "Name": "minecraft:terracotta"
-          },
+          "state": "minecraft:terracotta",
           "weight": 1
         }
       ],
@@ -356,8 +307,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "9"
             }
           },
@@ -365,8 +316,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "9"
             }
           },
@@ -382,8 +333,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "9"
             }
           },
@@ -398,8 +349,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "9"
             }
           },
@@ -414,8 +365,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "9"
             }
           },
@@ -423,8 +374,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "9"
             }
           },
@@ -439,8 +390,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "9"
             }
           },
@@ -448,8 +399,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "9"
             }
           },
@@ -464,8 +415,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "9"
             }
           },
@@ -473,8 +424,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "9"
             }
           },
@@ -489,8 +440,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "9"
             }
           },
@@ -505,8 +456,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "9"
             }
           },
@@ -521,8 +472,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "9"
             }
           },
@@ -537,8 +488,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "9"
             }
           },
@@ -553,8 +504,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "9"
             }
           },
@@ -569,8 +520,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "9"
             }
           },
@@ -585,8 +536,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "9"
             }
           },
@@ -602,8 +553,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "8"
             }
           },
@@ -611,8 +562,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "8"
             }
           },
@@ -628,8 +579,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "8"
             }
           },
@@ -644,8 +595,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "8"
             }
           },
@@ -660,8 +611,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "8"
             }
           },
@@ -669,8 +620,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "8"
             }
           },
@@ -685,8 +636,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "8"
             }
           },
@@ -694,8 +645,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "8"
             }
           },
@@ -710,8 +661,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "8"
             }
           },
@@ -719,8 +670,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "8"
             }
           },
@@ -735,8 +686,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "8"
             }
           },
@@ -751,8 +702,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "8"
             }
           },
@@ -767,8 +718,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "8"
             }
           },
@@ -783,8 +734,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "8"
             }
           },
@@ -799,8 +750,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "8"
             }
           },
@@ -815,8 +766,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "8"
             }
           },
@@ -831,8 +782,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "8"
             }
           },
@@ -848,8 +799,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "7"
             }
           },
@@ -857,8 +808,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "7"
             }
           },
@@ -874,8 +825,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "7"
             }
           },
@@ -890,8 +841,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "7"
             }
           },
@@ -906,8 +857,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "7"
             }
           },
@@ -915,8 +866,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "7"
             }
           },
@@ -931,8 +882,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "7"
             }
           },
@@ -940,8 +891,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "7"
             }
           },
@@ -956,8 +907,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "7"
             }
           },
@@ -965,8 +916,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "7"
             }
           },
@@ -981,8 +932,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "7"
             }
           },
@@ -997,8 +948,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "7"
             }
           },
@@ -1013,8 +964,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "7"
             }
           },
@@ -1029,8 +980,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "7"
             }
           },
@@ -1045,8 +996,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "7"
             }
           },
@@ -1061,8 +1012,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "7"
             }
           },
@@ -1077,8 +1028,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "7"
             }
           },
@@ -1094,8 +1045,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1103,8 +1054,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1120,8 +1071,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1136,8 +1087,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1152,8 +1103,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1161,8 +1112,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1177,8 +1128,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1186,8 +1137,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1202,8 +1153,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1211,8 +1162,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1227,8 +1178,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1243,8 +1194,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1259,8 +1210,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1275,8 +1226,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1291,8 +1242,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1307,8 +1258,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1323,8 +1274,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "6"
             }
           },
@@ -1340,8 +1291,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1349,8 +1300,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1366,8 +1317,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1382,8 +1333,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1398,8 +1349,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1407,8 +1358,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1423,8 +1374,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1432,8 +1383,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1448,8 +1399,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_schrabidium",
-            "Properties": {
+            "id": "hbm:ore_sellafield_schrabidium",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1457,8 +1408,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_uranium_scorched",
-            "Properties": {
+            "id": "hbm:ore_sellafield_uranium_scorched",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1473,8 +1424,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1489,8 +1440,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1505,8 +1456,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1521,8 +1472,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1537,8 +1488,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1553,8 +1504,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1569,8 +1520,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "5"
             }
           },
@@ -1586,8 +1537,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1595,8 +1546,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1612,8 +1563,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1628,8 +1579,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1644,8 +1595,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1660,8 +1611,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1676,8 +1627,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1692,8 +1643,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1708,8 +1659,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1724,8 +1675,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1740,8 +1691,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "4"
             }
           },
@@ -1757,8 +1708,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1766,8 +1717,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1783,8 +1734,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1799,8 +1750,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1815,8 +1766,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1831,8 +1782,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1847,8 +1798,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1863,8 +1814,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1879,8 +1830,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1895,8 +1846,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1911,8 +1862,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "3"
             }
           },
@@ -1928,8 +1879,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "2"
             }
           },
@@ -1937,8 +1888,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "2"
             }
           },
@@ -1954,8 +1905,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "2"
             }
           },
@@ -1970,8 +1921,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "2"
             }
           },
@@ -1986,8 +1937,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "2"
             }
           },
@@ -2002,8 +1953,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "2"
             }
           },
@@ -2018,8 +1969,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "2"
             }
           },
@@ -2034,8 +1985,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "2"
             }
           },
@@ -2050,8 +2001,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "2"
             }
           },
@@ -2066,8 +2017,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "2"
             }
           },
@@ -2082,8 +2033,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "2"
             }
           },
@@ -2099,8 +2050,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2108,8 +2059,8 @@
         },
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2125,8 +2076,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
+            "id": "hbm:ore_sellafield_diamond",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2141,8 +2092,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
+            "id": "hbm:ore_sellafield_emerald",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2157,8 +2108,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
+            "id": "hbm:ore_sellafield_radgem",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2173,8 +2124,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2189,8 +2140,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2205,8 +2156,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2221,8 +2172,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
+            "id": "hbm:sellafield_bedrock",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2237,8 +2188,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2253,8 +2204,8 @@
       "primary": [
         {
           "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
+            "id": "hbm:sellafield_slaked",
+            "properties": {
               "shade": "1"
             }
           },
@@ -2269,21 +2220,11 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:ore_sellafield_diamond",
           "weight": 3
         },
         {
-          "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:ore_sellafield_emerald",
           "weight": 2
         }
       ],
@@ -2295,12 +2236,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:ore_sellafield_diamond",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:ore_sellafield_diamond",
           "weight": 1
         }
       ],
@@ -2311,12 +2247,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:ore_sellafield_emerald",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:ore_sellafield_emerald",
           "weight": 1
         }
       ],
@@ -2327,12 +2258,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:ore_sellafield_radgem",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:ore_sellafield_radgem",
           "weight": 1
         }
       ],
@@ -2343,12 +2269,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:sellafield_bedrock",
           "weight": 1
         }
       ],
@@ -2359,12 +2280,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:sellafield_bedrock",
           "weight": 1
         }
       ],
@@ -2375,12 +2291,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:sellafield_bedrock",
           "weight": 1
         }
       ],
@@ -2391,12 +2302,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:sellafield_bedrock",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:sellafield_bedrock",
           "weight": 1
         }
       ],
@@ -2407,12 +2313,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:sellafield_slaked",
           "weight": 1
         }
       ],
@@ -2423,12 +2324,7 @@
       "max_distance_percent": 50.0,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:sellafield_slaked",
-            "Properties": {
-              "shade": "0"
-            }
-          },
+          "state": "hbm:sellafield_slaked",
           "weight": 1
         }
       ],
@@ -2438,9 +2334,7 @@
     {
       "primary": [
         {
-          "state": {
-            "Name": "hbm:waste_mycelium"
-          },
+          "state": "hbm:waste_mycelium",
           "weight": 1
         }
       ],
@@ -2450,9 +2344,7 @@
       "chance": 0.05,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:waste_trinitite"
-          },
+          "state": "hbm:waste_trinitite",
           "weight": 1
         }
       ],
@@ -2462,9 +2354,7 @@
       "chance": 0.05,
       "primary": [
         {
-          "state": {
-            "Name": "hbm:waste_trinitite_red"
-          },
+          "state": "hbm:waste_trinitite_red",
           "weight": 1
         }
       ],

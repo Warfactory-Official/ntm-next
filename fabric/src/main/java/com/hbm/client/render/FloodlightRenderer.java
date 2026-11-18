@@ -87,31 +87,31 @@ public class FloodlightRenderer
         poseStack.pushPose();
         poseStack.translate(0.5, 0.5, 0.5);
         switch (meta) {
-            case 0, 6 -> poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+            case 0, 6 -> poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
             case 1, 7 -> {}
             case 2 -> {
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
-                poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180F));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
+                poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180F));
             }
-            case 3 -> poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
+            case 3 -> poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
             case 4 -> {
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
-                poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90F));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
+                poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90F));
             }
             case 5 -> {
-                poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
-                poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(270F));
+                poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
+                poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(270F));
             }
             default -> throw new IllegalStateException("Unexpected floodlight facing: " + meta);
         }
         poseStack.translate(0.0, -0.5, 0.0);
-        if (meta != 0 && meta != 1) poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        if (meta != 0 && meta != 1) poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
 
         float rotation = state.rotation;
         if (meta == 0 || meta == 6) rotation -= 90F;
         if (meta == 1 || meta == 7) rotation += 90F;
         poseStack.translate(0.0, 0.5, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(rotation));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(rotation));
         poseStack.translate(0.0, -0.5, 0.0);
 
         int lightsLight = state.lightCoords;

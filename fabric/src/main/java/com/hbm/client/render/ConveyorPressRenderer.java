@@ -98,7 +98,7 @@ public class ConveyorPressRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
 
         if (state.stamped) {
             poseStack.pushPose();

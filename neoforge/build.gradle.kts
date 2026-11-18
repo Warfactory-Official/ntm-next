@@ -252,9 +252,9 @@ dependencies {
     compileOnly(property("dependency_neoforge_wthit_api") as String)
     compileOnly(property("dependency_neoforge_the_one_probe") as String)
 
-    compileOnly("curse.maven:neocontinuity-1377279:8896544")
-    compileOnly("maven.modrinth:fusion-connected-textures:1.3.16-neoforge-mc26.2")
-    compileOnly("maven.modrinth:ctmlib:26.2.0.3")
+    compileOnly("maven.modrinth:continuity-neoforged:tYf7iWxF")
+    compileOnly("maven.modrinth:fusion-connected-textures:nyY8l8va")
+    compileOnly("maven.modrinth:ctmlib:26.3.0.2")
 }
 
 neoForge {

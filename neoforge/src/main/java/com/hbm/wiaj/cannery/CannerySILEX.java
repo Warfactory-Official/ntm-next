@@ -447,7 +447,7 @@ public class CannerySILEX extends CanneryBase {
             PoseStack pose = context.pose();
             pose.pushPose();
             pose.translate(x + 0.5D, y, z + 0.5D);
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             Axis.YP.rotationDegrees(
                                     switch (rotation) {
@@ -520,7 +520,7 @@ public class CannerySILEX extends CanneryBase {
             PoseStack pose = context.pose();
             pose.pushPose();
             pose.translate(x + 0.5D, y, z + 0.5D);
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             Axis.YP.rotationDegrees(
                                     switch (rotation) {

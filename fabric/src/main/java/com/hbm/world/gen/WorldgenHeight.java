@@ -19,13 +19,9 @@
 
 package com.hbm.world.gen;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.QuartPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.BiomeManager;
@@ -35,16 +31,12 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.ImposterProtoChunk;
 import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseChunk;
 import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.WorldGenerationContext;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.blending.Blender;
-import net.minecraft.world.level.levelgen.carver.CarvingContext;
+import net.minecraft.world.level.levelgen.densityfunction.DensityVolume;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.jspecify.annotations.Nullable;
@@ -113,7 +105,7 @@ public final class WorldgenHeight {
             for (int y = Math.min(top, bottom + 15); y >= lowestY; y--) {
                 BlockState state = section.getBlockState(pos.getX() & 15, y & 15, pos.getZ() & 15);
                 if (ground
-                        ? (state.blocksMotion() && !state.is(BlockTags.LEAVES))
+                        ? state.is(BlockTags.BLOCKS_MOTION_IN_HEIGHTMAP_NO_LEAVES)
                         : state.getLightDampening() > 0) {
                     pos.setY(y);
                     return y + 1;
@@ -198,80 +190,35 @@ public final class WorldgenHeight {
         var noiseSettings =
                 settings.noiseSettings()
                         .clampToHeightAccessor(chunk.getHeightAccessorForGeneration());
+        if (noiseSettings.height() <= 0) return;
         var random = context.randomState();
         var source = generator.getBiomeSource();
-        var biomes =
-                new BiomeManager(
-                        (x, y, z) -> source.getNoiseBiome(x, y, z, random.sampler()),
-                        BiomeManager.obfuscateSeed(context.seed()));
-        chunk.fillBiomesFromNoise(source, random.sampler());
-        var noise =
-                chunk.getOrCreateNoiseChunk(
-                        c ->
-                                new NoiseChunk(
-                                        16 / noiseSettings.getCellWidth(),
-                                        random,
-                                        c.getPos().getMinBlockX(),
-                                        c.getPos().getMinBlockZ(),
-                                        noiseSettings,
-                                        DensityFunctions.BeardifierMarker.INSTANCE,
-                                        settings,
-                                        generator.globalFluidPicker.get(),
-                                        Blender.empty()));
-        generator.doFill(
-                Blender.empty(),
-                null,
-                random,
-                chunk,
-                Mth.floorDiv(noiseSettings.minY(), noiseSettings.getCellHeight()),
-                Mth.floorDiv(noiseSettings.height(), noiseSettings.getCellHeight()));
-        if (!SharedConstants.DEBUG_DISABLE_SURFACE
-                && !SharedConstants.debugVoidTerrain(chunk.getPos())) {
-            generator.buildSurface(
-                    chunk,
-                    new WorldGenerationContext(generator, context.heightAccessor()),
-                    random,
-                    null,
-                    biomes,
-                    Blender.empty(),
-                    null);
-        }
-        if (SharedConstants.DEBUG_DISABLE_CARVERS) return;
-        var carving =
-                new CarvingContext(
-                        generator,
-                        context.registryAccess(),
-                        chunk.getHeightAccessorForGeneration(),
-                        noise,
+        var resolver = source.createResolver(context.climateSampler());
+        var biomes = new BiomeManager(resolver, BiomeManager.obfuscateSeed(context.seed()));
+        chunk.fillBiomesFromNoise(resolver);
+        var volume =
+                new DensityVolume(
+                        16,
+                        noiseSettings.height(),
+                        16,
+                        chunk.getPos().getMinBlockX(),
+                        noiseSettings.minY(),
+                        chunk.getPos().getMinBlockZ());
+        try (var noise =
+                new NoiseChunk(
                         random,
-                        settings.surfaceRule());
-        var carverRandom = new WorldgenRandom(new LegacyRandomSource(0));
-        ChunkPos at = chunk.getPos();
-        for (int dx = -8; dx <= 8; dx++)
-            for (int dz = -8; dz <= 8; dz++) {
-                ChunkPos from = new ChunkPos(at.x() + dx, at.z() + dz);
-                var biome =
-                        source.getNoiseBiome(
-                                QuartPos.fromBlock(from.getMinBlockX()),
-                                0,
-                                QuartPos.fromBlock(from.getMinBlockZ()),
-                                random.sampler());
-                int index = 0;
-                for (var holder : generator.getBiomeGenerationSettings(biome).getCarvers()) {
-                    var carver = holder.value();
-                    carverRandom.setLargeFeatureSeed(context.seed() + index++, from.x(), from.z());
-                    if (carver.isStartChunk(carverRandom)) {
-                        carver.carve(
-                                carving,
-                                chunk,
-                                biomes::getBiome,
-                                carverRandom,
-                                noise.aquifer(),
-                                from,
-                                chunk.getOrCreateCarvingMask());
-                    }
-                }
-            }
+                        null,
+                        settings,
+                        generator.globalFluidPicker.get(),
+                        Blender.empty(),
+                        volume)) {
+            generator.doFill(noise, chunk);
+            var materialRule = settings.materialRule().value();
+            generator.buildSurface(
+                    chunk, noise, random, biomes, source.possibleBiomes(), materialRule);
+            generator.generateCarvers(
+                    chunk, Blender.empty(), noise, random, biomes, null, materialRule);
+        }
     }
 
     private static int symmetricSampleCount(int min, int max) {

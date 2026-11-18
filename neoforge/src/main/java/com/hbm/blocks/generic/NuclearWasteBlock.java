@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -30,16 +29,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class NuclearWasteBlock extends HazardBlock {
-    public static final MapCodec<NuclearWasteBlock> CODEC = simpleCodec(NuclearWasteBlock::new);
-
     public NuclearWasteBlock(BlockBehaviour.Properties props) {
         super(props);
         setDisplayEffect(ExtDisplayEffect.RADFOG);
-    }
-
-    @Override
-    protected MapCodec<? extends NuclearWasteBlock> codec() {
-        return CODEC;
     }
 
     @Override

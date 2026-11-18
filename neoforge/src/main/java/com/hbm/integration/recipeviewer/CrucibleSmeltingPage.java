@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -62,8 +62,8 @@ public final class CrucibleSmeltingPage extends RecipePage<CrucibleSmeltingPage.
     }
 
     private Identifier rowId(Ingredient input) {
-        if (input.display() instanceof SlotDisplay.TagSlotDisplay(TagKey<Item> tag)) {
-            return PageIds.derived(id(), "tag", PageIds.segment(tag.location()));
+        if (input.display() instanceof SlotDisplay.TagSlotDisplay(HolderSet.Named<Item> tag)) {
+            return PageIds.derived(id(), "tag", PageIds.segment(tag.key().location()));
         }
         String items =
                 input.items()

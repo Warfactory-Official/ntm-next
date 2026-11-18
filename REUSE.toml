@@ -40,6 +40,7 @@ SPDX-License-Identifier = "LicenseRef-Minecraft-EULA"
 
 [[annotations]]
 path = [
+    "*/src/main/resources/assets/hbm/shaders/core/armor_glint.fsh",
     "*/src/main/resources/assets/hbm/shaders/core/entity_chunk.vsh",
     "*/src/main/resources/assets/hbm/shaders/core/entity_fade.fsh",
     "*/src/main/resources/assets/hbm/shaders/core/entity_nofog.fsh",

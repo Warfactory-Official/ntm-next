@@ -13,7 +13,6 @@
     "MixinItemEntity",
     "MixinLivingEntity",
     "MixinNaturalSpawner",
-    "MixinPlayer",
     "MixinServerLevel",
     "MixinServerPlayer",
     "bulk.MixinAxiomServerboundRequestChunkData",

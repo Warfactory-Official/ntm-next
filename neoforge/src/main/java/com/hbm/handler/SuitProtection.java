@@ -30,8 +30,8 @@ import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffect;
@@ -71,7 +71,7 @@ public record SuitProtection(
                                                                     .forGetter(
                                                                             SuitProtection
                                                                                     ::maxHealth),
-                                                            RegistryCodecs.<Item>homogeneousList(
+                                                            RegistryCodecs.<Item>holderSet(
                                                                             (ResourceKey<
                                                                                             ? extends
                                                                                                     Registry<
@@ -108,8 +108,7 @@ public record SuitProtection(
                                 RecordCodecBuilder.<Armor>mapCodec(
                                         i ->
                                                 i.group(
-                                                                RegistryCodecs
-                                                                        .<Item>homogeneousList(
+                                                                RegistryCodecs.<Item>holderSet(
                                                                                 (ResourceKey<
                                                                                                 ? extends
                                                                                                         Registry<
@@ -118,8 +117,7 @@ public record SuitProtection(
                                                                                                 .ITEM)
                                                                         .fieldOf("head")
                                                                         .forGetter(Armor::head),
-                                                                RegistryCodecs
-                                                                        .<Item>homogeneousList(
+                                                                RegistryCodecs.<Item>holderSet(
                                                                                 (ResourceKey<
                                                                                                 ? extends
                                                                                                         Registry<
@@ -128,8 +126,7 @@ public record SuitProtection(
                                                                                                 .ITEM)
                                                                         .fieldOf("chest")
                                                                         .forGetter(Armor::chest),
-                                                                RegistryCodecs
-                                                                        .<Item>homogeneousList(
+                                                                RegistryCodecs.<Item>holderSet(
                                                                                 (ResourceKey<
                                                                                                 ? extends
                                                                                                         Registry<
@@ -138,8 +135,7 @@ public record SuitProtection(
                                                                                                 .ITEM)
                                                                         .fieldOf("legs")
                                                                         .forGetter(Armor::legs),
-                                                                RegistryCodecs
-                                                                        .<Item>homogeneousList(
+                                                                RegistryCodecs.<Item>holderSet(
                                                                                 (ResourceKey<
                                                                                                 ? extends
                                                                                                         Registry<

@@ -312,8 +312,10 @@ public record PaintableDuctModel() implements SimpleBlockModel {
                             sprite,
                             info.layer(),
                             itemType,
+                            info.itemGlintRenderType(),
+                            info.itemGlintSpecialRenderType(),
                             CuboidFace.NO_TINT,
-                            info.shade(),
+                            info.shadeDirectionOverride(),
                             emission,
                             info.ambientOcclusion() && true);
             return new BakedQuad(

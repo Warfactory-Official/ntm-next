@@ -68,7 +68,7 @@ public class ManlyPlayerLayer extends RenderLayer<AvatarRenderState, PlayerModel
         boolean translucent = state.isInvisible && !state.isInvisibleToPlayer;
         RenderType type =
                 translucent
-                        ? RenderTypes.entityTranslucentCullItemTarget(TEXTURE)
+                        ? RenderTypes.entityTranslucentCull(TEXTURE)
                         : state.isInvisible ? null : WorldRenderPipeline.oneSidedCutout(TEXTURE);
         int color = translucent ? 654311423 : -1;
         int overlay = LivingEntityRenderer.getOverlayCoords(state, 0F);

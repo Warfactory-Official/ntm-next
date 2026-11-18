@@ -26,7 +26,6 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.util.InventoryUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
@@ -34,21 +33,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class CraneUnboxerBlock extends CraneBlock implements ConveyorInputHandler, CapabilityBlock {
-    public static final MapCodec<CraneUnboxerBlock> CODEC = simpleCodec(CraneUnboxerBlock::new);
-
     public CraneUnboxerBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

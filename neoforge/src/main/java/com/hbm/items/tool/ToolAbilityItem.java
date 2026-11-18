@@ -68,10 +68,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.BlockTransformers;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -84,8 +84,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.jspecify.annotations.Nullable;
 
 public class ToolAbilityItem extends Item implements KeybindHandler {
@@ -154,6 +152,18 @@ public class ToolAbilityItem extends Item implements KeybindHandler {
         if (tier.enchantmentValue() > 0) properties.enchantable(tier.enchantmentValue());
         if (tier.durability() > 0) properties.durability(tier.durability());
         if (repairItems != null) properties.repairable(repairItems);
+
+        switch (type) {
+            case AXE ->
+                    properties.delayedComponent(
+                            DataComponents.BLOCK_TRANSFORMER,
+                            lookup -> lookup.getOrThrow(BlockTransformers.AXE));
+            case SHOVEL, MINER ->
+                    properties.delayedComponent(
+                            DataComponents.BLOCK_TRANSFORMER,
+                            lookup -> lookup.getOrThrow(BlockTransformers.SHOVEL));
+            case PICKAXE -> {}
+        }
 
         return properties.attributes(attributes(attackDamage, attackSpeed(tier, type), movement));
     }
@@ -433,12 +443,7 @@ public class ToolAbilityItem extends Item implements KeybindHandler {
         ItemStack stack = context.getItemInHand();
         if (player == null || !canOperate(stack)) return InteractionResult.PASS;
 
-        InteractionResult result =
-                switch (type) {
-                    case AXE -> Items.IRON_AXE.useOn(context);
-                    case SHOVEL, MINER -> Items.IRON_SHOVEL.useOn(context);
-                    case PICKAXE -> InteractionResult.PASS;
-                };
+        InteractionResult result = super.useOn(context);
         if (result != InteractionResult.PASS) {
             if (result.consumesAction()) finishToolAction(stack, player);
             return result;
@@ -447,15 +452,6 @@ public class ToolAbilityItem extends Item implements KeybindHandler {
             return InteractionResult.PASS;
         }
         return cycleFromUse(stack);
-    }
-
-    @Override
-    public boolean canPerformAction(ItemInstance stack, ItemAbility ability) {
-        return switch (type) {
-            case AXE -> ItemAbilities.DEFAULT_AXE_ACTIONS.contains(ability);
-            case SHOVEL, MINER -> ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(ability);
-            case PICKAXE -> false;
-        };
     }
 
     @Override

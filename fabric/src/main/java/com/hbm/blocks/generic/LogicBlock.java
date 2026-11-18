@@ -22,7 +22,6 @@ package com.hbm.blocks.generic;
 import com.hbm.blockentity.encounter.LogicBlockEntity;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.world.gen.util.LogicBlockInteractions;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
@@ -40,18 +39,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class LogicBlock extends Block implements TickingEntityBlock {
-    public static final MapCodec<LogicBlock> CODEC = simpleCodec(LogicBlock::new);
     public static final EnumProperty<Disguise> DISGUISE =
             EnumProperty.create("disguise", Disguise.class);
 
     public LogicBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(DISGUISE, Disguise.NONE));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

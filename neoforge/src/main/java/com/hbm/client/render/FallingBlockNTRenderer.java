@@ -44,8 +44,13 @@ public class FallingBlockNTRenderer
 
     @Override
     public boolean shouldRender(
-            FallingBlockNTEntity entity, Frustum culler, double camX, double camY, double camZ) {
-        return super.shouldRender(entity, culler, camX, camY, camZ)
+            FallingBlockNTEntity entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
+        return super.shouldRender(entity, culler, camX, camY, camZ, partialTicks)
                 && entity.getBlockState() != entity.level().getBlockState(entity.blockPosition());
     }
 

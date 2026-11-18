@@ -23,6 +23,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import java.util.List;
 import net.fabricmc.fabric.api.client.rendering.v1.SubmitRenderPhase;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
@@ -40,9 +41,9 @@ import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.state.level.QuadParticleRenderState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.UvMapping;
 import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.ItemQuads;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -59,6 +60,17 @@ public final class CrumblingCollector implements SubmitNodeCollector {
                                     RenderType.create(
                                             "ntm_crumbling",
                                             RenderSetup.builder(RenderPipelines.CRUMBLING)
+                                                    .withTexture("Sampler0", texture)
+                                                    .createRenderSetup()))
+                    .toList();
+    private static final List<RenderType> OIT_STAGES =
+            ModelBakery.BREAKING_LOCATIONS_OIT.stream()
+                    .map(
+                            texture ->
+                                    RenderType.create(
+                                            "ntm_crumbling_oit",
+                                            RenderSetup.builder(RenderPipelines.CRUMBLING)
+                                                    .setOitPipelines(RenderPipelines.OIT_CRUMBLING)
                                                     .withTexture("Sampler0", texture)
                                                     .createRenderSetup()))
                     .toList();
@@ -98,7 +110,10 @@ public final class CrumblingCollector implements SubmitNodeCollector {
         delegate.submitCustomGeometry(poseStack, renderType, customGeometryRenderer);
         if (!renderType.affectsCrumbling()) return;
         PoseStack.Pose decal = overlay.cameraPose();
-        var stages = STAGES;
+        var stages =
+                Minecraft.getInstance().gameRenderer.useImprovedTransparency()
+                        ? OIT_STAGES
+                        : STAGES;
         delegate.submitCustomGeometry(
                 poseStack,
                 stages.get(overlay.progress()),
@@ -116,9 +131,8 @@ public final class CrumblingCollector implements SubmitNodeCollector {
             int lightCoords,
             int overlayCoords,
             int tintedColor,
-            @Nullable TextureAtlasSprite sprite,
-            int outlineColor,
-            ModelFeatureRenderer.@Nullable CrumblingOverlay crumblingOverlay) {
+            @Nullable UvMapping uvMapping,
+            int outlineColor) {
         delegate.submitModel(
                 model,
                 state,
@@ -127,9 +141,38 @@ public final class CrumblingCollector implements SubmitNodeCollector {
                 lightCoords,
                 overlayCoords,
                 tintedColor,
-                sprite,
-                outlineColor,
-                crumblingOverlay != null ? crumblingOverlay : overlay);
+                uvMapping,
+                outlineColor);
+        delegate.submitCrumblingOverlay(
+                model,
+                state,
+                poseStack,
+                renderType,
+                lightCoords,
+                overlayCoords,
+                tintedColor,
+                overlay);
+    }
+
+    @Override
+    public <S> void submitCrumblingOverlay(
+            Model<? super S> model,
+            S state,
+            PoseStack poseStack,
+            RenderType renderType,
+            int lightCoords,
+            int overlayCoords,
+            int tintedColor,
+            ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        delegate.submitCrumblingOverlay(
+                model,
+                state,
+                poseStack,
+                renderType,
+                lightCoords,
+                overlayCoords,
+                tintedColor,
+                crumblingOverlay);
     }
 
     @Override
@@ -177,6 +220,19 @@ public final class CrumblingCollector implements SubmitNodeCollector {
     }
 
     @Override
+    public void submitTextBackground(
+            PoseStack poseStack,
+            float x0,
+            float y0,
+            float x1,
+            float y1,
+            int color,
+            Font.DisplayMode displayMode,
+            int lightCoords) {
+        delegate.submitTextBackground(poseStack, x0, y0, x1, y1, color, displayMode, lightCoords);
+    }
+
+    @Override
     public void submitFlame(
             PoseStack poseStack, EntityRenderState renderState, Quaternionf rotation) {
         delegate.submitFlame(poseStack, renderState, rotation);
@@ -208,8 +264,11 @@ public final class CrumblingCollector implements SubmitNodeCollector {
 
     @Override
     public void submitBreakingBlockModel(
-            PoseStack poseStack, List<BlockStateModelPart> parts, int progress) {
-        delegate.submitBreakingBlockModel(poseStack, parts, progress);
+            PoseStack poseStack,
+            List<BlockStateModelPart> parts,
+            int progress,
+            boolean isBlockTranslucent) {
+        delegate.submitBreakingBlockModel(poseStack, parts, progress, isBlockTranslucent);
     }
 
     @Override
@@ -231,7 +290,7 @@ public final class CrumblingCollector implements SubmitNodeCollector {
             int overlayCoords,
             int outlineColor,
             int[] tintLayers,
-            List<BakedQuad> quads,
+            ItemQuads quads,
             ItemStackRenderState.FoilType foilType) {
         delegate.submitItem(
                 poseStack,

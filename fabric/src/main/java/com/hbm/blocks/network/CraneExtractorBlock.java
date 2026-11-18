@@ -23,23 +23,14 @@ import com.hbm.blockentity.network.CraneExtractorBlockEntity;
 import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class CraneExtractorBlock extends CraneBlock implements CapabilityBlock {
-    public static final MapCodec<CraneExtractorBlock> CODEC = simpleCodec(CraneExtractorBlock::new);
-
     public CraneExtractorBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

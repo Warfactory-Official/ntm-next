@@ -199,9 +199,9 @@ public class BeamPronter {
         float heading = (float) (Math.atan2(skeleton.x, skeleton.z) * 180D / Math.PI);
         float run = Mth.sqrt((float) (skeleton.x * skeleton.x + skeleton.z * skeleton.z));
         float climb = (float) (Math.atan2(skeleton.y, run) * 180D / Math.PI);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(heading));
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(climb - 90));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(heading));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(climb - 90));
     }
 
     private static double[] path(

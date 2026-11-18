@@ -20,21 +20,22 @@
 package com.hbm.neoforge.mixin;
 
 import com.hbm.blocks.fluid.InertFluidType;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.world.entity.EntityFluidInteraction;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraft.world.level.material.FluidState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityFluidInteraction.class)
 abstract class MixinEntityFluidInteraction {
-    @Inject(
-            method =
-                    "getTrackerFor(Lnet/neoforged/neoforge/fluids/FluidType;)Lnet/minecraft/world/entity/EntityFluidInteraction$Tracker;",
-            at = @At("HEAD"),
-            cancellable = true)
-    private void hbm$untracked(FluidType type, CallbackInfoReturnable<Object> cir) {
-        if (type instanceof InertFluidType) cir.setReturnValue(null);
+    @WrapOperation(
+            method = "update(Lnet/minecraft/world/entity/Entity;Ljava/util/function/Predicate;)Z",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target = "Lnet/minecraft/world/level/material/FluidState;isEmpty()Z"))
+    private boolean hbm$untracked(FluidState state, Operation<Boolean> original) {
+        return original.call(state) || state.getType().getFluidType() instanceof InertFluidType;
     }
 }

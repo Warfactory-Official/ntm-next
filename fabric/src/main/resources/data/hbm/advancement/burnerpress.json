@@ -3,7 +3,7 @@
   "criteria": {
     "crafted_hbm_machine_press": {
       "conditions": {
-        "recipe_id": "hbm:machine_press"
+        "recipes": "hbm:machine_press"
       },
       "trigger": "minecraft:recipe_crafted"
     }

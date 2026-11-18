@@ -35,7 +35,6 @@ import com.hbm.interfaces.ToolInteractionHandler;
 import com.hbm.interfaces.ToolType;
 import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.sound.ModSounds;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -48,7 +47,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -72,20 +70,12 @@ public class PileDeviceBlock extends HorizontalBlock
     private static final VoxelShape WEST_SUPPORT = Block.box(0D, 0D, 0D, 1D, 16D, 16D);
     private static final VoxelShape EAST_SUPPORT = Block.box(15D, 0D, 0D, 16D, 16D, 16D);
 
-    public static final MapCodec<PileDeviceBlock> CODEC =
-            simpleCodec(props -> new PileDeviceBlock(props, Kind.LOADER));
-
     private final Kind kind;
 
     public PileDeviceBlock(BlockBehaviour.Properties props, Kind kind) {
         super(props);
         this.kind = kind;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     public Kind kind() {

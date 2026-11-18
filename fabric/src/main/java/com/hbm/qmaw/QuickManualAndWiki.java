@@ -33,9 +33,9 @@ import net.minecraft.advancements.predicates.DataComponentMatchers;
 import net.minecraft.advancements.predicates.ItemPredicate;
 import net.minecraft.advancements.predicates.MinMaxBounds;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -158,7 +158,7 @@ public record QuickManualAndWiki(
                             RecordCodecBuilder.<ItemPredicate>mapCodec(
                                     i ->
                                             i.group(
-                                                            RegistryCodecs.<Item>homogeneousList(
+                                                            RegistryCodecs.<Item>holderSet(
                                                                             (ResourceKey<
                                                                                             ? extends
                                                                                                     Registry<

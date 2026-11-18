@@ -19,8 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.hbm.items.ModItems;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
@@ -39,9 +37,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public class WasteLogBlock extends RotatedPillarBlock {
-    public static final MapCodec<WasteLogBlock> CODEC =
-            simpleCodec(props -> new WasteLogBlock(props, () -> ModItems.BURNT_BARK.get()));
-
     private final Supplier<Item> barkDrop;
 
     public WasteLogBlock(BlockBehaviour.Properties props, Supplier<Item> barkDrop) {
@@ -56,11 +51,6 @@ public class WasteLogBlock extends RotatedPillarBlock {
                 .sound(SoundType.WOOD)
                 .noLootTable()
                 .ignitedByLava();
-    }
-
-    @Override
-    public MapCodec<WasteLogBlock> codec() {
-        return CODEC;
     }
 
     @Override

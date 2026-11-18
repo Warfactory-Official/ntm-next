@@ -44,7 +44,12 @@ public class SoyuzRenderer extends EntityRenderer<SoyuzEntity, SoyuzRenderer.Sta
 
     @Override
     public boolean shouldRender(
-            SoyuzEntity entity, Frustum culler, double camX, double camY, double camZ) {
+            SoyuzEntity entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         return true;
     }
 

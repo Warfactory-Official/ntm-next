@@ -119,16 +119,16 @@ public class CogRenderer<T extends InterpolatedProjectileEntity>
         pose.pushPose();
 
         switch (state.orientation % 6) {
-            case 5 -> pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
-            case 2 -> pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F));
-            case 4 -> pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(270F));
+            case 5 -> pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
+            case 2 -> pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F));
+            case 4 -> pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(270F));
             default -> {}
         }
 
         pose.translate(0D, 0D, -1D);
 
         if (state.orientation < LANDED) {
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             Axis.ZN.rotationDegrees((GameTime.now() % spinPeriod) / SPIN_DIVISOR));
         }

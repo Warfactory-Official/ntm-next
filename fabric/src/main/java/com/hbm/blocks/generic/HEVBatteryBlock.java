@@ -24,7 +24,6 @@ import com.hbm.handler.ArmorUtil;
 import com.hbm.items.armor.ArmorSuitEffects;
 import com.hbm.items.armor.ModArmorItem;
 import com.hbm.sound.ModSounds;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -45,17 +44,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class HEVBatteryBlock extends Block {
     private static final long CHARGE = 150_000L;
 
-    public static final MapCodec<HEVBatteryBlock> CODEC = simpleCodec(HEVBatteryBlock::new);
-
     private static final VoxelShape SHAPE = Shapes.box(0.375, 0.0, 0.375, 0.625, 0.375, 0.625);
 
     public HEVBatteryBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

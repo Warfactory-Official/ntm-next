@@ -34,24 +34,23 @@
 package com.hbm.world.feature;
 
 import com.hbm.blocks.ModBlocks;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class GeyserFeature extends Feature<NoneFeatureConfiguration> {
+public class GeyserFeature implements Feature {
+    public static final MapCodec<GeyserFeature> CODEC = MapCodec.unit(GeyserFeature::new);
+
     private static final BlockState STONE = Blocks.STONE.defaultBlockState();
     private static final BlockState WATER = Blocks.WATER.defaultBlockState();
     private static final BlockState AIR = Blocks.AIR.defaultBlockState();
     private static final BlockState GRASS = Blocks.GRASS_BLOCK.defaultBlockState();
     private static final BlockState GRAVEL = Blocks.GRAVEL.defaultBlockState();
-
-    public GeyserFeature() {
-        super(NoneFeatureConfiguration.CODEC);
-    }
 
     private static BlockState yellowcake() {
         return ModBlocks.BLOCK_YELLOWCAKE.get().defaultBlockState();
@@ -74,9 +73,17 @@ public class GeyserFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        WorldGenLevel level = ctx.level();
-        BlockPos origin = ctx.origin();
+    public MapCodec<GeyserFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        BlockPos origin = featureOrigin;
         BlockPos.MutableBlockPos pos =
                 new BlockPos.MutableBlockPos(origin.getX(), origin.getY() - 1, origin.getZ());
         if (!level.getBlockState(pos).is(Blocks.GRASS_BLOCK)) return false;

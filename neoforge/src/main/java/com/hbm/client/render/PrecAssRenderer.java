@@ -156,16 +156,16 @@ public class PrecAssRenderer
         int light = state.lightCoords;
         poses.pushPose();
         poses.translate(.5, 0, .5);
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + state.yaw));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + state.yaw));
         if (!state.itemsOnly) {
             if (state.frame) part(poses, collector, FRAME, light);
             poses.pushPose();
-            poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) state.ring));
+            poses.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) state.ring));
             part(poses, collector, RING, light);
             part(poses, collector, RING2, light);
             for (double[] arm : state.arms) {
                 submitArm(poses, collector, arm, light);
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F));
             }
             poses.popPose();
         }
@@ -177,15 +177,15 @@ public class PrecAssRenderer
             PoseStack poses, SubmitNodeCollector collector, double[] arm, int light) {
         poses.pushPose();
         poses.translate(0, 1.625, .9375);
-        poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) arm[0]));
+        poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) arm[0]));
         poses.translate(0, -1.625, -.9375);
         part(poses, collector, ARM_LOWER, light);
         poses.translate(0, 2.375, .9375);
-        poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) arm[1]));
+        poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) arm[1]));
         poses.translate(0, -2.375, -.9375);
         part(poses, collector, ARM_UPPER, light);
         poses.translate(0, 2.375, .4375);
-        poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) arm[2]));
+        poses.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) arm[2]));
         poses.translate(0, -2.375, -.4375);
         part(poses, collector, HEAD, light);
         poses.translate(0, arm[3], 0);

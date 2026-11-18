@@ -46,8 +46,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 
 public class StartingHubPiece extends NtmBranchingPiece {
 
@@ -106,7 +106,7 @@ public class StartingHubPiece extends NtmBranchingPiece {
 
     @Override
     public void buildComponent(
-            NtmBranchingStart start, StructurePieceAccessor accessor, RandomSource random) {
+            NtmBranchingStart start, StructurePiecesBuilder accessor, RandomSource random) {
         this.pathEast = this.generateChildEast(start, accessor, random, 5, 1) != null;
         this.pathAntiNormal = this.generateChildAntiNormal(start, accessor, random, 4, 1) != null;
         this.pathWest = this.generateChildWest(start, accessor, random, 3, 1) != null;

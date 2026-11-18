@@ -64,7 +64,7 @@ public class FBIDroneRenderer extends EntityRenderer<FBIDroneEntity, FBIDroneRen
         int light = state.lightCoords;
         poseStack.pushPose();
         poseStack.translate(0D, 0.25D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         collector.submitCustomGeometry(
                 poseStack,
                 TYPE,

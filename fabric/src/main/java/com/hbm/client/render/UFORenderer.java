@@ -113,7 +113,7 @@ public class UFORenderer extends EntityRenderer<UFOEntity, UFORenderer.State>
         poseStack.translate(0F, 1F, 0F);
 
         if (!state.alive)
-            poseStack.mulPose(
+            poseStack.rotate(
                     (Quaternionfc)
                             new Quaternionf()
                                     .rotateAxis(
@@ -123,7 +123,7 @@ public class UFORenderer extends EntityRenderer<UFOEntity, UFORenderer.State>
                                             0.7071068F));
 
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.spin));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.spin));
         poseStack.scale((float) SCALE, (float) SCALE, (float) SCALE);
         collector.submitCustomGeometry(
                 poseStack,

@@ -101,19 +101,19 @@ public class ChungusRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(0.0, 0.0, -3.0);
 
         ps.pushPose();
         ps.translate(0.0, 0.0, 4.5);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.lever));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.lever));
         ps.translate(0.0, 0.0, -4.5);
         col.submitCustomGeometry(
                 ps, type, (pose, buf) -> model.renderPart(pose, buf, light, -1, LEVER));
         ps.popPose();
 
         ps.translate(0.0, 2.5, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(s.rotor));
+        ps.rotate((Quaternionfc) Axis.ZN.rotationDegrees(s.rotor));
         ps.translate(0.0, -2.5, 0.0);
         col.submitCustomGeometry(
                 ps, type, (pose, buf) -> model.renderPart(pose, buf, light, -1, BLADES));

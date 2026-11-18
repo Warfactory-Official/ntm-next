@@ -160,8 +160,8 @@ public final class LegacyJigsawAssembler {
                         sourceBoxPosition,
                         sourceRotation,
                         this.random)) {
-            Direction sourceDirection = JigsawBlock.getFrontFacing(sourceJigsaw.info().state());
-            BlockPos sourceJigsawPos = sourceJigsaw.info().pos();
+            Direction sourceDirection = JigsawBlock.getFrontFacing(sourceJigsaw.state());
+            BlockPos sourceJigsawPos = sourceJigsaw.pos();
             BlockPos targetJigsawPos = sourceJigsawPos.relative(sourceDirection);
             int sourceJigsawLocalY = sourceJigsawPos.getY() - sourceBoxY;
             int sourceJigsawBaseHeight = Integer.MIN_VALUE;
@@ -232,13 +232,11 @@ public final class LegacyJigsawAssembler {
                                                             targetJigsawx -> {
                                                                 if (!hackBox.isInside(
                                                                         targetJigsawx
-                                                                                .info()
                                                                                 .pos()
                                                                                 .relative(
                                                                                         JigsawBlock
                                                                                                 .getFrontFacing(
                                                                                                         targetJigsawx
-                                                                                                                .info()
                                                                                                                 .state())))) {
                                                                     return 0;
                                                                 }
@@ -295,7 +293,7 @@ public final class LegacyJigsawAssembler {
                                 for (StructureTemplate.JigsawBlockInfo targetJigsaw :
                                         targetJigsaws) {
                                     if (JigsawBlock.canAttach(sourceJigsaw, targetJigsaw)) {
-                                        BlockPos targetJigsawLocalPos = targetJigsaw.info().pos();
+                                        BlockPos targetJigsawLocalPos = targetJigsaw.pos();
                                         BlockPos rawTargetBoxPos =
                                                 targetJigsawPos.subtract(targetJigsawLocalPos);
                                         BoundingBox rawTargetBB =
@@ -314,7 +312,7 @@ public final class LegacyJigsawAssembler {
                                                 sourceJigsawLocalY
                                                         - targetJigsawLocalY
                                                         + JigsawBlock.getFrontFacing(
-                                                                        sourceJigsaw.info().state())
+                                                                        sourceJigsaw.state())
                                                                 .getStepY();
                                         int targetBoxY;
                                         if (sourceRigid && targetRigid) {

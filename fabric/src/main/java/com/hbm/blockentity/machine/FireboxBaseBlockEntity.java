@@ -166,7 +166,7 @@ public abstract class FireboxBaseBlockEntity extends PollutingMachineBlockEntity
                 ItemStack stack = inventory.get(i);
                 if (stack.isEmpty()) continue;
 
-                int baseTime = getModule().getBurnTime(level, stack);
+                int baseTime = getModule().getBurnTime(this, stack);
                 if (baseTime <= 0) continue;
 
                 this.hbm$syncSet$FireboxBaseBlockEntity$burnTime((int) (baseTime * getTimeMult()));
@@ -280,7 +280,7 @@ public abstract class FireboxBaseBlockEntity extends PollutingMachineBlockEntity
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return getModule().getBurnTime(level, stack) > 0;
+        return getModule().isFuel(this, stack);
     }
 
     @Override

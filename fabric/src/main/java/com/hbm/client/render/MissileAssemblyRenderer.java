@@ -87,7 +87,7 @@ public final class MissileAssemblyRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 180)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 180)));
 
         int reach = (int) (height / 2 - 1);
         int step = reach >= 2 ? 2 : 1;
@@ -102,10 +102,10 @@ public final class MissileAssemblyRenderer
         }
 
         poseStack.translate(0D, 1.5D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180F));
         poseStack.translate(-height / 2F, 0D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
         pronter.pront(parts, poseStack, collector, light);
 
         poseStack.popPose();

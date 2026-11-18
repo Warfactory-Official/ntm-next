@@ -27,25 +27,16 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.util.InventoryUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
 
 public class CraneInserterBlock extends CraneBlock
         implements CapabilityBlock, ConveyorInputHandler {
-    public static final MapCodec<CraneInserterBlock> CODEC = simpleCodec(CraneInserterBlock::new);
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
-    }
-
     public CraneInserterBlock(Properties properties) {
         super(properties);
     }

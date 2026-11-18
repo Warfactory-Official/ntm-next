@@ -102,11 +102,11 @@ public class IndustrialTurbineRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
         ps.translate(0.0, 1.5, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(s.gauge));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(s.gauge));
         ps.translate(0.0, -1.5, 0.0);
         col.submitCustomGeometry(
                 ps, type, (pose, buf) -> model.renderPart(pose, buf, light, -1, GAUGE));
@@ -114,7 +114,7 @@ public class IndustrialTurbineRenderer
 
         ps.pushPose();
         ps.translate(0.0, 1.5, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(s.rotor));
+        ps.rotate((Quaternionfc) Axis.ZN.rotationDegrees(s.rotor));
         ps.translate(0.0, -1.5, 0.0);
         col.submitCustomGeometry(
                 ps, type, (pose, buf) -> model.renderPart(pose, buf, light, -1, FLYWHEEL));

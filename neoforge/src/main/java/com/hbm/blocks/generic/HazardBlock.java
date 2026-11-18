@@ -35,7 +35,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.hazard.HazardSystem;
 import com.hbm.particle.HbmParticles;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -51,13 +50,6 @@ import org.jspecify.annotations.Nullable;
 
 public class HazardBlock extends Block {
     private @Nullable ExtDisplayEffect displayEffect;
-
-    public static final MapCodec<HazardBlock> CODEC = simpleCodec(HazardBlock::new);
-
-    @Override
-    protected MapCodec<? extends HazardBlock> codec() {
-        return CODEC;
-    }
 
     public HazardBlock(BlockBehaviour.Properties properties) {
         super(properties);

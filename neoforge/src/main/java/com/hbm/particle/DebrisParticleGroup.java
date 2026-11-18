@@ -97,8 +97,8 @@ public class DebrisParticleGroup extends ParticleGroup<DebrisParticle> {
             for (Instance in : instances) {
                 pose.pushPose();
                 pose.translate(in.relX, in.relY, in.relZ);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(in.pitch));
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(in.yaw));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(in.pitch));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(in.yaw));
                 pose.translate(-in.sizeX / 2D, -in.sizeY / 2D, -in.sizeZ / 2D);
 
                 for (int i = 0; i < layers.length; i++) {

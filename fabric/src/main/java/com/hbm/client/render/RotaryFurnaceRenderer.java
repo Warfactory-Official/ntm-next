@@ -108,7 +108,7 @@ public class RotaryFurnaceRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(furnaceYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(furnaceYaw(s.facing)));
         ps.translate(0.0, NtmMath.flatSine((s.anim * 0.75) * 0.125) * 0.5 - 0.5, 0.0);
         final HFRWavefrontObject m = this.model;
         col.submitCustomGeometry(

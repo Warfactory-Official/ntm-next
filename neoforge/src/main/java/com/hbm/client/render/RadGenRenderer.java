@@ -103,12 +103,12 @@ public class RadGenRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
         if (s.isOn) {
             ps.translate(0.0, PIVOT, 0.0);
-            ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.spin));
+            ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.spin));
             ps.translate(0.0, -PIVOT, 0.0);
         }
         col.order(0)

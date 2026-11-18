@@ -1,15 +1,19 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
 
 
-#moj_import <minecraft:dynamictransforms.glsl>
+#include <minecraft:dynamictransforms.glsl>
+#include <minecraft:oit.glsl>
 
 uniform sampler2D Sampler0;
 
-in vec2 texCoord0;
-in vec4 vertexColor;
+layout(location = 2) in vec2 texCoord0;
+layout(location = 3) in vec4 vertexColor;
 
-out vec4 fragColor;
+#ifndef OIT_ALPHA_ONLY
+layout(location = 0) out vec4 fragColor;
+#endif
 
 #ifndef ALPHA_CUTOUT
 #define ALPHA_CUTOUT 0.1
@@ -20,5 +24,12 @@ void main() {
     if (color.a <= 0.0 || color.a < ALPHA_CUTOUT) {
         discard;
     }
+#ifdef OIT_ALPHA_ONLY
+    executeAlphaOnlyPhase(gl_FragCoord.z, color.a);
+#else
+#ifdef OIT_ACCUMULATE
+    color = sampleColorForAccumulation(color);
+#endif
     fragColor = color;
+#endif
 }

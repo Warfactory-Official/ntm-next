@@ -73,8 +73,8 @@ public class ShrapnelRenderer<T extends Entity> extends EntityRenderer<T, Shrapn
             SubmitNodeCollector collector,
             CameraRenderState camera) {
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
-        poseStack.mulPose((Quaternionfc) Axis.of(TUMBLE).rotationDegrees(state.spin));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) Axis.of(TUMBLE).rotationDegrees(state.spin));
         poseStack.scale(state.scale, state.scale, state.scale);
         BoxModelRenderer.submit(
                 poseStack, collector, TYPE, BoxModelRenderer.SHRAPNEL, state.lightCoords);

@@ -382,7 +382,7 @@ public final class GunRenderDefinition {
 
     private record Turn(Quaternionf rotation) implements Node {
         public void draw(Live live) {
-            live.pose.mulPose((Quaternionfc) rotation);
+            live.pose.rotate((Quaternionfc) rotation);
         }
 
         public void pose(Rest rest, Matrix4f pose) {
@@ -392,7 +392,7 @@ public final class GunRenderDefinition {
 
     private record Spin(Axis axis, Drive degrees) implements Node {
         public void draw(Live live) {
-            live.pose.mulPose((Quaternionfc) axis.rotationDegrees((float) degrees.at(live)));
+            live.pose.rotate((Quaternionfc) axis.rotationDegrees((float) degrees.at(live)));
         }
 
         public void pose(Rest rest, Matrix4f pose) {
@@ -644,7 +644,7 @@ public final class GunRenderDefinition {
                     along == Axis.YP ? y + half : along == Axis.YN ? y - half : y,
                     along == Axis.ZP ? z + half : along == Axis.ZN ? z - half : z);
             pose.scale(scale, -scale, scale);
-            for (var turn : turns) pose.mulPose((Quaternionfc) turn);
+            for (var turn : turns) pose.rotate((Quaternionfc) turn);
             live.collector.submitText(
                     pose,
                     0,

@@ -157,7 +157,7 @@ public class BoltgunItem extends Item implements ToolTypeProvider, AnimatedItem 
                 || !ClientPlayerAccess.firstPersonCamera()
                 || !(player.getMainHandItem().getItem() instanceof BoltgunItem)) return;
         if (HeldItemAnimations.getChannelValue("RECOIL", 0) != 0)
-            ((LivingEntity) player).swinging = false;
+            ((LivingEntity) player).swingState.currentSwing = null;
     }
 
     public static BusAnimation animation(AnimationEnums.ToolAnimation type) {

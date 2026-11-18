@@ -100,11 +100,11 @@ public class IntakeRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
         ps.translate(-0.5, 0.0, 0.5);
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-s.fan));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-s.fan));
         col.submitCustomGeometry(
                 ps,
                 bodyType,

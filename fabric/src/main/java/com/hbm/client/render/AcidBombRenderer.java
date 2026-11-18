@@ -70,8 +70,8 @@ public final class AcidBombRenderer extends EntityRenderer<AcidBombEntity, AcidB
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         pose.pushPose();
         pose.scale(0.5F, 0.5F, 0.5F);
-        pose.mulPose((Quaternionfc) camera.orientation);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
+        pose.rotate((Quaternionfc) camera.orientation);
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
         state.item.submit(pose, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
         pose.popPose();
         super.submit(state, pose, collector, camera);

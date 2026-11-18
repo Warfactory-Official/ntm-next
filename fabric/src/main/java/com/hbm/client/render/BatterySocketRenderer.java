@@ -174,7 +174,7 @@ public class BatterySocketRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(dummyableYaw(state.facing)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(dummyableYaw(state.facing)));
         poseStack.translate(-0.5, 0.0, 0.5);
         int light = state.lightCoords;
         if (state.frame && !state.itemsOnly) {
@@ -214,7 +214,7 @@ public class BatterySocketRenderer
     public static void itemPose(PoseStack poseStack, float spin, FramedItem.Arm arm) {
         poseStack.translate(0, 0.5, 0);
         poseStack.scale(1.5F, 1.5F, 1.5F);
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(spin * ITEM_DEGREES_PER_TICK));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(spin * ITEM_DEGREES_PER_TICK));
         if (arm.mesh()) poseStack.translate(0, arm.groundLift(), 0);
         else if (arm == FramedItem.Arm.BLOCK) FramedItem.framedBlockPrefix(poseStack);
         else {
@@ -227,7 +227,7 @@ public class BatterySocketRenderer
             State state, PoseStack poseStack, SubmitNodeCollector collector, int light) {
         poseStack.pushPose();
         poseStack.scale((float) UNICORN_SCALE, (float) UNICORN_SCALE, (float) UNICORN_SCALE);
-        poseStack.mulPose(
+        poseStack.rotate(
                 (Quaternionfc) Axis.YN.rotationDegrees(state.spin * UNICORN_DEGREES_PER_TICK));
         RenderType horseType =
                 bodyTypes.computeIfAbsent(
@@ -246,7 +246,7 @@ public class BatterySocketRenderer
             int light) {
         poseStack.pushPose();
         poseStack.scale(piece.scale(), piece.scale(), piece.scale());
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(spin * piece.degreesPerTick()));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(spin * piece.degreesPerTick()));
         RenderType type =
                 centrepieceTypes.computeIfAbsent(piece.texture(), RenderTypes::entityCutoutCull);
         HFRWavefrontObject mesh = piece.mesh();

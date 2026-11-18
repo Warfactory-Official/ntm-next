@@ -243,7 +243,12 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
             boolean ambientOcclusion) {
         var info =
                 BakedQuad.MaterialInfo.of(
-                        material, transparency, tintIndex, true, lightEmission, ambientOcclusion);
+                        material,
+                        transparency,
+                        tintIndex,
+                        true ? null : Direction.UP,
+                        lightEmission,
+                        ambientOcclusion);
         return ambientOcclusion ? info : QuadLighting.ownBlock(info);
     }
 
@@ -256,8 +261,10 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                         sprite,
                         info.layer(),
                         itemType,
+                        info.itemGlintRenderType(),
+                        info.itemGlintSpecialRenderType(),
                         tint,
-                        info.shade(),
+                        info.shadeDirectionOverride(),
                         FULL_BRIGHT,
                         info.ambientOcclusion() && true);
         ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (result))
@@ -274,8 +281,10 @@ public final class ObjUnbakedGeometry implements UnbakedGeometry {
                         info.sprite(),
                         info.layer(),
                         info.itemRenderType(),
+                        info.itemGlintRenderType(),
+                        info.itemGlintSpecialRenderType(),
                         info.tintIndex(),
-                        false,
+                        false ? null : Direction.UP,
                         info.lightEmission(),
                         info.ambientOcclusion());
         ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (result))

@@ -59,6 +59,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -428,7 +429,8 @@ public class UFOEntity extends FlyingMobEntity implements Enemy, SuffocationImmu
             for (Player player :
                     server.getEntitiesOfClass(Player.class, getBoundingBox().inflate(200D))) {
                 player.getInventory()
-                        .placeItemBackInInventory(new ItemStack(ModItems.COIN_UFO.get()));
+                        .placeItemBackInInventory(
+                                new ItemStack(ModItems.COIN_UFO.get()), Prediction.SERVER_ONLY);
             }
         }
 

@@ -262,7 +262,7 @@ public final class TurbofanBlockEntity extends PollutingMachineBlockEntity
 
     private static void push(Entity entity, Direction thrust) {
         entity.push(-0.2 * thrust.getStepX(), 0, -0.2 * thrust.getStepZ());
-        if (entity instanceof ServerPlayer player) ((Entity) player).hurtMarked = true;
+        if (entity instanceof ServerPlayer player) ((Entity) player).syncVelocity = true;
     }
 
     private void emitFlames(ServerLevel server, Direction across, Direction thrust) {

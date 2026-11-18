@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.potion.HbmPotion;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -31,15 +30,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class JungleOozeBlock extends Block {
-    public static final MapCodec<JungleOozeBlock> CODEC = simpleCodec(JungleOozeBlock::new);
-
     public JungleOozeBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<JungleOozeBlock> codec() {
-        return CODEC;
     }
 
     @Override

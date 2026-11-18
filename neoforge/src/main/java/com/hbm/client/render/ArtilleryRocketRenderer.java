@@ -76,10 +76,10 @@ public class ArtilleryRocketRenderer
         int light = state.lightCoords;
         int mesh = state.mesh;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch - 90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
         collector.submitCustomGeometry(
                 poseStack,
                 state.type,

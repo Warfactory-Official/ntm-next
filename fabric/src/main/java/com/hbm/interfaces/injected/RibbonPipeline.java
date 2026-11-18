@@ -19,8 +19,8 @@
 
 package com.hbm.interfaces.injected;
 
-import com.mojang.blaze3d.pipeline.CompiledRenderPipeline;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.CompiledRenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 
 public interface RibbonPipeline {
     CompiledRenderPipeline hbm$ribbon(RenderPipeline pipeline);

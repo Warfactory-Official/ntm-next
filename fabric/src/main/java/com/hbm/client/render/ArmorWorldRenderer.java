@@ -636,7 +636,7 @@ public final class ArmorWorldRenderer {
         enterFrame(pose, limb, bone, state);
         float pivot = 4.875F * 0.0625F;
         pose.translate(0F, pivot, 0F);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc) Axis.ZP.rotationDegrees((float) (-(GameTime.now() / 2D) % 360D)));
         pose.translate(0F, -pivot, 0F);
         toModelPixels(pose, limb, bone, state);

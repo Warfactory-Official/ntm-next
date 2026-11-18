@@ -21,9 +21,10 @@ package com.hbm.client.render;
 
 import com.hbm.NuclearTech;
 import com.hbm.util.RegistryUtil;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -138,7 +139,11 @@ public final class BlockEntityShading {
                         .withShaderDefine("CARDINAL_EAST", light.east())
                         .withBindGroupLayout(BindGroupLayouts.SAMPLER0_SAMPLER2)
                         .withBindGroupLayout(BindGroupLayouts.SAMPLER1)
-                        .withColorTargetState(source.getColorTargetState())
+                        .withColorTargetState(
+                                ((com.mojang.renderpearl.api.pipeline.ColorTargetState)
+                                        (source.getColorTargetStates().isEmpty()
+                                                ? ColorTargetState.DEFAULT
+                                                : source.getColorTargetStates().getFirst())))
                         .withVertexBinding(0, DefaultVertexFormat.ENTITY)
                         .withPrimitiveTopology(PrimitiveTopology.QUADS)
                         .withDepthStencilState(source.getDepthStencilState())

@@ -34,7 +34,6 @@
 package com.hbm.blocks.network;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -53,7 +52,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ConveyorChuteBlock extends BaseConveyorBlock {
-    public static final MapCodec<ConveyorChuteBlock> CODEC = simpleCodec(ConveyorChuteBlock::new);
     public static final BooleanProperty FEEDS_DOWN = BooleanProperty.create("feeds_down");
 
     public static boolean feedsOn(BlockGetter level, BlockPos pos) {
@@ -63,11 +61,6 @@ public class ConveyorChuteBlock extends BaseConveyorBlock {
     public ConveyorChuteBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(FEEDS_DOWN, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

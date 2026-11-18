@@ -77,7 +77,7 @@ public abstract class MixinLivingEntityRenderer {
             CallbackInfo ci) {
         if (!(state instanceof RiderTiltRenderState rider) || rider.hbm$riderTilt() == 0F) return;
         poseStack.translate(0F, RiderTilt.PIVOT, 0F);
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(rider.hbm$riderTilt()));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(rider.hbm$riderTilt()));
         poseStack.translate(0F, -RiderTilt.PIVOT, 0F);
     }
 

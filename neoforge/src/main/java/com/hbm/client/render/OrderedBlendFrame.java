@@ -18,3 +18,11 @@
  */
 
 package com.hbm.client.render;
+
+import com.mojang.renderpearl.api.commands.RenderPass;
+
+public interface OrderedBlendFrame {
+    boolean hbm$hasOrderedBlends();
+
+    void hbm$drawOrderedBlends(RenderPass pass);
+}

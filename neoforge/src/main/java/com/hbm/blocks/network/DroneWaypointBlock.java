@@ -25,7 +25,6 @@ import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.interfaces.LookOverlay;
 import com.hbm.interfaces.LookOverlayProvider;
 import com.hbm.items.ModItems;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -55,20 +54,12 @@ public class DroneWaypointBlock extends Block implements TickingEntityBlock, Loo
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
-    public static final MapCodec<DroneWaypointBlock> CODEC =
-            simpleCodec(props -> new DroneWaypointBlock(props, Kind.TRANSPORT));
-
     private final Kind kind;
 
     public DroneWaypointBlock(Properties props, Kind kind) {
         super(props);
         this.kind = kind;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     public Kind kind() {

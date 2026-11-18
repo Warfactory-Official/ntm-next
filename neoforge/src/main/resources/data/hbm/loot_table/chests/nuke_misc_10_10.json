@@ -9,7 +9,7 @@
           "value": "hbm:chests/nuke_misc"
         }
       ],
-      "rolls": 10.0
+      "rolls": 10
     }
   ],
   "random_sequence": "hbm:chests/nuke_misc_10_10"

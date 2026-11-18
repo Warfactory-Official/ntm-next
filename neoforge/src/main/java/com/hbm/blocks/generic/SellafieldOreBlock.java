@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
@@ -44,9 +43,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jspecify.annotations.Nullable;
 
 public class SellafieldOreBlock extends SellafieldSlakedBlock {
-    public static final MapCodec<SellafieldOreBlock> CODEC =
-            simpleCodec(p -> new SellafieldOreBlock(p, null, 0, 0));
-
     private final @Nullable Supplier<Item> drop;
     private final int xpMin;
     private final int xpMax;
@@ -66,11 +62,6 @@ public class SellafieldOreBlock extends SellafieldSlakedBlock {
                 .sound(SoundType.STONE)
                 .noLootTable()
                 .requiresCorrectToolForDrops();
-    }
-
-    @Override
-    protected MapCodec<SellafieldOreBlock> codec() {
-        return CODEC;
     }
 
     @Override

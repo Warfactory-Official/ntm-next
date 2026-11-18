@@ -20,24 +20,28 @@
 package com.hbm.client.render;
 
 import com.hbm.util.RegistryUtil;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BindGroupLayout;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.renderpearl.api.pipeline.BindGroupLayout;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.pipeline.ShaderType;
+import com.mojang.renderpearl.api.pipeline.UniformType;
+import com.mojang.renderpearl.api.vertex.VertexFormat;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
 import java.util.function.BiFunction;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.oit.OitPipelineSet;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
 
-public final class WorldRenderPipeline extends RenderPipeline {
+public final class WorldRenderPipeline extends RenderPipeline implements OitPipelineOwner {
     private static final VarHandle NEXT_INDEX;
     private static int nextIndex;
 
@@ -132,9 +136,10 @@ public final class WorldRenderPipeline extends RenderPipeline {
     public final boolean emission;
     public final boolean glint;
     public final float alphaCutout;
+    private final OitPipelineSet oitPipelines;
 
     private WorldRenderPipeline(RenderPipeline source) {
-        this(source, family(source.getFragmentShader().toString()));
+        this(source, family(source.getShaders().get(ShaderType.FRAGMENT).toString()));
     }
 
     private WorldRenderPipeline(RenderPipeline source, Family family) {
@@ -144,20 +149,23 @@ public final class WorldRenderPipeline extends RenderPipeline {
     private WorldRenderPipeline(RenderPipeline source, Family family, boolean orderedDepth) {
         super(
                 source.getLocation(),
-                source.getVertexShader(),
-                source.getFragmentShader(),
+                source.getShaders(),
                 source.getShaderDefines(),
                 source.getBindGroupLayouts(),
-                source.getColorTargetStates(),
+                source.getColorTargetStates().isEmpty()
+                        ? new ColorTargetState[] {ColorTargetState.DEFAULT}
+                        : source.getColorTargetStates().toArray(ColorTargetState[]::new),
                 source.getDepthStencilState(),
                 source.getPolygonMode(),
                 source.isCull(),
-                source.vertexFormatPerBuffer,
+                source.vertexFormatPerBuffer.toArray(VertexFormat[]::new),
                 source.getPrimitiveTopology(),
+                source.pushConstantSize(),
                 source.getSortKey());
-        String shader = source.getFragmentShader().toString();
+        String shader = source.getShaders().get(ShaderType.FRAGMENT).toString();
         this.family = family;
-        if (family != Family.NATIVE_SKY && family(source.getVertexShader().toString()) != family)
+        if (family != Family.NATIVE_SKY
+                && family(source.getShaders().get(ShaderType.VERTEX).toString()) != family)
             throw new IllegalArgumentException(shader);
         var flags = source.getShaderDefines().flags();
         fullbright =
@@ -168,15 +176,27 @@ public final class WorldRenderPipeline extends RenderPipeline {
         overlay = family == Family.ENTITY && !flags.contains("NO_OVERLAY");
         intensity = family == Family.TEXT && flags.contains("IS_GRAYSCALE");
         fog = !shader.endsWith("_nofog") && family != Family.BASIC && family != Family.NATIVE_SKY;
-        translucent = source.getColorTargetState().blendFunction().isPresent();
+        translucent =
+                ((com.mojang.renderpearl.api.pipeline.ColorTargetState)
+                                (source.getColorTargetStates().isEmpty()
+                                        ? ColorTargetState.DEFAULT
+                                        : source.getColorTargetStates().getFirst()))
+                        .blendFunction()
+                        .isPresent();
         alphaAdditive =
-                source.getColorTargetState()
+                ((com.mojang.renderpearl.api.pipeline.ColorTargetState)
+                                (source.getColorTargetStates().isEmpty()
+                                        ? ColorTargetState.DEFAULT
+                                        : source.getColorTargetStates().getFirst()))
                         .blendFunction()
                         .filter(BlendFunction.LIGHTNING::equals)
                         .isPresent();
         emission = flags.contains("ADDITIVE_EMISSION");
         glint =
-                source.getColorTargetState()
+                ((com.mojang.renderpearl.api.pipeline.ColorTargetState)
+                                (source.getColorTargetStates().isEmpty()
+                                        ? ColorTargetState.DEFAULT
+                                        : source.getColorTargetStates().getFirst()))
                         .blendFunction()
                         .filter(BlendFunction.GLINT::equals)
                         .isPresent();
@@ -189,9 +209,30 @@ public final class WorldRenderPipeline extends RenderPipeline {
                                         family == Family.PARTICLE || family == Family.TEXT
                                                 ? "0.1"
                                                 : "0"));
+        var uniforms = BindGroupLayout.flattenUniforms(source.getBindGroupLayouts());
         assert !overlay
-                || BindGroupLayout.flattenSamplers(source.getBindGroupLayouts())
-                        .contains("Sampler1");
+                || uniforms.stream()
+                        .anyMatch(
+                                uniform ->
+                                        uniform.type() == UniformType.COMBINED_IMAGE_SAMPLER
+                                                && uniform.name().equals("Sampler1"));
+        oitPipelines =
+                family == Family.NATIVE_SKY
+                        ? null
+                        : NativeOitPipelines.create(source, orderedDepth);
+    }
+
+    @Override
+    public OitPipelineSet oitPipelines() {
+        return oitPipelines;
+    }
+
+    @Override
+    public boolean orderedBlend() {
+        return translucent
+                && oitPipelines == null
+                && family != Family.NATIVE_SKY
+                && getColorTargetStates().getFirst().writeMask() != ColorTargetState.WRITE_NONE;
     }
 
     private static Family family(String shader) {
@@ -246,7 +287,8 @@ public final class WorldRenderPipeline extends RenderPipeline {
 
     public static WorldRenderPipeline orderedDepth(Builder builder) {
         RenderPipeline source = builder.build();
-        return new WorldRenderPipeline(source, family(source.getFragmentShader().toString()), true);
+        return new WorldRenderPipeline(
+                source, family(source.getShaders().get(ShaderType.FRAGMENT).toString()), true);
     }
 
     public static WorldRenderPipeline nativeSky(RenderPipeline source) {

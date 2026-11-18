@@ -29,7 +29,6 @@ import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.recipes.CrystallizerRecipes;
 import com.hbm.util.InventoryUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -52,13 +51,6 @@ import org.jspecify.annotations.Nullable;
 public class CranePartitionerBlock extends Block
         implements TickingEntityBlock, CapabilityBlock, ConveyorInputHandler, ConveyorBelt {
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
-    public static final MapCodec<CranePartitionerBlock> CODEC =
-            simpleCodec(CranePartitionerBlock::new);
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
-    }
 
     public CranePartitionerBlock(Properties properties) {
         super(properties);

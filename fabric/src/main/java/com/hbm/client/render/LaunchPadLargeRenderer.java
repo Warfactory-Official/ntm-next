@@ -143,7 +143,7 @@ public final class LaunchPadLargeRenderer
         int light = state.lightCoords;
         poseStack.pushPose();
         poseStack.translate(0.5D, 0D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
 
         Erector erector = state.erector;
         if (erector != null) {
@@ -153,7 +153,7 @@ public final class LaunchPadLargeRenderer
                 draw(poseStack, collector, light, erector.skin(), erector.rope());
             }
             poseStack.translate(0D, erector.pivotY(), -erector.pivotZ());
-            poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.erectorAngle));
+            poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.erectorAngle));
             poseStack.translate(0D, -erector.pivotY(), erector.pivotZ());
             draw(poseStack, collector, light, erector.skin(), erector.pivot());
             poseStack.translate(0D, state.lift, 0D);

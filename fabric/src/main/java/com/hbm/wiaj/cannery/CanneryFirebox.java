@@ -269,7 +269,7 @@ public class CanneryFirebox extends CanneryBase {
                     data.getDoubleOr("x", 0) + 0.5D,
                     data.getDoubleOr("y", 0),
                     data.getDoubleOr("z", 0) + 0.5D);
-            ps.mulPose(
+            ps.rotate(
                     (Quaternionfc)
                             Axis.YP.rotationDegrees(
                                     switch (data.getIntOr("rotation", 3)) {
@@ -285,7 +285,7 @@ public class CanneryFirebox extends CanneryBase {
             float prev = data.getFloatOr("lastAngle", 0);
             float door = prev + (data.getFloatOr("angle", 0) - prev) * interp;
             ps.translate(1.375, 0, 0.375);
-            ps.mulPose((Quaternionfc) Axis.YN.rotationDegrees(door));
+            ps.rotate((Quaternionfc) Axis.YN.rotationDegrees(door));
             ps.translate(-1.375, 0, -0.375);
             part(context, BODY, DOOR);
             ps.popPose();

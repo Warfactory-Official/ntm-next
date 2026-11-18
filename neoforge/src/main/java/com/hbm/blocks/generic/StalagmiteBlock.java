@@ -19,18 +19,8 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
-import net.minecraft.world.level.block.Block;
-
 public class StalagmiteBlock extends SpikeBlock {
-    public static final MapCodec<StalagmiteBlock> CODEC = simpleCodec(StalagmiteBlock::new);
-
     public StalagmiteBlock(Properties props) {
         super(props, false);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 }

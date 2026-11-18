@@ -1,0 +1,8 @@
+{
+  "type": "hbm:bedrock_oil_deposit",
+  "core": "hbm:ore_bedrock_oil",
+  "replaceable": {
+    "predicate_type": "minecraft:tag_match",
+    "tag": "minecraft:base_stone_overworld"
+  }
+}

@@ -77,26 +77,26 @@ public class ExplosiveChargeRenderer
         poseStack.translate(0.5, 0.5, 0.5);
 
         switch (state.facing) {
-            case DOWN -> poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
+            case DOWN -> poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180));
             case UP -> {}
             case NORTH -> {
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-                poseStack.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.ZN.rotationDegrees(90));
             }
             case SOUTH -> {
-                poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
-                poseStack.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.ZN.rotationDegrees(90));
             }
             case WEST -> {
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
-                poseStack.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
+                poseStack.rotate((Quaternionfc) Axis.ZN.rotationDegrees(90));
             }
-            case EAST -> poseStack.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
+            case EAST -> poseStack.rotate((Quaternionfc) Axis.ZN.rotationDegrees(90));
         }
         poseStack.translate(-0.05, -0.185, 0.15);
         poseStack.scale(0.0125F, -0.0125F, 0.0125F);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
         collector.submitText(
                 poseStack,
                 0,

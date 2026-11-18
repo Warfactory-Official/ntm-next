@@ -1,10 +1,22 @@
 classTweaker	v2	official
 
-transitive-extendable method net/minecraft/world/entity/LivingEntity getCurrentSwingDuration ()I
+transitive-extendable method net/minecraft/world/entity/LivingEntity getModifiedSwingDuration (Lnet/minecraft/world/item/component/SwingAnimation;)I
 
 transitive-accessible method net/minecraft/world/entity/projectile/Projectile hitTargetOrDeflectSelf (Lnet/minecraft/world/phys/HitResult;)Lnet/minecraft/world/entity/projectile/ProjectileDeflection;
 
 transitive-accessible method net/minecraft/world/damagesource/DamageSource <init> (Lnet/minecraft/core/Holder;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;)V
+
+transitive-accessible field net/minecraft/client/gui/render/pip/PictureInPictureRenderer textureView Lcom/mojang/renderpearl/api/textures/GpuTextureView;
+transitive-accessible field net/minecraft/client/gui/render/pip/PictureInPictureRenderer depthTextureView Lcom/mojang/renderpearl/api/textures/GpuTextureView;
+transitive-accessible field net/minecraft/client/renderer/fog/FogRenderer fogEnabled Z
+transitive-accessible field net/minecraft/client/renderer/fog/FogRenderer FOG_ENVIRONMENTS Ljava/util/List;
+transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen lastClickSlot Lnet/minecraft/world/inventory/Slot;
+transitive-accessible field net/minecraft/world/item/CreativeModeTab displayItemsGenerator Lnet/minecraft/world/item/CreativeModeTab$DisplayItemsGenerator;
+transitive-accessible field net/minecraft/client/renderer/blockentity/state/BlockEntityRenderState blockState Lnet/minecraft/world/level/block/state/BlockState;
+transitive-accessible method net/minecraft/world/item/BlockItem canPlace (Lnet/minecraft/world/item/context/BlockPlaceContext;Lnet/minecraft/world/level/block/state/BlockState;)Z
+transitive-accessible method net/minecraft/client/renderer/SkyRenderer renderSkyDisc (Lcom/mojang/renderpearl/api/commands/RenderPass;Lorg/joml/Vector3fc;)V
+transitive-accessible method net/minecraft/client/renderer/SkyRenderer renderDarkDisc (Lcom/mojang/renderpearl/api/commands/RenderPass;)V
+transitive-accessible method net/minecraft/client/renderer/SkyRenderer renderSunriseAndSunset (Lcom/mojang/renderpearl/api/commands/RenderPass;Lcom/mojang/blaze3d/vertex/PoseStack;FLorg/joml/Vector4fc;)V
 
 transitive-accessible field net/minecraft/world/entity/player/Inventory items Lnet/minecraft/core/NonNullList;
 transitive-mutable field net/minecraft/world/entity/player/Inventory items Lnet/minecraft/core/NonNullList;
@@ -41,10 +53,11 @@ transitive-accessible field net/minecraft/world/level/block/entity/BlockEntityTy
 transitive-accessible field net/minecraft/world/phys/shapes/VoxelShape shape Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
 transitive-accessible method net/minecraft/world/phys/shapes/ArrayVoxelShape <init> (Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;Lit/unimi/dsi/fastutil/doubles/DoubleList;Lit/unimi/dsi/fastutil/doubles/DoubleList;Lit/unimi/dsi/fastutil/doubles/DoubleList;)V
 
-transitive-accessible method com/mojang/blaze3d/opengl/GlProgram <init> (ILjava/lang/String;)V
-transitive-accessible class com/mojang/blaze3d/opengl/GlRenderPass
-transitive-accessible class com/mojang/blaze3d/opengl/GlRenderPass$TextureViewAndSampler
-transitive-accessible field com/mojang/blaze3d/pipeline/RenderPipeline vertexFormatPerBuffer [Lcom/mojang/blaze3d/vertex/VertexFormat;
+transitive-accessible method com/mojang/renderpearl/backend/opengl/GlProgram <init> (ILjava/lang/String;)V
+accessible field com/mojang/renderpearl/backend/opengl/GlProgram uniforms Ljava/util/List;
+transitive-accessible class com/mojang/renderpearl/backend/opengl/GlRenderPass
+accessible class net/minecraft/client/renderer/feature/QuadParticleFeatureRenderer$PreparedGroup
+transitive-accessible field com/mojang/renderpearl/api/pipeline/RenderPipeline vertexFormatPerBuffer Ljava/util/List;
 
 transitive-accessible field net/minecraft/network/Connection channel Lio/netty/channel/Channel;
 transitive-accessible method net/minecraft/network/protocol/game/ClientboundBlockEntityDataPacket <init> (Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/nbt/CompoundTag;)V
@@ -59,15 +72,14 @@ transitive-accessible field net/minecraft/world/level/chunk/LevelChunkSection no
 transitive-accessible field net/minecraft/world/level/chunk/LevelChunkSection biomes Lnet/minecraft/world/level/chunk/PalettedContainerRO;
 transitive-accessible field net/minecraft/world/level/Level soundSeedGenerator Lnet/minecraft/util/RandomSource;
 
-transitive-accessible field net/minecraft/world/level/levelgen/synth/SimplexNoise p [I
-transitive-accessible class net/minecraft/world/level/levelgen/SurfaceRules$Context
-transitive-accessible class net/minecraft/world/level/levelgen/SurfaceRules$Condition
-transitive-accessible class net/minecraft/world/level/levelgen/SurfaceRules$SurfaceRule
-transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context randomState Lnet/minecraft/world/level/levelgen/RandomState;
-transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context blockX I
-transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context blockY I
-transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context blockZ I
-transitive-accessible field net/minecraft/world/level/levelgen/SurfaceRules$Context stoneDepthAbove I
+transitive-accessible field net/minecraft/world/level/levelgen/synth/GradientNoise perms [B
+accessible field net/minecraft/world/entity/LivingEntity swingState Lnet/minecraft/world/entity/LivingEntity$SwingState;
+accessible field net/minecraft/core/component/DataComponentPatch map Lit/unimi/dsi/fastutil/objects/Reference2ObjectMap;
+accessible field net/minecraft/client/resources/model/sprite/MaterialBaker blockAtlas Lnet/minecraft/client/renderer/texture/SpriteLoader$Preparations;
+accessible field net/minecraft/client/resources/model/sprite/MaterialBaker itemAtlas Lnet/minecraft/client/renderer/texture/SpriteLoader$Preparations;
+accessible field net/minecraft/client/resources/model/ModelBakery BREAKING_LOCATIONS Ljava/util/List;
+accessible field net/minecraft/client/resources/model/ModelBakery BREAKING_LOCATIONS_OIT Ljava/util/List;
+accessible field net/minecraft/world/entity/LivingEntity$SwingState currentSwing Lnet/minecraft/world/entity/LivingEntity$SwingDescription;
 transitive-accessible method net/minecraft/world/level/levelgen/feature/TreeFeature updateLeaves (Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/world/level/levelgen/structure/BoundingBox;Ljava/util/Set;Ljava/util/Set;Ljava/util/Set;)Lnet/minecraft/world/phys/shapes/DiscreteVoxelShape;
 
 transitive-accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
@@ -165,10 +177,10 @@ transitive-accessible field net/minecraft/client/renderer/rendertype/RenderType 
 transitive-accessible field net/minecraft/client/renderer/rendertype/RenderSetup textures Ljava/util/Map;
 transitive-accessible class net/minecraft/client/renderer/rendertype/RenderSetup$TextureBinding
 
-accessible field net/minecraft/client/renderer/ItemInHandRenderer mainHandHeight F
-accessible field net/minecraft/client/renderer/ItemInHandRenderer oMainHandHeight F
+accessible field net/minecraft/client/player/FirstPersonHandsAndItems mainHandHeight F
+accessible field net/minecraft/client/player/FirstPersonHandsAndItems oMainHandHeight F
 accessible method net/minecraft/world/item/ItemStack processDurabilityChange (ILnet/minecraft/server/level/ServerLevel;Lnet/minecraft/server/level/ServerPlayer;)I
-accessible field net/minecraft/client/gui/render/pip/PictureInPictureRenderer texture Lcom/mojang/blaze3d/textures/GpuTexture;
+accessible field net/minecraft/client/gui/render/pip/PictureInPictureRenderer texture Lcom/mojang/renderpearl/api/textures/GpuTexture;
 accessible field com/mojang/blaze3d/audio/Channel source I
 accessible field net/minecraft/client/resources/sounds/EntityBoundSoundInstance entity Lnet/minecraft/world/entity/Entity;
 extendable class net/minecraft/world/level/levelgen/structure/structures/JigsawStructure
@@ -191,25 +203,17 @@ transitive-accessible field net/minecraft/client/particle/SingleQuadParticle oRo
 transitive-accessible field net/minecraft/client/particle/ParticleGroup particles Ljava/util/Queue;
 transitive-accessible field net/minecraft/core/component/DataComponentExactPredicate expectedComponents Ljava/util/List;
 transitive-accessible field net/minecraft/world/item/component/CustomData tag Lnet/minecraft/nbt/CompoundTag;
+transitive-accessible field net/minecraft/resources/RegistryLoadTask registry Lnet/minecraft/core/WritableRegistry;
 accessible field net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator globalFluidPicker Ljava/util/function/Supplier;
-accessible method net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator doFill (Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/chunk/ChunkAccess;II)Lnet/minecraft/world/level/chunk/ChunkAccess;
-accessible class net/minecraft/world/level/levelgen/DensityFunctions$BeardifierMarker
-accessible method net/minecraft/world/level/levelgen/NoiseChunk getInterpolatedState ()Lnet/minecraft/world/level/block/state/BlockState;
+accessible method net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator doFill (Lnet/minecraft/world/level/levelgen/NoiseChunk;Lnet/minecraft/world/level/chunk/ChunkAccess;)V
+accessible method net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator buildSurface (Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/levelgen/NoiseChunk;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/biome/BiomeManager;Ljava/util/Set;Lnet/minecraft/world/level/levelgen/material/rule/MaterialRule;)V
+accessible method net/minecraft/world/level/levelgen/NoiseBasedChunkGenerator generateCarvers (Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/levelgen/blending/Blender;Lnet/minecraft/world/level/levelgen/NoiseChunk;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/biome/BiomeManager;Lnet/minecraft/server/level/WorldGenRegion;Lnet/minecraft/world/level/levelgen/material/rule/MaterialRule;)V
+accessible field net/minecraft/world/level/levelgen/feature/VegetationPatchFeature vegetationFeature Lnet/minecraft/core/Holder;
 accessible field net/minecraft/world/level/levelgen/XoroshiroRandomSource$XoroshiroPositionalRandomFactory seedLo J
 accessible field net/minecraft/world/level/levelgen/XoroshiroRandomSource$XoroshiroPositionalRandomFactory seedHi J
-accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise noiseLevels [Lnet/minecraft/world/level/levelgen/synth/ImprovedNoise;
-accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise amplitudes Lit/unimi/dsi/fastutil/doubles/DoubleList;
-accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise lowestFreqValueFactor D
-accessible field net/minecraft/world/level/levelgen/synth/PerlinNoise lowestFreqInputFactor D
-accessible field net/minecraft/world/level/levelgen/synth/ImprovedNoise p [B
-
-transitive-accessible field net/minecraft/client/renderer/fog/FogRenderer fogEnabled Z
-transitive-accessible field net/minecraft/client/renderer/fog/FogRenderer FOG_ENVIRONMENTS Ljava/util/List;
-transitive-accessible field net/minecraft/client/gui/screens/inventory/AbstractContainerScreen lastClickSlot Lnet/minecraft/world/inventory/Slot;
-transitive-accessible field net/minecraft/world/item/CreativeModeTab displayItemsGenerator Lnet/minecraft/world/item/CreativeModeTab$DisplayItemsGenerator;
-transitive-accessible field net/minecraft/client/renderer/blockentity/state/BlockEntityRenderState blockState Lnet/minecraft/world/level/block/state/BlockState;
-transitive-accessible method net/minecraft/world/level/levelgen/SurfaceRules$Context getBiome ()Lnet/minecraft/core/Holder;
-transitive-accessible method net/minecraft/world/item/BlockItem canPlace (Lnet/minecraft/world/item/context/BlockPlaceContext;Lnet/minecraft/world/level/block/state/BlockState;)Z
-transitive-accessible field net/minecraft/resources/RegistryLoadTask registry Lnet/minecraft/core/WritableRegistry;
+accessible class com/mojang/renderpearl/backend/opengl/GlDevice
+accessible field com/mojang/renderpearl/frontend/FrontendGpuDevice backend Lcom/mojang/renderpearl/backend/api/GpuDeviceBackend;
+accessible method com/mojang/renderpearl/backend/opengl/GlRenderPipeline <init> (Lcom/mojang/renderpearl/backend/opengl/GlDevice;Lcom/mojang/renderpearl/backend/api/BackendRenderPipeline$CreateInfo;Lcom/mojang/renderpearl/backend/opengl/GlProgram;Lcom/mojang/renderpearl/backend/opengl/VertexArray;)V
+transitive-accessible method net/minecraft/world/entity/SteppedInterpolationHandler <init> (Lnet/minecraft/world/entity/Entity;)V
 accessible field net/minecraft/core/Holder$Reference tags Ljava/util/Set;
 transitive-accessible field net/minecraft/world/level/block/state/BlockBehaviour UPDATE_SHAPE_ORDER [Lnet/minecraft/core/Direction;

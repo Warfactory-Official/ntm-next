@@ -108,7 +108,7 @@ public class FELRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 0)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 0)));
         poseStack.translate(0.0, 1.5, -1.5);
 
         Vec3 skeleton = new Vec3(0, 0, -state.length - 1);

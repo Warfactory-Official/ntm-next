@@ -54,6 +54,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -279,7 +280,7 @@ public final class ArmorModHandler {
     public static void onItemTossed(ItemEntity entity) {
         ItemStack stack = entity.getItem();
         if (isArmor(stack) && modItem(stack, CLADDING) instanceof ModObsidianItem)
-            ((Entity) entity).setInvulnerable(true);
+            ((Entity) entity).setPermanentlyInvulnerable(true);
     }
 
     public static void onKilledByPlayer(LivingEntity killed) {
@@ -316,7 +317,7 @@ public final class ArmorModHandler {
     private static void reward(Player player, Item prize) {
         if (player.getRandom().nextInt(64) != 0) return;
         ItemStack stack = new ItemStack(prize);
-        player.getInventory().placeItemBackInInventory(stack);
+        player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
     }
 
     public static void equipmentChanged(LivingEntity entity) {

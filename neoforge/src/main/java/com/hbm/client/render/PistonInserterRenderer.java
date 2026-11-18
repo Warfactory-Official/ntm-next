@@ -63,20 +63,20 @@ public class PistonInserterRenderer
 
     private static void rotate(PoseStack poses, Direction facing) {
         switch (facing) {
-            case DOWN -> poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180F));
+            case DOWN -> poses.rotate((Quaternionfc) Axis.XP.rotationDegrees(180F));
             case UP -> {}
             case NORTH -> {
-                poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90F));
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180F));
+                poses.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(180F));
             }
-            case SOUTH -> poses.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
+            case SOUTH -> poses.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
             case WEST -> {
-                poses.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90F));
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+                poses.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F));
             }
             case EAST -> {
-                poses.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                poses.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
             }
         }
     }
@@ -93,7 +93,7 @@ public class PistonInserterRenderer
             poses.translate(0, 1.125, 0);
         } else {
             poses.translate(0, 1.0625, .1);
-            poses.mulPose((Quaternionfc) Axis.XN.rotationDegrees(90F));
+            poses.rotate((Quaternionfc) Axis.XN.rotationDegrees(90F));
         }
         FramedItem.decoArm(poses, arm);
     }

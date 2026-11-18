@@ -50,6 +50,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -59,7 +60,6 @@ public abstract class PlaneBaseEntity extends Entity implements FarVisible {
 
     private static final EntityDataAccessor<Float> DATA_HEALTH =
             SynchedEntityData.defineId(PlaneBaseEntity.class, EntityDataSerializers.FLOAT);
-    private final InterpolationHandler interpolation = new InterpolationHandler(this);
     public float health = getMaxHealth();
     public int timer = getLifetime();
     public float renderPitch = -90F;
@@ -95,14 +95,13 @@ public abstract class PlaneBaseEntity extends Entity implements FarVisible {
     }
 
     @Override
-    public InterpolationHandler getInterpolation() {
-        return this.interpolation;
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this);
     }
 
     @Override
     public void tick() {
-        Vec3 prePos = position();
-        this.interpolation.interpolate();
+        Vec3 prePos = getPosition(0);
         super.tick();
 
         if (level().isClientSide()) {

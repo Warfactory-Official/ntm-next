@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -80,7 +81,8 @@ public class GlitchItem extends Item implements EnergyItem {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (!(level instanceof ServerLevel server)) return InteractionResult.SUCCESS;
         int outcome = server.getRandom().nextInt(OUTCOMES);
-        for (ItemStack gift : gifts(outcome)) player.getInventory().placeItemBackInInventory(gift);
+        for (ItemStack gift : gifts(outcome))
+            player.getInventory().placeItemBackInInventory(gift, Prediction.SERVER_ONLY);
         player.getItemInHand(hand).hurtAndBreak(USE_COST, player, hand);
         roll(server, player, outcome);
         return InteractionResult.SUCCESS;

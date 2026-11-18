@@ -135,7 +135,7 @@ public final class LaunchpadSoyuzRenderer<T extends BlockEntity & SoyuzRenderSou
         pose.pushPose();
         pose.translate(state.dx, state.dy, state.dz);
         pose.translate(0.5D, 0D, 0.5D);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.rotation));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.rotation));
         pose.translate(-4D, 0D, -4D);
 
         float rotor =
@@ -168,7 +168,7 @@ public final class LaunchpadSoyuzRenderer<T extends BlockEntity & SoyuzRenderSou
 
         pose.translate(0D, 0D, -carriage);
         pose.translate(0D, 1.5D, -32D);
-        pose.mulPose((Quaternionfc) Axis.XN.rotationDegrees(tilt));
+        pose.rotate((Quaternionfc) Axis.XN.rotationDegrees(tilt));
         pose.translate(0D, -1.5D, 32D);
         part(pose, collector, state.lightCoords, CARRIAGE);
 
@@ -177,7 +177,7 @@ public final class LaunchpadSoyuzRenderer<T extends BlockEntity & SoyuzRenderSou
                 pose.pushPose();
                 double side = WHEEL_SIDE[j], forward = WHEEL_FORWARD[i];
                 pose.translate(side, 0D, -forward);
-                pose.mulPose(
+                pose.rotate(
                         (Quaternionfc) Axis.YP.rotationDegrees(wheels * (j % 2 == 1 ? -1F : 1F)));
                 pose.translate(-side, 0D, forward);
                 part(pose, collector, state.lightCoords, WHEEL_PARTS[i][j]);
@@ -186,12 +186,12 @@ public final class LaunchpadSoyuzRenderer<T extends BlockEntity & SoyuzRenderSou
         }
 
         pose.translate(0D, 24.5D, -18D);
-        pose.mulPose((Quaternionfc) Axis.XN.rotationDegrees(rotor));
+        pose.rotate((Quaternionfc) Axis.XN.rotationDegrees(rotor));
         pose.translate(0D, -24.5D, 18D);
         part(pose, collector, state.lightCoords, ROTOR);
 
         pose.translate(0D, 24.5D, -6D);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(rotor));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(rotor));
         pose.translate(0D, -24.5D, 6D);
         part(pose, collector, state.lightCoords, MOUNT);
 
@@ -202,7 +202,7 @@ public final class LaunchpadSoyuzRenderer<T extends BlockEntity & SoyuzRenderSou
     private static void rocket(State state, PoseStack pose, SubmitNodeCollector collector) {
         pose.pushPose();
         pose.translate(0D, 4D, 0D);
-        pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.rotation));
+        pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.rotation));
         SoyuzMesh.submit(pose, collector, state.lightCoords, state.loadedType);
         pose.popPose();
     }

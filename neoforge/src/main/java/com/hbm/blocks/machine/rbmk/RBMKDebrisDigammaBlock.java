@@ -20,7 +20,6 @@
 package com.hbm.blocks.machine.rbmk;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,9 +30,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RBMKDebrisDigammaBlock extends Block {
-    public static final MapCodec<RBMKDebrisDigammaBlock> CODEC =
-            simpleCodec(RBMKDebrisDigammaBlock::new);
-
     private static final int SPREAD_DELAY = 2;
 
     public RBMKDebrisDigammaBlock(BlockBehaviour.Properties props) {
@@ -46,11 +42,6 @@ public class RBMKDebrisDigammaBlock extends Block {
                 || b == ModBlocks.RBMK_DEBRIS_RADIATING.get()
                 || b == ModBlocks.CORIUM.get()
                 || b == ModBlocks.BLOCK_CORIUM.get();
-    }
-
-    @Override
-    protected MapCodec<RBMKDebrisDigammaBlock> codec() {
-        return CODEC;
     }
 
     @Override

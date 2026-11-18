@@ -21,7 +21,6 @@ package com.hbm.blocks.network;
 
 import com.hbm.blockentity.network.SubstationBlockEntity;
 import com.hbm.blocks.multiblock.MultiblockCoreBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +29,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,8 +36,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class SubstationBlock extends MultiblockCoreBlock implements EntityBlock {
-    public static final MapCodec<SubstationBlock> CODEC = simpleCodec(SubstationBlock::new);
-
     public SubstationBlock(Properties props) {
         super(props);
     }
@@ -50,11 +46,6 @@ public class SubstationBlock extends MultiblockCoreBlock implements EntityBlock 
             visitor.cell(core.relative(dir), MASK_HORIZONTAL & ~(1 << dir.ordinal()));
             visitor.cell(core.relative(dir).relative(dir.getClockWise()), MASK_HORIZONTAL);
         }
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

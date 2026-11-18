@@ -19,15 +19,16 @@
 
 package com.hbm.client.particle;
 
+import com.hbm.client.render.OitPipelineOwner;
 import com.hbm.client.render.ParticleRenderTypes;
 import com.hbm.client.render.WorldRenderPipeline;
 import com.hbm.util.RegistryUtil;
-import com.mojang.blaze3d.GpuFormat;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendFactor;
+import com.mojang.renderpearl.api.GpuFormat;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import java.util.Optional;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -65,17 +66,6 @@ public final class ParticleLayers {
                                                     BlendFactor.ONE_MINUS_SRC_ALPHA,
                                                     BlendFactor.ONE,
                                                     BlendFactor.ZERO)))
-                            .withDepthStencilState(
-                                    new DepthStencilState(
-                                            DepthStencilState.DEFAULT.depthTest(), false)));
-
-    public static final RenderPipeline TRANSLUCENT_COMPOSITE_PIPELINE =
-            WorldRenderPipeline.of(
-                    RenderPipeline.builder(RenderPipelines.PARTICLE_SNIPPET)
-                            .withLocation(RegistryUtil.id("pipeline/particle_composite"))
-                            .withFragmentShader(ParticleRenderTypes.PARTICLE_CUTOUT)
-                            .withShaderDefine("ALPHA_CUTOUT", EFFECT_RENDERER_ALPHA_CUTOUT)
-                            .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
                             .withDepthStencilState(
                                     new DepthStencilState(
                                             DepthStencilState.DEFAULT.depthTest(), false)));
@@ -118,15 +108,28 @@ public final class ParticleLayers {
 
     public static final SingleQuadParticle.Layer TRANSLUCENT =
             new SingleQuadParticle.Layer(
-                    true, TextureAtlas.LOCATION_PARTICLES, TRANSLUCENT_PIPELINE);
+                    true,
+                    TextureAtlas.LOCATION_PARTICLES,
+                    TRANSLUCENT_PIPELINE,
+                    ((OitPipelineOwner) TRANSLUCENT_PIPELINE).oitPipelines());
     public static final SingleQuadParticle.Layer TRANSLUCENT_SEPARATE =
             new SingleQuadParticle.Layer(
-                    true, TextureAtlas.LOCATION_PARTICLES, TRANSLUCENT_SEPARATE_PIPELINE);
+                    true,
+                    TextureAtlas.LOCATION_PARTICLES,
+                    TRANSLUCENT_SEPARATE_PIPELINE,
+                    ((OitPipelineOwner) TRANSLUCENT_SEPARATE_PIPELINE).oitPipelines());
     public static final SingleQuadParticle.Layer ADDITIVE =
-            new SingleQuadParticle.Layer(true, TextureAtlas.LOCATION_PARTICLES, ADDITIVE_PIPELINE);
+            new SingleQuadParticle.Layer(
+                    true,
+                    TextureAtlas.LOCATION_PARTICLES,
+                    ADDITIVE_PIPELINE,
+                    ((OitPipelineOwner) ADDITIVE_PIPELINE).oitPipelines());
     public static final SingleQuadParticle.Layer ADDITIVE_NO_FOG =
             new SingleQuadParticle.Layer(
-                    true, TextureAtlas.LOCATION_PARTICLES, ADDITIVE_NO_FOG_PIPELINE);
+                    true,
+                    TextureAtlas.LOCATION_PARTICLES,
+                    ADDITIVE_NO_FOG_PIPELINE,
+                    ((OitPipelineOwner) ADDITIVE_NO_FOG_PIPELINE).oitPipelines());
 
     private ParticleLayers() {}
 }

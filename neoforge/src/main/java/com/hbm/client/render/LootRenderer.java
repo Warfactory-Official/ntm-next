@@ -135,7 +135,7 @@ public class LootRenderer
 
     public static void fixedView(PoseStack pose, AABB model) {
         pose.translate(.5, .5 * model.maxZ, .5);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
         pose.scale(.5F, .5F, .5F);
     }
 
@@ -323,7 +323,7 @@ public class LootRenderer
             } else if (item.sprites != null) {
                 pose.translate(.25, 0, .25);
                 pose.scale(.5F, .5F, .5F);
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
                 for (ItemSprites.Pass pass : item.sprites)
                     pass.submit(pose, collector.order(order++), state.lightCoords);
             } else {

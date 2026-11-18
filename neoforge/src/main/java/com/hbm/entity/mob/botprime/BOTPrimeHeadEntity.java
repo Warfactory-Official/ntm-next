@@ -42,6 +42,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
@@ -248,7 +249,8 @@ public class BOTPrimeHeadEntity extends BOTPrimeBaseEntity {
             for (Player player :
                     server.getEntitiesOfClass(Player.class, getBoundingBox().inflate(200D))) {
                 player.getInventory()
-                        .placeItemBackInInventory(new ItemStack(ModItems.COIN_WORM.get()));
+                        .placeItemBackInInventory(
+                                new ItemStack(ModItems.COIN_WORM.get()), Prediction.SERVER_ONLY);
             }
         }
     }

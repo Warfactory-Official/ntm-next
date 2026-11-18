@@ -126,7 +126,7 @@ public class MK108ItemRenderer extends AnimatedGunItemRenderer {
                     for (int i = 0; i < links.length; i++) {
                         pose.pushPose();
                         pose.translate(links[i][0], links[i][1], 0);
-                        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) links[i][2]));
+                        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) links[i][2]));
                         submitPart(d.collector(), pose, d.skin(), mesh, link, d.light());
                         if (loaded(i, count))
                             submitPart(d.collector(), pose, d.skin(), mesh, grenade, d.light());

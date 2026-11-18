@@ -22,7 +22,6 @@ package com.hbm.blocks.machine;
 import com.hbm.blockentity.machine.reactor.ReactorControlBlockEntity;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.inventory.BlockMenus;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -41,16 +40,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class ReactorControlBlock extends HorizontalDirectionalBlock implements TickingEntityBlock {
-    public static final MapCodec<ReactorControlBlock> CODEC = simpleCodec(ReactorControlBlock::new);
-
     public ReactorControlBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

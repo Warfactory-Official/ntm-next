@@ -21,7 +21,6 @@ package com.hbm.blocks.network;
 
 import com.hbm.blockentity.network.ConnectorBlockEntity;
 import com.hbm.blockentity.network.ConnectorSuperBlockEntity;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -54,20 +53,13 @@ public class ConnectorBlock extends BasePylonBlock implements SimpleWaterloggedB
 
     private final boolean superConnector;
     private final VoxelShape[] shapes;
-    private final MapCodec<ConnectorBlock> ownCodec;
 
     public ConnectorBlock(boolean superConnector, Properties props) {
         super(props);
         this.superConnector = superConnector;
         this.shapes = buildShapes(superConnector);
-        this.ownCodec = simpleCodec(p -> new ConnectorBlock(superConnector, p));
         registerDefaultState(
                 stateDefinition.any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return ownCodec;
     }
 
     private static VoxelShape[] buildShapes(boolean superConnector) {

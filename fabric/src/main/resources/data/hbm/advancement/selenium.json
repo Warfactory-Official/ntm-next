@@ -3,13 +3,13 @@
   "criteria": {
     "crafted_hbm_gun_b92": {
       "conditions": {
-        "recipe_id": "hbm:gun_b92"
+        "recipes": "hbm:gun_b92"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_piston_selenium": {
       "conditions": {
-        "recipe_id": "hbm:piston_selenium"
+        "recipes": "hbm:piston_selenium"
       },
       "trigger": "minecraft:recipe_crafted"
     }

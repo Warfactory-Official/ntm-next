@@ -19,12 +19,16 @@
 
 package com.hbm.world.feature;
 
+import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LibraryDungeonFeature extends PlaceTemplateFeature {
+    public static final MapCodec<LibraryDungeonFeature> CODEC =
+            MapCodec.unit(LibraryDungeonFeature::new);
+
     private static final List<BlockPos> CORNERS =
             List.of(
                     new BlockPos(0, 0, 0), new BlockPos(8, 0, 0),
@@ -32,6 +36,11 @@ public class LibraryDungeonFeature extends PlaceTemplateFeature {
 
     public LibraryDungeonFeature() {
         super("library_dungeon");
+    }
+
+    @Override
+    public MapCodec<LibraryDungeonFeature> codec() {
+        return CODEC;
     }
 
     @Override

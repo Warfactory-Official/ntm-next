@@ -41,6 +41,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
@@ -128,7 +129,8 @@ public class SellafieldCraterPiece extends StructurePiece {
 
     public boolean hasSolidFill() {
         BlockState outer = rock.orElseGet(SellafieldCraterPiece::sellafieldSlaked);
-        return outer.blocksMotion() && regolith.orElse(outer).blocksMotion();
+        return outer.is(BlockTags.BLOCKS_MOTION)
+                && regolith.orElse(outer).is(BlockTags.BLOCKS_MOTION);
     }
 
     public int groundHeight(int firstFree, int x, int z, int minBuild) {

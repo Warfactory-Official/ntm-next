@@ -38,7 +38,6 @@ import com.hbm.blocks.multiblock.AssembledMembers;
 import com.hbm.interfaces.TriggerHandler;
 import com.hbm.interfaces.TriggerResult;
 import com.hbm.world.bulk.BulkAction;
-import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -74,17 +73,10 @@ public class SealBlock extends Block implements TriggerHandler {
 
     private static final int MAX_SIZE = 6;
 
-    public static final MapCodec<SealBlock> CODEC = simpleCodec(SealBlock::new);
-
     public SealBlock(Properties props) {
         super(props);
         registerDefaultState(
                 stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     public static boolean toggle(Level level, BlockPos pos, BlockState state) {

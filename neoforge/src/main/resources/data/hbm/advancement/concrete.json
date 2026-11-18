@@ -3,13 +3,13 @@
   "criteria": {
     "crafted_hbm_concrete_smooth_from_colored": {
       "conditions": {
-        "recipe_id": "hbm:concrete_smooth_from_colored"
+        "recipes": "hbm:concrete_smooth_from_colored"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_concrete_smooth_from_colored_ext": {
       "conditions": {
-        "recipe_id": "hbm:concrete_smooth_from_colored_ext"
+        "recipes": "hbm:concrete_smooth_from_colored_ext"
       },
       "trigger": "minecraft:recipe_crafted"
     },

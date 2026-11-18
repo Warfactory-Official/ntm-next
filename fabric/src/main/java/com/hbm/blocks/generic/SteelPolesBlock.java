@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -29,16 +28,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.jspecify.annotations.Nullable;
 
 public class SteelPolesBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<SteelPolesBlock> CODEC = simpleCodec(SteelPolesBlock::new);
-
     public SteelPolesBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -33,17 +33,16 @@ import com.hbm.interfaces.ToolType;
 import com.hbm.items.machine.StampItem;
 import com.hbm.sound.ModSounds;
 import com.hbm.util.NumberFormatter;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -56,17 +55,10 @@ public class ConveyorPressBlock extends MultiblockCoreBlock
                 ToolInteractionHandler,
                 TickingEntityBlock,
                 CapabilityBlock {
-    public static final MapCodec<ConveyorPressBlock> CODEC = simpleCodec(ConveyorPressBlock::new);
-
     private static final int RED = 0xFF5555;
 
     public ConveyorPressBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override
@@ -169,7 +161,7 @@ public class ConveyorPressBlock extends MultiblockCoreBlock
         ItemStack stamp = press.getItem(ConveyorStampBlockEntity.SLOT_STAMP);
         if (stamp.isEmpty()) return false;
 
-        player.getInventory().placeItemBackInInventory(stamp.copy());
+        player.getInventory().placeItemBackInInventory(stamp.copy(), Prediction.PREDICTED);
         press.setItem(ConveyorStampBlockEntity.SLOT_STAMP, ItemStack.EMPTY);
         press.markChanged();
         return true;

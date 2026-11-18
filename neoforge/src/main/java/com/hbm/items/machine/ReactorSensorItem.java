@@ -37,6 +37,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -104,7 +105,8 @@ public class ReactorSensorItem extends Item {
                         1.0F,
                         1.0F);
         Player player = context.getPlayer();
-        if (player != null) ((LivingEntity) player).swing(InteractionHand.MAIN_HAND);
+        if (player != null)
+            ((LivingEntity) player).swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
     }
 
     @Override

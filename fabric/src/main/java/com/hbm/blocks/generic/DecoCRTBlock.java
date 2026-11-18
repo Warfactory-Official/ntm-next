@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -31,17 +30,11 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jspecify.annotations.Nullable;
 
 public class DecoCRTBlock extends Block {
-    public static final MapCodec<DecoCRTBlock> CODEC = simpleCodec(DecoCRTBlock::new);
     public static final IntegerProperty ROTATION = IntegerProperty.create("rotation", 0, 3);
 
     public DecoCRTBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(ROTATION, 0));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

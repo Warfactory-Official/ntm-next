@@ -109,7 +109,7 @@ public class SnowglobeRenderer
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YN.rotationDegrees(22.5F * s.rotation + 90.0F));
+        ps.rotate((Quaternionfc) Axis.YN.rotationDegrees(22.5F * s.rotation + 90.0F));
         renderSnowglobe(s.type, ps, col, s.lightCoords);
         ps.popPose();
     }

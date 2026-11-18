@@ -23,15 +23,11 @@ import com.hbm.client.particle.ParticleLayers;
 import com.hbm.client.render.RibbonPass;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.systems.RenderPass;
-import java.util.Map;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.SingleQuadParticle;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.renderpearl.api.commands.RenderPass;
 import net.minecraft.client.renderer.StagedVertexBuffer;
 import net.minecraft.client.renderer.feature.QuadParticleFeatureRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.client.renderer.oit.OitStage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,46 +35,36 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(QuadParticleFeatureRenderer.class)
 abstract class MixinQuadParticleFeatureRenderer {
     @WrapOperation(
-            method = "drawLayers",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Lnet/minecraft/client/particle/SingleQuadParticle$Layer;pipeline()Lcom/mojang/blaze3d/pipeline/RenderPipeline;"))
-    private static RenderPipeline hbm$particleLayerAlpha(
-            SingleQuadParticle.Layer layer, Operation<RenderPipeline> original) {
-        if ((layer == ParticleLayers.TRANSLUCENT_SEPARATE || layer == ParticleLayers.TRANSLUCENT)
-                && Minecraft.getInstance().levelRenderer.particlesTarget() != null)
-            return ParticleLayers.TRANSLUCENT_COMPOSITE_PIPELINE;
-        return original.call(layer);
-    }
-
-    @WrapOperation(
             method = "executeGroup",
             at =
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/client/renderer/feature/QuadParticleFeatureRenderer;drawLayers(Lnet/minecraft/client/renderer/StagedVertexBuffer;Ljava/util/Map;Lcom/mojang/blaze3d/systems/RenderPass;Lnet/minecraft/client/renderer/texture/TextureManager;)V"))
+                                    "Lnet/minecraft/client/renderer/feature/QuadParticleFeatureRenderer;drawLayers(Lnet/minecraft/client/renderer/StagedVertexBuffer;Lnet/minecraft/client/renderer/feature/QuadParticleFeatureRenderer$PreparedGroup;Lcom/mojang/renderpearl/api/commands/RenderPass;Lnet/minecraft/client/renderer/oit/OitStage;)V"))
     private void hbm$particleLayerDepth(
             StagedVertexBuffer staged,
-            Map<SingleQuadParticle.Layer, StagedVertexBuffer.Draw> layers,
+            QuadParticleFeatureRenderer.PreparedGroup group,
             RenderPass pass,
-            TextureManager textures,
+            OitStage stage,
             Operation<Void> original) {
-        original.call(staged, layers, pass, textures);
-        if (Minecraft.getInstance().levelRenderer.particlesTarget() == null
-                && (!RibbonPass.hasShaderPack() || RibbonPass.isShadow())) return;
-        StagedVertexBuffer.Draw separate = layers.get(ParticleLayers.TRANSLUCENT_SEPARATE);
-        StagedVertexBuffer.Draw translucent = layers.get(ParticleLayers.TRANSLUCENT);
+        original.call(staged, group, pass, stage);
+        if (stage != null || !RibbonPass.hasShaderPack() || RibbonPass.isShadow()) return;
+        StagedVertexBuffer.Draw separate = group.layers().get(ParticleLayers.TRANSLUCENT_SEPARATE);
+        StagedVertexBuffer.Draw translucent = group.layers().get(ParticleLayers.TRANSLUCENT);
         StagedVertexBuffer.ExecuteInfo separateInfo =
                 separate == null ? null : staged.getExecuteInfo(separate);
         StagedVertexBuffer.ExecuteInfo translucentInfo =
                 translucent == null ? null : staged.getExecuteInfo(translucent);
         if (separateInfo == null && translucentInfo == null) return;
-        var texture = textures.getTexture(TextureAtlas.LOCATION_PARTICLES);
-        pass.setPipeline(ParticleLayers.TRANSLUCENT_DEPTH_PIPELINE);
-        pass.bindTexture("Sampler0", texture.getTextureView(), texture.getSampler());
+        var texture =
+                group.textures()
+                        .get(
+                                separateInfo != null
+                                        ? ParticleLayers.TRANSLUCENT_SEPARATE
+                                        : ParticleLayers.TRANSLUCENT);
+        pass.setPipeline(
+                RenderSystem.getCompiledPipeline(ParticleLayers.TRANSLUCENT_DEPTH_PIPELINE));
+        pass.setUniform("Sampler0", texture.getTextureView(), texture.getSampler());
         if (separateInfo != null) hbm$writeLayerDepth(pass, separateInfo);
         if (translucentInfo != null) hbm$writeLayerDepth(pass, translucentInfo);
     }

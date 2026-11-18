@@ -43,7 +43,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import static com.hbm.inventory.material.MaterialTagRegistry.LIGNITE;
 
@@ -84,12 +84,22 @@ public class ModuleBurnTime {
         return mod < 0 ? ChatFormatting.RED + num : ChatFormatting.GREEN + "+" + num;
     }
 
-    public int getBurnTime(Level level, ItemStack stack) {
-        return getBurnTime(level, stack, 1.0D);
+    public int getBurnTime(BlockEntity entity, ItemStack stack) {
+        return getBurnTime(entity, stack, 1.0D);
     }
 
-    public int getBurnTime(Level level, ItemStack stack, double def) {
-        int base = FuelHandler.getBurnTime(level, stack);
+    public boolean isFuel(BlockEntity entity, ItemStack stack) {
+        return isFuel(entity, stack, 1.0D);
+    }
+
+    public boolean isFuel(BlockEntity entity, ItemStack stack, double def) {
+        return entity.getLevel().isClientSide()
+                ? FuelHandler.isFuel(entity, stack) && getMod(stack, def) > 0
+                : getBurnTime(entity, stack, def) > 0;
+    }
+
+    public int getBurnTime(BlockEntity entity, ItemStack stack, double def) {
+        int base = FuelHandler.getBurnTime(entity, stack);
         if (base <= 0) return 0;
         return (int) (base * getMod(stack, def));
     }

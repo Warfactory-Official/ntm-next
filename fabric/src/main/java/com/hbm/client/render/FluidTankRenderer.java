@@ -106,7 +106,7 @@ public class FluidTankRenderer
         int light = state.lightCoords;
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         HFRWavefrontObject mesh = FluidTankMeshes.mesh(state.damaged);
         int part = FluidTankMeshes.tank(state.damaged);
         collector.submitCustomGeometry(
@@ -120,7 +120,7 @@ public class FluidTankRenderer
             for (int side = -1; side <= 1; side += 2) {
                 poseStack.pushPose();
                 poseStack.translate(0.25 * side, 0.5, 1.501 * side);
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F * side));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F * side));
                 poseStack.scale(1F, 0.375F, 0.375F);
                 collector.submitCustomGeometry(
                         poseStack,

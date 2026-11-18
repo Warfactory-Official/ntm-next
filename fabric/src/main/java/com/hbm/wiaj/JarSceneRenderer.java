@@ -76,8 +76,8 @@ public final class JarSceneRenderer extends PictureInPictureRenderer<JarRenderSt
         pose.scale(-1, -1, 0.5F);
         double zoom = script.zoom();
         pose.scale((float) zoom, (float) zoom, (float) zoom);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) script.pitch()));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) script.yaw()));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) script.pitch()));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) script.yaw()));
         pose.translate(world.sizeX / -2D, -world.sizeY / 2D, world.sizeZ / -2D);
         pose.translate(script.offsetX(), script.offsetY(), script.offsetZ());
 

@@ -112,7 +112,7 @@ public class ChargerRenderer
     public void submit(State s, PoseStack ps, SubmitNodeCollector col, CameraRenderState camera) {
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         col.submitCustomGeometry(
                 ps,
@@ -122,7 +122,7 @@ public class ChargerRenderer
 
         ps.pushPose();
         ps.translate(PIVOT_X, PIVOT_Y, 0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(TILT));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(TILT));
         ps.translate(-PIVOT_X, -PIVOT_Y, 0);
         ps.translate(0, -DROP * s.extend, 0);
 
@@ -143,7 +143,7 @@ public class ChargerRenderer
             PoseStack ps, SubmitNodeCollector col, int light, float degrees, int part) {
         ps.pushPose();
         ps.translate(0, HINGE_Y, 0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(degrees));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(degrees));
         ps.translate(0, -HINGE_Y, 0);
         col.submitCustomGeometry(
                 ps, bodyType, (pose, buffer) -> model.renderPart(pose, buffer, light, -1, part));

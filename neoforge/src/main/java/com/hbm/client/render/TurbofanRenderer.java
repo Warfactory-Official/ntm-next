@@ -97,7 +97,7 @@ public class TurbofanRenderer
                 TurbofanAnimationData.CENTER_X,
                 TurbofanAnimationData.CENTER_Y,
                 TurbofanAnimationData.CENTER_Z);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         new Quaternionf()
                                 .rotationY(state.yaw * TurbofanAnimationData.DEGREES_TO_RADIANS));
@@ -107,7 +107,7 @@ public class TurbofanRenderer
                 TurbofanAnimationData.PIVOT_X,
                 TurbofanAnimationData.PIVOT_Y,
                 TurbofanAnimationData.PIVOT_Z);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         new Quaternionf()
                                 .rotationZ(

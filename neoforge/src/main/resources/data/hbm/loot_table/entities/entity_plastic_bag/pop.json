@@ -8,7 +8,7 @@
           "name": "hbm:plastic_bag"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "hbm:entities/entity_plastic_bag/pop"

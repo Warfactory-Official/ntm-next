@@ -60,11 +60,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.AbstractHugeMushroomFeature;
+import net.minecraft.world.level.levelgen.feature.BlockColumnFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RootSystemConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.VegetationPatchConfiguration;
+import net.minecraft.world.level.levelgen.feature.RootSystemFeature;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
+import net.minecraft.world.level.levelgen.feature.VegetationPatchFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.SimpleStateProvider;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -123,43 +124,35 @@ public final class ImpactWorldgen {
     private static boolean thins(PlacedFeature feature) {
         return nested(feature)
                 .anyMatch(
-                        configured ->
-                                configured.feature() == Feature.TREE
-                                        || configured.feature() == Feature.HUGE_RED_MUSHROOM
-                                        || configured.feature() == Feature.HUGE_BROWN_MUSHROOM
-                                        || configured.config()
-                                                        instanceof BlockColumnConfiguration column
+                        nested ->
+                                nested instanceof TreeFeature
+                                        || nested instanceof AbstractHugeMushroomFeature
+                                        || nested instanceof BlockColumnFeature column
                                                 && column.layers().stream()
                                                         .anyMatch(
                                                                 layer ->
-                                                                        layer.state()
+                                                                        layer.state().value()
                                                                                         instanceof
                                                                                         SimpleStateProvider
                                                                                                 simple
-                                                                                && simple.getState(
-                                                                                                null,
-                                                                                                RandomSource
-                                                                                                        .create(
-                                                                                                                0L),
-                                                                                                BlockPos
-                                                                                                        .ZERO)
+                                                                                && simple.state()
                                                                                         .is(
                                                                                                 Blocks
                                                                                                         .CACTUS)));
     }
 
-    private static Stream<ConfiguredFeature<?, ?>> nested(PlacedFeature feature) {
+    private static Stream<Feature> nested(PlacedFeature feature) {
         return feature.getFeatures()
                 .map(Holder::value)
                 .flatMap(
                         configured ->
                                 Stream.concat(
                                         Stream.of(configured),
-                                        switch (configured.config()) {
-                                            case RootSystemConfiguration roots ->
+                                        switch (configured) {
+                                            case RootSystemFeature roots ->
                                                     nested(roots.treeFeature().value());
-                                            case VegetationPatchConfiguration patch ->
-                                                    nested(patch.vegetationFeature().value());
+                                            case VegetationPatchFeature patch ->
+                                                    nested(patch.vegetationFeature.value());
                                             default -> Stream.empty();
                                         }));
     }

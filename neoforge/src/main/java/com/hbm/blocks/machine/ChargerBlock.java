@@ -24,7 +24,6 @@ import com.hbm.blocks.ModBlockEntities;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -41,8 +40,6 @@ import org.jspecify.annotations.Nullable;
 
 public class ChargerBlock extends HorizontalDirectionalBlock
         implements TickingEntityBlock, CapabilityBlock {
-    public static final MapCodec<ChargerBlock> CODEC = simpleCodec(ChargerBlock::new);
-
     private final VoxelShape[] shapesByFacing = new VoxelShape[4];
 
     public ChargerBlock(Properties props) {
@@ -62,11 +59,6 @@ public class ChargerBlock extends HorizontalDirectionalBlock
             case EAST -> Shapes.box(1 - thin, yLo, lo, 1, yHi, hi);
             default -> Shapes.box(lo, yLo, lo, hi, yHi, hi);
         };
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

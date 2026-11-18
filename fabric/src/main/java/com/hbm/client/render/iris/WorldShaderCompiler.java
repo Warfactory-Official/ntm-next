@@ -20,9 +20,10 @@
 package com.hbm.client.render.iris;
 
 import com.hbm.client.render.WorldRenderPipeline;
-import com.mojang.blaze3d.opengl.GlConst;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendOp;
+import com.mojang.renderpearl.api.pipeline.BlendOp;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.backend.opengl.GlConst;
 import dev.engine_room.flywheel.iris.compile.ContractProgram;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -136,13 +137,26 @@ public final class WorldShaderCompiler {
                         .orElseGet(
                                 () -> {
                                     if (shadow
-                                            || ((RenderPipeline) pipeline)
-                                                    .getColorTargetState()
+                                            || ((com.mojang.renderpearl.api.pipeline
+                                                                    .ColorTargetState)
+                                                            (((RenderPipeline) pipeline)
+                                                                            .getColorTargetStates()
+                                                                            .isEmpty()
+                                                                    ? ColorTargetState.DEFAULT
+                                                                    : ((RenderPipeline) pipeline)
+                                                                            .getColorTargetStates()
+                                                                            .getFirst()))
                                                     .blendFunction()
                                                     .isEmpty()) return BlendModeOverride.OFF;
                                     var function =
-                                            ((RenderPipeline) pipeline)
-                                                    .getColorTargetState()
+                                            ((com.mojang.renderpearl.api.pipeline.ColorTargetState)
+                                                            (((RenderPipeline) pipeline)
+                                                                            .getColorTargetStates()
+                                                                            .isEmpty()
+                                                                    ? ColorTargetState.DEFAULT
+                                                                    : ((RenderPipeline) pipeline)
+                                                                            .getColorTargetStates()
+                                                                            .getFirst()))
                                                     .blendFunction()
                                                     .orElseThrow();
                                     assert function.color().op() == BlendOp.ADD

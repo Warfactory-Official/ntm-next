@@ -123,7 +123,7 @@ public class RBMKConsoleRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         poseStack.translate(0.5, 0.0, 0.0);
 
         ColumnSnapshot[] columns = state.columns;
@@ -149,7 +149,7 @@ public class RBMKConsoleRenderer
                 int width = font.width(text);
                 float f3 = Math.min(0.03F, 0.8F / Math.max(width, 1));
                 poseStack.scale(f3, -f3, f3);
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
                 collector.submitText(
                         poseStack,
                         -width / 2,

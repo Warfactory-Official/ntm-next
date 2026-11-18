@@ -126,7 +126,7 @@ public class FollyItemRenderer extends AnimatedGunItemRenderer {
                 pose.translate(
                         (font.width(msg) / 2) * size + 2, 1F + font.lineHeight * size / 2F, -2.75F);
                 pose.scale(size, -size, size);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
                 collector.submitText(
                         pose,
                         0,
@@ -148,7 +148,7 @@ public class FollyItemRenderer extends AnimatedGunItemRenderer {
                         1F + font.lineHeight * size / 2F,
                         -2.75F);
                 pose.scale(size, -size, size);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
                 collector.submitText(
                         pose,
                         0,
@@ -168,7 +168,7 @@ public class FollyItemRenderer extends AnimatedGunItemRenderer {
                 float size = 0.005F;
                 pose.translate(2.5F, 1.375F, -2.75F);
                 pose.scale(size, -size, size);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
                 for (Component line : tty) {
                     collector.submitText(
                             pose,

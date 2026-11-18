@@ -37,7 +37,7 @@ import org.spongepowered.asm.mixin.injection.At;
 abstract class MixinFluidVariantRendering {
     @WrapOperation(
             method =
-                    "getTooltip(Lnet/fabricmc/fabric/api/transfer/v1/fluid/FluidVariant;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;",
+                    "getTooltip(Lnet/fabricmc/fabric/api/transfer/v1/fluid/FluidVariant;ZLnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;",
             at =
                     @At(
                             value = "INVOKE",

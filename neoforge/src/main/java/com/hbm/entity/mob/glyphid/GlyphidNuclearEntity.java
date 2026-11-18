@@ -264,7 +264,7 @@ public class GlyphidNuclearEntity extends GlyphidEntity {
             maggot.snapTo(
                     getX() + side, getY() + 0.5D, getZ() + ahead, random.nextFloat() * 360F, 0F);
             maggot.setDeltaMovement(side, 0D, ahead);
-            ((Entity) maggot).hurtMarked = true;
+            ((Entity) maggot).syncVelocity = true;
             server.addFreshEntity(maggot);
         }
     }

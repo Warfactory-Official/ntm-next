@@ -72,8 +72,8 @@ public class ArtilleryShellRenderer
             CameraRenderState camera) {
         int light = state.lightCoords;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch - 90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch - 90F));
         poseStack.scale(2.5F, 5F, 2.5F);
         collector.submitCustomGeometry(
                 poseStack,

@@ -24,7 +24,6 @@ import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.interfaces.ToolInteractionHandler;
 import com.hbm.interfaces.ToolType;
 import com.hbm.util.ColorUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -50,16 +49,9 @@ public class EmitterBlock extends Block implements TickingEntityBlock, ToolInter
     public static final EnumProperty<Direction> FACING = DirectionalBlock.FACING;
     private static final float GIRTH_STEP = 0.125F;
 
-    public static final MapCodec<EmitterBlock> CODEC = simpleCodec(EmitterBlock::new);
-
     public EmitterBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

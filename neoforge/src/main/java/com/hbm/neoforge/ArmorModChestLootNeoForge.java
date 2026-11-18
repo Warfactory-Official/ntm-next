@@ -52,8 +52,8 @@ final class ArmorModChestLootNeoForge {
                 0,
                 new LootPool(
                         entries,
-                        primary.conditions,
-                        primary.functions,
+                        primary.condition,
+                        primary.modifier,
                         primary.rolls,
                         primary.bonusRolls,
                         Optional.ofNullable(primary.getName())));

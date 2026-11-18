@@ -1,0 +1,6 @@
+{
+  "type": "hbm:bedrock_ore",
+  "auto": true,
+  "depth_rock": "hbm:stone_depth",
+  "entries": []
+}

@@ -5,35 +5,27 @@
       "processors": [
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "true"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "hbm:brick_concrete"
-              },
+              "data": "hbm:brick_concrete",
               "weight": 4
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_mossy"
-              },
+              "data": "hbm:brick_concrete_mossy",
               "weight": 3
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_cracked"
-              },
+              "data": "hbm:brick_concrete_cracked",
               "weight": 2
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_broken"
-              },
+              "data": "hbm:brick_concrete_broken",
               "weight": 1
             }
           ],
@@ -41,32 +33,25 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "false"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "minecraft:cauldron"
-              },
+              "data": "minecraft:cauldron",
+              "weight": 1
+            },
+            {
+              "data": "minecraft:water_cauldron",
               "weight": 1
             },
             {
               "data": {
-                "Name": "minecraft:water_cauldron",
-                "Properties": {
-                  "level": "1"
-                }
-              },
-              "weight": 1
-            },
-            {
-              "data": {
-                "Name": "minecraft:water_cauldron",
-                "Properties": {
+                "id": "minecraft:water_cauldron",
+                "properties": {
                   "level": "2"
                 }
               },
@@ -74,8 +59,8 @@
             },
             {
               "data": {
-                "Name": "minecraft:water_cauldron",
-                "Properties": {
+                "id": "minecraft:water_cauldron",
+                "properties": {
                   "level": "3"
                 }
               },
@@ -86,8 +71,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "1",
               "waterlogged": "true"
             }
@@ -95,8 +80,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_metal",
-                "Properties": {
+                "id": "hbm:door_metal",
+                "properties": {
                   "facing": "east",
                   "half": "lower",
                   "hinge": "left",
@@ -108,8 +93,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_metal",
-                "Properties": {
+                "id": "hbm:door_metal",
+                "properties": {
                   "facing": "east",
                   "half": "lower",
                   "hinge": "left",
@@ -124,8 +109,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "1",
               "waterlogged": "false"
             }
@@ -133,8 +118,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_metal",
-                "Properties": {
+                "id": "hbm:door_metal",
+                "properties": {
                   "facing": "east",
                   "half": "upper",
                   "hinge": "left",
@@ -146,8 +131,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_metal",
-                "Properties": {
+                "id": "hbm:door_metal",
+                "properties": {
                   "facing": "east",
                   "half": "upper",
                   "hinge": "left",
@@ -163,8 +148,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "2",
               "waterlogged": "true"
             }
@@ -172,8 +157,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "right",
@@ -185,8 +170,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "right",
@@ -201,8 +186,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "2",
               "waterlogged": "false"
             }
@@ -210,8 +195,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "right",
@@ -223,8 +208,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "right",
@@ -240,8 +225,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "3",
               "waterlogged": "true"
             }
@@ -249,8 +234,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "left",
@@ -262,8 +247,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "lower",
                   "hinge": "left",
@@ -278,8 +263,8 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "3",
               "waterlogged": "false"
             }
@@ -287,8 +272,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "left",
@@ -300,8 +285,8 @@
             },
             {
               "data": {
-                "Name": "hbm:door_bunker",
-                "Properties": {
+                "id": "hbm:door_bunker",
+                "properties": {
                   "facing": "south",
                   "half": "upper",
                   "hinge": "left",

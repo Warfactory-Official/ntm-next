@@ -19,19 +19,38 @@
 
 package com.hbm.handler;
 
+import com.hbm.NuclearTech;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.material.Materials;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.AshType;
 import com.hbm.items.variant.BriquetteType;
 import com.hbm.registration.Registrar;
+import com.hbm.util.RegistryUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.ObjIntConsumer;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CookingFuel;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ResolvableFloat;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ResolvableInt;
+import net.minecraft.world.phys.Vec3;
 
 public final class FuelHandler {
 
@@ -40,8 +59,42 @@ public final class FuelHandler {
 
     private FuelHandler() {}
 
-    public static int getBurnTime(Level level, ItemStack fuel) {
-        return level.fuelValues().burnDuration(fuel);
+    public static int getBurnTime(BlockEntity entity, ItemStack fuel) {
+        if (!fuel.has(DataComponents.COOKING_FUEL)) return 0;
+        LootParams.Builder params =
+                new LootParams.Builder((ServerLevel) entity.getLevel())
+                        .withParameter(LootContextParams.BLOCK_STATE, entity.getBlockState())
+                        .withParameter(LootContextParams.BLOCK_ENTITY, entity)
+                        .withParameter(
+                                LootContextParams.ORIGIN, Vec3.atCenterOf(entity.getBlockPos()))
+                        .withParameter(LootContextParams.CONTAINER, (Container) entity);
+        LootContext context =
+                new LootContext.Builder(params.create(LootContextParamSets.CONTAINER_PROCESS))
+                        .create(Optional.empty());
+        return ResolvableInt.getFromItem(
+                fuel, DataComponents.COOKING_FUEL, CookingFuel::burnTime, context, 0);
+    }
+
+    public static boolean isFuel(BlockEntity entity, ItemStack stack) {
+        return entity.getLevel().isClientSide()
+                ? stack.has(DataComponents.COOKING_FUEL)
+                : getBurnTime(entity, stack) > 0;
+    }
+
+    public static ResourceKey<ContextIntProvider> burnTimeKey(ItemLike item) {
+        var id = BuiltInRegistries.ITEM.getKey(item.asItem());
+        String path =
+                id.getNamespace().equals(NuclearTech.MOD_ID)
+                        ? id.getPath()
+                        : id.getNamespace() + "/" + id.getPath();
+        return ResourceKey.create(
+                Registries.CONTEXT_INT_PROVIDER, RegistryUtil.id("cooking/fuel/" + path));
+    }
+
+    public static CookingFuel cookingFuel(ItemLike item) {
+        return new CookingFuel(
+                ResolvableInt.fromKey(burnTimeKey(item)),
+                ResolvableFloat.fromKey(ContextFloatProviders.COOKING_DEFAULT_SPEED_MULTIPLIER));
     }
 
     public static void addon(Consumer<ObjIntConsumer<ItemLike>> fuels) {
@@ -110,5 +163,24 @@ public final class FuelHandler {
         out.accept(ModBlocks.CRATE_WEAPON.get(), 300);
         out.accept(ModBlocks.CRATE_CAN.get(), 300);
         out.accept(ModItems.WOOD_GAVEL.get(), 200);
+        out.accept(ModBlocks.PINK_LOG.get(), 300);
+        out.accept(
+                BuiltInRegistries.ITEM
+                        .getOrThrow(
+                                ResourceKey.create(Registries.ITEM, RegistryUtil.id("pink_planks")))
+                        .value(),
+                300);
+        out.accept(
+                BuiltInRegistries.ITEM
+                        .getOrThrow(
+                                ResourceKey.create(Registries.ITEM, RegistryUtil.id("pink_slab")))
+                        .value(),
+                150);
+        out.accept(
+                BuiltInRegistries.ITEM
+                        .getOrThrow(
+                                ResourceKey.create(Registries.ITEM, RegistryUtil.id("pink_stairs")))
+                        .value(),
+                300);
     }
 }

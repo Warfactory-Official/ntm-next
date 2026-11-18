@@ -23,7 +23,7 @@ import com.hbm.items.tool.ChainsawItem;
 import com.hbm.items.weapon.CrucibleItem;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.FirstPersonHandsAndItemsRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwingAnimationType;
 import net.minecraft.world.item.component.SwingAnimation;
@@ -31,7 +31,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(ItemInHandRenderer.class)
+@Mixin(FirstPersonHandsAndItemsRenderer.class)
 public abstract class MixinFirstPersonHandsAndItemsRenderer {
 
     @Unique
@@ -44,7 +44,7 @@ public abstract class MixinFirstPersonHandsAndItemsRenderer {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/world/item/ItemStack;getSwingAnimation()Lnet/minecraft/world/item/component/SwingAnimation;"))
+                                    "Lnet/minecraft/world/entity/LivingEntity$SwingDescription;animation()Lnet/minecraft/world/item/component/SwingAnimation;"))
     private SwingAnimation hbm$toolFirstPersonSwing(
             SwingAnimation swing, @Local(argsOnly = true) ItemStack itemStack) {
         return itemStack.getItem() instanceof ChainsawItem

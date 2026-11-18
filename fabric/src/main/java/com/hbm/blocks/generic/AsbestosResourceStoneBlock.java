@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
@@ -32,16 +31,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class AsbestosResourceStoneBlock extends Block {
-    public static final MapCodec<AsbestosResourceStoneBlock> CODEC =
-            simpleCodec(AsbestosResourceStoneBlock::new);
-
     public AsbestosResourceStoneBlock(BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<AsbestosResourceStoneBlock> codec() {
-        return CODEC;
     }
 
     @Override

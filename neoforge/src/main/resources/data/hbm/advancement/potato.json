@@ -3,7 +3,7 @@
   "criteria": {
     "crafted_hbm_battery_potatos": {
       "conditions": {
-        "recipe_id": "hbm:battery_potatos"
+        "recipes": "hbm:battery_potatos"
       },
       "trigger": "minecraft:recipe_crafted"
     }

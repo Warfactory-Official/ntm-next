@@ -124,7 +124,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.25F, 0.25F, 0.25F);
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90));
                 collector.submitCustomGeometry(
                         pose,
                         RenderTypes.entityCutout(ResourceManager.grenade_tex),
@@ -137,7 +137,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, 1F);
                 collector.submitCustomGeometry(
                         pose,
@@ -151,7 +151,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.0625F, 0.0625F, 0.0625F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, 1F);
                 collector.submitCustomGeometry(
                         pose,
@@ -165,7 +165,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.5F, 0.5F, 0.5F);
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90));
                 collector.submitCustomGeometry(
                         pose,
                         RenderTypes.entityCutout(ResourceManager.rocket_mirv_tex),
@@ -178,8 +178,8 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180));
                 pose.translate(0, 0, -6F);
                 collector.submitCustomGeometry(
                         pose,
@@ -193,8 +193,8 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180));
                 pose.translate(0, 0, -6F);
                 collector.submitCustomGeometry(
                         pose,
@@ -281,11 +281,11 @@ public class LegoClient {
                         PoseStack pose,
                         SubmitNodeCollector collector) {
                     pose.pushPose();
-                    pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90.0F));
-                    pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180));
+                    pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90.0F));
+                    pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch + 180));
                     pose.scale(0.125F, 0.125F, 0.125F);
-                    pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
-                    pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
+                    pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
+                    pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180));
                     pose.translate(0, 0, -6F);
                     collector.submitCustomGeometry(
                             pose,
@@ -396,7 +396,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, 1F);
                 FatManItemRenderer.renderBalefire(collector, pose, state.light);
                 pose.popPose();
@@ -405,7 +405,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, 0, 3.5F);
                 collector.submitCustomGeometry(
                         pose,
@@ -419,7 +419,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.125F, 0.125F, 0.125F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, 0, 3.5F);
                 collector.submitCustomGeometry(
                         pose,
@@ -442,7 +442,7 @@ public class LegoClient {
     public static BulletMK4Renderer.Tracer RENDER_QD =
             (state, pose, collector) -> {
                 pose.pushPose();
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90));
                 collector.submitCustomGeometry(
                         pose,
                         RenderTypes.entityCutout(ResourceManager.rocket_tex),
@@ -465,7 +465,7 @@ public class LegoClient {
             (state, pose, collector) -> {
                 pose.pushPose();
                 pose.scale(0.25F, 0.25F, 0.25F);
-                pose.mulPose((Quaternionfc) Axis.YN.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.YN.rotationDegrees(90));
                 pose.translate(0, -1, -4.5F);
                 collector.submitCustomGeometry(
                         pose,
@@ -494,7 +494,7 @@ public class LegoClient {
 
                 pose.pushPose();
                 if (state.cameraOrientation != null)
-                    pose.mulPose((Quaternionfc) state.cameraOrientation);
+                    pose.rotate((Quaternionfc) state.cameraOrientation);
                 float outer = (float) ((1 - age) * 7.5 + 1.5);
                 float outerAlpha = 0.5F * (float) age;
                 float innerAlpha = 0.75F * (float) age;
@@ -508,8 +508,8 @@ public class LegoClient {
                 pose.popPose();
 
                 pose.pushPose();
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
                 pose.scale((float) ((1 - age) * 25 + 2.5), 1F, (float) ((1 - age) * 25 + 2.5));
                 int shade = (int) (0x20 * age);
                 int colorInner = (shade << 16) | (shade << 8) | shade;
@@ -548,11 +548,11 @@ public class LegoClient {
         return (state, pose, collector) -> {
             double age = beamAge(state);
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
             pose.scale((float) (age * 5), 1F, (float) (age * 5));
             pose.translate(0, state.beamLength, 0);
-            pose.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
+            pose.rotate((Quaternionfc) Axis.ZN.rotationDegrees(90));
             renderBeamTracer(pose, collector, dark, light, state.beamLength);
             pose.popPose();
         };
@@ -566,7 +566,7 @@ public class LegoClient {
 
             pose.pushPose();
             if (state.cameraOrientation != null)
-                pose.mulPose((Quaternionfc) state.cameraOrientation);
+                pose.rotate((Quaternionfc) state.cameraOrientation);
             float outer = scale;
             float inner = scale * 0.5F;
             collector.submitCustomGeometry(
@@ -600,8 +600,8 @@ public class LegoClient {
                             0,
                             1);
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
 
             pose.pushPose();
             Vec3 delta = new Vec3(0, state.beamLength, 0);
@@ -623,7 +623,7 @@ public class LegoClient {
 
             pose.scale((float) (age * 2), 1F, (float) (age * 2));
             pose.translate(0, state.beamLength, 0);
-            pose.mulPose((Quaternionfc) Axis.ZN.rotationDegrees(90));
+            pose.rotate((Quaternionfc) Axis.ZN.rotationDegrees(90));
             renderBeamTracer(pose, collector, tracerDark, 0xFFFFFF, state.beamLength);
 
             pose.popPose();
@@ -640,8 +640,8 @@ public class LegoClient {
                             0,
                             1);
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
             Vec3 delta = new Vec3(0, state.beamLength, 0);
             pose.scale((float) (age / 2 + baseScale), 1F, (float) (age / 2 + baseScale));
             float scale = 0.075F;
@@ -702,8 +702,8 @@ public class LegoClient {
             int g,
             int b) {
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(180 - state.yaw));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch - 90));
         Vec3 delta = new Vec3(0, state.beamLength, 0);
         double age =
                 Mth.clamp(

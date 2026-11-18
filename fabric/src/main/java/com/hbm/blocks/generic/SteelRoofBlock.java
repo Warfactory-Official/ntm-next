@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -45,8 +44,6 @@ public class SteelRoofBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final MapCodec<SteelRoofBlock> CODEC = simpleCodec(SteelRoofBlock::new);
-
     private static final VoxelShape SHAPE = Shapes.box(0.0D, 0.0D, 0.0D, 1.0D, 1.0D / 16.0D, 1.0D);
 
     public SteelRoofBlock(BlockBehaviour.Properties props) {
@@ -65,11 +62,6 @@ public class SteelRoofBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(
                         WATERLOGGED,
                         ctx.getLevel().getFluidState(ctx.getClickedPos()).is(Fluids.WATER));
-    }
-
-    @Override
-    protected MapCodec<SteelRoofBlock> codec() {
-        return CODEC;
     }
 
     @Override

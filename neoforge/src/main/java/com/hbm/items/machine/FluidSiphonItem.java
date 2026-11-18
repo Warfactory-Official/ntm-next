@@ -43,6 +43,7 @@ import com.hbm.items.tool.PipetteItem;
 import com.hbm.platform.Caps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -110,7 +111,7 @@ public class FluidSiphonItem extends Item {
             while (filled != null) {
                 drained = true;
                 stack.shrink(1);
-                player.getInventory().placeItemBackInInventory(filled);
+                player.getInventory().placeItemBackInInventory(filled, Prediction.SERVER_ONLY);
                 if (stack.isEmpty()) break;
                 filled = fillOne(stack, tank, type);
             }

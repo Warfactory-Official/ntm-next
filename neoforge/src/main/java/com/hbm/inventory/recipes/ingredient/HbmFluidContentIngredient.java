@@ -142,7 +142,7 @@ public record HbmFluidContentIngredient(Fluid fluid, int amount, boolean drain)
                         : container.filledContainer(
                                 copy,
                                 new FluidStackNTM(fluid, held.amount() - amount, held.pressure()));
-        for (var change : stack.getComponentsPatch().entrySet()) {
+        for (var change : stack.getComponentsPatch().map.entrySet()) {
             if (change.getKey() != ModDataComponents.FLUID_CONTENT.get()
                     && !Objects.equals(stack.get(change.getKey()), left.get(change.getKey())))
                 return null;

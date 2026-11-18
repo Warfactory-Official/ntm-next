@@ -30,11 +30,17 @@ import com.hbm.items.weapon.sedna.impl.GunDrillItem;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.framegraph.FramePass;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import java.util.Optional;
+import java.util.OptionalDouble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.chunk.ChunkSectionsToRender;
+import net.minecraft.client.renderer.feature.FeatureRenderDispatcher;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -44,13 +50,43 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
 public class MixinLevelRenderer {
+    @WrapOperation(
+            method = "lambda$addMainPass$0",
+            at =
+                    @At(
+                            value = "INVOKE",
+                            target =
+                                    "Lnet/minecraft/client/renderer/LevelRenderer;executeOit(Lnet/minecraft/client/renderer/chunk/ChunkSectionsToRender;Lnet/minecraft/client/renderer/feature/FeatureRenderDispatcher$PreparedFrame;)V"),
+            require = 1)
+    private void hbm$orderedNativeBlends(
+            LevelRenderer renderer,
+            ChunkSectionsToRender chunks,
+            FeatureRenderDispatcher.PreparedFrame frame,
+            Operation<Void> original) {
+        original.call(renderer, chunks, frame);
+        if (!((com.hbm.client.render.OrderedBlendFrame) (frame)).hbm$hasOrderedBlends()) return;
+        var target = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+        try (RenderPass pass =
+                RenderSystem.getDevice()
+                        .createCommandEncoder()
+                        .createRenderPass(
+                                () -> "NTM ordered blends",
+                                target.getColorTextureView(),
+                                Optional.empty(),
+                                target.getDepthTextureView(),
+                                OptionalDouble.empty())) {
+            RenderSystem.bindDefaultUniforms(pass);
+            ((com.hbm.client.render.OrderedBlendFrame) (frame)).hbm$drawOrderedBlends(pass);
+        }
+    }
+
     @Inject(method = "render", at = @At("HEAD"))
     private void hbm$animateVisualBodies(CallbackInfo ci) {
         VisualTextures.activateSprites();
     }
 
     private static final String SKY_PASS =
-            "addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/renderer/state/level/CameraRenderState;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;)V";
+            "addSkyPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/client/renderer/state/level/CameraRenderState;Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;)V";
 
     @WrapOperation(
             method = SKY_PASS,

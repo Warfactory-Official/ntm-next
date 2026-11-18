@@ -19,45 +19,79 @@
 
 package com.hbm.world.feature;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.BlockReplacement;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
-public class BedrockOilDepositFeature extends Feature<BedrockOilDepositConfig> {
+public record BedrockOilDepositFeature(
+        BlockState core, RuleTest replaceable, List<BlockReplacement> surfaceScars)
+        implements Feature {
+
+    public static final MapCodec<BedrockOilDepositFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    inst ->
+                            inst.group(
+                                            BlockState.CODEC
+                                                    .fieldOf("core")
+                                                    .forGetter(BedrockOilDepositFeature::core),
+                                            RuleTest.CODEC
+                                                    .fieldOf("replaceable")
+                                                    .forGetter(
+                                                            BedrockOilDepositFeature::replaceable),
+                                            BlockReplacement.CODEC
+                                                    .listOf()
+                                                    .optionalFieldOf("surface_scars", List.of())
+                                                    .forGetter(
+                                                            BedrockOilDepositFeature::surfaceScars))
+                                    .apply(inst, BedrockOilDepositFeature::new));
+
+    public BedrockOilDepositFeature(BlockState core, RuleTest replaceable) {
+        this(core, replaceable, List.of());
+    }
+
+    @Override
+    public MapCodec<BedrockOilDepositFeature> codec() {
+        return CODEC;
+    }
+
     private static final int DXZ_LIMIT = 4;
     public static final int MAX_Y = 4;
     private static final int L1_MAX = 6;
     private static final int OIL_SPOT_WIDTH = 5;
     private static final int OIL_SPOT_COUNT = 50;
 
-    public BedrockOilDepositFeature() {
-        super(BedrockOilDepositConfig.CODEC);
-    }
-
     @Override
-    public boolean place(FeaturePlaceContext<BedrockOilDepositConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        int centerX = ctx.origin().getX();
-        int centerZ = ctx.origin().getZ();
-        boolean placedAny = placeNode(level, ctx.config(), ctx.random(), centerX, centerZ);
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        int centerX = featureOrigin.getX();
+        int centerZ = featureOrigin.getZ();
+        boolean placedAny = placeNode(level, this, random, centerX, centerZ);
         OilSurfaceScarring.addBedrockOilSpot(
                 level,
-                ctx.random(),
+                random,
                 centerX,
                 centerZ,
                 OIL_SPOT_WIDTH,
                 OIL_SPOT_COUNT,
-                ctx.config().surfaceScars());
+                this.surfaceScars());
         return placedAny;
     }
 
     public static boolean placeNode(
             WorldGenLevel level,
-            BedrockOilDepositConfig cfg,
+            BedrockOilDepositFeature cfg,
             RandomSource random,
             int centerX,
             int centerZ) {
@@ -70,7 +104,8 @@ public class BedrockOilDepositFeature extends Feature<BedrockOilDepositConfig> {
                     if (Math.abs(dx) + dy + Math.abs(dz) > L1_MAX) continue;
                     pos.set(centerX + dx, floor + dy, centerZ + dz);
                     BlockState cur = level.getBlockState(pos);
-                    if (!cfg.replaceable().test(cur, random) && !cur.is(Blocks.BEDROCK)) continue;
+                    if (!cfg.replaceable().test(cur, (BlockPos) pos, random)
+                            && !cur.is(Blocks.BEDROCK)) continue;
                     level.setBlock(pos, cfg.core(), 2);
                     placedAny = true;
                 }

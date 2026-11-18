@@ -48,6 +48,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
@@ -127,7 +128,7 @@ public class ToolBoxItem extends Item {
             ItemStack carried = inventory.getItem(slot);
             if (!carried.isEmpty() && !Platform.canFitInsideContainerItems(carried)) {
                 extra++;
-                player.drop(carried, true);
+                player.drop(carried, true, Prediction.SERVER_ONLY);
                 inventory.setItem(slot, ItemStack.EMPTY);
                 continue;
             }

@@ -56,7 +56,7 @@ public final class RecipeInputState {
         for (ItemStack expected : CountIngredient.displayStacks(ingredient, 1)) {
             if (!stack.is(expected.getItem())) continue;
             boolean matched = true;
-            for (var change : stack.getComponentsPatch().entrySet()) {
+            for (var change : stack.getComponentsPatch().map.entrySet()) {
                 if (!claims(additional, change.getKey(), stack)
                         && !Objects.equals(
                                 stack.get(change.getKey()), expected.get(change.getKey()))) {
@@ -75,7 +75,7 @@ public final class RecipeInputState {
 
     public static boolean accepts(
             DataComponentMatchers matchers, DataComponentMatchers additional, ItemStack stack) {
-        for (var change : stack.getComponentsPatch().entrySet()) {
+        for (var change : stack.getComponentsPatch().map.entrySet()) {
             if (!claims(matchers, change.getKey(), stack)
                     && !claims(additional, change.getKey(), stack)) return false;
         }
@@ -108,7 +108,7 @@ public final class RecipeInputState {
     }
 
     public static boolean only(ItemStack stack, DataComponentType<?>... required) {
-        for (var change : stack.getComponentsPatch().entrySet()) {
+        for (var change : stack.getComponentsPatch().map.entrySet()) {
             boolean allowed = false;
             for (DataComponentType<?> type : required) {
                 if (change.getKey() == type) {
@@ -125,7 +125,7 @@ public final class RecipeInputState {
         ItemStackTemplate template = stack.getCraftingRemainder();
         if (template == null) return false;
         ItemStack remaining = template.create();
-        for (var change : stack.getComponentsPatch().entrySet()) {
+        for (var change : stack.getComponentsPatch().map.entrySet()) {
             DataComponentType<?> type = change.getKey();
             if (type == DataComponents.DAMAGE
                     && stack.getItem() instanceof CraftingDegradationItem
@@ -179,7 +179,7 @@ public final class RecipeInputState {
         if (first.isEmpty()) return second;
         if (second.isEmpty()) return first;
         var combined = DataComponentMatchers.Builder.components();
-        for (var change : stack.getComponentsPatch().entrySet()) {
+        for (var change : stack.getComponentsPatch().map.entrySet()) {
             DataComponentType<?> type = change.getKey();
             if (claims(first, type, stack) || claims(second, type, stack)) combined.any(type);
         }
@@ -227,7 +227,7 @@ public final class RecipeInputState {
 
     public static boolean preservesComponents(ItemStack source, ItemStack result) {
         if (result.isEmpty()) return false;
-        for (var change : source.getComponentsPatch().entrySet()) {
+        for (var change : source.getComponentsPatch().map.entrySet()) {
             if (!Objects.equals(source.get(change.getKey()), result.get(change.getKey())))
                 return false;
         }

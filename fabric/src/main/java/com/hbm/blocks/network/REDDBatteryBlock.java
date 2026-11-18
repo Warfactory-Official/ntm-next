@@ -31,7 +31,6 @@ import com.hbm.capability.MachineCaps;
 import com.hbm.items.ModDataComponents;
 import com.hbm.uninos.graph.LevelNodeGraph;
 import com.hbm.util.NumberFormatter;
-import com.mojang.serialization.MapCodec;
 import java.math.BigInteger;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -44,7 +43,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -52,8 +50,6 @@ import org.jspecify.annotations.Nullable;
 
 public class REDDBatteryBlock extends MultiblockCoreBlock
         implements TickingEntityBlock, CapabilityBlock, PersistentItemTooltipProvider {
-    public static final MapCodec<REDDBatteryBlock> CODEC = simpleCodec(REDDBatteryBlock::new);
-
     public REDDBatteryBlock(Properties props) {
         super(props);
     }
@@ -77,11 +73,6 @@ public class REDDBatteryBlock extends MultiblockCoreBlock
         return new Direction[] {
             facing, facing, facing.getOpposite(), facing.getOpposite(), across, across.getOpposite()
         };
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

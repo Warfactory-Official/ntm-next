@@ -12,26 +12,24 @@
               "children": [
                 {
                   "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 4
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 16,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 4
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 16,
+                      "min": 0
                     }
-                  ],
-                  "functions": [
+                  },
+                  "modifier": [
                     {
+                      "type": "minecraft:set_count",
                       "count": {
                         "type": "minecraft:constant",
-                        "value": 48.0
-                      },
-                      "function": "minecraft:set_count"
+                        "value": 48
+                      }
                     }
                   ],
                   "name": "hbm:moon_turf",
@@ -42,26 +40,24 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 6
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 11,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 6
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 11,
+                          "min": 0
                         }
-                      ],
-                      "functions": [
+                      },
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:constant",
-                            "value": 32.0
-                          },
-                          "function": "minecraft:set_count"
+                            "value": 32
+                          }
                         }
                       ],
                       "name": "hbm:moon_turf",
@@ -69,13 +65,13 @@
                     },
                     {
                       "type": "minecraft:item",
-                      "functions": [
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:constant",
-                            "value": 16.0
-                          },
-                          "function": "minecraft:set_count"
+                            "value": 16
+                          }
                         }
                       ],
                       "name": "hbm:moon_turf",
@@ -84,19 +80,17 @@
                   ]
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 16
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 28,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 16
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 28,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
@@ -106,26 +100,24 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 4
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 9,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 4
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 9,
+                          "min": 0
                         }
-                      ],
-                      "functions": [
+                      },
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:constant",
-                            "value": 3.0
-                          },
-                          "function": "minecraft:set_count"
+                            "value": 3
+                          }
                         }
                       ],
                       "name": "hbm:powder_lithium",
@@ -133,51 +125,47 @@
                     },
                     {
                       "type": "minecraft:item",
-                      "functions": [
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:constant",
-                            "value": 3.0
-                          },
-                          "function": "minecraft:set_count"
+                            "value": 3
+                          }
                         }
                       ],
                       "name": "hbm:powder_iron",
                       "weight": 5
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 9
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 11,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 9
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 11,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 1,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 1,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:crystal_iron",
                       "weight": 1
                     },

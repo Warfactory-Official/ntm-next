@@ -121,7 +121,7 @@ public final class LaunchTableRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0D, 0.5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
 
         draw(
                 poseStack,

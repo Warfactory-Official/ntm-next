@@ -100,7 +100,7 @@ public final class WoodGeneratorBlockEntity extends MachineBlockEntity
     }
 
     private int fuelDuration(ItemStack stack) {
-        return BURN_MODULE.getBurnTime(level, stack);
+        return BURN_MODULE.getBurnTime(this, stack);
     }
 
     private void burnSolid() {
@@ -254,7 +254,7 @@ public final class WoodGeneratorBlockEntity extends MachineBlockEntity
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return slot == SLOT_FUEL && fuelDuration(stack) > 0;
+        return slot == SLOT_FUEL && BURN_MODULE.isFuel(this, stack);
     }
 
     @Override

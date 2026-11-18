@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.SectionGeometryProvider;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -33,17 +32,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ReedsBlock extends Block implements SectionGeometryProvider {
-    public static final MapCodec<ReedsBlock> CODEC = simpleCodec(ReedsBlock::new);
-
     private static final int MAX_DEPTH = 256;
 
     public ReedsBlock(BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public MapCodec<ReedsBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -127,7 +127,7 @@ public final class NativeRestBody implements RestBody {
     public void spinZ(Matrix4fc pivot, double msPerDegree, Consumer<RestBody> turned) {
         pose.pushPose();
         pose.mulPose(pivot);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.ZP.rotationDegrees((float) (GameTime.now() / msPerDegree % 360D)));
         turned.accept(this);

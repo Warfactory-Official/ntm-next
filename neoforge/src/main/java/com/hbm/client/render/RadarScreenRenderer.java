@@ -140,7 +140,7 @@ public class RadarScreenRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         if (s.linked) {
             float top = BAR_TOP - s.barOffset;

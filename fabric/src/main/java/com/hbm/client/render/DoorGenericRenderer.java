@@ -24,12 +24,12 @@ import com.hbm.animloader.TriangleSource;
 import com.hbm.blockentity.door.DoorBlockEntity;
 import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.render.loader.HFRWavefrontObject;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendFactor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import java.util.function.Function;
 import net.minecraft.client.renderer.BindGroupLayouts;
@@ -146,7 +146,7 @@ public final class DoorGenericRenderer
 
         poseStack.pushPose();
         poseStack.translate(.5D, 0D, .5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(door.facingYaw()));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(door.facingYaw()));
 
         for (int i = 0; i < frame.size(); i++) {
             DoorFrame.Part part = frame.get(i);

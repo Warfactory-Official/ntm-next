@@ -8,7 +8,7 @@
           "value": "minecraft:entities/creeper"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "hbm:entities/entity_mob_phosgene_creeper"

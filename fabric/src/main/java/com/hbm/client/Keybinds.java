@@ -308,7 +308,7 @@ public final class Keybinds {
         private InputConstants.Key downKey = InputConstants.UNKNOWN;
 
         private GameplayKey(String name, int value, Category category, Action action, int index) {
-            this(name, InputConstants.Type.KEYSYM, value, category, action, index);
+            this(name, InputConstants.Type.KEYBOARD, value, category, action, index);
         }
 
         private GameplayKey(

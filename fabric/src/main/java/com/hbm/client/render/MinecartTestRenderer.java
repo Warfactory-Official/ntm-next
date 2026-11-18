@@ -67,7 +67,7 @@ public class MinecartTestRenderer extends TntMinecartRenderer
             PoseStack poseStack,
             SubmitNodeCollector collector,
             int lightCoords) {
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90F));
         poseStack.translate(0.5F, 0.5F, -0.5F);
         float fuse = state.fuseRemainingInTicks;
         if (fuse > -1F && fuse < 10F) {

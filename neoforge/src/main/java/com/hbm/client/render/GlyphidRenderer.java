@@ -136,7 +136,7 @@ public class GlyphidRenderer<T extends GlyphidEntity> extends EntityRenderer<T, 
         state.armor = entity.armor();
         state.subtype = entity.subtype();
         state.walkCycle = entity.walkAnimation.position(partialTicks);
-        state.swingProgress = ((LivingEntity) entity).getAttackAnim(partialTicks);
+        state.swingProgress = ((LivingEntity) entity).getSwingAnimation(partialTicks);
     }
 
     @Override
@@ -168,7 +168,7 @@ public class GlyphidRenderer<T extends GlyphidEntity> extends EntityRenderer<T, 
     }
 
     protected void applyBaseTransform(PoseStack pose, GlyphidRenderState state) {
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-state.bodyYaw));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-state.bodyYaw));
         float s = (float) state.scale;
         pose.scale(s, s, s);
     }
@@ -199,16 +199,16 @@ public class GlyphidRenderer<T extends GlyphidEntity> extends EntityRenderer<T, 
 
         pose.pushPose();
         pose.translate(0.25F, 0.625F, 0.0625F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(10F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) (35 + cy1 * 20)));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(10F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) (35 + cy1 * 20)));
         pose.translate(-0.25F, -0.625F, -0.0625F);
         part(pose, collector, light, type, color, armLeftUpper);
         pose.translate(0.25F, 0.625F, 0.4375F);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) (-75 - cy1 * 20 + cy0 * 20)));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) (-75 - cy1 * 20 + cy0 * 20)));
         pose.translate(-0.25F, -0.625F, -0.4375F);
         part(pose, collector, light, type, color, armLeftMid);
         pose.translate(0.25F, 0.625F, 0.9375F);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) (90 - cy0 * 45)));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) (90 - cy0 * 45)));
         pose.translate(-0.25F, -0.625F, -0.9375F);
         part(pose, collector, light, type, color, armLeftLower);
         if ((armor & (1 << 3)) > 0) part(pose, collector, light, type, color, armLeftArmor);
@@ -216,16 +216,16 @@ public class GlyphidRenderer<T extends GlyphidEntity> extends EntityRenderer<T, 
 
         pose.pushPose();
         pose.translate(-0.25F, 0.625F, 0.0625F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-10F));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) (35 + cy2 * 20)));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(-10F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) (35 + cy2 * 20)));
         pose.translate(0.25F, -0.625F, -0.0625F);
         part(pose, collector, light, type, color, armRightUpper);
         pose.translate(-0.25F, 0.625F, 0.4375F);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) (-75 - cy2 * 20 + cy3 * 20)));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) (-75 - cy2 * 20 + cy3 * 20)));
         pose.translate(0.25F, -0.625F, -0.4375F);
         part(pose, collector, light, type, color, armRightMid);
         pose.translate(-0.25F, 0.625F, 0.9375F);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) (90 - cy3 * 45)));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) (90 - cy3 * 45)));
         pose.translate(0.25F, -0.625F, -0.9375F);
         part(pose, collector, light, type, color, armRightLower);
         if ((armor & (1 << 4)) > 0) part(pose, collector, light, type, color, armRightArmor);
@@ -233,28 +233,28 @@ public class GlyphidRenderer<T extends GlyphidEntity> extends EntityRenderer<T, 
 
         pose.pushPose();
         pose.translate(0F, 0.5F, 0.25F);
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) headTilt));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) headTilt));
         pose.translate(0F, -0.5F, -0.25F);
 
         pose.pushPose();
         pose.translate(0F, 0.5F, 0.25F);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) -bite));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) -bite));
         pose.translate(0F, -0.5F, -0.25F);
         part(pose, collector, light, type, color, jawTop);
         pose.popPose();
 
         pose.pushPose();
         pose.translate(0F, 0.5F, 0.25F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) bite));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) bite));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) bite));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) bite));
         pose.translate(0F, -0.5F, -0.25F);
         part(pose, collector, light, type, color, jawLeft);
         pose.popPose();
 
         pose.pushPose();
         pose.translate(0F, 0.5F, 0.25F);
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) -bite));
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) bite));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) -bite));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) bite));
         pose.translate(0F, -0.5F, -0.25F);
         part(pose, collector, light, type, color, jawRight);
         pose.popPose();
@@ -269,24 +269,24 @@ public class GlyphidRenderer<T extends GlyphidEntity> extends EntityRenderer<T, 
 
             pose.pushPose();
             pose.translate(0F, 0.25F, 0F);
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) (i * 30 - 15 + c0 * 7.5)));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (steppy + c1 * steppy)));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) (i * 30 - 15 + c0 * 7.5)));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (steppy + c1 * steppy)));
             pose.translate(0F, -0.25F, 0F);
             part(pose, collector, light, type, color, legLeftUpper);
             pose.translate(0.5625F, 0.25F, 0F);
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (-bend - c1 * steppy)));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (-bend - c1 * steppy)));
             pose.translate(-0.5625F, -0.25F, 0F);
             part(pose, collector, light, type, color, legLeftLower);
             pose.popPose();
 
             pose.pushPose();
             pose.translate(0F, 0.25F, 0F);
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) (i * 30 - 45 + c0 * 7.5)));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (-steppy + c1 * steppy)));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) (i * 30 - 45 + c0 * 7.5)));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (-steppy + c1 * steppy)));
             pose.translate(0F, -0.25F, 0F);
             part(pose, collector, light, type, color, legRightUpper);
             pose.translate(-0.5625F, 0.25F, 0F);
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (bend - c1 * steppy)));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (bend - c1 * steppy)));
             pose.translate(0.5625F, -0.25F, 0F);
             part(pose, collector, light, type, color, legRightLower);
             pose.popPose();

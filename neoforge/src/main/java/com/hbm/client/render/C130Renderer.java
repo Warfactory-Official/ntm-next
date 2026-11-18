@@ -78,9 +78,9 @@ public class C130Renderer extends EntityRenderer<C130Entity, C130Renderer.State>
             State state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
         int light = state.lightCoords;
         pose.pushPose();
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(90));
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(90));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
 
         collector.submitCustomGeometry(
                 pose, body, (p, buf) -> ResourceManager.c130.renderPart(p, buf, light, -1, PLANE));
@@ -90,7 +90,7 @@ public class C130Renderer extends EntityRenderer<C130Entity, C130Renderer.State>
             int part = PROP[i];
             pose.pushPose();
             pose.translate(pivot[0], pivot[1], pivot[2]);
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(state.spin));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(state.spin));
             pose.translate(-pivot[0], -pivot[1], -pivot[2]);
             collector.submitCustomGeometry(
                     pose,

@@ -160,10 +160,8 @@ public abstract class MixinClientLevel implements ClientLevelExtension, ClientIm
     }
 
     @ModifyExpressionValue(
-            method = {
-                "addBreakingBlockEffect(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;)V",
-                "addBreakingBlockEffect(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Lnet/minecraft/world/phys/HitResult;)V"
-            },
+            method =
+                    "addBreakingBlockEffects(Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction;Z)V",
             at =
                     @At(
                             value = "INVOKE",

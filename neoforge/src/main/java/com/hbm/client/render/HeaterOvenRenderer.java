@@ -110,7 +110,7 @@ public class HeaterOvenRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(ovenYaw(s.facing) - 90F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(ovenYaw(s.facing) - 90F));
 
         ps.pushPose();
         ps.translate(0.0, 0.0, s.doorAngle * 0.75 / 135.0);

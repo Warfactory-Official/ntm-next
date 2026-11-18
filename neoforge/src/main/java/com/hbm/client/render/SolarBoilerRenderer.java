@@ -152,8 +152,8 @@ public class SolarBoilerRenderer
             ps.pushPose();
             ps.translate(rel.getX(), rel.getY(), rel.getZ());
             ps.translate(0, 1, 0);
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) yaw));
-            ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) pitch));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) yaw));
+            ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) pitch));
             ps.translate(0, -1, 0);
             final float far = (float) dist;
             col.submitCustomGeometry(

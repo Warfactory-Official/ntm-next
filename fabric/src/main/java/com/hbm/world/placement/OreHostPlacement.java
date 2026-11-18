@@ -20,7 +20,6 @@
 package com.hbm.world.placement;
 
 import com.hbm.registration.Registrar;
-import com.hbm.registration.RegistryHandle;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,12 +34,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.OreFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.minecraft.world.level.levelgen.placement.PlacementFilter;
-import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
-public final class OreHostPlacement extends PlacementFilter {
+public final class OreHostPlacement implements PlacementFilter {
     public static final MapCodec<OreHostPlacement> CODEC =
             RecordCodecBuilder.mapCodec(
                     instance ->
@@ -56,7 +54,6 @@ public final class OreHostPlacement extends PlacementFilter {
                                                     .fieldOf("max_y")
                                                     .forGetter(placement -> placement.maxY))
                                     .apply(instance, OreHostPlacement::new));
-    private static RegistryHandle<PlacementModifierType<OreHostPlacement>> type;
 
     private final Block host;
     private final int minY;
@@ -71,17 +68,16 @@ public final class OreHostPlacement extends PlacementFilter {
     }
 
     public static void register() {
-        type = Registrar.registerPlacementModifierType("ore_host", CODEC);
+        Registrar.registerPlacementModifierType("ore_host", CODEC);
     }
 
     @Override
-    protected boolean shouldPlace(PlacementContext context, RandomSource random, BlockPos pos) {
-        if (!(context.topFeature().orElseThrow().feature().value().config()
-                instanceof OreConfiguration ore)) {
+    public boolean shouldPlace(PlacementContext context, RandomSource random, BlockPos pos) {
+        if (!(context.topFeature().orElseThrow().feature().value() instanceof OreFeature ore)) {
             throw new IllegalStateException(
                     "hbm:ore_host gates an ore feature, not " + context.topFeature().get());
         }
-        int reach = 2 + Mth.ceil((ore.size / 8.0F + 1.0F) / 2.0F);
+        int reach = 2 + Mth.ceil((ore.size() / 8.0F + 1.0F) / 2.0F);
         WorldGenLevel level = context.getLevel();
         int chunkX = pos.getX() >> 4;
         int chunkZ = pos.getZ() >> 4;
@@ -106,7 +102,7 @@ public final class OreHostPlacement extends PlacementFilter {
     }
 
     @Override
-    public PlacementModifierType<?> type() {
-        return type.get();
+    public MapCodec<OreHostPlacement> codec() {
+        return CODEC;
     }
 }

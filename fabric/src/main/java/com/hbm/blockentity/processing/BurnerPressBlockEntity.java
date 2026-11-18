@@ -145,7 +145,7 @@ public final class BurnerPressBlockEntity extends StampingMachineBlockEntity {
     }
 
     private int fuelDuration(ItemStack stack) {
-        return FuelHandler.getBurnTime(level, stack);
+        return FuelHandler.getBurnTime(this, stack);
     }
 
     @Override

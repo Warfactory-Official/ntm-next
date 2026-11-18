@@ -26,6 +26,7 @@ import net.minecraft.util.TriState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,18 +37,23 @@ public final class FertilizerUtil {
     private FertilizerUtil() {}
 
     public static boolean fertilize(
-            Level level, BlockPos pos, @Nullable Player player, ItemStack stack, boolean force) {
+            Level level,
+            BlockPos pos,
+            @Nullable Player player,
+            ItemStack stack,
+            boolean force,
+            BonemealSource source) {
         BlockState state = level.getBlockState(pos);
 
-        TriState event = Platform.bonemealEvent(player, level, pos, state, stack);
+        TriState event = Platform.bonemealEvent(player, level, pos, state, source, stack);
         if (event != TriState.DEFAULT) return event == TriState.TRUE;
 
         if (!(state.getBlock() instanceof BonemealableBlock growable)) return false;
-        if (!growable.isValidBonemealTarget(level, pos, state)) return false;
+        if (!growable.isValidBonemealTarget(level, pos, state, source)) return false;
 
         if (level instanceof ServerLevel server) {
-            if (force || growable.isBonemealSuccess(level, level.getRandom(), pos, state)) {
-                growable.performBonemeal(server, level.getRandom(), pos, state);
+            if (force || growable.isBonemealSuccess(level, level.getRandom(), pos, state, source)) {
+                growable.performBonemeal(server, level.getRandom(), pos, state, source);
             }
         }
 

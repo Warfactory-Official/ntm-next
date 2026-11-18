@@ -34,13 +34,13 @@
 package com.hbm.client.render;
 
 import com.hbm.util.GameTime;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendFactor;
-import com.mojang.blaze3d.platform.CompareOp;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.pipeline.BlendFactor;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.CompareOp;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
@@ -172,7 +172,7 @@ public final class AssemblyMarkers {
 
             poseStack.pushPose();
             poseStack.translate(vx * mult, vy * mult + 1.0, vz * mult);
-            poseStack.mulPose((Quaternionfc) camera.orientation);
+            poseStack.rotate((Quaternionfc) camera.orientation);
             poseStack.scale(LABEL_SCALE, -LABEL_SCALE, LABEL_SCALE);
             FormattedCharSequence text = label.getVisualOrderText();
             int x = -font.width(text) / 2;

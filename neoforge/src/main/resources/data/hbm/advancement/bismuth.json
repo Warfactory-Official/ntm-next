@@ -3,7 +3,7 @@
   "criteria": {
     "crafted_hbm_nugget_bismuth_from_ingot": {
       "conditions": {
-        "recipe_id": "hbm:nugget_bismuth_from_ingot"
+        "recipes": "hbm:nugget_bismuth_from_ingot"
       },
       "trigger": "minecraft:recipe_crafted"
     },

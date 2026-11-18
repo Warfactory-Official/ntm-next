@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -42,8 +41,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class BarbedWireBlock extends Block {
-    public static final MapCodec<BarbedWireBlock> CODEC = simpleCodec(BarbedWireBlock::new);
-
     protected static final float DAMAGE = 2.0F;
     protected static final int EFFECT_TICKS = 5 * SharedConstants.TICKS_PER_SECOND;
 
@@ -52,11 +49,6 @@ public class BarbedWireBlock extends Block {
     public BarbedWireBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(AXIS, Direction.Axis.X));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

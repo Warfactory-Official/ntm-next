@@ -31,9 +31,8 @@ import java.util.Locale;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -227,15 +226,13 @@ public sealed interface TreatmentAction {
                         RecordCodecBuilder.mapCodec(
                                 i ->
                                         i.group(
-                                                        ((Codec<Holder<MobEffect>>)
-                                                                        RegistryFixedCodec
-                                                                                .<MobEffect>create(
-                                                                                        (ResourceKey<
-                                                                                                        ? extends
-                                                                                                                Registry<
-                                                                                                                        MobEffect>>)
-                                                                                                Registries
-                                                                                                        .MOB_EFFECT))
+                                                        RegistryCodecs.<MobEffect>holder(
+                                                                        (ResourceKey<
+                                                                                        ? extends
+                                                                                                Registry<
+                                                                                                        MobEffect>>)
+                                                                                Registries
+                                                                                        .MOB_EFFECT)
                                                                 .fieldOf("effect")
                                                                 .forGetter(GrantEffect::effect),
                                                         DataCodecs.intRange(1, Integer.MAX_VALUE)
@@ -281,7 +278,7 @@ public sealed interface TreatmentAction {
         static final String TYPE = "remove_effects";
         static final MapCodec<ClearEffects> CODEC =
                 strict(
-                        RegistryCodecs.<MobEffect>homogeneousList(
+                        RegistryCodecs.<MobEffect>holderSet(
                                         (ResourceKey<? extends Registry<MobEffect>>)
                                                 Registries.MOB_EFFECT)
                                 .fieldOf("effects")
@@ -306,7 +303,7 @@ public sealed interface TreatmentAction {
                         RecordCodecBuilder.mapCodec(
                                 i ->
                                         i.group(
-                                                        RegistryCodecs.<DamageType>homogeneousList(
+                                                        RegistryCodecs.<DamageType>holderSet(
                                                                         (ResourceKey<
                                                                                         ? extends
                                                                                                 Registry<

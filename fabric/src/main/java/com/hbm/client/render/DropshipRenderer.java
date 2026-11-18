@@ -54,7 +54,12 @@ public final class DropshipRenderer extends EntityRenderer<SatellitePod, Dropshi
 
     @Override
     public boolean shouldRender(
-            SatellitePod entity, Frustum culler, double camX, double camY, double camZ) {
+            SatellitePod entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         return true;
     }
 
@@ -80,9 +85,9 @@ public final class DropshipRenderer extends EntityRenderer<SatellitePod, Dropshi
                 (p, buffer) -> ResourceManager.dropship.renderPart(p, buffer, light, -1, POD));
         for (int i = 0; i < 4; i++) {
             pose.pushPose();
-            pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(45F + 90F * i));
+            pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(45F + 90F * i));
             pose.translate(0.5D, 1.75D, 0D);
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(150F * (1F - state.legs)));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(150F * (1F - state.legs)));
             pose.translate(-0.5D, -1.75D, 0D);
             collector.submitCustomGeometry(
                     pose,

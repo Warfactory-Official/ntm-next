@@ -24,7 +24,6 @@ import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.inventory.BlockMenus;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.LockItem;
-import com.mojang.serialization.MapCodec;
 import java.util.EnumMap;
 import java.util.Map;
 import net.minecraft.core.BlockPos;
@@ -49,8 +48,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class FileCabinetBlock extends HorizontalDirectionalBlock implements TickingEntityBlock {
-    public static final MapCodec<FileCabinetBlock> CODEC = simpleCodec(FileCabinetBlock::new);
-
     private static final Map<Direction, VoxelShape> SHAPES = new EnumMap<>(Direction.class);
 
     static {
@@ -63,11 +60,6 @@ public class FileCabinetBlock extends HorizontalDirectionalBlock implements Tick
     public FileCabinetBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

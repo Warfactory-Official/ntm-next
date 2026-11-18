@@ -42,24 +42,76 @@ import com.hbm.items.special.BedrockOreSet;
 import com.hbm.registration.OverridePoint;
 import com.hbm.util.RegistryUtil;
 import com.hbm.world.NtmWorldgenFields;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.material.Fluids;
 import org.jspecify.annotations.Nullable;
 
-public class BedrockOreFeature extends Feature<BedrockOreConfig> {
-    public BedrockOreFeature() {
-        super(BedrockOreConfig.CODEC);
+public record BedrockOreFeature(
+        boolean auto, List<Entry> entries, BlockState depthRock, RuleTest host) implements Feature {
+    private static final RuleTest NATURAL_STONE = new TagMatchTest(BlockTags.BASE_STONE_OVERWORLD);
+
+    public static final MapCodec<BedrockOreFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    inst ->
+                            inst.group(
+                                            Codec.BOOL
+                                                    .fieldOf("auto")
+                                                    .forGetter(BedrockOreFeature::auto),
+                                            Entry.CODEC
+                                                    .listOf()
+                                                    .fieldOf("entries")
+                                                    .forGetter(BedrockOreFeature::entries),
+                                            BlockState.CODEC
+                                                    .fieldOf("depth_rock")
+                                                    .forGetter(BedrockOreFeature::depthRock),
+                                            RuleTest.CODEC
+                                                    .optionalFieldOf("host", NATURAL_STONE)
+                                                    .forGetter(BedrockOreFeature::host))
+                                    .apply(inst, BedrockOreFeature::new));
+
+    public BedrockOreFeature(boolean auto, List<Entry> entries, BlockState depthRock) {
+        this(auto, entries, depthRock, NATURAL_STONE);
+    }
+
+    public record Entry(Item item, int count, int color, int tier, int weight) {
+        public static final Codec<Entry> CODEC =
+                RecordCodecBuilder.create(
+                        inst ->
+                                inst.group(
+                                                BuiltInRegistries.ITEM
+                                                        .byNameCodec()
+                                                        .fieldOf("item")
+                                                        .forGetter(Entry::item),
+                                                Codec.INT.fieldOf("count").forGetter(Entry::count),
+                                                Codec.INT.fieldOf("color").forGetter(Entry::color),
+                                                Codec.INT.fieldOf("tier").forGetter(Entry::tier),
+                                                Codec.INT
+                                                        .fieldOf("weight")
+                                                        .forGetter(Entry::weight))
+                                        .apply(inst, Entry::new));
+    }
+
+    @Override
+    public MapCodec<BedrockOreFeature> codec() {
+        return CODEC;
     }
 
     public static int getTier(double density) {
@@ -88,13 +140,13 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
         private static final FluidStackNTM SOLVENT = new FluidStackNTM(NTMFluids.SOLVENT, 2_000);
     }
 
-    private static BedrockOreConfig.@Nullable Entry pickWeighted(
-            List<BedrockOreConfig.Entry> entries, RandomSource rand) {
+    private static BedrockOreFeature.@Nullable Entry pickWeighted(
+            List<BedrockOreFeature.Entry> entries, RandomSource rand) {
         int total = 0;
-        for (BedrockOreConfig.Entry e : entries) total += e.weight();
+        for (BedrockOreFeature.Entry e : entries) total += e.weight();
         if (total <= 0) return null;
         int r = rand.nextInt(total);
-        for (BedrockOreConfig.Entry e : entries) {
+        for (BedrockOreFeature.Entry e : entries) {
             r -= e.weight();
             if (r < 0) return e;
         }
@@ -102,12 +154,15 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<BedrockOreConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        BedrockOreConfig cfg = ctx.config();
-        RandomSource rand = ctx.random();
-        int x = ctx.origin().getX();
-        int z = ctx.origin().getZ();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        BedrockOreFeature cfg = this;
+        RandomSource rand = random;
+        int x = featureOrigin.getX();
+        int z = featureOrigin.getZ();
 
         ItemStack resource;
         FluidStackNTM acid;
@@ -125,7 +180,7 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
             color = 0xD78A16;
             resource = new ItemStack(ModItems.BEDROCK_ORE_BASE);
         } else {
-            BedrockOreConfig.Entry entry = pickWeighted(cfg.entries(), rand);
+            BedrockOreFeature.Entry entry = pickWeighted(cfg.entries(), rand);
             if (entry == null) return false;
             resource = new ItemStack(entry.item(), entry.count());
             color = entry.color();
@@ -133,17 +188,7 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
             acid = null;
         }
 
-        generate(
-                level,
-                x,
-                z,
-                resource,
-                acid,
-                color,
-                tier,
-                cfg.depthRock(),
-                cur -> cfg.host().test(cur, rand),
-                rand);
+        generate(level, x, z, resource, acid, color, tier, cfg.depthRock(), cfg.host(), rand);
         return true;
     }
 
@@ -156,7 +201,7 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
             int color,
             int tier,
             BlockState depth,
-            Predicate<BlockState> host,
+            RuleTest host,
             RandomSource rand) {
         int floor = level.getMinY();
         BlockState ore = ModBlocks.ORE_BEDROCK.get().defaultBlockState();
@@ -181,7 +226,8 @@ public class BedrockOreFeature extends Feature<BedrockOreConfig> {
                     pos.set(ix, floor + dy, iz);
                     BlockState cur = level.getBlockState(pos);
                     if (dy >= 3 && !cur.is(Blocks.BEDROCK)) continue;
-                    if (host.test(cur) || cur.is(Blocks.BEDROCK)) level.setBlock(pos, depth, 2);
+                    if (host.test(cur, pos, rand) || cur.is(Blocks.BEDROCK))
+                        level.setBlock(pos, depth, 2);
                 }
             }
         }

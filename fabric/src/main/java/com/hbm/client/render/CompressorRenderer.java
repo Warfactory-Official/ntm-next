@@ -91,7 +91,7 @@ public class CompressorRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.pushPose();
         ps.translate(0.0, s.piston * 3 - 3, 0.0);
@@ -100,7 +100,7 @@ public class CompressorRenderer
 
         ps.pushPose();
         ps.translate(0.0, 1.5, 0.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.fan));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.fan));
         ps.translate(0.0, -1.5, 0.0);
         part(col, ps, light, FAN);
         ps.popPose();

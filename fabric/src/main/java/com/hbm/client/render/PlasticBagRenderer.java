@@ -64,8 +64,8 @@ public class PlasticBagRenderer extends EntityRenderer<PlasticBagEntity, Plastic
             CameraRenderState camera) {
         int light = state.lightCoords;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw + 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.tilt));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw + 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.tilt));
         collector.submitCustomGeometry(
                 poseStack,
                 TYPE,

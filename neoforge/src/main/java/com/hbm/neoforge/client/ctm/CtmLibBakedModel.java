@@ -320,8 +320,10 @@ final class CtmLibBakedModel extends StandardCTMBlockStateModel {
                         sprite,
                         info.layer(),
                         itemType,
+                        info.itemGlintRenderType(),
+                        info.itemGlintSpecialRenderType(),
                         tint,
-                        info.shade(),
+                        info.shadeDirectionOverride(),
                         emission,
                         info.ambientOcclusion() && true);
         return new BakedQuad(

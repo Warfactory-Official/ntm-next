@@ -9,7 +9,7 @@
           "value": "minecraft:chests/simple_dungeon"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "hbm:chests/vanilla/simple_dungeon"

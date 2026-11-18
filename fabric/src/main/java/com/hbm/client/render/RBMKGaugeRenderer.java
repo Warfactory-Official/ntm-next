@@ -131,7 +131,7 @@ public class RBMKGaugeRenderer
             State state, PoseStack poses, SubmitNodeCollector collector, CameraRenderState camera) {
         poses.pushPose();
         poses.translate(.5, 0, .5);
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         int light = state.lightCoords;
         for (int i = 0; i < state.gauges.length; i++) {
             Gauge gauge = state.gauges[i];
@@ -145,7 +145,7 @@ public class RBMKGaugeRenderer
                             model.renderPart(pose, buffer, light, -1, model.partId("Gauge")));
             poses.pushPose();
             poses.translate(0, .4375, -.125);
-            poses.mulPose((Quaternionfc) Axis.XN.rotationDegrees(gauge.angle - 85F));
+            poses.rotate((Quaternionfc) Axis.XN.rotationDegrees(gauge.angle - 85F));
             poses.translate(0, -.4375, .125);
             int color = gauge.color;
             collector.submitCustomGeometry(
@@ -163,11 +163,11 @@ public class RBMKGaugeRenderer
             for (int j = 0; j < 2; j++) {
                 poses.pushPose();
                 poses.translate(0, .4375, -.125);
-                poses.mulPose((Quaternionfc) Axis.XN.rotationDegrees(10F + j * 50F));
+                poses.rotate((Quaternionfc) Axis.XN.rotationDegrees(10F + j * 50F));
                 poses.translate(0, -.4375, .125);
                 poses.translate(.032, .4375, .125);
                 poses.scale(LINE_SCALE, -LINE_SCALE, LINE_SCALE);
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 collector.submitText(
                         poses,
                         0,
@@ -186,7 +186,7 @@ public class RBMKGaugeRenderer
                 int width = font.width(gauge.label);
                 float scale = Math.min(.0125F, .4F / Math.max(width, 1));
                 poses.scale(scale, -scale, scale);
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 collector.submitText(
                         poses,
                         -width / 2,

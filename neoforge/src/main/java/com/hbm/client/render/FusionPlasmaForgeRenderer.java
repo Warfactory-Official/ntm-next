@@ -153,7 +153,7 @@ public class FusionPlasmaForgeRenderer
             boolean blockItem,
             double ticks,
             Consumer<PoseStack> draw) {
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
         ps.translate(0F, 1.75F, 0F);
 
         boolean rendered3d = arm == FramedItem.Arm.BLOCK;
@@ -162,7 +162,7 @@ public class FusionPlasmaForgeRenderer
         } else if (blockItem) {
             ps.scale(0.5F, 0.5F, 0.5F);
         } else {
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
         }
 
         ps.translate(0.0, Math.sin(ticks * 0.1) * 0.0625, 0.0);
@@ -184,7 +184,7 @@ public class FusionPlasmaForgeRenderer
     private static void pivot(
             PoseStack ps, double x, double y, double z, Axis axis, float degrees) {
         ps.translate(x, y, z);
-        ps.mulPose((Quaternionfc) axis.rotationDegrees(degrees));
+        ps.rotate((Quaternionfc) axis.rotationDegrees(degrees));
         ps.translate(-x, -y, -z);
     }
 
@@ -425,7 +425,7 @@ public class FusionPlasmaForgeRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         if (s.connected && !s.itemsOnly) {
             ps.pushPose();
@@ -443,7 +443,7 @@ public class FusionPlasmaForgeRenderer
 
         if (!s.itemsOnly) {
             ps.pushPose();
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.ring));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.ring));
             submitStrikerArm(s, ps, col, light);
             submitJetArm(s, ps, col, light);
             ps.popPose();

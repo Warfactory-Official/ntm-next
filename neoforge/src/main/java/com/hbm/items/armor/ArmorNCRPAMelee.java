@@ -159,7 +159,7 @@ public class ArmorNCRPAMelee extends ArmorPAMeleeBase {
         pose.pushPose();
         pose.translate(
                 -14F * swingLeft - 4F * sweepTurn, 6F * sweepCut, 2F * swingLeft + 8F * sweepCut);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.XP.rotationDegrees(forwardTilt + swingRight * 40F - 60F * sweepCut));
         pose.translate(outward, 0F, 0F);
@@ -178,7 +178,7 @@ public class ArmorNCRPAMelee extends ArmorPAMeleeBase {
         pose.pushPose();
         pose.translate(
                 14F * swingRight + 4F * sweepTurn, 6F * sweepCut, 2F * swingRight + 8F * sweepCut);
-        pose.mulPose(
+        pose.rotate(
                 (Quaternionfc)
                         Axis.XP.rotationDegrees(forwardTilt + swingLeft * 40F - 60F * sweepCut));
         pose.translate(-outward, 0F, 0F);

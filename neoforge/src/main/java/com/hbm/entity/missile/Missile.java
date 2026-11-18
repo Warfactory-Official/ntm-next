@@ -53,6 +53,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
+import net.minecraft.world.entity.MoveSimulationType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -101,8 +103,6 @@ public abstract class Missile extends Projectile implements RadarProvider, FarVi
     protected float viewPitch;
     private float viewYawO;
     private float viewPitchO;
-
-    private final InterpolationHandler interpolation = new InterpolationHandler(this);
 
     protected Missile(EntityType<? extends Missile> type, Level level) {
         super(type, level);
@@ -178,15 +178,20 @@ public abstract class Missile extends Projectile implements RadarProvider, FarVi
     }
 
     @Override
-    public InterpolationHandler getInterpolation() {
-        return interpolation;
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this);
+    }
+
+    @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.AUTHORITATIVE_SIDE;
     }
 
     @Override
     public void tick() {
         if (level().isClientSide()) {
-            double fromX = getX(), fromY = getY(), fromZ = getZ();
-            interpolation.interpolate();
+            var from = oldPosition();
+            double fromX = from.x, fromY = from.y, fromZ = from.z;
             super.tick();
             accelerate();
             present(getX() - fromX, getY() - fromY, getZ() - fromZ);

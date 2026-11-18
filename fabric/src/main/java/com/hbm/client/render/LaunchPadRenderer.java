@@ -82,7 +82,7 @@ public final class LaunchPadRenderer
         int light = state.lightCoords;
         poseStack.pushPose();
         poseStack.translate(.5D, 1D, .5D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(state.facing, 90)));
         if (missile.scale() != 1F)
             poseStack.scale(missile.scale(), missile.scale(), missile.scale());
         collector.submitCustomGeometry(

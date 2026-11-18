@@ -12,87 +12,81 @@
               "children": [
                 {
                   "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 0
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 5,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 0
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 5,
+                      "min": 0
                     }
-                  ],
+                  },
                   "name": "hbm:oil_detector",
                   "weight": 1
                 },
                 {
                   "type": "minecraft:item",
-                  "functions": [
+                  "modifier": [
                     {
+                      "type": "minecraft:set_components",
                       "components": {
                         "hbm:fluid_content": {
                           "type": "hbm:oil",
                           "amount": 1000
                         }
-                      },
-                      "function": "minecraft:set_components"
+                      }
                     },
                     {
+                      "type": "minecraft:set_count",
                       "count": {
                         "type": "minecraft:uniform",
-                        "max": 4.0,
-                        "min": 1.0
-                      },
-                      "function": "minecraft:set_count"
+                        "max": 4,
+                        "min": 1
+                      }
                     }
                   ],
                   "name": "hbm:canister",
                   "weight": 5
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 5
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 19,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 5
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 19,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
               "children": [
                 {
                   "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 9
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 13,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 9
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 13,
+                      "min": 0
                     }
-                  ],
-                  "functions": [
+                  },
+                  "modifier": [
                     {
+                      "type": "minecraft:set_count",
                       "count": {
                         "type": "minecraft:uniform",
-                        "max": 16.0,
-                        "min": 4.0
-                      },
-                      "function": "minecraft:set_count"
+                        "max": 16,
+                        "min": 4
+                      }
                     }
                   ],
                   "name": "hbm:canister",
@@ -103,27 +97,25 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 3,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 3,
+                          "min": 0
                         }
-                      ],
-                      "functions": [
+                      },
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:uniform",
-                            "max": 4.0,
-                            "min": 1.0
-                          },
-                          "function": "minecraft:set_count"
+                            "max": 4,
+                            "min": 1
+                          }
                         }
                       ],
                       "name": "hbm:circuit_analog",

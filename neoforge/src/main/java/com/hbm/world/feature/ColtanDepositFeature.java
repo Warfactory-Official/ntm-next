@@ -34,25 +34,68 @@
 package com.hbm.world.feature;
 
 import com.hbm.world.NtmWorldgenFields;
-import java.util.Optional;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.OreFeature;
 
-public class ColtanDepositFeature extends Feature<ColtanDepositConfig> {
-    public ColtanDepositFeature() {
-        super(ColtanDepositConfig.CODEC);
+public record ColtanDepositFeature(
+        OreFeature vein,
+        int outerAttempts,
+        int rings,
+        double spread,
+        int baseRange,
+        int minY,
+        int yRange)
+        implements Feature {
+    public static final MapCodec<ColtanDepositFeature> CODEC =
+            RecordCodecBuilder.mapCodec(
+                    inst ->
+                            inst.group(
+                                            OreFeature.CODEC
+                                                    .codec()
+                                                    .fieldOf("vein")
+                                                    .forGetter(ColtanDepositFeature::vein),
+                                            Codec.INT
+                                                    .fieldOf("outer_attempts")
+                                                    .forGetter(ColtanDepositFeature::outerAttempts),
+                                            Codec.INT
+                                                    .fieldOf("rings")
+                                                    .forGetter(ColtanDepositFeature::rings),
+                                            Codec.DOUBLE
+                                                    .fieldOf("spread")
+                                                    .forGetter(ColtanDepositFeature::spread),
+                                            Codec.INT
+                                                    .fieldOf("base_range")
+                                                    .forGetter(ColtanDepositFeature::baseRange),
+                                            Codec.INT
+                                                    .fieldOf("min_y")
+                                                    .forGetter(ColtanDepositFeature::minY),
+                                            Codec.intRange(1, Integer.MAX_VALUE)
+                                                    .fieldOf("y_range")
+                                                    .forGetter(ColtanDepositFeature::yRange))
+                                    .apply(inst, ColtanDepositFeature::new));
+
+    @Override
+    public MapCodec<ColtanDepositFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<ColtanDepositConfig> ctx) {
-        ColtanDepositConfig cfg = ctx.config();
-        WorldGenLevel level = ctx.level();
-        RandomSource rand = ctx.random();
-        int cx = ctx.origin().getX() & ~15;
-        int cz = ctx.origin().getZ() & ~15;
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        ColtanDepositFeature cfg = this;
+        RandomSource rand = random;
+        int cx = featureOrigin.getX() & ~15;
+        int cz = featureOrigin.getZ() & ~15;
 
         NtmWorldgenFields fields = NtmWorldgenFields.get(level);
         int centerX = fields.coltanX(cfg.spread());
@@ -76,14 +119,7 @@ public class ColtanDepositFeature extends Feature<ColtanDepositConfig> {
                         && x >= centerX - range
                         && z <= centerZ + range
                         && z >= centerZ - range) {
-                    Feature.ORE.place(
-                            new FeaturePlaceContext<>(
-                                    Optional.empty(),
-                                    level,
-                                    ctx.chunkGenerator(),
-                                    rand,
-                                    veinPos.set(x, y, z),
-                                    cfg.vein()));
+                    cfg.vein().place(level, chunkGenerator, rand, veinPos.set(x, y, z));
                 }
             }
         }

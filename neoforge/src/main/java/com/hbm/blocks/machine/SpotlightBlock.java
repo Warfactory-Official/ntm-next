@@ -36,7 +36,6 @@ package com.hbm.blocks.machine;
 import com.hbm.api.block.BlockPlacements;
 import com.hbm.blocks.DirectionalBlock;
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -120,14 +119,12 @@ public class SpotlightBlock extends DirectionalBlock
     private final int beamLength;
     private final LightType type;
     private final VoxelShape[] shapesByDirection;
-    private final MapCodec<? extends net.minecraft.world.level.block.DirectionalBlock> ownCodec;
 
     public SpotlightBlock(int beamLength, LightType type, Properties properties) {
         super(properties);
         this.beamLength = beamLength;
         this.type = type;
         shapesByDirection = SHAPES[type.ordinal()];
-        ownCodec = simpleCodec(props -> new SpotlightBlock(beamLength, type, props));
         registerDefaultState(
                 stateDefinition
                         .any()
@@ -135,11 +132,6 @@ public class SpotlightBlock extends DirectionalBlock
                         .setValue(BROKEN, false)
                         .setValue(LIT, true)
                         .setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends net.minecraft.world.level.block.DirectionalBlock> codec() {
-        return ownCodec;
     }
 
     public LightType type() {

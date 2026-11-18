@@ -39,6 +39,7 @@ import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.client.resources.model.ResolvedModel;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.ItemQuads;
 import net.minecraft.client.resources.model.geometry.QuadCollection;
 import net.minecraft.client.resources.model.sprite.TextureSlots;
 import net.minecraft.resources.Identifier;
@@ -57,7 +58,8 @@ public class TintedGlintItemModel implements ItemModel {
     private static final int TINT_INDEX = 0;
 
     private final QuadCollection quads;
-    private final Supplier<List<List<BakedQuad>>> glint;
+    private final ItemQuads itemQuads;
+    private final Supplier<List<ItemQuads>> glint;
     private final int tint;
     private final Supplier<Vector3fc[]> extents;
     private final ModelRenderProperties properties;
@@ -69,6 +71,7 @@ public class TintedGlintItemModel implements ItemModel {
             ModelRenderProperties properties,
             Matrix4fc transformation) {
         this.quads = quads;
+        this.itemQuads = ItemQuads.split(quads.getAll());
         this.properties = properties;
         this.transformation = transformation;
         this.tint =
@@ -80,9 +83,9 @@ public class TintedGlintItemModel implements ItemModel {
         this.glint =
                 Suppliers.memoize(
                         () -> {
-                            List<List<BakedQuad>> passes = new ArrayList<>(GLINT_LAYERS);
+                            List<ItemQuads> passes = new ArrayList<>(GLINT_LAYERS);
                             for (int layer = 0; layer < GLINT_LAYERS; layer++)
-                                passes.add(glintPass(quads.getAll(), layer));
+                                passes.add(ItemQuads.split(glintPass(quads.getAll(), layer)));
                             return List.copyOf(passes);
                         });
         this.extents =
@@ -99,8 +102,10 @@ public class TintedGlintItemModel implements ItemModel {
                             original.sprite(),
                             original.layer(),
                             type,
+                            original.itemGlintRenderType(),
+                            original.itemGlintSpecialRenderType(),
                             TINT_INDEX,
-                            original.shade(),
+                            original.shadeDirectionOverride(),
                             0);
             pass.add(
                     new BakedQuad(
@@ -141,14 +146,14 @@ public class TintedGlintItemModel implements ItemModel {
         output.appendModelIdentityElement(this);
         boolean glinting = glints(displayContext);
         output.ensureCapacity(glinting ? 1 + GLINT_LAYERS : 1);
-        layer(output, displayContext).prepareQuadList().addAll(quads.getAll());
+        layer(output, displayContext).setQuads(itemQuads);
         if (quads.hasMaterialFlag(BakedQuad.FLAG_ANIMATED)) output.setAnimated();
         if (!glinting) return;
 
-        for (List<BakedQuad> pass : glint.get()) {
+        for (ItemQuads pass : glint.get()) {
             ItemStackRenderState.LayerRenderState layer = layer(output, displayContext);
             layer.tintLayers().add(tint);
-            layer.prepareQuadList().addAll(pass);
+            layer.setQuads(pass);
         }
         output.setAnimated();
     }

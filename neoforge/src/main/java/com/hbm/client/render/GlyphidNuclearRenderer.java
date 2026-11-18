@@ -112,7 +112,7 @@ public final class GlyphidNuclearRenderer extends GlyphidRenderer<GlyphidNuclear
             PoseStack pose, SubmitNodeCollector collector, int light, RenderType type, int color) {
         pose.pushPose();
         pose.translate(0F, 1F, 0F);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
         collector.submitCustomGeometry(
                 pose,
                 type,

@@ -172,7 +172,7 @@ public class VolcanicLavaBlock extends ClassicFluidBlock {
         BlockPos below = pos.below();
         if (rand.nextInt(10) != 0
                 || !level.getBlockState(below).isFaceSturdy(level, below, Direction.UP)
-                || level.getBlockState(below.below()).blocksMotion()) return;
+                || level.getBlockState(below.below()).is(BlockTags.BLOCKS_MOTION)) return;
         double x = pos.getX() + rand.nextFloat(), z = pos.getZ() + rand.nextFloat();
         level.addParticle(ParticleTypes.DRIPPING_LAVA, x, pos.getY() - 1.05D, z, 0.0D, 0.0D, 0.0D);
     }

@@ -103,19 +103,19 @@ public class CoreComponentRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
         switch (state.facing) {
             case DOWN -> {
                 ps.translate(0.0, 0.5, -0.5);
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
             }
             case UP -> {
                 ps.translate(0.0, 0.5, 0.5);
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
             }
-            case NORTH -> ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-            case WEST -> ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
-            case SOUTH -> ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(270));
+            case NORTH -> ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+            case WEST -> ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
+            case SOUTH -> ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(270));
             case EAST -> {}
         }
         ps.translate(0.0, MUZZLE, 0.0);

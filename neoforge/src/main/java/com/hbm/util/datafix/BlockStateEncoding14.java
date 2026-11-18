@@ -61,6 +61,13 @@ public final class BlockStateEncoding14 {
 
     public static CompoundTag current(CompoundTag state) {
         var result = canonical(state);
+        result.put("id", result.get("Name"));
+        result.remove("Name");
+        var properties = result.get("Properties");
+        if (properties != null) {
+            result.put("properties", properties);
+            result.remove("Properties");
+        }
         return result;
     }
 
@@ -96,7 +103,7 @@ public final class BlockStateEncoding14 {
     public static Dynamic<?> current(Dynamic<?> state, Dynamic<?> properties) {
         var result = state.remove("Name").remove("Properties").remove("id").remove("properties");
         boolean empty = properties.getMapValues().result().orElseThrow().isEmpty();
-        result = result.set("Name", result.createString(name(state)));
-        return empty ? result : result.set("Properties", properties);
+        result = result.set("id", result.createString(name(state)));
+        return empty ? result : result.set("properties", properties);
     }
 }

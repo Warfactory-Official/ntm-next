@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -66,8 +65,6 @@ public class SteelGrateBlock extends Block implements SimpleWaterloggedBlock {
                     SoundEvents.STONE_HIT,
                     SoundEvents.STONE_FALL);
 
-    public static final MapCodec<SteelGrateBlock> CODEC =
-            simpleCodec(props -> new SteelGrateBlock(props, false));
     public static final IntegerProperty HEIGHT = IntegerProperty.create("height", 0, 9);
     private static final VoxelShape[] SHAPES = buildShapes();
     private final boolean wide;
@@ -99,11 +96,6 @@ public class SteelGrateBlock extends Block implements SimpleWaterloggedBlock {
         return neighborBelowUs
                 ? shape.min(Direction.Axis.Y) > 0.05D
                 : shape.max(Direction.Axis.Y) < 0.95D;
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

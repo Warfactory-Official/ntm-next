@@ -22,7 +22,6 @@ package com.hbm.blocks.generic;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.client.ClientEffects;
 import com.hbm.particle.HbmEffectNT;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -50,8 +49,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class WasteLeavesBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-
-    public static final MapCodec<WasteLeavesBlock> CODEC = simpleCodec(WasteLeavesBlock::new);
 
     private static final int SHED_CHANCE = 30;
     private static final int LEAF_CHANCE = 7;
@@ -96,11 +93,6 @@ public class WasteLeavesBlock extends Block implements SimpleWaterloggedBlock {
         return state.getValue(WATERLOGGED)
                 ? Fluids.WATER.getSource(false)
                 : super.getFluidState(state);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

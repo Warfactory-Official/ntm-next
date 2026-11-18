@@ -92,10 +92,10 @@ public class ArcWelderRenderer
         if (state.item.isEmpty()) return;
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(state.facing)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(state.facing)));
         poseStack.translate(-0.34375, 1.125, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
         poseStack.scale(1.5F, 1.5F, 1.5F);
         FramedItem.decoArm(poseStack, state.arm);
         state.item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);

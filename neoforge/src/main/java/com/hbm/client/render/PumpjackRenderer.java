@@ -194,18 +194,18 @@ public class PumpjackRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
 
         ps.pushPose();
         ps.translate(0, 1.5, -5.5);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(rotation - 90F));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(rotation - 90F));
         ps.translate(0, -1.5, 5.5);
         part(col, ps, light, ROTOR);
         ps.popPose();
 
         ps.pushPose();
         ps.translate(0, 3.5, -3.5);
-        ps.mulPose(
+        ps.rotate(
                 (Quaternionfc)
                         Axis.XP.rotationDegrees(
                                 (float) Math.toDegrees(Math.sin(Math.toRadians(rotation)))

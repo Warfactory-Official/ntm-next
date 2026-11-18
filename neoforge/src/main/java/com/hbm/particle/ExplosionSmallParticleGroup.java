@@ -85,8 +85,8 @@ public class ExplosionSmallParticleGroup extends ParticleGroup<ExplosionSmallPar
             for (Instance in : instances) {
                 pose.pushPose();
                 pose.translate(in.relX, in.relY, in.relZ);
-                pose.mulPose((Quaternionfc) camera.orientation);
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(in.roll));
+                pose.rotate((Quaternionfc) camera.orientation);
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(in.roll));
 
                 float s = in.scale;
                 int color =

@@ -20,7 +20,7 @@
 package com.hbm.interfaces.injected;
 
 import com.hbm.client.render.WorldRenderPipeline;
-import com.mojang.blaze3d.pipeline.CompiledRenderPipeline;
+import com.mojang.renderpearl.api.pipeline.CompiledRenderPipeline;
 
 public interface WorldPipeline {
     CompiledRenderPipeline hbm$program(WorldRenderPipeline pipeline);

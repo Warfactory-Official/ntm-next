@@ -20,27 +20,19 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.MinecartRail;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.RailBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public class RailGenericBlock extends RailBlock implements MinecartRail {
-    private final MapCodec<RailBlock> codec;
     private final float maxSpeed;
 
     public RailGenericBlock(BlockBehaviour.Properties properties, float maxSpeed) {
         super(properties);
         this.maxSpeed = maxSpeed;
-        this.codec = simpleCodec(props -> new RailGenericBlock(props, maxSpeed));
     }
 
     @Override
     public float railMaxSpeed() {
         return maxSpeed;
-    }
-
-    @Override
-    public MapCodec<RailBlock> codec() {
-        return codec;
     }
 }

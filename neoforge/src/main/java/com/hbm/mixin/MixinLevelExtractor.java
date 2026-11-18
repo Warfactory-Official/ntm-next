@@ -79,7 +79,7 @@ public class MixinLevelExtractor {
     }
 
     private static final String BLOCK_ENTITIES =
-            "extractVisibleBlockEntities(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/state/level/LevelRenderState;Lnet/minecraft/client/renderer/culling/Frustum;)V";
+            "extractVisibleBlockEntities(Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/state/level/LevelRenderState;)V";
     private static final String EXTRACT_ENTITY =
             "Lnet/minecraft/client/renderer/blockentity/BlockEntityRenderDispatcher;tryExtractRenderState(Lnet/minecraft/world/level/block/entity/BlockEntity;FLnet/minecraft/client/renderer/feature/ModelFeatureRenderer$CrumblingOverlay;ZLnet/minecraft/client/renderer/culling/Frustum;)Lnet/minecraft/client/renderer/blockentity/state/BlockEntityRenderState;";
 
@@ -147,13 +147,15 @@ public class MixinLevelExtractor {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/client/renderer/LevelRenderer;isSectionCompiledAndVisible(Lnet/minecraft/core/BlockPos;)Z"))
+                                    "Lnet/minecraft/client/renderer/LevelRenderer;isSectionCompiledAndVisible(Lnet/minecraft/core/BlockPos;J)Z"))
     private boolean hbm$unculledEntity(
             LevelRenderer renderer,
             BlockPos pos,
+            long chunkFadeDuration,
             Operation<Boolean> original,
             @Local(argsOnly = true) Entity entity) {
-        if (original.call(renderer, pos) || entity instanceof FarVisible) return true;
+        if (original.call(renderer, pos, chunkFadeDuration) || entity instanceof FarVisible)
+            return true;
         return NuclearTech.MOD_ID.equals(
                         BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace())
                 && !((com.hbm.client.render.CullableRenderer)

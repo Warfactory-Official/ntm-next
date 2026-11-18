@@ -25,8 +25,11 @@ import com.hbm.client.render.NTMSkybox;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SkyRenderer;
@@ -43,7 +46,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(SkyRenderer.class)
 public abstract class MixinSkyRenderer {
     @Shadow
-    protected abstract void renderStars(float starBrightness, PoseStack poseStack);
+    protected abstract void renderStars(RenderPass pass, float starBrightness, PoseStack poseStack);
 
     @Inject(method = "close", at = @At("HEAD"))
     private void hbm$closeSkyGeometry(CallbackInfo ci) {
@@ -62,37 +65,15 @@ public abstract class MixinSkyRenderer {
         else NTMSkybox.extract(level, state);
     }
 
-    @Inject(method = "renderSkyDisc", at = @At("HEAD"), cancellable = true)
-    private void hbm$customSky(int skyColor, CallbackInfo ci) {
-        if (CustomSkies.replace((SkyRenderer) (Object) this, true)) ci.cancel();
-    }
-
-    @Inject(method = "renderSunriseAndSunset", at = @At("HEAD"), cancellable = true)
-    private void hbm$customSkySunrise(
-            PoseStack poseStack, float sunAngle, int sunriseAndSunsetColor, CallbackInfo ci) {
-        if (CustomSkies.replace((SkyRenderer) (Object) this, false)) ci.cancel();
-    }
-
-    @Inject(method = "renderSunMoonAndStars", at = @At("HEAD"), cancellable = true)
-    private void hbm$customSkyBodies(
-            PoseStack poseStack,
-            float sunAngle,
-            float moonAngle,
-            float starAngle,
-            MoonPhase moonPhase,
-            float rainBrightness,
-            float starBrightness,
-            CallbackInfo ci) {
-        if (CustomSkies.replace((SkyRenderer) (Object) this, false)) ci.cancel();
-    }
-
-    @Inject(method = "renderDarkDisc", at = @At("HEAD"), cancellable = true)
-    private void hbm$customSkyDarkDisc(CallbackInfo ci) {
-        if (CustomSkies.replace((SkyRenderer) (Object) this, false)) ci.cancel();
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    private void hbm$customSky(GpuBufferSlice skyFog, SkyRenderState state, CallbackInfo ci) {
+        RenderSystem.setShaderFog(skyFog);
+        if (CustomSkies.render((SkyRenderer) (Object) this, state)) ci.cancel();
     }
 
     @Inject(method = "renderSunMoonAndStars", at = @At("HEAD"))
     private void hbm$impactStarsFirst(
+            RenderPass pass,
             PoseStack poseStack,
             float sunAngle,
             float moonAngle,
@@ -104,7 +85,7 @@ public abstract class MixinSkyRenderer {
         if (!NTMSkybox.impact() || starBrightness <= 0.0F) return;
         poseStack.pushPose();
         NTMSkybox.poseImpactStars(poseStack, starAngle);
-        renderStars(starBrightness, poseStack);
+        renderStars(pass, starBrightness, poseStack);
         poseStack.popPose();
     }
 
@@ -114,10 +95,14 @@ public abstract class MixinSkyRenderer {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/client/renderer/SkyRenderer;renderStars(FLcom/mojang/blaze3d/vertex/PoseStack;)V"))
+                                    "Lnet/minecraft/client/renderer/SkyRenderer;renderStars(Lcom/mojang/renderpearl/api/commands/RenderPass;FLcom/mojang/blaze3d/vertex/PoseStack;)V"))
     private void hbm$impactStarsReplaceVanilla(
-            SkyRenderer sky, float starBrightness, PoseStack poseStack, Operation<Void> original) {
-        if (!NTMSkybox.impact()) original.call(sky, starBrightness, poseStack);
+            SkyRenderer sky,
+            RenderPass pass,
+            float starBrightness,
+            PoseStack poseStack,
+            Operation<Void> original) {
+        if (!NTMSkybox.impact()) original.call(sky, pass, starBrightness, poseStack);
     }
 
     @ModifyExpressionValue(
@@ -126,7 +111,7 @@ public abstract class MixinSkyRenderer {
                     @At(
                             value = "FIELD",
                             target =
-                                    "Lnet/minecraft/client/renderer/RenderPipelines;STARS:Lcom/mojang/blaze3d/pipeline/RenderPipeline;"))
+                                    "Lnet/minecraft/client/renderer/RenderPipelines;STARS:Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;"))
     private RenderPipeline hbm$impactStarBlend(RenderPipeline original) {
         return NTMSkybox.impact() && !ShaderPacks.inUse() ? NTMSkybox.IMPACT_STARS : original;
     }
@@ -137,7 +122,7 @@ public abstract class MixinSkyRenderer {
                     @At(
                             value = "INVOKE",
                             target =
-                                    "Lnet/minecraft/client/renderer/DynamicUniforms;writeTransform(Lorg/joml/Matrix4f;Lorg/joml/Vector4f;)Lcom/mojang/blaze3d/buffers/GpuBufferSlice;"),
+                                    "Lnet/minecraft/client/renderer/DynamicGpuData;writeTransform(Lorg/joml/Matrix4f;Lorg/joml/Vector4f;)Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;"),
             index = 1)
     private Vector4f hbm$impactStarAlpha(Vector4f color) {
         if (NTMSkybox.impact()) color.w *= NTMSkybox.starAlpha();

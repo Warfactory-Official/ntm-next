@@ -194,7 +194,7 @@ public final class BlastFurnaceBlockEntity extends MachineBlockEntity
 
     private int heatValue(ItemStack stack) {
         if (stack.isEmpty() || stack.getCraftingRemainder() != null) return 0;
-        int duration = FUELS.getBurnTime(level, stack, 0D);
+        int duration = FUELS.getBurnTime(this, stack, 0D);
         return FUELS.getBurnHeat(duration, stack);
     }
 
@@ -283,7 +283,7 @@ public final class BlastFurnaceBlockEntity extends MachineBlockEntity
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (slot == SLOT_FUEL) {
             if (stack.isEmpty() || stack.getCraftingRemainder() != null) return false;
-            return heatValue(stack) > 0;
+            return FUELS.isFuel(this, stack, 0D) && FUELS.getHeatMod(stack) > 0;
         }
         if (slot != SLOT_INPUT_1 && slot != SLOT_INPUT_2) return false;
         if (ItemStack.isSameItemSameComponents(stack, getItem(SLOT_INPUT_1 + SLOT_INPUT_2 - slot)))

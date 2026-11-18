@@ -52,9 +52,14 @@ public final class FallingBlockBatchRenderer
 
     @Override
     public boolean shouldRender(
-            FallingBlockBatchEntity entity, Frustum culler, double camX, double camY, double camZ) {
+            FallingBlockBatchEntity entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         for (FallingBlockNTEntity proxy : entity.clientFallers().values()) {
-            if (child.shouldRender(proxy, culler, camX, camY, camZ)) return true;
+            if (child.shouldRender(proxy, culler, camX, camY, camZ, partialTicks)) return true;
         }
         return false;
     }

@@ -80,7 +80,7 @@ public class DieselRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         if (s.running) {
             double swingSide = Math.sin(GameTime.now() / 50D) * 0.005;

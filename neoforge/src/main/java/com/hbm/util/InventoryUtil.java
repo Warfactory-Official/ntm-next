@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.WorldlyContainerHolder;
@@ -135,7 +136,7 @@ public final class InventoryUtil {
     public static ItemStack exchangeHeld(Player player, ItemStack held, ItemStack remainder) {
         held.shrink(1);
         if (held.isEmpty()) return remainder;
-        player.getInventory().placeItemBackInInventory(remainder);
+        player.getInventory().placeItemBackInInventory(remainder, Prediction.SERVER_ONLY);
         return held;
     }
 
@@ -143,7 +144,8 @@ public final class InventoryUtil {
         RandomSource random = player.getRandom();
         for (AnvilOutput out : outputs) {
             if (out.chance() == 1.0F || random.nextFloat() < out.chance()) {
-                player.getInventory().placeItemBackInInventory(out.stack().copy());
+                player.getInventory()
+                        .placeItemBackInInventory(out.stack().copy(), Prediction.SERVER_ONLY);
             }
         }
     }

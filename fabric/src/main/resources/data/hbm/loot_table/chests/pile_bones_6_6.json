@@ -9,7 +9,7 @@
           "value": "hbm:chests/pile_bones"
         }
       ],
-      "rolls": 6.0
+      "rolls": 6
     }
   ],
   "random_sequence": "hbm:chests/pile_bones_6_6"

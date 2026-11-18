@@ -22,7 +22,6 @@ package com.hbm.blocks.bomb;
 import com.hbm.blockentity.bomb.VolcanoCoreBlockEntity;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.TickingEntityBlock;
-import com.mojang.serialization.MapCodec;
 import java.util.Locale;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
@@ -46,18 +45,11 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.jspecify.annotations.Nullable;
 
 public class VolcanoBlock extends Block implements TickingEntityBlock {
-    public static final MapCodec<VolcanoBlock> CODEC = simpleCodec(VolcanoBlock::new);
-
     public static final EnumProperty<Mode> MODE = EnumProperty.create("mode", Mode.class);
 
     public VolcanoBlock(BlockBehaviour.Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(MODE, Mode.STATIC_ACTIVE));
-    }
-
-    @Override
-    protected MapCodec<VolcanoBlock> codec() {
-        return CODEC;
     }
 
     @Override

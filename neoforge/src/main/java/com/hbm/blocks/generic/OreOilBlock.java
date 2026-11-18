@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -28,15 +27,8 @@ import net.minecraft.world.level.redstone.Orientation;
 import org.jspecify.annotations.Nullable;
 
 public class OreOilBlock extends Block {
-    public static final MapCodec<OreOilBlock> CODEC = simpleCodec(OreOilBlock::new);
-
     public OreOilBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends OreOilBlock> codec() {
-        return CODEC;
     }
 
     @Override

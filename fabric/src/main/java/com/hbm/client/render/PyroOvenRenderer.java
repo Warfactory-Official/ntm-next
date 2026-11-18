@@ -91,7 +91,7 @@ public class PyroOvenRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(facingYaw(s.facing)));
 
         ps.pushPose();
         ps.translate(NtmMath.flatSine(s.anim * 0.125) / 2 - 0.5, 0, 0);
@@ -100,7 +100,7 @@ public class PyroOvenRenderer
 
         ps.pushPose();
         ps.translate(1.5, 0, 1.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) (s.anim * 45D % 360D)));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) (s.anim * 45D % 360D)));
         ps.translate(-1.5, 0, -1.5);
         part(col, ps, light, FAN);
         ps.popPose();

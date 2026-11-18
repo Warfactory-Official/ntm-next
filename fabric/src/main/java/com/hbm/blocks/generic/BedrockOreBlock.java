@@ -28,7 +28,6 @@ import com.hbm.inventory.fluid.NTMFluids;
 import com.hbm.inventory.fluid.tank.FluidTankNTM;
 import com.hbm.items.machine.DrillbitItem;
 import com.hbm.items.machine.FluidContainerItem;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -45,15 +44,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class BedrockOreBlock extends Block implements EntityBlock, LookOverlayProvider {
-    public static final MapCodec<BedrockOreBlock> CODEC = simpleCodec(BedrockOreBlock::new);
-
     public BedrockOreBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

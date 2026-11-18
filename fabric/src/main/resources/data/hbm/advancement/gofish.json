@@ -7,7 +7,7 @@
           "tags": [
             {
               "expected": true,
-              "id": "hbm:is_bolt"
+              "id": "#hbm:is_bolt"
             }
           ]
         }

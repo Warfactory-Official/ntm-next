@@ -50,7 +50,7 @@ public class PedestalRenderer
             State state, PoseStack poseStack, SubmitNodeCollector collector) {
         poseStack.scale(1.5F, 1.5F, 1.5F);
         poseStack.translate(0.0, 0.125, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.playerYaw + 180.0F));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.playerYaw + 180.0F));
         poseStack.translate(0.0, Math.sin(state.playerAge * 0.1F) * 0.0625F, 0.0);
         poseStack.translate(0.0, state.arm.groundLift(), 0.0);
         state.item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
@@ -69,7 +69,7 @@ public class PedestalRenderer
             State state, PoseStack poseStack, SubmitNodeCollector collector) {
         poseStack.scale(1.5F, 1.5F, 1.5F);
         poseStack.translate(0.0, 0.125, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.playerYaw + 180.0F));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.playerYaw + 180.0F));
         poseStack.translate(0.0, Math.sin(state.playerAge * 0.1F) * 0.0625F, 0.0);
         FramedItem.framedSpritePrefix(poseStack);
         FramedItem.framedSpriteCopies(

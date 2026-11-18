@@ -22,7 +22,6 @@ package com.hbm.blocks.bomb;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -42,15 +41,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DigammaFlameBlock extends Block {
-    public static final MapCodec<DigammaFlameBlock> CODEC = simpleCodec(DigammaFlameBlock::new);
-
     public DigammaFlameBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<DigammaFlameBlock> codec() {
-        return CODEC;
     }
 
     @Override

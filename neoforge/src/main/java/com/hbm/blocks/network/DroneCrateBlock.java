@@ -28,7 +28,6 @@ import com.hbm.interfaces.LookOverlay;
 import com.hbm.interfaces.LookOverlayProvider;
 import com.hbm.inventory.BlockMenus;
 import com.hbm.items.ModItems;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -45,15 +44,8 @@ import org.jspecify.annotations.Nullable;
 
 public class DroneCrateBlock extends Block
         implements TickingEntityBlock, CapabilityBlock, LookOverlayProvider {
-    public static final MapCodec<DroneCrateBlock> CODEC = simpleCodec(DroneCrateBlock::new);
-
     public DroneCrateBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

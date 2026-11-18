@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,8 +33,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 public class SteelCornerBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<SteelCornerBlock> CODEC = simpleCodec(SteelCornerBlock::new);
-
     private static final VoxelShape SHAPE_NORTH =
             Shapes.or(
                     Shapes.box(4 / 16D, 0D, 14 / 16D, 1D, 1D, 1D),
@@ -69,11 +66,6 @@ public class SteelCornerBlock extends HorizontalDirectionalBlock {
             case WEST -> SHAPE_WEST;
             default -> SHAPE_NORTH;
         };
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

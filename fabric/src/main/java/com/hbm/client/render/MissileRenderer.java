@@ -88,10 +88,10 @@ public class MissileRenderer extends EntityRenderer<Missile, MissileRenderer.Sta
             CameraRenderState camera) {
         int light = state.lightCoords;
         poseStack.pushPose();
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
-        poseStack.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.padRoll));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.padRoll));
         if (scale != 1F) poseStack.scale(scale, scale, scale);
         collector.submitCustomGeometry(
                 poseStack, renderType, (pose, buffer) -> model.render(pose, buffer, light, -1));

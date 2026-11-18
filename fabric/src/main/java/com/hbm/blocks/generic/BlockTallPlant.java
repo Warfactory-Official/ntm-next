@@ -21,8 +21,6 @@ package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Locale;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,22 +34,13 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public class BlockTallPlant extends DoublePlantBlock implements BonemealableBlock {
-    public static final MapCodec<BlockTallPlant> CODEC =
-            RecordCodecBuilder.mapCodec(
-                    instance ->
-                            instance.group(
-                                            propertiesCodec(),
-                                            Variant.CODEC
-                                                    .fieldOf("variant")
-                                                    .forGetter(block -> block.variant))
-                                    .apply(instance, BlockTallPlant::new));
-
     private final Variant variant;
 
     public BlockTallPlant(Properties properties, Variant variant) {
@@ -61,11 +50,6 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
 
     public Variant variant() {
         return variant;
-    }
-
-    @Override
-    public MapCodec<? extends BlockTallPlant> codec() {
-        return CODEC;
     }
 
     @Override
@@ -131,15 +115,16 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
                 return;
             }
         }
-        if (isValidBonemealTarget(level, pos, state)
-                && isBonemealSuccess(level, random, pos, state)
+        if (isValidBonemealTarget(level, pos, state, BonemealSource.INTERACTION)
+                && isBonemealSuccess(level, random, pos, state, BonemealSource.INTERACTION)
                 && random.nextInt(3) == 0) {
-            performBonemeal(level, random, pos, state);
+            performBonemeal(level, random, pos, state, BonemealSource.INTERACTION);
         }
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(
+            LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         if (variant != Variant.CD2 && variant != Variant.CD3) {
             return false;
         }
@@ -156,13 +141,21 @@ public class BlockTallPlant extends DoublePlantBlock implements BonemealableBloc
 
     @Override
     public boolean isBonemealSuccess(
-            Level level, RandomSource random, BlockPos pos, BlockState state) {
+            Level level,
+            RandomSource random,
+            BlockPos pos,
+            BlockState state,
+            BonemealSource source) {
         return variant == Variant.CD3 || random.nextFloat() < 0.33F;
     }
 
     @Override
     public void performBonemeal(
-            ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+            ServerLevel level,
+            RandomSource random,
+            BlockPos pos,
+            BlockState state,
+            BonemealSource source) {
         var lowerPos = state.getValue(HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos;
         DoublePlantBlock.placeAt(
                 level,

@@ -20,7 +20,11 @@
 package com.hbm.api.client;
 
 import com.hbm.platform.Platform;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.renderpearl.api.pipeline.CompiledRenderPipeline;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import net.irisshaders.iris.api.v0.IrisApi;
+import net.irisshaders.iris.vertices.ImmediateState;
 
 public final class ShaderPacks {
     private static final boolean IRIS = Platform.isModLoaded("iris");
@@ -31,9 +35,23 @@ public final class ShaderPacks {
         return IRIS && Iris.inUse();
     }
 
+    public static CompiledRenderPipeline nativePipeline(RenderPipeline pipeline) {
+        return IRIS ? Iris.nativePipeline(pipeline) : RenderSystem.getCompiledPipeline(pipeline);
+    }
+
     private static final class Iris {
         private static boolean inUse() {
             return IrisApi.getInstance().isShaderPackInUse();
+        }
+
+        private static CompiledRenderPipeline nativePipeline(RenderPipeline pipeline) {
+            boolean bypass = ImmediateState.bypass;
+            ImmediateState.bypass = true;
+            try {
+                return RenderSystem.getCompiledPipeline(pipeline);
+            } finally {
+                ImmediateState.bypass = bypass;
+            }
         }
     }
 }

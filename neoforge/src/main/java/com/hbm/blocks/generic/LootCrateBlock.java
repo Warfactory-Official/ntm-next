@@ -39,7 +39,6 @@ import com.hbm.sound.ModSounds;
 import com.hbm.util.RegistryUtil;
 import com.hbm.world.NtmWorldgenFields;
 import com.hbm.world.WorldgenHash;
-import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -59,16 +58,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class LootCrateBlock extends FallingBlock {
-    public static final MapCodec<LootCrateBlock> CODEC = simpleCodec(LootCrateBlock::new);
     private static final long CONTENT_DOMAIN = WorldgenHash.identifier(RegistryUtil.id("crate"));
 
     public LootCrateBlock(BlockBehaviour.Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<LootCrateBlock> codec() {
-        return CODEC;
     }
 
     public static List<ItemStack> poolOf(Block block) {

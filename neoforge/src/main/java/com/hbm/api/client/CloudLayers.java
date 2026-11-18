@@ -19,14 +19,18 @@
 
 package com.hbm.api.client;
 
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import java.util.Arrays;
 import net.minecraft.client.CloudStatus;
+import net.minecraft.client.renderer.oit.OitRenderPassProvider;
+import net.minecraft.client.renderer.oit.OitStage;
 import net.minecraft.world.phys.Vec3;
 
 public final class CloudLayers {
 
     public interface Renderer {
-        void render(
+        void prepare(
                 int color,
                 CloudStatus status,
                 float bottomY,
@@ -34,6 +38,14 @@ public final class CloudLayers {
                 Vec3 camera,
                 long gameTime,
                 float partialTicks);
+
+        void render(CloudStatus status, RenderPass pass);
+
+        void renderOit(
+                CloudStatus status,
+                OitStage stage,
+                GpuTextureView mainDepth,
+                OitRenderPassProvider.Parameters parameters);
 
         default void reload() {}
 
@@ -53,7 +65,7 @@ public final class CloudLayers {
         renderers[renderers.length - 1] = renderer;
     }
 
-    public static void render(
+    public static void prepare(
             int color,
             CloudStatus status,
             float bottomY,
@@ -62,7 +74,20 @@ public final class CloudLayers {
             long gameTime,
             float partialTicks) {
         for (Renderer renderer : renderers)
-            renderer.render(color, status, bottomY, range, camera, gameTime, partialTicks);
+            renderer.prepare(color, status, bottomY, range, camera, gameTime, partialTicks);
+    }
+
+    public static void render(CloudStatus status, RenderPass pass) {
+        for (Renderer renderer : renderers) renderer.render(status, pass);
+    }
+
+    public static void renderOit(
+            CloudStatus status,
+            OitStage stage,
+            GpuTextureView mainDepth,
+            OitRenderPassProvider.Parameters parameters) {
+        for (Renderer renderer : renderers)
+            renderer.renderOit(status, stage, mainDepth, parameters);
     }
 
     public static void reload() {

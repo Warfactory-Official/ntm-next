@@ -57,7 +57,12 @@ public class FalloutRenderer extends EntityRenderer<FalloutRainEntity, FalloutRe
 
     @Override
     public boolean shouldRender(
-            FalloutRainEntity entity, Frustum culler, double camX, double camY, double camZ) {
+            FalloutRainEntity entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         return withinRenderDistance(entity, camX, camY, camZ);
     }
 

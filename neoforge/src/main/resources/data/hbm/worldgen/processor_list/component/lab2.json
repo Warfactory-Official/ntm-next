@@ -5,8 +5,8 @@
       "processors": [
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "true"
             }
@@ -14,8 +14,8 @@
           "options": [
             {
               "data": {
-                "Name": "hbm:concrete_super",
-                "Properties": {
+                "id": "hbm:concrete_super",
+                "properties": {
                   "age": "10"
                 }
               },
@@ -23,8 +23,8 @@
             },
             {
               "data": {
-                "Name": "hbm:concrete_super",
-                "Properties": {
+                "id": "hbm:concrete_super",
+                "properties": {
                   "age": "11"
                 }
               },
@@ -32,8 +32,8 @@
             },
             {
               "data": {
-                "Name": "hbm:concrete_super",
-                "Properties": {
+                "id": "hbm:concrete_super",
+                "properties": {
                   "age": "12"
                 }
               },
@@ -41,8 +41,8 @@
             },
             {
               "data": {
-                "Name": "hbm:concrete_super",
-                "Properties": {
+                "id": "hbm:concrete_super",
+                "properties": {
                   "age": "13"
                 }
               },
@@ -50,8 +50,8 @@
             },
             {
               "data": {
-                "Name": "hbm:concrete_super",
-                "Properties": {
+                "id": "hbm:concrete_super",
+                "properties": {
                   "age": "14"
                 }
               },
@@ -59,8 +59,8 @@
             },
             {
               "data": {
-                "Name": "hbm:concrete_super",
-                "Properties": {
+                "id": "hbm:concrete_super",
+                "properties": {
                   "age": "15"
                 }
               },
@@ -71,29 +71,23 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "false"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "hbm:tile_lab"
-              },
+              "data": "hbm:tile_lab",
               "weight": 5
             },
             {
-              "data": {
-                "Name": "hbm:tile_lab_cracked"
-              },
+              "data": "hbm:tile_lab_cracked",
               "weight": 4
             },
             {
-              "data": {
-                "Name": "hbm:tile_lab_broken"
-              },
+              "data": "hbm:tile_lab_broken",
               "weight": 1
             }
           ],
@@ -101,35 +95,27 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "1",
               "waterlogged": "true"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "hbm:brick_concrete"
-              },
+              "data": "hbm:brick_concrete",
               "weight": 4
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_mossy"
-              },
+              "data": "hbm:brick_concrete_mossy",
               "weight": 3
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_cracked"
-              },
+              "data": "hbm:brick_concrete_cracked",
               "weight": 2
             },
             {
-              "data": {
-                "Name": "hbm:brick_concrete_broken"
-              },
+              "data": "hbm:brick_concrete_broken",
               "weight": 1
             }
           ],

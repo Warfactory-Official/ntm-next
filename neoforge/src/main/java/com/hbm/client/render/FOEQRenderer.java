@@ -92,9 +92,9 @@ public class FOEQRenderer extends EntityRenderer<BurningFOEQEntity, FOEQRenderer
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0D, -75D, 0D);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180F));
-        poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw - 90F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180F));
+        poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(state.pitch));
         collector.submitCustomGeometry(
                 poseStack,
                 BODY,
@@ -108,7 +108,7 @@ public class FOEQRenderer extends EntityRenderer<BurningFOEQEntity, FOEQRenderer
         for (int i = 0; i < 10; i++) {
             for (int shell = 0; shell < FLAME.length; shell++) {
                 int color = FLAME[shell];
-                poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(rand.nextInt(360)));
+                poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(rand.nextInt(360)));
                 collector.submitCustomGeometry(
                         poseStack,
                         CloudRenderTypes.ADDITIVE_LIT_UNCULLED,

@@ -15,27 +15,25 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 1,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 1,
+                          "min": 0
                         }
-                      ],
-                      "functions": [
+                      },
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:uniform",
-                            "max": 6.0,
-                            "min": 2.0
-                          },
-                          "function": "minecraft:set_count"
+                            "max": 6,
+                            "min": 2
+                          }
                         }
                       ],
                       "name": "hbm:ingot_desh",
@@ -43,60 +41,56 @@
                     },
                     {
                       "type": "minecraft:item",
-                      "functions": [
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:uniform",
-                            "max": 5.0,
-                            "min": 1.0
-                          },
-                          "function": "minecraft:set_count"
+                            "max": 5,
+                            "min": 1
+                          }
                         }
                       ],
                       "name": "hbm:powder_desh_mix",
                       "weight": 1
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 1
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 4,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 1
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 4,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 2,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 2,
+                          "min": 0
                         }
-                      ],
-                      "functions": [
+                      },
+                      "modifier": [
                         {
+                          "type": "minecraft:set_count",
                           "count": {
                             "type": "minecraft:uniform",
-                            "max": 6.0,
-                            "min": 3.0
-                          },
-                          "function": "minecraft:set_count"
+                            "max": 6,
+                            "min": 3
+                          }
                         }
                       ],
                       "name": "minecraft:diamond",
@@ -107,19 +101,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 0
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 1,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 0
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 1,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:ammo_standard_nuke_standard",
                           "weight": 1
                         },
@@ -133,19 +125,17 @@
                   ]
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 4
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 10,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 4
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 10,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
@@ -155,21 +145,20 @@
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 2,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 2,
+                          "min": 0
                         }
-                      ],
-                      "functions": [
+                      },
+                      "modifier": [
                         {
+                          "type": "minecraft:set_components",
                           "components": {
                             "hbm:grenade": {
                               "filling": "nuclear",
@@ -177,8 +166,7 @@
                               "shell": "nuke"
                             },
                             "minecraft:max_stack_size": 1
-                          },
-                          "function": "minecraft:set_components"
+                          }
                         }
                       ],
                       "name": "hbm:grenade_universal",
@@ -189,21 +177,20 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 0
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 1,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 0
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 1,
+                              "min": 0
                             }
-                          ],
-                          "functions": [
+                          },
+                          "modifier": [
                             {
+                              "type": "minecraft:set_components",
                               "components": {
                                 "hbm:grenade": {
                                   "filling": "emp",
@@ -211,16 +198,15 @@
                                   "shell": "tech"
                                 },
                                 "minecraft:max_stack_size": 2
-                              },
-                              "function": "minecraft:set_components"
+                              }
                             },
                             {
+                              "type": "minecraft:set_count",
                               "count": {
                                 "type": "minecraft:uniform",
-                                "max": 6.0,
-                                "min": 1.0
-                              },
-                              "function": "minecraft:set_count"
+                                "max": 6,
+                                "min": 1
+                              }
                             }
                           ],
                           "name": "hbm:grenade_universal",
@@ -228,14 +214,14 @@
                         },
                         {
                           "type": "minecraft:item",
-                          "functions": [
+                          "modifier": [
                             {
+                              "type": "minecraft:set_count",
                               "count": {
                                 "type": "minecraft:uniform",
-                                "max": 24.0,
-                                "min": 16.0
-                              },
-                              "function": "minecraft:set_count"
+                                "max": 24,
+                                "min": 16
+                              }
                             }
                           ],
                           "name": "hbm:powder_yellowcake",
@@ -244,38 +230,34 @@
                       ]
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 2
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 5,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 2
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 5,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
                   "children": [
                     {
                       "type": "minecraft:item",
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 0
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 2,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 0
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 2,
+                          "min": 0
                         }
-                      ],
+                      },
                       "name": "hbm:gun_uzi",
                       "weight": 1
                     },
@@ -284,27 +266,25 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 0
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 1,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 0
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 1,
+                              "min": 0
                             }
-                          ],
-                          "functions": [
+                          },
+                          "modifier": [
                             {
+                              "type": "minecraft:set_count",
                               "count": {
                                 "type": "minecraft:uniform",
-                                "max": 16.0,
-                                "min": 12.0
-                              },
-                              "function": "minecraft:set_count"
+                                "max": 16,
+                                "min": 12
+                              }
                             }
                           ],
                           "name": "hbm:circuit_vacuum_tube",
@@ -312,14 +292,14 @@
                         },
                         {
                           "type": "minecraft:item",
-                          "functions": [
+                          "modifier": [
                             {
+                              "type": "minecraft:set_count",
                               "count": {
                                 "type": "minecraft:uniform",
-                                "max": 6.0,
-                                "min": 2.0
-                              },
-                              "function": "minecraft:set_count"
+                                "max": 6,
+                                "min": 2
+                              }
                             }
                           ],
                           "name": "hbm:circuit_chip",

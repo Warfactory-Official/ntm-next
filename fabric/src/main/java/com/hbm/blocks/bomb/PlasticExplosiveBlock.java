@@ -26,7 +26,6 @@ import com.hbm.explosion.vanillant.ComposableExplosion;
 import com.hbm.explosion.vanillant.standard.CellDestruction;
 import com.hbm.interfaces.TriggerHandler;
 import com.hbm.interfaces.TriggerResult;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -44,17 +43,9 @@ import org.jspecify.annotations.Nullable;
 
 public class PlasticExplosiveBlock extends DirectionalBlock
         implements TriggerHandler, ExplosiveBlock {
-    public static final MapCodec<PlasticExplosiveBlock> CODEC =
-            simpleCodec(PlasticExplosiveBlock::new);
-
     public PlasticExplosiveBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN));
-    }
-
-    @Override
-    protected MapCodec<? extends net.minecraft.world.level.block.DirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

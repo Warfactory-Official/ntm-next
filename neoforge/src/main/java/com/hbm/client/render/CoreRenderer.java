@@ -251,22 +251,22 @@ public class CoreRenderer
                     fan.last().normal().set(pose.normal());
 
                     for (int i = 0; i < FLARE_FANS; i++) {
-                        fan.mulPose(
+                        fan.rotate(
                                 (Quaternionfc)
                                         Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-                        fan.mulPose(
+                        fan.rotate(
                                 (Quaternionfc)
                                         Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-                        fan.mulPose(
+                        fan.rotate(
                                 (Quaternionfc)
                                         Axis.ZP.rotationDegrees(random.nextFloat() * 360.0F));
-                        fan.mulPose(
+                        fan.rotate(
                                 (Quaternionfc)
                                         Axis.XP.rotationDegrees(random.nextFloat() * 360.0F));
-                        fan.mulPose(
+                        fan.rotate(
                                 (Quaternionfc)
                                         Axis.YP.rotationDegrees(random.nextFloat() * 360.0F));
-                        fan.mulPose(
+                        fan.rotate(
                                 (Quaternionfc)
                                         Axis.ZP.rotationDegrees(
                                                 random.nextFloat() * 360.0F + spin * 90.0F));

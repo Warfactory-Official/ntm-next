@@ -2,35 +2,27 @@
   "processors": [
     {
       "marker": {
-        "Name": "minecraft:light",
-        "Properties": {
+        "id": "minecraft:light",
+        "properties": {
           "level": "0",
           "waterlogged": "true"
         }
       },
       "options": [
         {
-          "data": {
-            "Name": "hbm:brick_concrete"
-          },
+          "data": "hbm:brick_concrete",
           "weight": 4
         },
         {
-          "data": {
-            "Name": "hbm:brick_concrete_mossy"
-          },
+          "data": "hbm:brick_concrete_mossy",
           "weight": 3
         },
         {
-          "data": {
-            "Name": "hbm:brick_concrete_cracked"
-          },
+          "data": "hbm:brick_concrete_cracked",
           "weight": 2
         },
         {
-          "data": {
-            "Name": "hbm:brick_concrete_broken"
-          },
+          "data": "hbm:brick_concrete_broken",
           "weight": 1
         }
       ],

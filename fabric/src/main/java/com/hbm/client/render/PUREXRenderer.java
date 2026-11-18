@@ -99,13 +99,13 @@ public class PUREXRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(BASE_YAW + s.yaw));
 
         if (s.frame) part(col, ps, FRAME, light);
 
         ps.pushPose();
         ps.translate(1.5, 1.25, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (s.anim * 45D)));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (s.anim * 45D)));
         ps.translate(-1.5, -1.25, 0.0);
         part(col, ps, FAN, light);
         ps.popPose();

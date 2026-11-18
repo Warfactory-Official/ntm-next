@@ -29,6 +29,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -84,7 +85,8 @@ public class MovingItemEntity extends MovingConveyorObjectEntity
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         if (level().isClientSide() || isRemoved()) return InteractionResult.PASS;
 
-        player.getInventory().placeItemBackInInventory(getItemStack().copy());
+        player.getInventory()
+                .placeItemBackInInventory(getItemStack().copy(), Prediction.SERVER_ONLY);
         discard();
         return InteractionResult.SUCCESS;
     }

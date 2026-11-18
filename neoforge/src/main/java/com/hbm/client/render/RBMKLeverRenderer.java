@@ -117,7 +117,7 @@ public class RBMKLeverRenderer
             State state, PoseStack poses, SubmitNodeCollector collector, CameraRenderState camera) {
         poses.pushPose();
         poses.translate(.5, 0, .5);
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.yaw));
         int light = state.lightCoords;
         for (int i = 0; i < state.throwsAt.length; i++) {
             Throw unit = state.throwsAt[i];
@@ -128,7 +128,7 @@ public class RBMKLeverRenderer
                     poses, type, (pose, buffer) -> model.renderPart(pose, buffer, light, -1, BASE));
             poses.pushPose();
             poses.translate(.125, .5625, 0);
-            poses.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-180F * unit.progress));
+            poses.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-180F * unit.progress));
             poses.translate(-.125, -.5625, 0);
             collector.submitCustomGeometry(
                     poses,
@@ -140,7 +140,7 @@ public class RBMKLeverRenderer
                 int width = font.width(unit.label);
                 float scale = Math.min(.0125F, .4F / Math.max(width, 1));
                 poses.scale(scale, -scale, scale);
-                poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+                poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
                 collector.submitText(
                         poses,
                         -width / 2,

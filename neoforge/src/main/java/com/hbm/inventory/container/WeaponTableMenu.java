@@ -23,6 +23,7 @@ import com.hbm.inventory.slot.SlotFiltered;
 import com.hbm.items.weapon.sedna.GunBaseNTItem;
 import com.hbm.items.weapon.sedna.mods.XWeaponModManager;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -231,13 +232,13 @@ public class WeaponTableMenu extends NtmContainerMenu {
                 for (var index = 0; index < MOD_SLOTS; index++) {
                     var modification = modifications.removeItemNoUpdate(index);
                     if (!modification.isEmpty()) {
-                        player.drop(modification, false);
+                        player.drop(modification, false, Prediction.SERVER_ONLY);
                     }
                 }
                 var weapon = workingWeapon.removeItemNoUpdate(0);
                 if (!weapon.isEmpty()) {
                     XWeaponModManager.uninstall(level, weapon, configIndex());
-                    player.drop(weapon, false);
+                    player.drop(weapon, false, Prediction.SERVER_ONLY);
                 }
             } finally {
                 rebuilding = false;

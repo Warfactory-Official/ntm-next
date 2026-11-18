@@ -339,7 +339,7 @@ public class BobbleRenderer
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
         ps.scale(0.25F, 0.25F, 0.25F);
-        ps.mulPose((Quaternionfc) Axis.YN.rotationDegrees(22.5F * s.rotation + 90.0F));
+        ps.rotate((Quaternionfc) Axis.YN.rotationDegrees(22.5F * s.rotation + 90.0F));
         if (s.propOnly) renderProp(s, ps, col);
         else
             renderBobble(
@@ -352,13 +352,13 @@ public class BobbleRenderer
         ItemStackRenderState prop;
         if (state.type == BobbleType.VAER) {
             Pose pose = pose(state.type);
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) pose.body));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) pose.body));
             poseStack.translate(0D, 1.75D, 0D);
-            poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(wobbleX(state.time)));
-            poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(wobbleZ(state.time)));
-            poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) pose.head[0]));
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) pose.head[1]));
-            poseStack.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) pose.head[2]));
+            poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(wobbleX(state.time)));
+            poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees(wobbleZ(state.time)));
+            poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) pose.head[0]));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) pose.head[1]));
+            poseStack.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) pose.head[2]));
             poseStack.translate(0D, -1.75D, 0D);
             prop = state.cigarette;
         } else if (state.type == BobbleType.FRIZZLE) {
@@ -387,12 +387,12 @@ public class BobbleRenderer
         switch (ntm) {
             case VAER -> {
                 ps.translate(0.25, 1.9, 0.075);
-                ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-60));
+                ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-60));
                 ps.scale(0.5F, 0.5F, 0.5F);
             }
             case FRIZZLE -> {
                 ps.translate(0.3, 1.4, -0.2);
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-100));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-100));
                 ps.scale(0.5F, 0.5F, 0.5F);
             }
             case ADAM29 -> {
@@ -460,7 +460,7 @@ public class BobbleRenderer
         OrderedSubmitNodeCollector out = col == null ? null : col.order(order);
 
         ps.pushPose();
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) pose.body));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) pose.body));
 
         if (type == BobbleType.PEEP) part(out, ps, skin, m, light, PEEP_TAIL);
 
@@ -475,11 +475,11 @@ public class BobbleRenderer
 
         ps.pushPose();
         ps.translate(0, 1.75, 0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(wobbleX(time)));
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(wobbleZ(time)));
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) pose.head[0]));
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) pose.head[1]));
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) pose.head[2]));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(wobbleX(time)));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(wobbleZ(time)));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) pose.head[0]));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) pose.head[1]));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) pose.head[2]));
         ps.translate(0, -1.75, 0);
         part(out, ps, skin, m, light, set.head);
 
@@ -493,7 +493,7 @@ public class BobbleRenderer
 
         if (type == BobbleType.NOS) {
             ps.translate(0, 1.75, 0);
-            ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(180));
+            ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(180));
             ps.scale(0.095F, 0.095F, 0.095F);
             all(
                     out,
@@ -520,9 +520,9 @@ public class BobbleRenderer
             double[] rot) {
         ps.pushPose();
         ps.translate(jx, jy, jz);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) rot[0]));
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) rot[1]));
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) rot[2]));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) rot[0]));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) rot[1]));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) rot[2]));
         ps.translate(-jx, -jy, -jz);
         part(col, ps, skin, m, light, partName);
         ps.popPose();
@@ -559,8 +559,8 @@ public class BobbleRenderer
 
         ps.pushPose();
         ps.translate(0, 0.75, 0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(wobbleX(time)));
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(wobbleZ(time)));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(wobbleX(time)));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(wobbleZ(time)));
         ps.translate(0, -0.75, 0);
         part(col, ps, skin, ResourceManager.bobble, light, FUMO_HEAD);
         ps.popPose();
@@ -578,8 +578,8 @@ public class BobbleRenderer
         switch (ntm) {
             case BLUEHAT -> {
                 ps.translate(0.0, 0.875, -0.5);
-                ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90));
-                ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-160));
+                ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90));
+                ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-160));
                 ps.scale(0.0625F, 0.0625F, 0.0625F);
                 part(
                         col,
@@ -593,8 +593,8 @@ public class BobbleRenderer
                 ps.pushPose();
                 ps.translate(0.8, 1.6, 0.4);
                 ps.scale(0.125F, 0.125F, 0.125F);
-                ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(10));
+                ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(10));
                 RenderType gun = RenderTypes.entityCutoutCull(ResourceManager.n_i_4_n_i_tex);
                 for (int p : NI4NI) part(col, ps, gun, ResourceManager.n_i_4_n_i, light, p);
                 ps.popPose();
@@ -612,7 +612,7 @@ public class BobbleRenderer
             }
             case PHEO -> {
                 ps.translate(0.5, 1.15, 0.45);
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-60));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-60));
                 ps.scale(2F, 2F, 2F);
                 all(
                         col,
@@ -624,7 +624,7 @@ public class BobbleRenderer
             case BOB -> {
                 ps.pushPose();
                 ps.translate(0, 0.6875, 0.625);
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
                 ps.scale(0.125F, 0.125F, 0.125F);
                 RenderType nuke = RenderTypes.entityCutoutCull(ResourceManager.fatman_mininuke_tex);
                 ps.translate(-6, 0, 0);
@@ -636,8 +636,8 @@ public class BobbleRenderer
 
                 ps.pushPose();
                 ps.translate(0.25, 0.3125, -0.5);
-                ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
-                ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90));
+                ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
+                ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(90));
                 ps.scale(0.1F, 0.1F, 0.1F);
                 RenderType shotgun =
                         RenderTypes.entityCutoutCull(

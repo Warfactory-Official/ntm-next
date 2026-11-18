@@ -226,7 +226,7 @@ public class BarrelRenderer
         for (int j = 0; j < 4; j++) {
             poseStack.pushPose();
             poseStack.translate(0.5, 0.5, 0.5);
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F * j));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F * j));
             poseStack.translate(0.4, 0.30, -0.24);
             poseStack.scale(1.0F, 0.25F, 0.25F);
             int health = state.health, flame = state.flame, react = state.react;

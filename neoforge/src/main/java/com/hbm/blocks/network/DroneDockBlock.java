@@ -27,7 +27,6 @@ import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.capability.CapabilityBlock;
 import com.hbm.capability.MachineCaps;
 import com.hbm.inventory.BlockMenus;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -40,19 +39,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class DroneDockBlock extends Block implements TickingEntityBlock, CapabilityBlock {
-    public static final MapCodec<DroneDockBlock> CODEC =
-            simpleCodec(props -> new DroneDockBlock(props, Kind.DOCK));
-
     private final Kind kind;
 
     public DroneDockBlock(Properties props, Kind kind) {
         super(props);
         this.kind = kind;
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     public Kind kind() {

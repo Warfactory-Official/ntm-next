@@ -376,7 +376,7 @@ public class CanneryCrucible extends CanneryBase {
             ps.translate(x, y, z);
             ps.pushPose();
             ps.translate(0.5, 0, 0.5);
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(180));
             context.collector()
                     .submitCustomGeometry(
                             ps,

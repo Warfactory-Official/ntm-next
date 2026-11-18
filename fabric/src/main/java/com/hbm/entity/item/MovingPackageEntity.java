@@ -30,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -82,7 +83,7 @@ public class MovingPackageEntity extends MovingConveyorObjectEntity
         if (level().isClientSide() || isRemoved()) return InteractionResult.PASS;
 
         for (ItemStack stack : this.contents) {
-            player.getInventory().placeItemBackInInventory(stack);
+            player.getInventory().placeItemBackInInventory(stack, Prediction.SERVER_ONLY);
         }
 
         discard();

@@ -56,7 +56,7 @@ public class MixinSmoothLightPipeline implements ModelLightCache {
             QuadLightData out,
             Direction cullFace,
             Direction lightFace,
-            boolean shade,
+            Direction shadeOverride,
             boolean enhanced,
             CallbackInfo ci) {
         if (quad instanceof QuadViewImpl view && QuadLighting.isOwnBlock(view.getTag())) {

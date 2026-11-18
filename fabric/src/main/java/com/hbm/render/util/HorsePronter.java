@@ -183,9 +183,9 @@ public class HorsePronter {
         double[] rotation = angles[id];
         double[] offset = offsets[id];
         ps.translate(offset[0], offset[1], offset[2]);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees((float) rotation[0]));
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) rotation[1]));
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) rotation[2]));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees((float) rotation[0]));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) rotation[1]));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) rotation[2]));
         ps.translate(-offset[0], -offset[1], -offset[2]);
     }
 

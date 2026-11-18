@@ -36,7 +36,7 @@ public abstract class MixinItemEntity {
         if (stack.getItem() instanceof NuclearWasteItem) {
             ItemEntity self = (ItemEntity) (Object) this;
             self.setUnlimitedLifetime();
-            ((Entity) self).setInvulnerable(true);
+            ((Entity) self).setPermanentlyInvulnerable(true);
         }
     }
 }

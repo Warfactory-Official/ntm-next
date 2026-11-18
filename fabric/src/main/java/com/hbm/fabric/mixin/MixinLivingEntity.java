@@ -19,10 +19,15 @@
 
 package com.hbm.fabric.mixin;
 
+import com.hbm.handler.ArmorModHandler;
 import com.hbm.items.armor.ArmorDamageHandler;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,6 +35,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = LivingEntity.class, priority = 1100)
 abstract class MixinLivingEntity {
+    @Inject(
+            method =
+                    "drop(Lnet/minecraft/world/item/ItemStack;ZLnet/minecraft/util/Prediction;)Lnet/minecraft/world/entity/item/ItemEntity;",
+            at = @At("RETURN"))
+    private void hbm$claddingSurvivesTheToss(
+            ItemStack stack,
+            boolean thrownFromHand,
+            Prediction prediction,
+            CallbackInfoReturnable<ItemEntity> cir) {
+        if (!((Object) this instanceof Player)) return;
+        ItemEntity dropped = cir.getReturnValue();
+        if (dropped != null) ArmorModHandler.onItemTossed(dropped);
+    }
+
     @Inject(
             method = "hurtServer",
             at =

@@ -88,13 +88,11 @@ public class NtmFeaturesStructure extends Structure implements ColumnBiome.SelfT
         boolean flat = Math.abs(meanHeight - centerHeight) <= FLATNESS_TOLERANCE_BLOCKS;
 
         Holder<Biome> biomeHolder =
-                context.chunkGenerator()
-                        .getBiomeSource()
+                context.biomeResolver()
                         .getNoiseBiome(
                                 QuartPos.fromBlock(x),
                                 QuartPos.fromBlock(centerHeight),
-                                QuartPos.fromBlock(z),
-                                context.randomState().sampler());
+                                QuartPos.fromBlock(z));
         Biome biome = biomeHolder.value();
         boolean hotDryNonMesa =
                 biome.getBaseTemperature() >= 1.0F

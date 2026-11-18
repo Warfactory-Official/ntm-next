@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -48,8 +47,6 @@ public class WoodBarrierBlock extends HorizontalDirectionalBlock implements Simp
     public static final BooleanProperty FRONT = BooleanProperty.create("front");
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
     public static final BooleanProperty RIGHT = BooleanProperty.create("right");
-
-    public static final MapCodec<WoodBarrierBlock> CODEC = simpleCodec(WoodBarrierBlock::new);
 
     private static final double OFF = 0.125;
     private static final VoxelShape[] PANEL = new VoxelShape[4];
@@ -104,11 +101,6 @@ public class WoodBarrierBlock extends HorizontalDirectionalBlock implements Simp
                                 property, level.getBlockState(pos.relative(side)).isSolidRender());
         }
         return state;
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

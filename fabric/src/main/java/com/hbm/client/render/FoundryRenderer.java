@@ -24,15 +24,15 @@ import com.hbm.blockentity.machine.FoundryRenderProvider;
 import com.hbm.client.render.flywheel.WorldItem;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.util.Vertices;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
 import dev.engine_room.flywheel.api.visualization.ConcurrentRenderStateExtraction;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.minecraft.client.Minecraft;
@@ -189,7 +189,7 @@ public class FoundryRenderer
 
     public static void flatItemPose(PoseStack ps, double height) {
         ps.translate(0.5, height, 0.5);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-90));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(-90));
         ps.scale(0.75F, 0.75F, 0.75F);
     }
 

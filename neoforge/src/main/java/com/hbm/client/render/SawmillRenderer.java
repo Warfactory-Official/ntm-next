@@ -107,12 +107,12 @@ public class SawmillRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         if (s.hasBlade) {
             ps.pushPose();
             ps.translate(0.0, 1.375, 0.0);
-            ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-s.rot * 2F));
+            ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-s.rot * 2F));
             ps.translate(0.0, -1.375, 0.0);
             part(col, ps, light, BLADE);
             ps.popPose();
@@ -120,14 +120,14 @@ public class SawmillRenderer
 
         ps.pushPose();
         ps.translate(0.5625, 1.375, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(s.rot));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(s.rot));
         ps.translate(-0.5625, -1.375, 0.0);
         part(col, ps, light, GEAR_LEFT);
         ps.popPose();
 
         ps.pushPose();
         ps.translate(-0.5625, 1.375, 0.0);
-        ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-s.rot));
+        ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-s.rot));
         ps.translate(0.5625, -1.375, 0.0);
         part(col, ps, light, GEAR_RIGHT);
         ps.popPose();

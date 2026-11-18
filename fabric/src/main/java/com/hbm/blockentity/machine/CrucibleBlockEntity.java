@@ -68,6 +68,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -587,7 +588,8 @@ public class CrucibleBlockEntity extends MachineBlockEntity
     }
 
     public void scoopMelt(Player player) {
-        for (ItemStack scrap : takeMelt()) player.getInventory().placeItemBackInInventory(scrap);
+        for (ItemStack scrap : takeMelt())
+            player.getInventory().placeItemBackInInventory(scrap, Prediction.SERVER_ONLY);
     }
 
     @Override

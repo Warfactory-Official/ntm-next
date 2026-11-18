@@ -102,13 +102,13 @@ public class BoxcarRenderer<T extends Entity> extends EntityRenderer<T, BoxcarRe
         switch (this.kind) {
             case BOXCAR -> {
                 pose.translate(0, 0, -1.5F);
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(180));
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(180));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90));
             }
             case DUCHESS_GAMBIT -> pose.translate(0, 0, -1.0F);
             case BUILDING -> {}
             case TORPEDO ->
-                    pose.mulPose(
+                    pose.rotate(
                             (Quaternionfc) Axis.XP.rotationDegrees(Math.min(85, state.age * 3)));
         }
 

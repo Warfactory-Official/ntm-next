@@ -57,7 +57,12 @@ public class SoyuzCapsuleRenderer extends EntityRenderer<SoyuzCapsule, SoyuzCaps
 
     @Override
     public boolean shouldRender(
-            SoyuzCapsule entity, Frustum culler, double camX, double camY, double camZ) {
+            SoyuzCapsule entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         return true;
     }
 
@@ -81,10 +86,10 @@ public class SoyuzCapsuleRenderer extends EntityRenderer<SoyuzCapsule, SoyuzCaps
         int light = state.lightCoords;
         poseStack.pushPose();
         poseStack.translate(0D, PIVOT, 0D);
-        poseStack.mulPose(
+        poseStack.rotate(
                 (Quaternionfc)
                         Axis.ZP.rotationDegrees((float) (Math.sin(state.time * 0.05D) * 5D)));
-        poseStack.mulPose(
+        poseStack.rotate(
                 (Quaternionfc)
                         Axis.XP.rotationDegrees(
                                 (float) (Math.sin(state.time * 0.05D + Math.PI * 0.5D) * 5D)));

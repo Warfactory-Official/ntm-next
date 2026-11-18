@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -34,16 +33,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 public class ReinforcedGlassPaneBlock extends IronBarsBlock {
-    public static final MapCodec<ReinforcedGlassPaneBlock> CODEC =
-            simpleCodec(ReinforcedGlassPaneBlock::new);
-
     public ReinforcedGlassPaneBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    public MapCodec<? extends IronBarsBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -80,10 +80,10 @@ public class FusionMHDTRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         ps.translate(0.0, 1.5, 0.0);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.rotor));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.rotor));
         ps.translate(0.0, -1.5, 0.0);
         col.submitCustomGeometry(
                 ps, baseType, (pose, buffer) -> model.renderPart(pose, buffer, light, -1, COILS));

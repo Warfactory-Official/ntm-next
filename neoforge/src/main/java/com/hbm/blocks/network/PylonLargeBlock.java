@@ -21,7 +21,6 @@ package com.hbm.blocks.network;
 
 import com.hbm.blockentity.network.PylonLargeBlockEntity;
 import com.hbm.blocks.multiblock.MultiblockCoreBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +28,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,15 +35,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class PylonLargeBlock extends MultiblockCoreBlock implements EntityBlock {
-    public static final MapCodec<PylonLargeBlock> CODEC = simpleCodec(PylonLargeBlock::new);
-
     public PylonLargeBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

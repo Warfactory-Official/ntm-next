@@ -22,11 +22,14 @@ package com.hbm.mixin;
 import com.hbm.saveddata.TomSaveData;
 import com.hbm.world.ImpactWorldgen;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.levelgen.NoiseChunk;
 import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.material.rule.MaterialRule;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,15 +37,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NoiseBasedChunkGenerator.class)
 public abstract class MixinNoiseBasedChunkGenerator {
-    @Inject(method = "applyCarvers", at = @At("TAIL"))
+    @Inject(method = "generateCarvers", at = @At("TAIL"))
     private void hbm$impactTopBlock(
-            WorldGenRegion region,
-            long seed,
+            ChunkAccess chunk,
+            Blender blender,
+            NoiseChunk noiseChunk,
             RandomState randomState,
             BiomeManager biomeManager,
-            StructureManager structureManager,
-            ChunkAccess chunk,
+            @Nullable WorldGenRegion region,
+            MaterialRule materialRule,
             CallbackInfo ci) {
-        ImpactWorldgen.scorchSurface(TomSaveData.published(region.getLevel()), chunk);
+        if (region != null)
+            ImpactWorldgen.scorchSurface(TomSaveData.published(region.getLevel()), chunk);
     }
 }

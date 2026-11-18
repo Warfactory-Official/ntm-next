@@ -12,19 +12,17 @@
               "children": [
                 {
                   "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 9
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 19,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 9
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 19,
+                      "min": 0
                     }
-                  ],
+                  },
                   "name": "hbm:radaway",
                   "weight": 10
                 },
@@ -34,38 +32,34 @@
                   "weight": 10
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 19
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 39,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 19
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 39,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
               "children": [
                 {
                   "type": "minecraft:item",
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 14
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 19,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 14
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 19,
+                      "min": 0
                     }
-                  ],
+                  },
                   "name": "hbm:iv_blood",
                   "weight": 15
                 },

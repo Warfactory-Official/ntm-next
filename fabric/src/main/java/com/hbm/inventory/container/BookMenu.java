@@ -37,6 +37,7 @@ import com.hbm.inventory.recipes.MagicRecipes;
 import com.hbm.items.ModItems;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -118,7 +119,7 @@ public final class BookMenu extends NtmContainerMenu {
 
         for (int slot = 0; slot < craftMatrix.getContainerSize(); slot++) {
             ItemStack stack = craftMatrix.removeItemNoUpdate(slot);
-            if (!stack.isEmpty()) player.drop(stack, false);
+            if (!stack.isEmpty()) player.drop(stack, false, Prediction.SERVER_ONLY);
         }
     }
 

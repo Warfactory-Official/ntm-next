@@ -33,23 +33,63 @@
 
 package com.hbm.world.feature;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 
-public class OilBubbleFeature extends Feature<OilBubbleConfig> {
-    public OilBubbleFeature() {
-        super(OilBubbleConfig.CODEC);
+public record OilBubbleFeature(
+        BlockState core, RuleTest replaceable, int minSize, int maxSize, boolean fuzzy)
+        implements Feature {
+    public static final MapCodec<OilBubbleFeature> CODEC =
+            RecordCodecBuilder.<OilBubbleFeature>mapCodec(
+                            inst ->
+                                    inst.group(
+                                                    BlockState.CODEC
+                                                            .fieldOf("core")
+                                                            .forGetter(OilBubbleFeature::core),
+                                                    RuleTest.CODEC
+                                                            .fieldOf("replaceable")
+                                                            .forGetter(
+                                                                    OilBubbleFeature::replaceable),
+                                                    Codec.intRange(0, Integer.MAX_VALUE)
+                                                            .fieldOf("min_size")
+                                                            .forGetter(OilBubbleFeature::minSize),
+                                                    Codec.intRange(1, Integer.MAX_VALUE)
+                                                            .fieldOf("max_size")
+                                                            .forGetter(OilBubbleFeature::maxSize),
+                                                    Codec.BOOL
+                                                            .fieldOf("fuzzy")
+                                                            .forGetter(OilBubbleFeature::fuzzy))
+                                            .apply(inst, OilBubbleFeature::new))
+                    .validate(
+                            config ->
+                                    config.maxSize() > config.minSize()
+                                            ? DataResult.success(config)
+                                            : DataResult.error(
+                                                    () -> "max_size must exceed min_size"));
+
+    @Override
+    public MapCodec<OilBubbleFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<OilBubbleConfig> ctx) {
-        WorldGenLevel level = ctx.level();
-        OilBubbleConfig cfg = ctx.config();
-        RandomSource rand = ctx.random();
-        BlockPos origin = ctx.origin();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        OilBubbleFeature cfg = this;
+        RandomSource rand = random;
+        BlockPos origin = featureOrigin;
 
         int radius = cfg.minSize() + rand.nextInt(cfg.maxSize() - cfg.minSize());
         double radiusSqr = (radius * radius) / 2.0D;
@@ -66,7 +106,7 @@ public class OilBubbleFeature extends Feature<OilBubbleConfig> {
                     if (zz >= threshold) continue;
 
                     pos.set(origin.getX() + dx, origin.getY() + dy, origin.getZ() + dz);
-                    if (cfg.replaceable().test(level.getBlockState(pos), rand)) {
+                    if (cfg.replaceable().test(level.getBlockState(pos), (BlockPos) pos, rand)) {
                         level.setBlock(pos, cfg.core(), 2);
                     }
                 }

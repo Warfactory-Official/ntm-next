@@ -20,9 +20,13 @@
 package com.hbm.mixin;
 
 import com.hbm.api.client.CloudLayers;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import java.util.Optional;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.renderer.CloudRenderer;
+import net.minecraft.client.renderer.oit.OitRenderPassProvider;
+import net.minecraft.client.renderer.oit.OitStage;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.phys.Vec3;
@@ -39,8 +43,11 @@ public class MixinCloudRenderer {
         return (Object) this.getClass() == CloudRenderer.class;
     }
 
-    @Inject(method = "render", at = @At("TAIL"))
-    private void hbm$addonLayers(
+    @Inject(
+            method =
+                    "prepare(ILnet/minecraft/client/CloudStatus;FILnet/minecraft/world/phys/Vec3;JF)V",
+            at = @At("TAIL"))
+    private void hbm$prepareAddonLayers(
             int color,
             CloudStatus status,
             float bottomY,
@@ -50,7 +57,25 @@ public class MixinCloudRenderer {
             float partialTicks,
             CallbackInfo ci) {
         if (hbm$vanilla())
-            CloudLayers.render(color, status, bottomY, range, camera, gameTime, partialTicks);
+            CloudLayers.prepare(color, status, bottomY, range, camera, gameTime, partialTicks);
+    }
+
+    @Inject(
+            method =
+                    "render(Lnet/minecraft/client/CloudStatus;Lcom/mojang/renderpearl/api/commands/RenderPass;)V",
+            at = @At("TAIL"))
+    private void hbm$addonLayers(CloudStatus status, RenderPass pass, CallbackInfo ci) {
+        if (hbm$vanilla()) CloudLayers.render(status, pass);
+    }
+
+    @Inject(method = "renderOit", at = @At("TAIL"))
+    private void hbm$addonOitLayers(
+            CloudStatus status,
+            OitStage stage,
+            GpuTextureView mainDepth,
+            OitRenderPassProvider.Parameters parameters,
+            CallbackInfo ci) {
+        if (hbm$vanilla()) CloudLayers.renderOit(status, stage, mainDepth, parameters);
     }
 
     @Inject(

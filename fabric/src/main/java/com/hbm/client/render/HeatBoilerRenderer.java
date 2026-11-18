@@ -96,7 +96,7 @@ public class HeatBoilerRenderer
         int light = s.lightCoords;
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         final HFRWavefrontObject boiler = this.model;
         final HFRWavefrontObject burst = this.burstModel;

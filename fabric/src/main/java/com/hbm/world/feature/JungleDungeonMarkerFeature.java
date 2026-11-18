@@ -21,30 +21,39 @@ package com.hbm.world.feature;
 
 import com.hbm.util.RegistryUtil;
 import com.hbm.world.gen.WorldgenHeight;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 
-public final class JungleDungeonMarkerFeature extends Feature<NoneFeatureConfiguration> {
+public final class JungleDungeonMarkerFeature implements Feature {
+    public static final MapCodec<JungleDungeonMarkerFeature> CODEC =
+            MapCodec.unit(JungleDungeonMarkerFeature::new);
+
     public static final Identifier TEMPLATE = RegistryUtil.id("jungle/surface_marker");
     private static final ResourceKey<Structure> DUNGEON =
             ResourceKey.create(Registries.STRUCTURE, RegistryUtil.id("jungle_dungeon"));
 
-    public JungleDungeonMarkerFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+    @Override
+    public MapCodec<JungleDungeonMarkerFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        var level = context.level();
-        int chunkX = context.origin().getX() >> 4, chunkZ = context.origin().getZ() >> 4;
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        int chunkX = featureOrigin.getX() >> 4, chunkZ = featureOrigin.getZ() >> 4;
         var structure =
                 level.registryAccess()
                         .lookupOrThrow(Registries.STRUCTURE)
@@ -58,7 +67,7 @@ public final class JungleDungeonMarkerFeature extends Feature<NoneFeatureConfigu
         BlockPos origin = new BlockPos(x, WorldgenHeight.lightBlocking(level, x, z), z);
         var template =
                 level.getLevel()
-                        .getStructureManager()
+                        .getStructureTemplateManager()
                         .get(TEMPLATE)
                         .orElseThrow(
                                 () ->
@@ -66,6 +75,6 @@ public final class JungleDungeonMarkerFeature extends Feature<NoneFeatureConfigu
                                                 "missing jungle dungeon marker template "
                                                         + TEMPLATE));
         return template.placeInWorld(
-                level, origin, origin, new StructurePlaceSettings(), context.random(), 2);
+                level, origin, origin, new StructurePlaceSettings(), random, 2);
     }
 }

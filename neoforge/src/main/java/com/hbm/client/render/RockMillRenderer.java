@@ -95,9 +95,9 @@ public class RockMillRenderer
             State state, PoseStack poses, SubmitNodeCollector collector, CameraRenderState camera) {
         poses.pushPose();
         poses.translate(0.5, 0, 0.5);
-        poses.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F + state.yaw));
+        poses.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F + state.yaw));
         if (state.frame) part(collector, poses, FRAME, state.lightCoords);
-        poses.mulPose((Quaternionfc) Axis.YN.rotationDegrees(state.rotation));
+        poses.rotate((Quaternionfc) Axis.YN.rotationDegrees(state.rotation));
         part(collector, poses, WHEEL, state.lightCoords);
         poses.popPose();
     }

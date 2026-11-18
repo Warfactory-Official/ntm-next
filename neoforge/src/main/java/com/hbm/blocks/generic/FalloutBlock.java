@@ -24,7 +24,6 @@ import com.hbm.extprop.LivingHazards;
 import com.hbm.items.ModItems;
 import com.hbm.potion.HbmPotion;
 import com.hbm.potion.UncurableEffectInstance;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -62,13 +61,6 @@ public class FalloutBlock extends Block {
             Block.boxes(
                     SnowLayerBlock.MAX_HEIGHT,
                     layers -> Block.column(16.0, 0.0, 16.0 * layers / SnowLayerBlock.MAX_HEIGHT));
-
-    public static final MapCodec<FalloutBlock> CODEC = simpleCodec(FalloutBlock::new);
-
-    @Override
-    protected MapCodec<? extends FalloutBlock> codec() {
-        return CODEC;
-    }
 
     public FalloutBlock(BlockBehaviour.Properties properties) {
         super(properties);

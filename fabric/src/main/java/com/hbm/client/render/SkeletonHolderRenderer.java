@@ -98,8 +98,8 @@ public class SkeletonHolderRenderer
 
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(renderAngle(state.facing)));
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(renderAngle(state.facing)));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90F));
         if (state.mesh) {
             poseStack.scale(1.5F, 1.5F, 1.5F);
             poseStack.translate(0.0, 0.125, 0.0);
@@ -109,7 +109,7 @@ public class SkeletonHolderRenderer
             poseStack.translate(0.0, FramedItem.FRAMED_BOB, 0.0);
             poseStack.scale(1.25F, 1.25F, 1.25F);
             poseStack.translate(0.0, 0.05F, 0.0);
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-90.0F));
             poseStack.scale(0.25F, 0.25F, 0.25F);
         } else {
             poseStack.scale(1.5F, 1.5F, 1.5F);

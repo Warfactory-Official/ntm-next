@@ -1,0 +1,16 @@
+{
+  "type": "hbm:ore_cave",
+  "domain": "hbm:noise/ore_cave_sulfur",
+  "fluid": "hbm:sulfuric_acid_block",
+  "max_range": 20,
+  "ore": "hbm:stone_resource_sulfur",
+  "range_mult": 20,
+  "replaceable": {
+    "predicate_type": "minecraft:tag_match",
+    "tag": "minecraft:base_stone_overworld"
+  },
+  "stalactite": "hbm:stalactite_sulfur",
+  "stalagmite": "hbm:stalagmite_sulfur",
+  "threshold": 1.5,
+  "y_level": 30
+}

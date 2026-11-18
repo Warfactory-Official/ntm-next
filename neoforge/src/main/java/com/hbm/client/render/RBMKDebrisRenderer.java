@@ -103,8 +103,8 @@ public class RBMKDebrisRenderer extends EntityRenderer<RBMKDebrisEntity, RBMKDeb
 
         poseStack.pushPose();
         poseStack.translate(0.0, 0.125, 0.0);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(state.idSpin));
-        poseStack.mulPose(
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(state.idSpin));
+        poseStack.rotate(
                 (Quaternionfc)
                         new Quaternionf()
                                 .rotationAxis((float) Math.toRadians(state.rot), DIAG, DIAG, DIAG));

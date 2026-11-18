@@ -9,38 +9,41 @@
           "children": [
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "condition": "minecraft:match_tool",
-                  "predicate": {
-                    "predicates": {
-                      "minecraft:enchantments": [
-                        {
-                          "enchantments": "minecraft:silk_touch",
-                          "levels": {
-                            "min": 1
+              "condition": {
+                "type": "minecraft:all_of",
+                "terms": [
+                  {
+                    "type": "minecraft:match_tool",
+                    "predicate": {
+                      "predicates": {
+                        "minecraft:enchantments": [
+                          {
+                            "enchantments": "minecraft:silk_touch",
+                            "levels": {
+                              "min": 1
+                            }
                           }
-                        }
-                      ]
+                        ]
+                      }
                     }
                   }
-                }
-              ],
+                ]
+              },
               "name": "hbm:frozen_log"
             },
             {
               "type": "minecraft:item",
-              "functions": [
+              "modifier": [
                 {
+                  "type": "minecraft:set_count",
                   "count": {
                     "type": "minecraft:uniform",
                     "max": 4,
                     "min": 2
-                  },
-                  "function": "minecraft:set_count"
+                  }
                 },
                 {
-                  "function": "minecraft:explosion_decay"
+                  "type": "minecraft:explosion_decay"
                 }
               ],
               "name": "minecraft:snowball"

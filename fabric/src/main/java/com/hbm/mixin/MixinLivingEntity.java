@@ -67,6 +67,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -428,7 +429,7 @@ public class MixinLivingEntity implements ArmorModWearer {
                 @At(
                         value = "FIELD",
                         opcode = Opcodes.PUTFIELD,
-                        target = "Lnet/minecraft/world/entity/LivingEntity;invulnerableTime:I"),
+                        target = "Lnet/minecraft/world/entity/LivingEntity;damageCooldownTime:I"),
                 @At(
                         value = "FIELD",
                         opcode = Opcodes.PUTFIELD,
@@ -452,9 +453,15 @@ public class MixinLivingEntity implements ArmorModWearer {
             ArmorUtil.drainSupplyForWear((LivingEntity) (Object) this, slot, wear);
     }
 
-    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V", at = @At("HEAD"))
+    @Inject(
+            method =
+                    "swing(Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/item/component/SwingAnimation;Z)Z",
+            at = @At("HEAD"))
     private void hbm$entitySwing(
-            InteractionHand hand, boolean sendToSwingingEntity, CallbackInfo ci) {
+            InteractionHand hand,
+            SwingAnimation animation,
+            boolean sendToSwingingEntity,
+            CallbackInfoReturnable<Boolean> cir) {
         if (hand != InteractionHand.MAIN_HAND || !((Object) this instanceof ServerPlayer player))
             return;
         ItemStack stack = player.getMainHandItem();
@@ -464,7 +471,7 @@ public class MixinLivingEntity implements ArmorModWearer {
 
     @Inject(
             method =
-                    "drop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;",
+                    "createItemStackToDrop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;",
             at = @At("HEAD"),
             cancellable = true)
     private void hbm$discardAkimboGhost(

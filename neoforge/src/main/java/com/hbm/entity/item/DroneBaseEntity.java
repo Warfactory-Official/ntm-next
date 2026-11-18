@@ -42,6 +42,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.InterpolationHandler;
+import net.minecraft.world.entity.LinearInterpolationHandler;
+import net.minecraft.world.entity.MoveSimulationType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -52,8 +54,6 @@ import net.minecraft.world.phys.Vec3;
 public abstract class DroneBaseEntity extends Entity {
     private static final EntityDataAccessor<Byte> APPEARANCE =
             SynchedEntityData.defineId(DroneBaseEntity.class, EntityDataSerializers.BYTE);
-
-    private final InterpolationHandler interpolation = new InterpolationHandler(this);
 
     public double targetX = -1;
     public double targetY = -1;
@@ -69,8 +69,8 @@ public abstract class DroneBaseEntity extends Entity {
     }
 
     @Override
-    public InterpolationHandler getInterpolation() {
-        return this.interpolation;
+    protected InterpolationHandler createInterpolationHandler() {
+        return LinearInterpolationHandler.create(this);
     }
 
     public void setTarget(double x, double y, double z) {
@@ -109,8 +109,12 @@ public abstract class DroneBaseEntity extends Entity {
     }
 
     @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
+    }
+
+    @Override
     public void tick() {
-        this.interpolation.interpolate();
         super.tick();
 
         if (level().isClientSide()) {

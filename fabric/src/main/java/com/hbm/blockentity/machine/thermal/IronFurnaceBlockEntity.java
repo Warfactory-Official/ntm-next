@@ -159,7 +159,7 @@ public class IronFurnaceBlockEntity extends SmeltingFurnaceBlockEntity
     }
 
     private int fuelTime(ItemStack stack) {
-        return burnModule.getBurnTime(level, stack);
+        return burnModule.getBurnTime(this, stack);
     }
 
     public boolean canSmelt() {
@@ -212,7 +212,7 @@ public class IronFurnaceBlockEntity extends SmeltingFurnaceBlockEntity
         return switch (slot) {
             case SLOT_INPUT ->
                     level instanceof ServerLevel server && smelting.accepts(server, stack);
-            case SLOT_FUEL_A, SLOT_FUEL_B -> fuelTime(stack) > 0;
+            case SLOT_FUEL_A, SLOT_FUEL_B -> burnModule.isFuel(this, stack);
             default -> false;
         };
     }

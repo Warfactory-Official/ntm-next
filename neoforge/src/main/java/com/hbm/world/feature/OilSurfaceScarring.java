@@ -49,7 +49,7 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.BlockReplacement;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.jspecify.annotations.Nullable;
 
@@ -292,7 +292,7 @@ public final class OilSurfaceScarring {
             int zCoord,
             int width,
             int count,
-            List<OreConfiguration.TargetBlockState> scars) {
+            List<BlockReplacement> scars) {
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos sub = new BlockPos.MutableBlockPos();
         BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
@@ -366,10 +366,10 @@ public final class OilSurfaceScarring {
             RandomSource rand,
             BlockPos pos,
             BlockState state,
-            List<OreConfiguration.TargetBlockState> scars) {
-        for (OreConfiguration.TargetBlockState scar : scars) {
-            if (scar.target.test(state, rand)) {
-                level.setBlock(pos, scar.state, 2);
+            List<BlockReplacement> scars) {
+        for (BlockReplacement scar : scars) {
+            if (scar.target().test(state, pos, rand)) {
+                level.setBlock(pos, scar.state(), 2);
                 return true;
             }
         }

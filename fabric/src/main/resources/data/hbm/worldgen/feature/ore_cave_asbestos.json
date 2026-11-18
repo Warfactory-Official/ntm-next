@@ -1,0 +1,15 @@
+{
+  "type": "hbm:ore_cave",
+  "domain": "hbm:noise/ore_cave_asbestos",
+  "max_range": 20,
+  "ore": "hbm:stone_resource_asbestos",
+  "range_mult": 20,
+  "replaceable": {
+    "predicate_type": "minecraft:tag_match",
+    "tag": "minecraft:base_stone_overworld"
+  },
+  "stalactite": "hbm:stalactite_asbestos",
+  "stalagmite": "hbm:stalagmite_asbestos",
+  "threshold": 1.75,
+  "y_level": 25
+}

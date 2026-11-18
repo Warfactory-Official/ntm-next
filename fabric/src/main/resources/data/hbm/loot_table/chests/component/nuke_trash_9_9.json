@@ -11,7 +11,7 @@
       ],
       "rolls": {
         "type": "hbm:config_scaled",
-        "value": 9.0
+        "value": 9
       }
     }
   ],

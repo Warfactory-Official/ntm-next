@@ -219,7 +219,7 @@ public class CanneryFEnSU extends CanneryBase {
                     data.getDoubleOr("x", 0) + 0.5D,
                     data.getDoubleOr("y", 0),
                     data.getDoubleOr("z", 0) + 0.5D);
-            ps.mulPose(
+            ps.rotate(
                     (Quaternionfc)
                             Axis.YP.rotationDegrees(
                                     switch (data.getIntOr("rotation", 3)) {
@@ -238,7 +238,7 @@ public class CanneryFEnSU extends CanneryBase {
             float spin = data.getFloatOr("lastSpin", 0);
             float next = data.getFloatOr("spin", 0);
             ps.translate(0, 2.5, 0);
-            ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(spin + (next - spin) * interp));
+            ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(spin + (next - spin) * interp));
             ps.translate(0, -2.5, 0);
             col.submitCustomGeometry(
                     ps,

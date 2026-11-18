@@ -9,7 +9,7 @@
           "value": "hbm:chests/antenna"
         }
       ],
-      "rolls": 8.0
+      "rolls": 8
     }
   ],
   "random_sequence": "hbm:chests/component/unscaled/antenna_8_8"

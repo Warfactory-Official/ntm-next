@@ -90,8 +90,8 @@ public class PlasmaBlastParticleGroup extends ParticleGroup<PlasmaBlastParticle>
             for (Instance in : instances) {
                 pose.pushPose();
                 pose.translate(in.relX, in.relY, in.relZ);
-                pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(in.yaw));
-                pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(in.pitch));
+                pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(in.yaw));
+                pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(in.pitch));
 
                 float s = in.scale;
                 int color = ARGB.colorFromFloat(in.alpha, in.r, in.g, in.b);

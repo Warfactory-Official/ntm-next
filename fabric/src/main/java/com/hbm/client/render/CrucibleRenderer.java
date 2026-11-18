@@ -447,7 +447,7 @@ public class CrucibleRenderer
             final double y = 0.5 + s.meltLevel;
             ps.pushPose();
             ps.translate(0.5, 0.0, 0.5);
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(s.facing, 90)));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(Facing.yaw(s.facing, 90)));
             col.submitCustomGeometry(
                     ps,
                     meltType,

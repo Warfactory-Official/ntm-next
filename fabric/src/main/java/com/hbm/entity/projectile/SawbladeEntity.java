@@ -48,6 +48,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -110,7 +111,9 @@ public class SawbladeEntity extends InterpolatedProjectileEntity implements FarV
     public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
 
         if (!level().isClientSide()) {
-            player.getInventory().placeItemBackInInventory(new ItemStack(ModItems.SAWBLADE));
+            player.getInventory()
+                    .placeItemBackInInventory(
+                            new ItemStack(ModItems.SAWBLADE), Prediction.SERVER_ONLY);
             this.discard();
         }
 

@@ -62,7 +62,8 @@ public final class ProjectilePath {
                                 matching,
                                 margin,
                                 ClipContext.Block.COLLIDER,
-                                false));
+                                false,
+                                true));
         hits.sort(Comparator.comparingDouble(hit -> from.distanceToSqr(hit.getLocation())));
         return hits;
     }

@@ -18,19 +18,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 9
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 29,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 9
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 29,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:ballistic_gauntlet",
                           "weight": 10
                         },
@@ -39,19 +37,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 9
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 19,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 9
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 19,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:armor_polish",
                               "weight": 10
                             },
@@ -63,38 +59,34 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 29
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 59,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 29
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 59,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 9
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 29,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 9
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 29,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:serum",
                           "weight": 10
                         },
@@ -103,19 +95,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 9
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 19,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 9
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 19,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:quartz_plutonium",
                               "weight": 10
                             },
@@ -129,19 +119,17 @@
                       ]
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 59
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 114,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 59
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 114,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
@@ -151,19 +139,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 9
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 29,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 9
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 29,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:spider_milk",
                           "weight": 10
                         },
@@ -172,19 +158,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 9
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 19,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 9
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 19,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:ink",
                               "weight": 10
                             },
@@ -196,38 +180,34 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 29
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 54,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 29
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 54,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 9
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 24,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 9
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 24,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:black_diamond",
                           "weight": 10
                         },
@@ -236,19 +216,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 9
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 14,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 9
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 14,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:scrumpy",
                               "weight": 10
                             },
@@ -264,19 +242,17 @@
                   ]
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 114
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 159,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 114
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 159,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
@@ -289,19 +265,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 4
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 14,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 4
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 14,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:card_aos",
                           "weight": 5
                         },
@@ -310,19 +284,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 4
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 9,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 4
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 9,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:card_qos",
                               "weight": 5
                             },
@@ -334,38 +306,34 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 14
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 29,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 14
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 29,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 4
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 14,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 4
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 14,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:gem_alexandrite",
                           "weight": 5
                         },
@@ -374,19 +342,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 4
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 9,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 4
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 9,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:crackpipe",
                               "weight": 5
                             },
@@ -400,19 +366,17 @@
                       ]
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 29
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 44,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 29
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 44,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
@@ -422,19 +386,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 4
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 10,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 4
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 10,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:boxcar",
                           "weight": 5
                         },
@@ -443,19 +405,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 4
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 5,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 4
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 5,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:book_of_",
                               "weight": 5
                             },
@@ -467,19 +427,17 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 10
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 14,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 10
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 14,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
@@ -489,19 +447,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 0
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 1,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 0
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 1,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:gun_mas36",
                               "weight": 1
                             },
@@ -511,38 +467,34 @@
                               "weight": 1
                             }
                           ],
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 1
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 3,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 1
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 3,
+                              "min": 0
                             }
-                          ]
+                          }
                         },
                         {
                           "type": "minecraft:alternatives",
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 0
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 1,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 0
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 1,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:weapon_mod_special_nickel",
                               "weight": 1
                             },

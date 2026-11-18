@@ -77,7 +77,7 @@ public class MixinMutableQuadImpl implements QuadLightOriginAccess {
             at = @At("HEAD"),
             cancellable = true)
     private void hbm$lightEmission(int value, CallbackInfoReturnable<Object> cir) {
-        flags = flags & ~0x1E | Math.clamp(value, 0, 15) << 1;
+        flags = flags & ~0x78 | Math.clamp(value, 0, 15) << 3;
         invalidateMaterialInfoCache();
         cir.setReturnValue(this);
     }

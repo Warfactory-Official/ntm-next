@@ -38,8 +38,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.TickingEntityBlock;
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.sound.ModSounds;
-import com.mojang.serialization.MapCodec;
-import java.util.function.Function;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -59,22 +57,10 @@ import net.minecraft.world.phys.AABB;
 public class TrappedBrickBlock extends Block {
 
     public final Trap trap;
-    private final MapCodec<? extends Block> codec;
 
     public TrappedBrickBlock(Properties props, Trap trap) {
-        this(props, trap, p -> new TrappedBrickBlock(p, trap));
-    }
-
-    protected <B extends TrappedBrickBlock> TrappedBrickBlock(
-            Properties props, Trap trap, Function<Properties, B> factory) {
         super(props);
         this.trap = trap;
-        this.codec = simpleCodec(factory);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return codec;
     }
 
     @Override
@@ -155,7 +141,7 @@ public class TrappedBrickBlock extends Block {
     public static class Detector extends TrappedBrickBlock implements TickingEntityBlock {
 
         public Detector(Properties props, Trap trap) {
-            super(props, trap, p -> new Detector(p, trap));
+            super(props, trap);
         }
 
         @Override

@@ -47,7 +47,12 @@ public final class OrbitalLaserRenderer
 
     @Override
     public boolean shouldRender(
-            OrbitalLaserEntity entity, Frustum culler, double camX, double camY, double camZ) {
+            OrbitalLaserEntity entity,
+            Frustum culler,
+            double camX,
+            double camY,
+            double camZ,
+            float partialTicks) {
         return true;
     }
 

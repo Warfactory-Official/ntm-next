@@ -20,7 +20,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -32,16 +31,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DeadPlantBlock extends VegetationBlock {
-    public static final MapCodec<DeadPlantBlock> CODEC = simpleCodec(DeadPlantBlock::new);
     private static final VoxelShape SHAPE = Block.column(12.0, 0.0, 13.0);
 
     public DeadPlantBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends DeadPlantBlock> codec() {
-        return CODEC;
     }
 
     @Override

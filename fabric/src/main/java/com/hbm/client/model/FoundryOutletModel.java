@@ -238,8 +238,10 @@ public class FoundryOutletModel implements BlockStateModel {
                         original.sprite(),
                         original.layer(),
                         original.itemRenderType(),
+                        original.itemGlintRenderType(),
+                        original.itemGlintSpecialRenderType(),
                         original.tintIndex(),
-                        false,
+                        false ? null : Direction.UP,
                         original.lightEmission());
         BakedQuad face =
                 new BakedQuad(

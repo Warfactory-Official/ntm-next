@@ -23,7 +23,6 @@ import com.hbm.blockentity.network.PylonBlockEntity;
 import com.hbm.blocks.multiblock.MultiblockCoreBlock;
 import com.hbm.capability.PhysicalConnector;
 import com.hbm.uninos.graph.LevelNodeGraph;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -41,7 +40,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jspecify.annotations.Nullable;
 
 public class PylonBlock extends MultiblockCoreBlock implements EntityBlock, PhysicalConnector {
-    public static final MapCodec<PylonBlock> CODEC = simpleCodec(PylonBlock::new);
     private static final int HORIZONTAL_MASK =
             (1 << Direction.NORTH.ordinal())
                     | (1 << Direction.SOUTH.ordinal())
@@ -50,11 +48,6 @@ public class PylonBlock extends MultiblockCoreBlock implements EntityBlock, Phys
 
     public PylonBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

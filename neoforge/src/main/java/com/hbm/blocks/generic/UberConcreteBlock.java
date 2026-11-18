@@ -34,7 +34,6 @@
 package com.hbm.blocks.generic;
 
 import com.hbm.blocks.ModBlocks;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -48,13 +47,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 public class UberConcreteBlock extends Block {
 
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 15);
-
-    public static final MapCodec<UberConcreteBlock> CODEC = simpleCodec(UberConcreteBlock::new);
-
-    @Override
-    protected MapCodec<UberConcreteBlock> codec() {
-        return CODEC;
-    }
 
     public UberConcreteBlock(Properties properties) {
         super(properties);

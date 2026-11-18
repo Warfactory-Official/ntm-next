@@ -86,7 +86,7 @@ public class QuadroItemRenderer extends AnimatedGunItemRenderer {
                                                                 (p, halfWidth) -> {
                                                                     p.translate(
                                                                             -0.375F, 2.25F, 0.875F);
-                                                                    p.mulPose(
+                                                                    p.rotate(
                                                                             (Quaternionfc)
                                                                                     Axis.YN
                                                                                             .rotationDegrees(

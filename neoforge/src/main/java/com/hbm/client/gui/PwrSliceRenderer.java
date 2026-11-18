@@ -20,13 +20,13 @@
 package com.hbm.client.gui;
 
 import com.hbm.client.render.FlatCutout;
-import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.QuadInstance;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -42,6 +42,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.CardinalLighting;
 import org.joml.Quaternionfc;
 
 public final class PwrSliceRenderer extends PictureInPictureRenderer<PwrSliceRenderState> {
@@ -119,8 +120,8 @@ public final class PwrSliceRenderer extends PictureInPictureRenderer<PwrSliceRen
         var data = state.job().data;
         pose.translate((state.x1() / 2 - state.x1() / 2F) / 24F, 0, -400D / (24D * guiScale));
         pose.scale(-1, -1, 0.5F / guiScale);
-        pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-30));
-        pose.mulPose((Quaternionfc) Axis.YP.rotationDegrees(225));
+        pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(-30));
+        pose.rotate((Quaternionfc) Axis.YP.rotationDegrees(225));
         boolean across = data.direction().getAxis() == Direction.Axis.X;
         pose.translate(
                 (across ? data.sizeX() : data.sizeZ()) / -2D,
@@ -156,15 +157,12 @@ public final class PwrSliceRenderer extends PictureInPictureRenderer<PwrSliceRen
     }
 
     private void emit(PoseStack.Pose pose, VertexConsumer vertices, BakedQuad face) {
+        Direction override = face.materialInfo().shadeDirectionOverride();
         int shade =
-                !face.materialInfo().shade()
-                        ? 255
-                        : switch (face.direction()) {
-                            case DOWN -> 127;
-                            case UP -> 255;
-                            case NORTH, SOUTH -> 204;
-                            case EAST, WEST -> 153;
-                        };
+                (int)
+                        (255F
+                                * CardinalLighting.DEFAULT.byFace(
+                                        override == null ? face.direction() : override));
         quad.setColor(0xFF000000 | shade << 16 | shade << 8 | shade);
         vertices.putBakedQuad(pose, face, quad);
     }

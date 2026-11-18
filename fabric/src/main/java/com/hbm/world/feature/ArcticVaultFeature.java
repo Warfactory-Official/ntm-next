@@ -38,6 +38,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BobbleBlock.Bobble;
 import com.hbm.blocks.generic.BobbleBlock;
 import com.hbm.world.gen.WorldgenHeight;
+import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -48,19 +49,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
+public class ArcticVaultFeature implements Feature {
+    public static final MapCodec<ArcticVaultFeature> CODEC = MapCodec.unit(ArcticVaultFeature::new);
+
     private static final int BRICK = 0;
     private static final int WEB = 1;
     private static final int CRATE = 2;
-
-    public ArcticVaultFeature() {
-        super(NoneFeatureConfiguration.CODEC);
-    }
 
     private static BlockState tapeRecorder(int meta) {
         Direction facing =
@@ -135,11 +133,19 @@ public class ArcticVaultFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        WorldGenLevel level = ctx.level();
-        RandomSource rand = ctx.random();
+    public MapCodec<ArcticVaultFeature> codec() {
+        return CODEC;
+    }
 
-        BlockPos origin = ctx.origin();
+    @Override
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        RandomSource rand = random;
+
+        BlockPos origin = featureOrigin;
         BlockPos.MutableBlockPos pos =
                 new BlockPos.MutableBlockPos(origin.getX(), origin.getY() - 1, origin.getZ());
 

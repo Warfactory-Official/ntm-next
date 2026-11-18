@@ -82,7 +82,7 @@ public class MovingItemRenderer extends EntityRenderer<MovingItemEntity, MovingI
                     state.outlineColor,
                     FramedItem.miniBlockCount(state.count));
         } else {
-            poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F));
+            poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F));
             poseStack.translate(0F, -0.1875F, 0F);
             if (state.arm.mesh()) {
                 FramedItem.framedMeshPrefix(poseStack, state.arm);

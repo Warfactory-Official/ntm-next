@@ -3,31 +3,31 @@
   "criteria": {
     "crafted_hbm_billet_pu_mix": {
       "conditions": {
-        "recipe_id": "hbm:billet_pu_mix"
+        "recipes": "hbm:billet_pu_mix"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_billet_pu_mix_from_nuggets": {
       "conditions": {
-        "recipe_id": "hbm:billet_pu_mix_from_nuggets"
+        "recipes": "hbm:billet_pu_mix_from_nuggets"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_billet_pu_mix_from_rod_dual_rgp": {
       "conditions": {
-        "recipe_id": "hbm:billet_pu_mix_from_rod_dual_rgp"
+        "recipes": "hbm:billet_pu_mix_from_rod_dual_rgp"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_billet_pu_mix_from_rod_quad_rgp": {
       "conditions": {
-        "recipe_id": "hbm:billet_pu_mix_from_rod_quad_rgp"
+        "recipes": "hbm:billet_pu_mix_from_rod_quad_rgp"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_billet_pu_mix_from_rod_rgp": {
       "conditions": {
-        "recipe_id": "hbm:billet_pu_mix_from_rod_rgp"
+        "recipes": "hbm:billet_pu_mix_from_rod_rgp"
       },
       "trigger": "minecraft:recipe_crafted"
     },

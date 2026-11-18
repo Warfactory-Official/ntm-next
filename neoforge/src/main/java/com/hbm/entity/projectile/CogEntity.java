@@ -48,6 +48,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -113,7 +114,8 @@ public class CogEntity extends InterpolatedProjectileEntity implements FarVisibl
         if (!level().isClientSide()) {
             player.getInventory()
                     .placeItemBackInInventory(
-                            ModItems.GEAR_LARGE.stack(GearType.byIndex(getMeta())));
+                            ModItems.GEAR_LARGE.stack(GearType.byIndex(getMeta())),
+                            Prediction.SERVER_ONLY);
             discard();
         }
         return InteractionResult.PASS;

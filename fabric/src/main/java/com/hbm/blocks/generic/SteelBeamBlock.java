@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -45,8 +44,6 @@ public class SteelBeamBlock extends HorizontalDirectionalBlock implements Simple
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final MapCodec<SteelBeamBlock> CODEC = simpleCodec(SteelBeamBlock::new);
-
     private static final VoxelShape SHAPE = Shapes.box(7 / 16D, 0D, 7 / 16D, 9 / 16D, 1D, 9 / 16D);
 
     public SteelBeamBlock(Properties props) {
@@ -56,11 +53,6 @@ public class SteelBeamBlock extends HorizontalDirectionalBlock implements Simple
                         .any()
                         .setValue(FACING, Direction.NORTH)
                         .setValue(WATERLOGGED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -28,6 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.LevelEvent;
 import org.jspecify.annotations.Nullable;
 
@@ -50,7 +51,9 @@ public class FertilizerItem extends Item {
         for (BlockPos cursor :
                 BlockPos.betweenClosed(centre.offset(-1, -1, -1), centre.offset(1, 1, 1))) {
             BlockPos pos = cursor.immutable();
-            if (!FertilizerUtil.fertilize(level, pos, player, stack, pos.equals(centre))) continue;
+            if (!FertilizerUtil.fertilize(
+                    level, pos, player, stack, pos.equals(centre), BonemealSource.INTERACTION))
+                continue;
             any = true;
             if (!level.isClientSide()) {
                 level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, pos, 15);

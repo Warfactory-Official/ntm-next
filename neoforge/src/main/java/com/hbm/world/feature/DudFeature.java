@@ -22,25 +22,31 @@ package com.hbm.world.feature;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.bomb.CrashedBombBlock.EnumDudType;
 import com.hbm.world.LocationIsValidSpawn;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class DudFeature extends Feature<NoneFeatureConfiguration> {
+public class DudFeature implements Feature {
+    public static final MapCodec<DudFeature> CODEC = MapCodec.unit(DudFeature::new);
+
     private static final EnumDudType[] DUD_TYPES = EnumDudType.values();
 
-    public DudFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+    @Override
+    public MapCodec<DudFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        WorldGenLevel level = ctx.level();
-        RandomSource rand = ctx.random();
-        BlockPos pos = ctx.origin();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        RandomSource rand = random;
+        BlockPos pos = featureOrigin;
 
         if (!level.getBlockState(pos).isAir()
                 || !LocationIsValidSpawn.isValidGround(

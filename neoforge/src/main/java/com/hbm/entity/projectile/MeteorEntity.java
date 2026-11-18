@@ -59,6 +59,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoveSimulationType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -84,6 +85,11 @@ public class MeteorEntity extends Entity implements RadarProvider, FarVisible {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+
+    @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
+    }
 
     @Override
     public void tick() {

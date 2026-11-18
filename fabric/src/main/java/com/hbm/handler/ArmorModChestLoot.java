@@ -28,7 +28,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public final class ArmorModChestLoot {
     private static final Map<Identifier, PoolSpec> TABLES =
@@ -98,7 +98,7 @@ public final class ArmorModChestLoot {
         public LootPool.Builder pool() {
             LootPool.Builder pool =
                     LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(rolls))
+                            .setRolls(ContextIntProviders.exactly(rolls))
                             .add(EmptyLootItem.emptyItem().setWeight(emptyWeight));
             for (Entry entry : entries)
                 pool.add(LootItem.lootTableItem(entry.singleItem()).setWeight(entry.weight()));

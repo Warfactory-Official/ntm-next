@@ -82,6 +82,7 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -259,7 +260,7 @@ public class GlyphidEntity extends Monster implements DamageResistanceProvider, 
                 setCurrentTask(TASK_IDLE, null);
             }
         } else if (getCurrentTask() == TASK_DIG && tickCount % 20 == 0 && isAtDestination()) {
-            ((LivingEntity) this).swing(InteractionHand.MAIN_HAND);
+            ((LivingEntity) this).swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
 
             ComposableExplosion vnt =
                     new ComposableExplosion(level, taskX, taskY + 2, taskZ, blastSize, this);
@@ -276,7 +277,7 @@ public class GlyphidEntity extends Monster implements DamageResistanceProvider, 
         setBesideClimbableBlock(horizontalCollision);
 
         if (tickCount % 100 == 0) {
-            ((LivingEntity) this).swing(InteractionHand.MAIN_HAND);
+            ((LivingEntity) this).swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
         }
 
         if (!hasEffect(MobEffects.BLINDNESS)
@@ -373,7 +374,11 @@ public class GlyphidEntity extends Monster implements DamageResistanceProvider, 
                                         server, pos, server.getBlockState(pos), this)) {
                             setYRot(360F / 16 * i);
                             yBodyRot = getYRot();
-                            ((LivingEntity) this).swing(InteractionHand.MAIN_HAND);
+                            ((LivingEntity) this)
+                                    .swing(
+                                            InteractionHand.MAIN_HAND,
+                                            SwingAnimation.DEFAULT,
+                                            false);
                             level().destroyBlock(pos, false, this);
                         }
                     }
@@ -423,7 +428,7 @@ public class GlyphidEntity extends Monster implements DamageResistanceProvider, 
                 maggot.snapTo(
                         getX() + f, getY() + 0.5D, getZ() + f1, random.nextFloat() * 360.0F, 0F);
                 maggot.setDeltaMovement(f, 0D, f1);
-                ((Entity) maggot).hurtMarked = true;
+                ((Entity) maggot).syncVelocity = true;
                 serverLevel.addFreshEntity(maggot);
             }
         }
@@ -495,7 +500,7 @@ public class GlyphidEntity extends Monster implements DamageResistanceProvider, 
     }
 
     @Override
-    public int getCurrentSwingDuration() {
+    public int getModifiedSwingDuration(SwingAnimation animation) {
         return swingDuration();
     }
 
@@ -517,8 +522,8 @@ public class GlyphidEntity extends Monster implements DamageResistanceProvider, 
 
     @Override
     public boolean doHurtTarget(ServerLevel level, Entity target) {
-        if (((LivingEntity) this).swinging) return false;
-        ((LivingEntity) this).swing(InteractionHand.MAIN_HAND);
+        if (((LivingEntity) this).isSwinging()) return false;
+        ((LivingEntity) this).swing(InteractionHand.MAIN_HAND, SwingAnimation.DEFAULT, false);
 
         if (subtype() == TYPE_INFECTED && target instanceof LivingEntity livingTarget) {
             livingTarget.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 2));

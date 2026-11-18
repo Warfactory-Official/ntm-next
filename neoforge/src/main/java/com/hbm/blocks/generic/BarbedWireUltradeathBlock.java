@@ -21,27 +21,17 @@ package com.hbm.blocks.generic;
 
 import com.hbm.lib.ModDamageTypes;
 import com.hbm.potion.HbmPotion;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 
 public class BarbedWireUltradeathBlock extends BarbedWireBlock {
-    public static final MapCodec<BarbedWireUltradeathBlock> CODEC =
-            simpleCodec(BarbedWireUltradeathBlock::new);
-
     private static final float DAMAGE = 5.0F;
 
     public BarbedWireUltradeathBlock(Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

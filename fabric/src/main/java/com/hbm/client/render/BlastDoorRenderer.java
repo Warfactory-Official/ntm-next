@@ -98,9 +98,9 @@ public class BlastDoorRenderer
         int light = state.lightCoords;
         poseStack.pushPose();
         poseStack.translate(0.5, 0.0, 0.5);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(180.0F));
         if (state.facing.getAxis() == Direction.Axis.Z)
-            poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
+            poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(90.0F));
 
         poseStack.translate(0.0, 5.0 - state.ramp, 0.0);
         part(

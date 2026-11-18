@@ -30,14 +30,12 @@ import com.hbm.interfaces.LookOverlay;
 import com.hbm.interfaces.LookOverlayProvider;
 import com.hbm.interfaces.ToolInteractionHandler;
 import com.hbm.interfaces.ToolType;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -49,13 +47,6 @@ public class CraneSplitterBlock extends MultiblockCoreBlock
                 ConveyorInputHandler,
                 ToolInteractionHandler,
                 LookOverlayProvider {
-    public static final MapCodec<CraneSplitterBlock> CODEC = simpleCodec(CraneSplitterBlock::new);
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
-    }
-
     public CraneSplitterBlock(Properties properties) {
         super(properties);
     }

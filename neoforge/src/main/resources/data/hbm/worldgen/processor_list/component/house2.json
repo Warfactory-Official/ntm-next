@@ -5,8 +5,8 @@
       "processors": [
         {
           "marker": {
-            "Name": "minecraft:chiseled_bookshelf",
-            "Properties": {
+            "id": "minecraft:chiseled_bookshelf",
+            "properties": {
               "facing": "east",
               "slot_0_occupied": "false",
               "slot_1_occupied": "false",
@@ -18,35 +18,27 @@
           },
           "probability": 0.25,
           "processor_type": "hbm:maybe_place",
-          "result": {
-            "Name": "minecraft:sand"
-          }
+          "result": "minecraft:sand"
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "true"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "minecraft:sandstone"
-              },
+              "data": "minecraft:sandstone",
               "weight": 4
             },
             {
-              "data": {
-                "Name": "hbm:reinforced_sand"
-              },
+              "data": "hbm:reinforced_sand",
               "weight": 5
             },
             {
-              "data": {
-                "Name": "minecraft:sand"
-              },
+              "data": "minecraft:sand",
               "weight": 1
             }
           ],
@@ -54,26 +46,21 @@
         },
         {
           "marker": {
-            "Name": "minecraft:light",
-            "Properties": {
+            "id": "minecraft:light",
+            "properties": {
               "level": "0",
               "waterlogged": "false"
             }
           },
           "options": [
             {
-              "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
-                  "rotation": "0"
-                }
-              },
+              "data": "hbm:bobblehead",
               "weight": 1
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "1"
                 }
               },
@@ -81,8 +68,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "2"
                 }
               },
@@ -90,8 +77,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "3"
                 }
               },
@@ -99,8 +86,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "4"
                 }
               },
@@ -108,8 +95,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "5"
                 }
               },
@@ -117,8 +104,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "6"
                 }
               },
@@ -126,8 +113,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "7"
                 }
               },
@@ -135,8 +122,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "8"
                 }
               },
@@ -144,8 +131,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "9"
                 }
               },
@@ -153,8 +140,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "10"
                 }
               },
@@ -162,8 +149,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "11"
                 }
               },
@@ -171,8 +158,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "12"
                 }
               },
@@ -180,8 +167,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "13"
                 }
               },
@@ -189,8 +176,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "14"
                 }
               },
@@ -198,8 +185,8 @@
             },
             {
               "data": {
-                "Name": "hbm:bobblehead",
-                "Properties": {
+                "id": "hbm:bobblehead",
+                "properties": {
                   "rotation": "15"
                 }
               },

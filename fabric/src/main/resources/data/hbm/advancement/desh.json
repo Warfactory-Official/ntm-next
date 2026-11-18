@@ -3,19 +3,19 @@
   "criteria": {
     "crafted_hbm_ingot_desh_from_block": {
       "conditions": {
-        "recipe_id": "hbm:ingot_desh_from_block"
+        "recipes": "hbm:ingot_desh_from_block"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_ingot_desh_from_electrode": {
       "conditions": {
-        "recipe_id": "hbm:ingot_desh_from_electrode"
+        "recipes": "hbm:ingot_desh_from_electrode"
       },
       "trigger": "minecraft:recipe_crafted"
     },
     "crafted_hbm_ingot_desh_from_powder": {
       "conditions": {
-        "recipe_id": "hbm:ingot_desh_from_powder"
+        "recipes": "hbm:ingot_desh_from_powder"
       },
       "trigger": "minecraft:recipe_crafted"
     },

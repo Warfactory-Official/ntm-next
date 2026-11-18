@@ -53,7 +53,7 @@ public abstract class GasBlock extends Block {
                 .noOcclusion()
                 .instabreak()
                 .noLootTable()
-                .pushReaction(((PushReaction) (PushReaction.DESTROY)));
+                .pushReaction(((PushReaction) (PushReaction.POPPED)));
     }
 
     protected abstract AshRevealParticleOptions revealTint();

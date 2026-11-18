@@ -18,27 +18,25 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 4
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 14,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 4
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 14,
+                              "min": 0
                             }
-                          ],
-                          "functions": [
+                          },
+                          "modifier": [
                             {
+                              "type": "minecraft:set_count",
                               "count": {
                                 "type": "minecraft:uniform",
-                                "max": 12.0,
-                                "min": 3.0
-                              },
-                              "function": "minecraft:set_count"
+                                "max": 12,
+                                "min": 3
+                              }
                             }
                           ],
                           "name": "hbm:nugget_u235",
@@ -49,27 +47,25 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 4
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 9,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 4
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 9,
+                                  "min": 0
                                 }
-                              ],
-                              "functions": [
+                              },
+                              "modifier": [
                                 {
+                                  "type": "minecraft:set_count",
                                   "count": {
                                     "type": "minecraft:uniform",
-                                    "max": 12.0,
-                                    "min": 3.0
-                                  },
-                                  "function": "minecraft:set_count"
+                                    "max": 12,
+                                    "min": 3
+                                  }
                                 }
                               ],
                               "name": "hbm:nugget_pu238",
@@ -77,14 +73,14 @@
                             },
                             {
                               "type": "minecraft:item",
-                              "functions": [
+                              "modifier": [
                                 {
+                                  "type": "minecraft:set_count",
                                   "count": {
                                     "type": "minecraft:uniform",
-                                    "max": 6.0,
-                                    "min": 3.0
-                                  },
-                                  "function": "minecraft:set_count"
+                                    "max": 6,
+                                    "min": 3
+                                  }
                                 }
                               ],
                               "name": "hbm:nugget_ra226",
@@ -93,38 +89,34 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 14
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 23,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 14
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 23,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 2
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 8,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 2
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 8,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:rod_u235",
                           "weight": 3
                         },
@@ -133,19 +125,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 2
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 5,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 2
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 5,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:rod_dual_u235",
                               "weight": 3
                             },
@@ -159,19 +149,17 @@
                       ]
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 23
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 41,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 23
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 41,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
@@ -181,19 +169,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 3
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 10,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 3
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 10,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:rod_zirnox_uranium_fuel",
                           "weight": 4
                         },
@@ -202,19 +188,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 3
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 6,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 3
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 6,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:rod_zirnox_mox_fuel",
                               "weight": 4
                             },
@@ -226,38 +210,34 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 10
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 17,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 10
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 17,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 2
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 6,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 2
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 6,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:rod_zirnox_thorium_fuel",
                           "weight": 3
                         },
@@ -266,19 +246,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 2
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 3,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 2
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 3,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:rod_dual_thf",
                               "weight": 3
                             },
@@ -294,19 +272,17 @@
                   ]
                 }
               ],
-              "conditions": [
-                {
-                  "condition": "minecraft:value_check",
-                  "range": {
-                    "max": 41
-                  },
-                  "value": {
-                    "type": "minecraft:uniform",
-                    "max": 66,
-                    "min": 0
-                  }
+              "condition": {
+                "type": "minecraft:int_value_check",
+                "test": {
+                  "max": 41
+                },
+                "value": {
+                  "type": "minecraft:uniform",
+                  "max": 66,
+                  "min": 0
                 }
-              ]
+              }
             },
             {
               "type": "minecraft:alternatives",
@@ -319,19 +295,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 0
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 4,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 0
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 4,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:rod_zirnox_u233_fuel",
                           "weight": 1
                         },
@@ -340,19 +314,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 0
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 3,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 0
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 3,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:rod_zirnox_u235_fuel",
                               "weight": 1
                             },
@@ -364,38 +336,34 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 4
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 7,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 4
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 7,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 0
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 2,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 0
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 2,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:powder_thorium",
                           "weight": 1
                         },
@@ -404,19 +372,17 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 0
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 1,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 0
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 1,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:powder_neptunium",
                               "weight": 1
                             },
@@ -430,19 +396,17 @@
                       ]
                     }
                   ],
-                  "conditions": [
-                    {
-                      "condition": "minecraft:value_check",
-                      "range": {
-                        "max": 7
-                      },
-                      "value": {
-                        "type": "minecraft:uniform",
-                        "max": 24,
-                        "min": 0
-                      }
+                  "condition": {
+                    "type": "minecraft:int_value_check",
+                    "test": {
+                      "max": 7
+                    },
+                    "value": {
+                      "type": "minecraft:uniform",
+                      "max": 24,
+                      "min": 0
                     }
-                  ]
+                  }
                 },
                 {
                   "type": "minecraft:alternatives",
@@ -452,19 +416,17 @@
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 0
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 6,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 0
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 6,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:powder_cobalt",
                           "weight": 1
                         },
@@ -473,30 +435,28 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 0
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 5,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 0
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 5,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:bottle_quantum",
                               "weight": 1
                             },
                             {
                               "type": "minecraft:item",
-                              "functions": [
+                              "modifier": [
                                 {
+                                  "type": "minecraft:set_components",
                                   "components": {
                                     "minecraft:damage": 60
-                                  },
-                                  "function": "minecraft:set_components"
+                                  }
                                 }
                               ],
                               "name": "hbm:gas_mask_m65",
@@ -505,38 +465,34 @@
                           ]
                         }
                       ],
-                      "conditions": [
-                        {
-                          "condition": "minecraft:value_check",
-                          "range": {
-                            "max": 6
-                          },
-                          "value": {
-                            "type": "minecraft:uniform",
-                            "max": 16,
-                            "min": 0
-                          }
+                      "condition": {
+                        "type": "minecraft:int_value_check",
+                        "test": {
+                          "max": 6
+                        },
+                        "value": {
+                          "type": "minecraft:uniform",
+                          "max": 16,
+                          "min": 0
                         }
-                      ]
+                      }
                     },
                     {
                       "type": "minecraft:alternatives",
                       "children": [
                         {
                           "type": "minecraft:item",
-                          "conditions": [
-                            {
-                              "condition": "minecraft:value_check",
-                              "range": {
-                                "max": 1
-                              },
-                              "value": {
-                                "type": "minecraft:uniform",
-                                "max": 9,
-                                "min": 0
-                              }
+                          "condition": {
+                            "type": "minecraft:int_value_check",
+                            "test": {
+                              "max": 1
+                            },
+                            "value": {
+                              "type": "minecraft:uniform",
+                              "max": 9,
+                              "min": 0
                             }
-                          ],
+                          },
                           "name": "hbm:hazmat_kit",
                           "weight": 2
                         },
@@ -545,32 +501,30 @@
                           "children": [
                             {
                               "type": "minecraft:item",
-                              "conditions": [
-                                {
-                                  "condition": "minecraft:value_check",
-                                  "range": {
-                                    "max": 4
-                                  },
-                                  "value": {
-                                    "type": "minecraft:uniform",
-                                    "max": 7,
-                                    "min": 0
-                                  }
+                              "condition": {
+                                "type": "minecraft:int_value_check",
+                                "test": {
+                                  "max": 4
+                                },
+                                "value": {
+                                  "type": "minecraft:uniform",
+                                  "max": 7,
+                                  "min": 0
                                 }
-                              ],
+                              },
                               "name": "hbm:gas_mask_filter",
                               "weight": 5
                             },
                             {
                               "type": "minecraft:item",
-                              "functions": [
+                              "modifier": [
                                 {
+                                  "type": "minecraft:set_count",
                                   "count": {
                                     "type": "minecraft:uniform",
-                                    "max": 3.0,
-                                    "min": 1.0
-                                  },
-                                  "function": "minecraft:set_count"
+                                    "max": 3,
+                                    "min": 1
+                                  }
                                 }
                               ],
                               "name": "hbm:yellow_barrel",

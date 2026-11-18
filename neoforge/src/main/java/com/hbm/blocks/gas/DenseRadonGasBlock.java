@@ -43,7 +43,6 @@ import com.hbm.util.ArmorRegistry;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
 import com.hbm.util.ContaminationUtil;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -60,15 +59,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DenseRadonGasBlock extends GasBlock {
-    public static final MapCodec<DenseRadonGasBlock> CODEC = simpleCodec(DenseRadonGasBlock::new);
-
     public DenseRadonGasBlock(BlockBehaviour.Properties props) {
         super(props);
-    }
-
-    @Override
-    protected MapCodec<? extends DenseRadonGasBlock> codec() {
-        return CODEC;
     }
 
     @Override

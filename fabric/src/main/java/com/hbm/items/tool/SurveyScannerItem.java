@@ -243,6 +243,6 @@ public final class SurveyScannerItem extends Item {
     }
 
     private static InteractionResult accepted(ItemStack stack) {
-        return InteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS.heldItemTransformedTo(stack);
     }
 }

@@ -35,6 +35,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -180,7 +181,7 @@ public final class ArmorUtil {
         if (!player.isShiftKeyDown()) return false;
         ItemStack filter = removeGasMaskFilter(mask);
         if (filter.isEmpty()) return false;
-        player.getInventory().placeItemBackInInventory(filter);
+        player.getInventory().placeItemBackInInventory(filter, Prediction.PREDICTED);
         return true;
     }
 

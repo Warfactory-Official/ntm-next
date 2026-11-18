@@ -69,7 +69,12 @@ public record ChainModel() implements SimpleBlockModel {
             Material.Baked material = BlockModel.slot(baker, carrier, slots, end ? "end" : "chain");
             var info =
                     BakedQuad.MaterialInfo.of(
-                            material, Transparency.TRANSPARENT, -1, false, 0, true);
+                            material,
+                            Transparency.TRANSPARENT,
+                            -1,
+                            false ? null : Direction.UP,
+                            0,
+                            true);
             List<ObjUnbakedGeometry.BoxQuad> output =
                     new ArrayList<>(facing == Direction.DOWN ? 4 : 2);
             switch (facing) {

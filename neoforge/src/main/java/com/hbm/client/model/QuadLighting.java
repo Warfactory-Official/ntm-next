@@ -113,8 +113,10 @@ public final class QuadLighting {
                         sprite,
                         info.layer(),
                         itemType,
+                        info.itemGlintRenderType(),
+                        info.itemGlintSpecialRenderType(),
                         tint,
-                        info.shade(),
+                        info.shadeDirectionOverride(),
                         emission,
                         info.ambientOcclusion() && ambientOcclusion);
         ((com.hbm.interfaces.injected.QuadLightOriginAccess) (java.lang.Object) (copy))

@@ -22,7 +22,6 @@ package com.hbm.blocks.machine;
 import com.hbm.blockentity.machine.DemonLampBlockEntity;
 import com.hbm.blocks.DirectionalBlock;
 import com.hbm.blocks.TickingEntityBlock;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,16 +32,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.jspecify.annotations.Nullable;
 
 public class DemonLampBlock extends DirectionalBlock implements TickingEntityBlock {
-    public static final MapCodec<DemonLampBlock> CODEC = simpleCodec(DemonLampBlock::new);
-
     public DemonLampBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.DOWN));
-    }
-
-    @Override
-    protected MapCodec<? extends net.minecraft.world.level.block.DirectionalBlock> codec() {
-        return CODEC;
     }
 
     @Override

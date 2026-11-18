@@ -108,19 +108,19 @@ public class SteamEngineRenderer
 
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
         ps.translate(2.0, 0.0, 0.0);
 
         ps.pushPose();
         ps.translate(2, 1.375, 0);
-        ps.mulPose((Quaternionfc) Axis.ZN.rotationDegrees((float) rot));
+        ps.rotate((Quaternionfc) Axis.ZN.rotationDegrees((float) rot));
         ps.translate(-2, -1.375, 0);
         part(col, ps, light, FLYWHEEL);
         ps.popPose();
 
         ps.pushPose();
         ps.translate(0, 1.375, -0.5);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees((float) (rot * 2D)));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees((float) (rot * 2D)));
         ps.translate(0, -1.375, 0.5);
         part(col, ps, light, SHAFT);
         ps.popPose();
@@ -131,7 +131,7 @@ public class SteamEngineRenderer
         ps.pushPose();
         ps.translate((float) sin, (float) cos, 0);
         ps.translate(2.25F, 1.375F, 0);
-        ps.mulPose((Quaternionfc) Axis.ZN.rotationDegrees((float) (ang * 180D / Math.PI - 90D)));
+        ps.rotate((Quaternionfc) Axis.ZN.rotationDegrees((float) (ang * 180D / Math.PI - 90D)));
         ps.translate(-2.25F, -1.375F, 0);
         part(col, ps, light, TRANSMISSION);
         ps.popPose();

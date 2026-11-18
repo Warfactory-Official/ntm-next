@@ -308,7 +308,7 @@ public class CanneryStirling extends CanneryBase {
             PoseStack pose = context.pose();
             pose.pushPose();
             pose.translate(x + 0.5D, y, z + 0.5D);
-            pose.mulPose(
+            pose.rotate(
                     (Quaternionfc)
                             Axis.YP.rotationDegrees(
                                     switch (rotation) {
@@ -324,7 +324,7 @@ public class CanneryStirling extends CanneryBase {
             if (hasCog) {
                 pose.pushPose();
                 pose.translate(0, 1.375, 0);
-                pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-rot));
+                pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-rot));
                 pose.translate(0, -1.375, 0);
                 part(context, renderType, COG);
                 pose.popPose();
@@ -332,7 +332,7 @@ public class CanneryStirling extends CanneryBase {
 
             pose.pushPose();
             pose.translate(0, 1.375, 0.25);
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(rot * 2F + 3F));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(rot * 2F + 3F));
             pose.translate(0, -1.375, -0.25);
             part(context, renderType, COG_SMALL);
             pose.popPose();

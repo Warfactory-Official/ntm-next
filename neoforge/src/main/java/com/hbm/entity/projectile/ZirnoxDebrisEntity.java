@@ -43,6 +43,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Prediction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -108,6 +109,11 @@ public class ZirnoxDebrisEntity extends Entity {
     @Override
     public boolean isPickable() {
         return true;
+    }
+
+    @Override
+    public MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
     }
 
     @Override
@@ -199,7 +205,7 @@ public class ZirnoxDebrisEntity extends Entity {
                         case CONCRETE -> new ItemStack(ModItems.DEBRIS_CONCRETE);
                         case EXCHANGER -> new ItemStack(ModItems.DEBRIS_EXCHANGER);
                     };
-            player.getInventory().placeItemBackInInventory(give);
+            player.getInventory().placeItemBackInInventory(give, Prediction.SERVER_ONLY);
             discard();
         }
         return InteractionResult.SUCCESS;

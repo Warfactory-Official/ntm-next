@@ -122,8 +122,8 @@ public class PipeAnchorRenderer
         ps.translate(0.5, 0.5, 0.5);
         for (Run run : s.runs) {
             ps.pushPose();
-            ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(run.yaw));
-            ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90F - run.pitch));
+            ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(run.yaw));
+            ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(90F - run.pitch));
 
             ps.pushPose();
             ps.scale(1F, run.length, 1F);

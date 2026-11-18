@@ -30,7 +30,7 @@ public class ItemWasteEntity extends ItemEntity {
 
     public ItemWasteEntity(EntityType<? extends ItemWasteEntity> type, Level level) {
         super(type, level);
-        ((Entity) this).setInvulnerable(true);
+        ((Entity) this).setPermanentlyInvulnerable(true);
         setUnlimitedLifetime();
     }
 

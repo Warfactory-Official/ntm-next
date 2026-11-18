@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.codec.RegistryCodecs;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -53,7 +53,7 @@ public record MaterialDistributionRecipe(HolderSet<Item> targets, List<MaterialS
                     RecordCodecBuilder.<MaterialDistributionRecipe>mapCodec(
                                     i ->
                                             i.group(
-                                                            RegistryCodecs.<Item>homogeneousList(
+                                                            RegistryCodecs.<Item>holderSet(
                                                                             (ResourceKey<
                                                                                             ? extends
                                                                                                     Registry<

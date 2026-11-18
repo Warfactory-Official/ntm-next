@@ -1,11 +1,15 @@
-noperspective in vec2 hbmRibbonCoord;
-flat in float hbmRibbonLength;
-flat in vec2 hbmRibbonRadii;
-flat in vec2 hbmRibbonInvW;
-flat in vec4 hbmRibbonHeadColor;
-flat in vec4 hbmRibbonTailColor;
-flat in vec4 hbmRibbonLight;
-flat in vec4 hbmRibbonFog;
+#ifndef NTM_RIBBON_LAYOUT
+#define NTM_RIBBON_LAYOUT(slot)
+#endif
+
+NTM_RIBBON_LAYOUT(0) noperspective in vec2 hbmRibbonCoord;
+NTM_RIBBON_LAYOUT(1) flat in float hbmRibbonLength;
+NTM_RIBBON_LAYOUT(2) flat in vec2 hbmRibbonRadii;
+NTM_RIBBON_LAYOUT(3) flat in vec2 hbmRibbonInvW;
+NTM_RIBBON_LAYOUT(4) flat in vec4 hbmRibbonHeadColor;
+NTM_RIBBON_LAYOUT(5) flat in vec4 hbmRibbonTailColor;
+NTM_RIBBON_LAYOUT(6) flat in vec4 hbmRibbonLight;
+NTM_RIBBON_LAYOUT(7) flat in vec4 hbmRibbonFog;
 
 vec4 hbmRibbonSurface(out float perspectiveT) {
     float along = clamp(hbmRibbonCoord.x, 0.0, hbmRibbonLength);

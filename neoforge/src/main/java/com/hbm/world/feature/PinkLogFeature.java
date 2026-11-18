@@ -20,25 +20,32 @@
 package com.hbm.world.feature;
 
 import com.hbm.blocks.ModBlocks;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public final class PinkLogFeature extends Feature<NoneFeatureConfiguration> {
-    public PinkLogFeature() {
-        super(NoneFeatureConfiguration.CODEC);
+public final class PinkLogFeature implements Feature {
+    public static final MapCodec<PinkLogFeature> CODEC = MapCodec.unit(PinkLogFeature::new);
+
+    @Override
+    public MapCodec<PinkLogFeature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        WorldGenLevel level = context.level();
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
         BlockState oak = Blocks.OAK_LOG.defaultBlockState();
         BlockState pink = ModBlocks.PINK_LOG.get().defaultBlockState();
-        BlockPos.MutableBlockPos pos = context.origin().mutable();
+        BlockPos.MutableBlockPos pos = featureOrigin.mutable();
         boolean done = false;
         for (int y = level.getMinY(); y <= level.getMaxY(); y++) {
             pos.setY(y);

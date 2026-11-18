@@ -86,8 +86,8 @@ public class TrainCargoTramRenderer<T extends RailCarBaseEntity>
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(-state.offsetX, -state.offsetY, -state.offsetZ);
-        poseStack.mulPose((Quaternionfc) Axis.YP.rotationDegrees(-state.yaw));
-        poseStack.mulPose((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch));
+        poseStack.rotate((Quaternionfc) Axis.YP.rotationDegrees(-state.yaw));
+        poseStack.rotate((Quaternionfc) Axis.XP.rotationDegrees(-state.pitch));
 
         collector.submitCustomGeometry(
                 poseStack,

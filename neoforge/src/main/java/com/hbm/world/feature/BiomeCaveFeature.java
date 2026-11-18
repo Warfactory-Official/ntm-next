@@ -37,6 +37,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.util.RegistryUtil;
 import com.hbm.world.BiomeTarget;
 import com.hbm.world.NtmWorldgenFields;
+import com.mojang.serialization.MapCodec;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -44,14 +45,16 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class BiomeCaveFeature extends Feature<NoneFeatureConfiguration> {
+public class BiomeCaveFeature implements Feature {
+    public static final MapCodec<BiomeCaveFeature> CODEC = MapCodec.unit(BiomeCaveFeature::new);
+
     private static final double THRESHOLD = 2.0D;
     private static final int RANGE_MULT = 3;
     private static final int MAX_RANGE = 4;
@@ -99,10 +102,6 @@ public class BiomeCaveFeature extends Feature<NoneFeatureConfiguration> {
                                     "deep_dark")
                             .biomes());
 
-    public BiomeCaveFeature() {
-        super(NoneFeatureConfiguration.CODEC);
-    }
-
     private static BlockState typeFor(Holder<Biome> biome) {
         if (biome.is(DESERT::contains))
             return ModBlocks.STONE_BIOME_DESERT.get().defaultBlockState();
@@ -137,10 +136,18 @@ public class BiomeCaveFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> ctx) {
-        WorldGenLevel level = ctx.level();
-        int cx = ctx.origin().getX() & ~15;
-        int cz = ctx.origin().getZ() & ~15;
+    public MapCodec<BiomeCaveFeature> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public boolean place(
+            WorldGenLevel level,
+            ChunkGenerator chunkGenerator,
+            RandomSource random,
+            BlockPos featureOrigin) {
+        int cx = featureOrigin.getX() & ~15;
+        int cz = featureOrigin.getZ() & ~15;
 
         FractalSimplexNoise noise = NtmWorldgenFields.get(level).fractal(DOMAIN, 2);
 

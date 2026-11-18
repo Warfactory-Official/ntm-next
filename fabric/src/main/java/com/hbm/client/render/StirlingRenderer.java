@@ -102,12 +102,12 @@ public class StirlingRenderer
         RenderType type = bodyTypes[s.skin];
         ps.pushPose();
         ps.translate(0.5, 0.0, 0.5);
-        ps.mulPose((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
+        ps.rotate((Quaternionfc) Axis.YP.rotationDegrees(s.yaw));
 
         if (s.hasCog) {
             ps.pushPose();
             ps.translate(0.0, 1.375, 0.0);
-            ps.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-s.rot));
+            ps.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-s.rot));
             ps.translate(0.0, -1.375, 0.0);
             part(col, ps, type, light, COG);
             ps.popPose();
@@ -115,7 +115,7 @@ public class StirlingRenderer
 
         ps.pushPose();
         ps.translate(0.0, 1.375, 0.25);
-        ps.mulPose((Quaternionfc) Axis.XP.rotationDegrees(s.rot * 2F + 3F));
+        ps.rotate((Quaternionfc) Axis.XP.rotationDegrees(s.rot * 2F + 3F));
         ps.translate(0.0, -1.375, -0.25);
         part(col, ps, type, light, COG_SMALL);
         ps.popPose();

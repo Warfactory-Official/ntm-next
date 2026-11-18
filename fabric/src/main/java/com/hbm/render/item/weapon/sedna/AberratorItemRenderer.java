@@ -105,14 +105,14 @@ public class AberratorItemRenderer extends AnimatedGunItemRenderer {
 
     private static void halo(GunRenderDefinition.Drawing d) {
         var pose = d.pose();
-        pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees((float) (GameTime.now() / 50D % 360D)));
+        pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees((float) (GameTime.now() / 50D % 360D)));
         float closing = Math.min(1F, d.aim() * 2);
         int light = d.light();
         for (int i = 0; i < HALO_BLADES; i++) {
             pose.pushPose();
             pose.translate(0, -1.5 - closing, 0);
-            pose.mulPose((Quaternionfc) Axis.XP.rotationDegrees(90 * closing));
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(-45));
+            pose.rotate((Quaternionfc) Axis.XP.rotationDegrees(90 * closing));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(-45));
             d.collector()
                     .submitCustomGeometry(
                             pose,
@@ -128,7 +128,7 @@ public class AberratorItemRenderer extends AnimatedGunItemRenderer {
                                         tess, p, -0.5F, 0.5F, -0.5F, -1, 1, 0, light, 0F, 1F, 0F);
                             });
             pose.popPose();
-            pose.mulPose((Quaternionfc) Axis.ZP.rotationDegrees(360F / HALO_BLADES));
+            pose.rotate((Quaternionfc) Axis.ZP.rotationDegrees(360F / HALO_BLADES));
         }
     }
 

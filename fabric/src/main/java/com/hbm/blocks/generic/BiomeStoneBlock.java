@@ -19,7 +19,6 @@
 
 package com.hbm.blocks.generic;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -36,16 +35,9 @@ public class BiomeStoneBlock extends Block {
 
     public static final BooleanProperty BURIED = BooleanProperty.create("buried");
 
-    public static final MapCodec<BiomeStoneBlock> CODEC = simpleCodec(BiomeStoneBlock::new);
-
     public BiomeStoneBlock(BlockBehaviour.Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(BURIED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends Block> codec() {
-        return CODEC;
     }
 
     @Override

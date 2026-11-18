@@ -38,7 +38,7 @@ final class RuntimeBaker extends MaterialBaker implements ModelBaker, ModelBaker
     private final BlockStateModelPart missing;
 
     private RuntimeBaker(ModelBaker source, ResolvedModel[] inputs) {
-        super(source.missingBlockModelPart().particleMaterial().sprite());
+        super(source.materials().blockAtlas, source.materials().itemAtlas);
         missing = source.missingBlockModelPart();
         var modelMap = new LinkedHashMap<Identifier, ResolvedModel>();
         var materialMap = new LinkedHashMap<Material, Material.Baked>();
@@ -71,11 +71,6 @@ final class RuntimeBaker extends MaterialBaker implements ModelBaker, ModelBaker
         }
         throw new IllegalStateException(
                 name.debugName() + ": uncaptured runtime material " + material);
-    }
-
-    @Override
-    protected Material.Baked bake(Material material) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
